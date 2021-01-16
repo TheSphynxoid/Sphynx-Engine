@@ -1,8 +1,5 @@
 #pragma once
 
-//For Convinence Sake.
-namespace Sphynx{}
-
 #ifdef Platform_Win
 extern Sphynx::Application* Sphynx::CreateApplication();
 
