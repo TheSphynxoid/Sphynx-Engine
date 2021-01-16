@@ -14,6 +14,7 @@ private:
 
 };
 
+//The Main Entry Point for clients
 Sphynx::Application* Sphynx::CreateApplication() {
 	return new SandBox();
 }
