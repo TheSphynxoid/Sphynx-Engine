@@ -8,6 +8,6 @@
 //For Application Use only
 
 #include "Sphynx/Application.h"
-
+#include "Sphynx/Logger.h"
 //--------------------EntryPoint Header-------------------------
 #include "Sphynx/EntryPoint.h"
