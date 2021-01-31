@@ -28,7 +28,12 @@ project "Sphynx"
 	includedirs
 	{
 		"%{prj.name}/dep/spdlog/include",
-		"%{prj.name}/src/Sphynx"
+		"%{prj.name}/src/Sphynx",
+		"%{prj.name}/dep/glfw/include",
+	}
+	links
+	{
+		"glfw"
 	}
 
 	filter "configurations:Debug"
@@ -81,3 +86,5 @@ project "Sandbox"
 		defines "RELEASE"
 		runtime "Release"
 		optimize "on"
+
+include "Sphynx/dep/glfw"

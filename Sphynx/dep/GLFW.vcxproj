@@ -11,10 +11,10 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{2F02A1D1-1BA4-CBA7-045F-DFFBF09F52F8}</ProjectGuid>
+    <ProjectGuid>{154B857C-0182-860D-AA6E-6C109684020F}</ProjectGuid>
     <IgnoreWarnCompileDuplicatedFilename>true</IgnoreWarnCompileDuplicatedFilename>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>Sphynx</RootNamespace>
+    <RootNamespace>GLFW</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -41,28 +41,26 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <OutDir>..\build\bin\Debug-windows-x86_64\Sphynx\</OutDir>
-    <IntDir>..\build\int\Debug-windows-x86_64\Sphynx\</IntDir>
-    <TargetName>Sphynx</TargetName>
+    <OutDir>..\bin\Debug\</OutDir>
+    <IntDir>..\obj\Debug\</IntDir>
+    <TargetName>GLFW</TargetName>
     <TargetExt>.lib</TargetExt>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <OutDir>..\build\bin\Release-windows-x86_64\Sphynx\</OutDir>
-    <IntDir>..\build\int\Release-windows-x86_64\Sphynx\</IntDir>
-    <TargetName>Sphynx</TargetName>
+    <OutDir>..\bin\Release\</OutDir>
+    <IntDir>..\obj\Release\</IntDir>
+    <TargetName>GLFW</TargetName>
     <TargetExt>.lib</TargetExt>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>dep\spdlog\include;src\Sphynx;dep\glfw\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_GLFW_WIN32;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>glfw\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -71,18 +69,16 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>dep\spdlog\include;src\Sphynx;dep\glfw\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_GLFW_WIN32;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>glfw\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <MinimalRebuild>false</MinimalRebuild>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -91,31 +87,24 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\Sphynx.h" />
-    <ClInclude Include="src\Sphynx\Application.h" />
-    <ClInclude Include="src\Sphynx\Core.h" />
-    <ClInclude Include="src\Sphynx\EntryPoint.h" />
-    <ClInclude Include="src\Sphynx\Event\ApplicationEvents.h" />
-    <ClInclude Include="src\Sphynx\Event\Event.h" />
-    <ClInclude Include="src\Sphynx\Event\KeyBoardEvents.h" />
-    <ClInclude Include="src\Sphynx\Input.h" />
-    <ClInclude Include="src\Sphynx\KeyCode.h" />
-    <ClInclude Include="src\Sphynx\Logger.h" />
-    <ClInclude Include="src\Sphynx\PlatformMacros.h" />
-    <ClInclude Include="src\Sphynx\pch.h" />
+    <ClInclude Include="glfw\src\glfw_config.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Sphynx\Application.cpp" />
-    <ClCompile Include="src\Sphynx\Event\ApplicationEvents.cpp" />
-    <ClCompile Include="src\Sphynx\Event\KeyBoardEvents.cpp" />
-    <ClCompile Include="src\Sphynx\Input.cpp" />
-    <ClCompile Include="src\Sphynx\Logger.cpp" />
-    <ClCompile Include="src\Sphynx\pch.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="dep\GLFW.vcxproj">
-      <Project>{154B857C-0182-860D-AA6E-6C109684020F}</Project>
-    </ProjectReference>
+    <ClCompile Include="glfw\src\context.c" />
+    <ClCompile Include="glfw\src\egl_context.c" />
+    <ClCompile Include="glfw\src\init.c" />
+    <ClCompile Include="glfw\src\input.c" />
+    <ClCompile Include="glfw\src\monitor.c" />
+    <ClCompile Include="glfw\src\osmesa_context.c" />
+    <ClCompile Include="glfw\src\vulkan.c" />
+    <ClCompile Include="glfw\src\wgl_context.c" />
+    <ClCompile Include="glfw\src\win32_init.c" />
+    <ClCompile Include="glfw\src\win32_joystick.c" />
+    <ClCompile Include="glfw\src\win32_monitor.c" />
+    <ClCompile Include="glfw\src\win32_thread.c" />
+    <ClCompile Include="glfw\src\win32_time.c" />
+    <ClCompile Include="glfw\src\win32_window.c" />
+    <ClCompile Include="glfw\src\window.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
