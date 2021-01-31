@@ -1,4 +1,7 @@
 #include <Sphynx.h>
+#include <Sphynx/Event/ApplicationEvents.h>
+#include <iostream>
+
 
 class SandBox : public Sphynx::Application
 {
@@ -9,12 +12,12 @@ public:
 	~SandBox() {
 
 	}
-
 private:
 
 };
 
 //The Main Entry Point for clients
 Sphynx::Application* Sphynx::CreateApplication() {
-	return new SandBox();
+	auto sandbox = new SandBox();
+	return sandbox;
 }

@@ -4,6 +4,9 @@
     <Filter Include="Sphynx">
       <UniqueIdentifier>{2F02A1D1-1BA4-CBA7-045F-DFFBF09F52F8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Sphynx\Event">
+      <UniqueIdentifier>{C02A914F-AC8D-20F4-5513-59AA4155EC76}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Sphynx.h" />
@@ -16,7 +19,28 @@
     <ClInclude Include="src\Sphynx\EntryPoint.h">
       <Filter>Sphynx</Filter>
     </ClInclude>
+    <ClInclude Include="src\Sphynx\Event\ApplicationEvents.h">
+      <Filter>Sphynx\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Sphynx\Event\Event.h">
+      <Filter>Sphynx\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Sphynx\Event\KeyBoardEvents.h">
+      <Filter>Sphynx\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Sphynx\Input.h">
+      <Filter>Sphynx</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Sphynx\KeyCode.h">
+      <Filter>Sphynx</Filter>
+    </ClInclude>
     <ClInclude Include="src\Sphynx\Logger.h">
+      <Filter>Sphynx</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Sphynx\PlatformMacros.h">
+      <Filter>Sphynx</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Sphynx\pch.h">
       <Filter>Sphynx</Filter>
     </ClInclude>
   </ItemGroup>
@@ -24,7 +48,19 @@
     <ClCompile Include="src\Sphynx\Application.cpp">
       <Filter>Sphynx</Filter>
     </ClCompile>
+    <ClCompile Include="src\Sphynx\Event\ApplicationEvents.cpp">
+      <Filter>Sphynx\Event</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Sphynx\Event\KeyBoardEvents.cpp">
+      <Filter>Sphynx\Event</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Sphynx\Input.cpp">
+      <Filter>Sphynx</Filter>
+    </ClCompile>
     <ClCompile Include="src\Sphynx\Logger.cpp">
+      <Filter>Sphynx</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Sphynx\pch.cpp">
       <Filter>Sphynx</Filter>
     </ClCompile>
   </ItemGroup>

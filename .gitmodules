@@ -1,3 +1,6 @@
-[submodule "sphynx\\dep\\spdlog"]
-	path = sphynx\\dep\\spdlog
+[submodule "Sphynx/dep/glfw"]
+	path = Sphynx/dep/glfw
+	url = https://github.com/glfw/glfw
+[submodule "Sphynx/dep/spdlog"]
+	path = Sphynx/dep/spdlog
 	url = https://github.com/gabime/spdlog

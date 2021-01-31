@@ -1,10 +1,12 @@
 #pragma once
 
 #include "Core.h"
+#include "Event/Event.h"
 
 namespace Sphynx {
-	class SphynxAPI Application
+	class Application
 	{
+		Events::EventSystem eventSystem;
 	public:
 		Application();
 		virtual ~Application();

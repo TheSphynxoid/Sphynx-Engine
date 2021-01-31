@@ -9,10 +9,13 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
 project "Sphynx"
 	location "Sphynx"
-	kind "SharedLib"
+	kind "StaticLib"
 	language "C++"
 	cppdialect "C++17"
 	staticruntime "on"
+
+	pchheader "pch.h"
+	pchsource "Sphynx/src/pch.cpp"
 
 	targetdir ("%{wks.location}/build/bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("%{wks.location}/build/int/" .. outputdir .. "/%{prj.name}")
@@ -24,7 +27,8 @@ project "Sphynx"
 	}
 	includedirs
 	{
-		"%{prj.name}/dep/spdlog/include"
+		"%{prj.name}/dep/spdlog/include",
+		"%{prj.name}/src/Sphynx"
 	}
 
 	filter "configurations:Debug"
@@ -40,12 +44,9 @@ project "Sphynx"
 
 	filter "system:windows"
 		systemversion "latest"
-		defines
-		{
-			Platform_Win
-		}
 
 project "Sandbox"
+	location "Sandbox"
 	kind "ConsoleApp"
 	language "C++"
 	cppdialect "C++17"
@@ -56,8 +57,8 @@ project "Sandbox"
 
 	files
 	{
-		"%{wks.location}/Sandbox/src/**.h",
-		"%{wks.location}/Sandbox/src/**.cpp"
+		"Sandbox/src/**.h",
+		"Sandbox/src/**.cpp"
 	}
 
 	includedirs
