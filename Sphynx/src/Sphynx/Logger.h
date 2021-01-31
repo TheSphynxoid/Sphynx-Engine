@@ -4,8 +4,8 @@
 #include <memory>
 
 namespace Sphynx {
-	//Abstract for now. Thinking about making this class a singlton. 
-	class SphynxAPI Logger sealed abstract{
+	//Abstract for now(must call init). Thinking about making this class a singlton(no need to call init). 
+	class Logger final{
 	private:
 		static std::shared_ptr<spdlog::logger> InternalLogger;
 		static std::shared_ptr<spdlog::logger> ClientLogger;

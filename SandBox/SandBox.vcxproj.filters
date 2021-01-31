@@ -1,22 +1,140 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    <Filter Include="docs">
+      <UniqueIdentifier>{CECA957C-BA01-970D-63EE-7C104F04130F}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    <Filter Include="docs\examples">
+      <UniqueIdentifier>{3C2090A3-A8E0-0BDA-711B-5557DD9A50B6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    <Filter Include="docs\examples\vcpkg_android_example_cmake">
+      <UniqueIdentifier>{71BE0FBE-DDD8-725F-26FB-82F392549A66}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="docs\examples\vcpkg_android_example_cmake_script">
+      <UniqueIdentifier>{E58B9A40-D134-0270-FACA-1DEFE6D21CB1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ports">
+      <UniqueIdentifier>{FD8A2810-699F-50C1-3221-F4209EF44CF2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ports\angle">
+      <UniqueIdentifier>{53E9F1FA-BF9E-6AF0-4893-64C7B44761F4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ports\atkmm">
+      <UniqueIdentifier>{C644F5FA-32FA-6DF0-BBEE-67C727A364F4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ports\cairo">
+      <UniqueIdentifier>{BA020FFB-26B8-87F0-AFAC-81C71B617EF4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ports\cgns">
+      <UniqueIdentifier>{177FC2A2-0337-04F0-6C3E-DD4B58159FE0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ports\chartdir">
+      <UniqueIdentifier>{FD99605E-E967-5464-D2FB-C48ABE6830C9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ports\cityhash">
+      <UniqueIdentifier>{29E624D8-15B4-18DE-FE47-8904EAB4F442}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ports\freeimage">
+      <UniqueIdentifier>{111F4FD7-7DAA-BC9B-86BB-3F90F2C5189C}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ports\gettimeofday">
+      <UniqueIdentifier>{CE03075F-BAE7-C7B4-2348-C2070F4BB236}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ports\glibmm">
+      <UniqueIdentifier>{24C60A67-1029-9A0B-B9AE-D2C1A5F0658E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ports\graphicsmagick">
+      <UniqueIdentifier>{09C2B122-F550-3BEC-9E6F-4FE78ADD4B92}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ports\gtkmm">
+      <UniqueIdentifier>{CCD761FB-388D-DAF0-C181-D4C72D36D1F4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ports\libaiff">
+      <UniqueIdentifier>{19F7C7C1-85B7-43F8-4EF2-8C75BA7188D4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ports\libffi">
+      <UniqueIdentifier>{38817A72-24E4-0917-CD69-42CDB9ABD599}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ports\libidn2">
+      <UniqueIdentifier>{B045CCC1-1C06-48F8-E540-917551C08CD4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ports\libmspack">
+      <UniqueIdentifier>{A2715A70-0EFD-C734-170E-4B2983182435}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ports\libu2f-server">
+      <UniqueIdentifier>{14201AEA-8081-F7F7-09EF-3DAA754F2EB7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ports\libuuid">
+      <UniqueIdentifier>{1A22D3C1-86E2-4EF8-4F1D-9875BB9C93D4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ports\libxml2">
+      <UniqueIdentifier>{66A5D4C1-D265-50F8-9BA0-9975072095D4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ports\modp-base64">
+      <UniqueIdentifier>{EEBC0B0F-5AD3-09A5-A34A-95C60FA0DA2C}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ports\openblas">
+      <UniqueIdentifier>{40FD4AE2-2CCB-3EE8-155F-AF0E01CC1A4D}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ports\pangomm">
+      <UniqueIdentifier>{DB2FE4E3-47F0-5F1A-102B-A9977CAAA4F6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ports\ragel">
+      <UniqueIdentifier>{17681EFC-831D-97F1-0C12-91C878C68DF5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ports\readline-win32">
+      <UniqueIdentifier>{7073DCD3-5C02-669D-0521-7A98F18E7643}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ports\secp256k1">
+      <UniqueIdentifier>{90A2FA3D-FC2D-6802-053F-EBF67149C402}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="scripts">
+      <UniqueIdentifier>{6D076287-D9E6-E022-E2FE-6BF94E5D4784}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="scripts\testing">
+      <UniqueIdentifier>{DA33EAFE-46BF-57C3-4FD0-DAB7BBDAB3C3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="scripts\testing\integrate-install">
+      <UniqueIdentifier>{503E8BCF-BCAC-E04E-0596-9B4E7143D6EA}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="toolsrc">
+      <UniqueIdentifier>{CB9325F0-3773-A48B-408B-2F62ACE90AED}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="toolsrc\include">
+      <UniqueIdentifier>{3E564313-AAE1-B0D7-B3F2-33CC1FFD0CD8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="toolsrc\include\vcpkg">
+      <UniqueIdentifier>{E881B864-54EE-735F-1DE2-0BBD890D96C7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="toolsrc\include\vcpkg\base">
+      <UniqueIdentifier>{92DBE721-7EEB-93F2-E7A4-F810D3D3828B}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="toolsrc\include\vcpkg\base\fwd">
+      <UniqueIdentifier>{02DCCA42-EE01-95A9-D747-1A75C30CBA75}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="toolsrc\include\vcpkg\fwd">
+      <UniqueIdentifier>{58BD922F-C47F-C6B9-0D30-554679319F97}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="toolsrc\include\vcpkg-test">
+      <UniqueIdentifier>{759ACD21-61AA-79F2-CA63-DE10B692688B}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="toolsrc\src">
+      <UniqueIdentifier>{623F2CED-CEF4-A4E2-57E9-9EB9C39D9BE6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="toolsrc\src\vcpkg">
+      <UniqueIdentifier>{0CB61CA1-78CC-1A37-C143-A6582D99EBBE}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="toolsrc\src\vcpkg\base">
+      <UniqueIdentifier>{3646065D-2240-2FAF-0BAD-C5BFF745951B}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="toolsrc\src\vcpkg-fuzz">
+      <UniqueIdentifier>{C89CE45C-B496-0DAF-9D03-A4BF899C731B}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="toolsrc\src\vcpkg-test">
+      <UniqueIdentifier>{1905EC5C-05FF-14AF-EE6B-ABBFDA047B1B}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\App.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
+    <ClCompile Include="src\App.cpp" />
   </ItemGroup>
 </Project>
