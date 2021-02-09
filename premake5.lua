@@ -33,7 +33,8 @@ project "Sphynx"
 	}
 	links
 	{
-		"glfw"
+		"glfw",
+		"opengl32.lib"
 	}
 
 	filter "configurations:Debug"

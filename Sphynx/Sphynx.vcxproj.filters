@@ -4,8 +4,14 @@
     <Filter Include="Sphynx">
       <UniqueIdentifier>{2F02A1D1-1BA4-CBA7-045F-DFFBF09F52F8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Sphynx\Event">
-      <UniqueIdentifier>{C02A914F-AC8D-20F4-5513-59AA4155EC76}</UniqueIdentifier>
+    <Filter Include="Sphynx\Core">
+      <UniqueIdentifier>{E7DBAD19-5391-260F-DC85-20E6483A1D13}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sphynx\Core\Platform">
+      <UniqueIdentifier>{1B6CAB97-07FB-3461-B019-495C9C874507}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sphynx\Events">
+      <UniqueIdentifier>{3383B641-9F43-3278-687E-7BF5D4FD7654}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -16,17 +22,23 @@
     <ClInclude Include="src\Sphynx\Core.h">
       <Filter>Sphynx</Filter>
     </ClInclude>
+    <ClInclude Include="src\Sphynx\Core\Platform\GLWindow.h">
+      <Filter>Sphynx\Core\Platform</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Sphynx\Core\Window.h">
+      <Filter>Sphynx\Core</Filter>
+    </ClInclude>
     <ClInclude Include="src\Sphynx\EntryPoint.h">
       <Filter>Sphynx</Filter>
     </ClInclude>
-    <ClInclude Include="src\Sphynx\Event\ApplicationEvents.h">
-      <Filter>Sphynx\Event</Filter>
+    <ClInclude Include="src\Sphynx\Events\ApplicationEvents.h">
+      <Filter>Sphynx\Events</Filter>
     </ClInclude>
-    <ClInclude Include="src\Sphynx\Event\Event.h">
-      <Filter>Sphynx\Event</Filter>
+    <ClInclude Include="src\Sphynx\Events\Event.h">
+      <Filter>Sphynx\Events</Filter>
     </ClInclude>
-    <ClInclude Include="src\Sphynx\Event\KeyBoardEvents.h">
-      <Filter>Sphynx\Event</Filter>
+    <ClInclude Include="src\Sphynx\Events\KeyBoardEvents.h">
+      <Filter>Sphynx\Events</Filter>
     </ClInclude>
     <ClInclude Include="src\Sphynx\Input.h">
       <Filter>Sphynx</Filter>
@@ -48,11 +60,17 @@
     <ClCompile Include="src\Sphynx\Application.cpp">
       <Filter>Sphynx</Filter>
     </ClCompile>
-    <ClCompile Include="src\Sphynx\Event\ApplicationEvents.cpp">
-      <Filter>Sphynx\Event</Filter>
+    <ClCompile Include="src\Sphynx\Core\Platform\GLWindow.cpp">
+      <Filter>Sphynx\Core\Platform</Filter>
     </ClCompile>
-    <ClCompile Include="src\Sphynx\Event\KeyBoardEvents.cpp">
-      <Filter>Sphynx\Event</Filter>
+    <ClCompile Include="src\Sphynx\Core\Window.cpp">
+      <Filter>Sphynx\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Sphynx\Events\ApplicationEvents.cpp">
+      <Filter>Sphynx\Events</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Sphynx\Events\KeyBoardEvents.cpp">
+      <Filter>Sphynx\Events</Filter>
     </ClCompile>
     <ClCompile Include="src\Sphynx\Input.cpp">
       <Filter>Sphynx</Filter>
@@ -63,5 +81,8 @@
     <ClCompile Include="src\Sphynx\pch.cpp">
       <Filter>Sphynx</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="dep\glfw.lua" />
   </ItemGroup>
 </Project>

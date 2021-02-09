@@ -68,6 +68,9 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <Lib>
+      <AdditionalDependencies>opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -89,15 +92,20 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
+    <Lib>
+      <AdditionalDependencies>opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\Sphynx.h" />
     <ClInclude Include="src\Sphynx\Application.h" />
     <ClInclude Include="src\Sphynx\Core.h" />
+    <ClInclude Include="src\Sphynx\Core\Platform\GLWindow.h" />
+    <ClInclude Include="src\Sphynx\Core\Window.h" />
     <ClInclude Include="src\Sphynx\EntryPoint.h" />
-    <ClInclude Include="src\Sphynx\Event\ApplicationEvents.h" />
-    <ClInclude Include="src\Sphynx\Event\Event.h" />
-    <ClInclude Include="src\Sphynx\Event\KeyBoardEvents.h" />
+    <ClInclude Include="src\Sphynx\Events\ApplicationEvents.h" />
+    <ClInclude Include="src\Sphynx\Events\Event.h" />
+    <ClInclude Include="src\Sphynx\Events\KeyBoardEvents.h" />
     <ClInclude Include="src\Sphynx\Input.h" />
     <ClInclude Include="src\Sphynx\KeyCode.h" />
     <ClInclude Include="src\Sphynx\Logger.h" />
@@ -106,16 +114,24 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Sphynx\Application.cpp" />
-    <ClCompile Include="src\Sphynx\Event\ApplicationEvents.cpp" />
-    <ClCompile Include="src\Sphynx\Event\KeyBoardEvents.cpp" />
+    <ClCompile Include="src\Sphynx\Core\Platform\GLWindow.cpp" />
+    <ClCompile Include="src\Sphynx\Core\Window.cpp" />
+    <ClCompile Include="src\Sphynx\Events\ApplicationEvents.cpp" />
+    <ClCompile Include="src\Sphynx\Events\KeyBoardEvents.cpp" />
     <ClCompile Include="src\Sphynx\Input.cpp" />
     <ClCompile Include="src\Sphynx\Logger.cpp" />
-    <ClCompile Include="src\Sphynx\pch.cpp" />
+    <ClCompile Include="src\Sphynx\pch.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="dep\GLFW.vcxproj">
       <Project>{154B857C-0182-860D-AA6E-6C109684020F}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="dep\glfw.lua" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -9,6 +9,8 @@
 		#define Platform_Win
 		#define WIN32_LEAN_AND_MEAN
 		#include <Windows.h>
+		#include <d3d.h>
+		#include <d2d1.h>
 	#else
 		/* Windows x86 */
 		#error "x86 Builds are not supported!"
@@ -21,6 +23,6 @@
 
 #include "Sphynx/Application.h"
 #include "Sphynx/Logger.h"
-#include "Sphynx/Event/Event.h"
+#include "Sphynx/Events/Event.h"
 //--------------------EntryPoint Header-------------------------
 #include "Sphynx/EntryPoint.h"

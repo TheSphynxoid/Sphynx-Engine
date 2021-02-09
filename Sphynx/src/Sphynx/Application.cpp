@@ -1,11 +1,16 @@
 #include "pch.h"
 #include "Application.h"
-#include "Event/Event.h"
-#include "Event/ApplicationEvents.h"
+#include "Events/Event.h"
+#include "Events/ApplicationEvents.h"
+#include "Core/Platform/GLWindow.h"
+
+using namespace Sphynx;
+using namespace Sphynx::Core;
 
 Sphynx::Application::Application() 
 {
 	eventSystem = Events::EventSystem();
+	window = new GLWindow(this, Bounds(1024, 576),"Cool Window");
 }
 
 Sphynx::Application::~Application()
@@ -16,5 +21,7 @@ Sphynx::Application::~Application()
 void Sphynx::Application::Run()
 {
 	eventSystem.Dispatch<Events::OnApplicationStart>(Events::OnApplicationStart());
-	while (true);
+	while (true) {
+		window->Update();
+	}
 }

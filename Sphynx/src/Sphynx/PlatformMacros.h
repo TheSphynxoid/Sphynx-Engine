@@ -13,3 +13,8 @@
 #elif defined(__linux__)
 	#define Platform_Linux 1
 #endif
+
+
+enum class Platform : int {
+	Error, Windows, Linux, Mac, Android
+};
