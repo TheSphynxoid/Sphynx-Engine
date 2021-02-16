@@ -17,9 +17,8 @@ namespace Sphynx {
 		Application();
 		virtual ~Application();
 		void Run();
-		Events::EventSystem GetAppEventSystem() { return eventSystem; };
+		Events::EventSystem& GetAppEventSystem() { return eventSystem; };
 	};
 	//To be defined in a client
 	Application* CreateApplication();
 }
-

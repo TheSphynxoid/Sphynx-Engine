@@ -1,7 +1,7 @@
 #pragma once
 #include <sstream>
 
-#include "Events/ApplicationEvents.h"
+#include "Events/WindowEvents.h"
 #include "Application.h"
 #include "Core.h"
 
@@ -20,24 +20,45 @@ namespace Sphynx::Core {
 	const Bounds DefBounds = Bounds(640, 410);
 	//Base Window Interface.
 	class IWindow {
-		Events::EventSystem OwnerEvent = *Events::GlobalEventSystem::GetInstance();
+	private:
+		Events::EventSystem& OwnerEvent = *Events::GlobalEventSystem::GetInstance();
+		//Ensure that this instance is Initialized.
+		bool InstanceHasInit = false;
 	protected:
 		//Replacement for Update and Resize Functions.
-		Events::EventSystem GetEventSystem() { return OwnerEvent; };
+		Events::EventSystem& GetEventSystem() { return OwnerEvent; };
+		//Current State of the window.
+		bool isAlive;
 	public:
+		inline bool IsAlive() { return !isAlive; };
 		//Should Probably be overriden.
 		virtual ~IWindow() = default;
+		//Start Window.
+		void Start() {
+			if (InstanceHasInit)
+				throw std::exception("Not Initialized. Any Class That Derives from IWindow Must Call Init");
+		}
 		//May be removed as all this does is Dispatch OnWindowUpdate.
 		void Update()
 		{
+			OnUpdate();
 			OwnerEvent.Dispatch<Events::OnWindowUpdate>(Events::OnWindowUpdate(this));
 		};
 		//May be removed as all this does is Dispatch OnWindowResize.
 		void Resize(int width, int height) {
+			if (InstanceHasInit)
+				throw std::exception("Not Initialized. Any Class That Derives from IWindow Must Call Init");
+			this->Width = width;
+			this->Height = height;
 			OwnerEvent.Dispatch<Events::OnWindowResize>(Events::OnWindowResize(this, width, height));
 		};
+		//void Close() {
+		//	OwnerEvent.Dispatch<Events::OnWindowClose>(Events::OnWindowClose(this));
+		//};
+
+		virtual void OnClose() = 0;
 		//Called On Every render update.
-		virtual void OnUpdate(Events::OnWindowUpdate& e) = 0;
+		virtual void OnUpdate() = 0;
 		//Called to Handle window resize.
 		virtual void OnResize(Events::OnWindowResize& e) = 0;
 		//Returns a pointer to a window native object.
@@ -51,15 +72,15 @@ namespace Sphynx::Core {
 	protected:
 		int Height, Width = 0;
 		bool FullScreen = false;
-		//Must call
+		//Initializes the instance. Must Be call by any class that derives from IWindow.
 		void Init(Application* App, Bounds WinBounds = DefBounds, std::string title = "Sphynx Engine", bool fullscreen = false)
 		{
 			FullScreen = fullscreen;
 			Height = WinBounds.Height;
 			Width = WinBounds.Width;
 			OwnerEvent = App->GetAppEventSystem();
-			OwnerEvent.Subscribe<IWindow, Events::OnWindowUpdate>(this, &IWindow::OnUpdate);
 			OwnerEvent.Subscribe<IWindow, Events::OnWindowResize>(this, &IWindow::OnResize);
+			InstanceHasInit = true;
 		};
 	};
 };

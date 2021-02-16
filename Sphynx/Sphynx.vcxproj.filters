@@ -7,8 +7,11 @@
     <Filter Include="Sphynx\Core">
       <UniqueIdentifier>{E7DBAD19-5391-260F-DC85-20E6483A1D13}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Sphynx\Core\Platform">
-      <UniqueIdentifier>{1B6CAB97-07FB-3461-B019-495C9C874507}</UniqueIdentifier>
+    <Filter Include="Sphynx\Core\Window">
+      <UniqueIdentifier>{EE9E1C4A-DA82-DD9F-43E3-D7F22FE6C721}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sphynx\Core\Window\Platform">
+      <UniqueIdentifier>{0287AF4C-6E94-DD32-F77A-D91D6387A9E9}</UniqueIdentifier>
     </Filter>
     <Filter Include="Sphynx\Events">
       <UniqueIdentifier>{3383B641-9F43-3278-687E-7BF5D4FD7654}</UniqueIdentifier>
@@ -22,11 +25,17 @@
     <ClInclude Include="src\Sphynx\Core.h">
       <Filter>Sphynx</Filter>
     </ClInclude>
-    <ClInclude Include="src\Sphynx\Core\Platform\GLWindow.h">
-      <Filter>Sphynx\Core\Platform</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Sphynx\Core\Window.h">
+    <ClInclude Include="src\Sphynx\Core\Module.h">
       <Filter>Sphynx\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Sphynx\Core\System.h">
+      <Filter>Sphynx\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Sphynx\Core\Window\Platform\GLWindow.h">
+      <Filter>Sphynx\Core\Window\Platform</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Sphynx\Core\Window\Window.h">
+      <Filter>Sphynx\Core\Window</Filter>
     </ClInclude>
     <ClInclude Include="src\Sphynx\EntryPoint.h">
       <Filter>Sphynx</Filter>
@@ -55,16 +64,23 @@
     <ClInclude Include="src\Sphynx\pch.h">
       <Filter>Sphynx</Filter>
     </ClInclude>
+    <ClInclude Include="src\Sphynx\Events\WindowEvents.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Sphynx\Application.cpp">
       <Filter>Sphynx</Filter>
     </ClCompile>
-    <ClCompile Include="src\Sphynx\Core\Platform\GLWindow.cpp">
-      <Filter>Sphynx\Core\Platform</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Sphynx\Core\Window.cpp">
+    <ClCompile Include="src\Sphynx\Core\Module.cpp">
       <Filter>Sphynx\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Sphynx\Core\System.cpp">
+      <Filter>Sphynx\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Sphynx\Core\Window\Platform\GLWindow.cpp">
+      <Filter>Sphynx\Core\Window\Platform</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Sphynx\Core\Window\Window.cpp">
+      <Filter>Sphynx\Core\Window</Filter>
     </ClCompile>
     <ClCompile Include="src\Sphynx\Events\ApplicationEvents.cpp">
       <Filter>Sphynx\Events</Filter>
@@ -81,8 +97,5 @@
     <ClCompile Include="src\Sphynx\pch.cpp">
       <Filter>Sphynx</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="dep\glfw.lua" />
   </ItemGroup>
 </Project>

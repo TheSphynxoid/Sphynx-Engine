@@ -30,10 +30,12 @@ project "Sphynx"
 		"%{prj.name}/dep/spdlog/include",
 		"%{prj.name}/src/Sphynx",
 		"%{prj.name}/dep/glfw/include",
+		"%{prj.name}/dep/glad/include"
 	}
 	links
 	{
 		"glfw",
+		"glad",
 		"opengl32.lib"
 	}
 
@@ -89,3 +91,4 @@ project "Sandbox"
 		optimize "on"
 
 include "Sphynx/dep/glfw"
+include "Sphynx/dep/glad/glad"

@@ -4,6 +4,9 @@
 #include <map>
 #include <list>
 #include <typeindex>
+#include <stack>
+#include "Core/System.h"
+
 
 //Observer pattern Event System
 //Header-Only EventSystem
@@ -42,22 +45,23 @@ namespace Sphynx::Events {
     class EventFreeMethodCallBack : public EventCallBackBase {
     public:
         typedef void (*Function)(EventType&);
-        EventFreeMethodCallBack(Function function) : function (function) {};
+        EventFreeMethodCallBack(Function function) : function(function) {};
     private:
         Function function;
         void Call(Event& e) {
             (*function)(static_cast<EventType&>(e));
         }
     };
+    //I Don't Understand lamda so you can't use lamda function here.
 
-    class EventSystem {
+    class EventSystem : public Core::System{
     private:
         typedef std::list<EventCallBackBase*> Handlers;
         std::map<std::type_index, Handlers*> subscribers;
     public:
         EventSystem() : subscribers() {};
         template<class T, class EventType>
-        void Subscribe(T* instance, void (T::* memberFunction)(EventType&)) 
+        void Subscribe(T* instance, void (T::* memberFunction)(EventType&))
         {
             Handlers* handlers = subscribers[std::type_index(typeid(EventType))];
 
@@ -83,7 +87,35 @@ namespace Sphynx::Events {
             handlers->push_back(dynamic_cast<EventCallBackBase*>(new EventFreeMethodCallBack<EventType>(Function)));
         };
         template<class T, class EventType>
-        void UnSubscribe(T* instance, void (T::* memberFunction)(EventType&)) 
+        void Subscribe(T* instance, void (T::* memberFunction)(EventType&), int position)
+        {
+            Handlers* handlers = subscribers[std::type_index(typeid(EventType))];
+
+            //First time initialization
+            if (handlers == nullptr) {
+                handlers = new Handlers();
+                subscribers[std::type_index(typeid(EventType))] = handlers;
+            }
+            auto it = handlers->begin();
+            for (int i = 0; i < position; i++)it++;
+            handlers->insert(it, dynamic_cast<EventCallBackBase*>(new EventMemberCallBack<T, EventType>(instance, memberFunction)));
+        };
+        template<class EventType>
+        void Subscribe(void (*Function)(EventType&), int position)
+        {
+            Handlers* handlers = subscribers[std::type_index(typeid(EventType))];
+
+            //First time initialization
+            if (handlers == nullptr) {
+                handlers = new Handlers();
+                subscribers[std::type_index(typeid(EventType))] = handlers;
+            }
+            auto it = handlers->begin();
+            for (int i = 0; i < position; i++)it++;
+            handlers->insert(it++, dynamic_cast<EventCallBackBase*>(new EventFreeMethodCallBack<EventType>(Function)));
+        };
+        template<class T, class EventType>
+        void UnSubscribe(T* instance, void (T::* memberFunction)(EventType&))
         {
             Handlers* handlers = subscribers[std::type_index(typeid(EventType))];
             EventMemberCallBack<T, EventType> mf = EventMemberCallBack(memberFunction);
@@ -120,6 +152,8 @@ namespace Sphynx::Events {
             for (auto& handle : *handlers) {
                 if (handle != nullptr) {
                     handle->Invoke(e);
+                    //if Event is Handled it won't propagate.
+                    if (e.isHandled == true)break;
                 }
             }
         };
@@ -136,17 +170,18 @@ namespace Sphynx::Events {
     //Pre-Initialize (not thread-safe because of singlton) EventSystem. 
     //Used for Events without an EventSystem instance(idk errors for example or startup or craches).
     //TODO: Thread-Safety.
-    class GlobalEventSystem : public EventSystem {
+    class GlobalEventSystem final : public EventSystem {
     private:
         GlobalEventSystem() {};
         static GlobalEventSystem* Instance;
     public:
-        static GlobalEventSystem* GetInstance()  {
+        static GlobalEventSystem* GetInstance() {
             if (Instance == nullptr)Instance = new GlobalEventSystem();
             return Instance;
         };
     };
     inline GlobalEventSystem* GlobalEventSystem::Instance = NULL;
 }
+
 #elif
 #endif

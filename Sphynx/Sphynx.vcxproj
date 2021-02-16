@@ -58,7 +58,7 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>dep\spdlog\include;src\Sphynx;dep\glfw\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>dep\spdlog\include;src\Sphynx;dep\glfw\include;dep\glad\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -78,7 +78,7 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>dep\spdlog\include;src\Sphynx;dep\glfw\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>dep\spdlog\include;src\Sphynx;dep\glfw\include;dep\glad\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -100,12 +100,15 @@
     <ClInclude Include="src\Sphynx.h" />
     <ClInclude Include="src\Sphynx\Application.h" />
     <ClInclude Include="src\Sphynx\Core.h" />
-    <ClInclude Include="src\Sphynx\Core\Platform\GLWindow.h" />
-    <ClInclude Include="src\Sphynx\Core\Window.h" />
+    <ClInclude Include="src\Sphynx\Core\Module.h" />
+    <ClInclude Include="src\Sphynx\Core\System.h" />
+    <ClInclude Include="src\Sphynx\Core\Window\Platform\GLWindow.h" />
+    <ClInclude Include="src\Sphynx\Core\Window\Window.h" />
     <ClInclude Include="src\Sphynx\EntryPoint.h" />
     <ClInclude Include="src\Sphynx\Events\ApplicationEvents.h" />
     <ClInclude Include="src\Sphynx\Events\Event.h" />
     <ClInclude Include="src\Sphynx\Events\KeyBoardEvents.h" />
+    <ClInclude Include="src\Sphynx\Events\WindowEvents.h" />
     <ClInclude Include="src\Sphynx\Input.h" />
     <ClInclude Include="src\Sphynx\KeyCode.h" />
     <ClInclude Include="src\Sphynx\Logger.h" />
@@ -114,8 +117,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Sphynx\Application.cpp" />
-    <ClCompile Include="src\Sphynx\Core\Platform\GLWindow.cpp" />
-    <ClCompile Include="src\Sphynx\Core\Window.cpp" />
+    <ClCompile Include="src\Sphynx\Core\Module.cpp" />
+    <ClCompile Include="src\Sphynx\Core\System.cpp" />
+    <ClCompile Include="src\Sphynx\Core\Window\Platform\GLWindow.cpp" />
+    <ClCompile Include="src\Sphynx\Core\Window\Window.cpp" />
     <ClCompile Include="src\Sphynx\Events\ApplicationEvents.cpp" />
     <ClCompile Include="src\Sphynx\Events\KeyBoardEvents.cpp" />
     <ClCompile Include="src\Sphynx\Input.cpp" />
@@ -129,9 +134,9 @@
     <ProjectReference Include="dep\GLFW.vcxproj">
       <Project>{154B857C-0182-860D-AA6E-6C109684020F}</Project>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="dep\glfw.lua" />
+    <ProjectReference Include="dep\glad\glad.vcxproj">
+      <Project>{DD62977C-C999-980D-7286-7E105E9C140F}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
