@@ -26,4 +26,13 @@ namespace Sphynx::Events {
 	struct OnWindowClose : public WindowEvent {
 		OnWindowClose(Sphynx::Core::IWindow* win) : WindowEvent(win) {};
 	};
+	struct OnOverlayUpdate : public WindowEvent {
+		OnOverlayUpdate(Sphynx::Core::IWindow* win) : WindowEvent(win) {};
+	};
+	struct OnOverlayDelete : Event{
+
+	};
+	struct OnOverlayModuleDown : Event {
+		OnOverlayModuleDown() {};
+	};
 }

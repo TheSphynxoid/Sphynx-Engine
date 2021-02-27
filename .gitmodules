@@ -4,3 +4,7 @@
 [submodule "Sphynx/dep/spdlog"]
 	path = Sphynx/dep/spdlog
 	url = https://github.com/gabime/spdlog
+[submodule "Sphynx/dep/imgui"]
+	path = Sphynx/dep/imgui
+	url = https://github.com/ocornut/imgui
+	branch = docking

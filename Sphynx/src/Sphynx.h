@@ -20,9 +20,9 @@
 #endif
 
 //For Application Use only
-
 #include "Sphynx/Application.h"
 #include "Sphynx/Logger.h"
 #include "Sphynx/Events/Event.h"
+#include "Sphynx/Core/Imgui.h"
 //--------------------EntryPoint Header-------------------------
 #include "Sphynx/EntryPoint.h"

@@ -12,7 +12,7 @@ namespace Sphynx {
 	public:
 		static void Init();
 		inline static std::shared_ptr<spdlog::logger> GetInternalLogger() { return InternalLogger; };
-		inline static std::shared_ptr<spdlog::logger> GetClientLogger() { return ClientLogger; };
+		inline static std::shared_ptr<spdlog::logger> GetClientLogger() { return ClientLogger;};
 
 	};
 }

@@ -3,6 +3,9 @@
 #include "../Window.h"
 #define GLFW_INCLUDE_NONE
 #include "GLFW/glfw3.h"
+#define IMGUI_GLFW
+#include "Core/Imgui.h"
+
 
 namespace Sphynx::Core {
 	//GLFW implementation.
@@ -12,6 +15,7 @@ namespace Sphynx::Core {
 		inline static unsigned int WindowsOpened = 0;
 		GLFWwindow* window;
 		static bool GLFWInit;
+		bool Vsync;
 		//middle-man between GLFW and the engine.
 		struct mid{
 			static void Resize(GLFWwindow* win, int width, int height);
@@ -23,6 +27,7 @@ namespace Sphynx::Core {
 		static GLWindow& GetFromGLFW(GLFWwindow* win) { return *(GLWindow*)glfwGetWindowUserPointer(win); };
 	protected:
 	public:
+		inline bool IsAlive()override { return !glfwWindowShouldClose(window); };
 		GLWindow(Application* App, Bounds WinBounds, std::string title);
 		~GLWindow()override;
 		void OnClose()override;
@@ -32,8 +37,8 @@ namespace Sphynx::Core {
 		Bounds GetBounds()override;
 		int GetHeight()override;
 		int GetWidth()override;
+		inline bool IsVsyncEnabled()override { return Vsync; };
 		void SetVsync(bool vsync)override;
-
 		///////GLWindow Function/////////
 
 		//Clears Window.
