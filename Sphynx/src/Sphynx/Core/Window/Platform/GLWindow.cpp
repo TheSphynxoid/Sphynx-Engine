@@ -94,6 +94,9 @@ Sphynx::Core::GLWindow::GLWindow(Application* App, Bounds WinBounds, std::string
 	glfwSetWindowFocusCallback(window, &mid::Focus);
 	glfwSetWindowIconifyCallback(window, &mid::Iconify);
 	glfwSetWindowMaximizeCallback(window, &mid::Maximize);
+	//End of callbacks.
+
+	//ToDO: Init imgui and Renderer.
 
 	glClearColor(0.5f, 0.05f, 0.0f, 1);
 
@@ -109,6 +112,7 @@ void Sphynx::Core::GLWindow::OnUpdate()
 {
 	Clear();
 	glfwPollEvents();
+	GetEventSystem()->Dispatch<OnOverlayUpdate>(OnOverlayUpdate(this));
 	glfwSwapBuffers(window);
 }
 
@@ -124,6 +128,7 @@ void* Sphynx::Core::GLWindow::GetNativePointer()
 void Sphynx::Core::GLWindow::SetVsync(bool vsync)
 {
 	glfwSwapInterval(vsync);
+	Vsync = vsync;
 }
 
 Bounds Sphynx::Core::GLWindow::GetBounds()

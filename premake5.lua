@@ -30,12 +30,14 @@ project "Sphynx"
 		"%{prj.name}/dep/spdlog/include",
 		"%{prj.name}/src/Sphynx",
 		"%{prj.name}/dep/glfw/include",
-		"%{prj.name}/dep/glad/include"
+		"%{prj.name}/dep/glad/include",
+		"%{prj.name}/dep/imgui"
 	}
 	links
 	{
 		"glfw",
 		"glad",
+		"imgui",
 		"opengl32.lib"
 	}
 
@@ -77,7 +79,7 @@ project "Sandbox"
 
 	links
 	{
-		"Sphynx"
+		"Sphynx",
 	}
 
 	filter "configurations:Debug"
@@ -92,3 +94,4 @@ project "Sandbox"
 
 include "Sphynx/dep/glfw"
 include "Sphynx/dep/glad/glad"
+include "Sphynx/dep/imgui/imgui"

@@ -16,6 +16,9 @@
     <Filter Include="Sphynx\Events">
       <UniqueIdentifier>{3383B641-9F43-3278-687E-7BF5D4FD7654}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Sphynx\imgui">
+      <UniqueIdentifier>{D9B61752-C519-A7F6-6E9F-DFAC5AE17279}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Sphynx.h" />
@@ -24,6 +27,9 @@
     </ClInclude>
     <ClInclude Include="src\Sphynx\Core.h">
       <Filter>Sphynx</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Sphynx\Core\Imgui.h">
+      <Filter>Sphynx\Core</Filter>
     </ClInclude>
     <ClInclude Include="src\Sphynx\Core\Module.h">
       <Filter>Sphynx\Core</Filter>
@@ -49,6 +55,9 @@
     <ClInclude Include="src\Sphynx\Events\KeyBoardEvents.h">
       <Filter>Sphynx\Events</Filter>
     </ClInclude>
+    <ClInclude Include="src\Sphynx\Events\WindowEvents.h">
+      <Filter>Sphynx\Events</Filter>
+    </ClInclude>
     <ClInclude Include="src\Sphynx\Input.h">
       <Filter>Sphynx</Filter>
     </ClInclude>
@@ -61,14 +70,35 @@
     <ClInclude Include="src\Sphynx\PlatformMacros.h">
       <Filter>Sphynx</Filter>
     </ClInclude>
+    <ClInclude Include="src\Sphynx\SpTime.h">
+      <Filter>Sphynx</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Sphynx\imgui\imgui_impl_dx11.h">
+      <Filter>Sphynx\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Sphynx\imgui\imgui_impl_dx12.h">
+      <Filter>Sphynx\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Sphynx\imgui\imgui_impl_glfw.h">
+      <Filter>Sphynx\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Sphynx\imgui\imgui_impl_opengl3.h">
+      <Filter>Sphynx\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Sphynx\imgui\imgui_impl_win32.h">
+      <Filter>Sphynx\imgui</Filter>
+    </ClInclude>
     <ClInclude Include="src\Sphynx\pch.h">
       <Filter>Sphynx</Filter>
     </ClInclude>
-    <ClInclude Include="src\Sphynx\Events\WindowEvents.h" />
+    <ClInclude Include="src\Sphynx\Core\ImguiInclude.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Sphynx\Application.cpp">
       <Filter>Sphynx</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Sphynx\Core\Imgui.cpp">
+      <Filter>Sphynx\Core</Filter>
     </ClCompile>
     <ClCompile Include="src\Sphynx\Core\Module.cpp">
       <Filter>Sphynx\Core</Filter>
@@ -93,6 +123,24 @@
     </ClCompile>
     <ClCompile Include="src\Sphynx\Logger.cpp">
       <Filter>Sphynx</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Sphynx\SpTime.cpp">
+      <Filter>Sphynx</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Sphynx\imgui\imgui_impl_dx11.cpp">
+      <Filter>Sphynx\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Sphynx\imgui\imgui_impl_dx12.cpp">
+      <Filter>Sphynx\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Sphynx\imgui\imgui_impl_glfw.cpp">
+      <Filter>Sphynx\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Sphynx\imgui\imgui_impl_opengl3.cpp">
+      <Filter>Sphynx\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Sphynx\imgui\imgui_impl_win32.cpp">
+      <Filter>Sphynx\imgui</Filter>
     </ClCompile>
     <ClCompile Include="src\Sphynx\pch.cpp">
       <Filter>Sphynx</Filter>

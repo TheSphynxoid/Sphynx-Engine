@@ -158,13 +158,6 @@ namespace Sphynx::Events {
             }
         };
         ~EventSystem() {
-            for (auto& obj : subscribers) {
-                Handlers* handlers = obj.second;
-                for (auto& handle : *handlers) {
-                    delete handle;
-                }
-                delete handlers;
-            }
         }
     };
     //Pre-Initialize (not thread-safe because of singlton) EventSystem. 
