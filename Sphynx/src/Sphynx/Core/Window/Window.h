@@ -70,6 +70,9 @@ namespace Sphynx::Core {
 		virtual Bounds GetBounds() = 0;
 		virtual int GetHeight() = 0;
 		virtual int GetWidth() = 0;
+
+		//Request Title Change
+		virtual void ChangeTitle(const char* title) = 0;
 	protected:
 		int Height = 0, Width = 0;
 		bool FullScreen = false;

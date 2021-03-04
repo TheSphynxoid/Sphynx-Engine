@@ -101,7 +101,6 @@
     <ClInclude Include="src\Sphynx\Application.h" />
     <ClInclude Include="src\Sphynx\Core.h" />
     <ClInclude Include="src\Sphynx\Core\Imgui.h" />
-    <ClInclude Include="src\Sphynx\Core\ImguiInclude.h" />
     <ClInclude Include="src\Sphynx\Core\Module.h" />
     <ClInclude Include="src\Sphynx\Core\System.h" />
     <ClInclude Include="src\Sphynx\Core\Window\Platform\GLWindow.h" />
@@ -109,6 +108,7 @@
     <ClInclude Include="src\Sphynx\EntryPoint.h" />
     <ClInclude Include="src\Sphynx\Events\ApplicationEvents.h" />
     <ClInclude Include="src\Sphynx\Events\Event.h" />
+    <ClInclude Include="src\Sphynx\Events\ImGuiEvents.h" />
     <ClInclude Include="src\Sphynx\Events\KeyBoardEvents.h" />
     <ClInclude Include="src\Sphynx\Events\WindowEvents.h" />
     <ClInclude Include="src\Sphynx\Input.h" />

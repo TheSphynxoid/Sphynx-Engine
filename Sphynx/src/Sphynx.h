@@ -21,8 +21,27 @@
 
 //For Application Use only
 #include "Sphynx/Application.h"
+#include "Sphynx/Core/Window/Window.h"
 #include "Sphynx/Logger.h"
 #include "Sphynx/Events/Event.h"
 #include "Sphynx/Core/Imgui.h"
+//Exposing Imgui on its own.
+#ifdef EXPOSE_IMGUI_H
+#include "../dep/imgui/imgui.h"
+#endif // EXPOSE_IMGUI_H
+//Exposing Imgui Implementation Headers.
+#ifdef EXPOSE_IMGUI_IMPL
+#ifdef IMGUI_GLFW
+#include "Sphynx/imgui/imgui_impl_opengl3.h"
+#include "Sphynx/imgui/imgui_impl_glfw.h"
+#elif defined(IMGUI_DX11) && !defined(IMGUI_GLFW)
+#include "Sphynx/imgui/imgui_impl_win32.h"
+#include "Sphynx/imgui/imgui_impl_dx11.h"
+#else
+#include "Sphynx/imgui/imgui_impl_opengl3.h"
+#include "Sphynx/imgui/imgui_impl_glfw.h"
+#include "../dep/glfw/include/GLFW/glfw3.h"
+#endif
+#endif//EXPOSE_IMGUI_IMPL
 //--------------------EntryPoint Header-------------------------
 #include "Sphynx/EntryPoint.h"

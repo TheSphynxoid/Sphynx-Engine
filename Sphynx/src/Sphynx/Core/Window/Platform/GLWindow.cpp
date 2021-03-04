@@ -79,6 +79,7 @@ Sphynx::Core::GLWindow::GLWindow(Application* App, Bounds WinBounds, std::string
 	}
 	//Create Window
 	window = glfwCreateWindow(WinBounds.Width, WinBounds.Height, title.c_str(), NULL, NULL);
+	WindowsOpened += 1;
 	if (!window) {
 		Core_Error("Cannot Create Window.");
 	}
@@ -104,8 +105,7 @@ Sphynx::Core::GLWindow::GLWindow(Application* App, Bounds WinBounds, std::string
 
 void Sphynx::Core::GLWindow::OnClose() 
 {
-	if (WindowsOpened != 1)glfwTerminate();
-	else glfwSetWindowShouldClose(window, 1);
+	glfwSetWindowShouldClose(window, true);
 }
 
 void Sphynx::Core::GLWindow::OnUpdate()
@@ -129,6 +129,11 @@ void Sphynx::Core::GLWindow::SetVsync(bool vsync)
 {
 	glfwSwapInterval(vsync);
 	Vsync = vsync;
+}
+
+void Sphynx::Core::GLWindow::ChangeTitle(const char* title)
+{
+	glfwSetWindowTitle(window, title);
 }
 
 Bounds Sphynx::Core::GLWindow::GetBounds()

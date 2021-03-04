@@ -39,7 +39,7 @@ void Sphynx::Time::Start(Application* app)
 
 void Sphynx::Time::Update()
 {
-	long old = timer.GetTicks();
+	double old = timer.GetTicks();
 	timer.Tick();
 	DeltaTime = timer.GetTicks() - old;
 }

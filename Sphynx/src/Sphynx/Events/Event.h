@@ -5,7 +5,6 @@
 #include <list>
 #include <typeindex>
 #include <stack>
-#include "Core/System.h"
 
 
 //Observer pattern Event System
@@ -20,7 +19,7 @@ namespace Sphynx::Events {
     };
     //Event Handlers.
     class EventCallBackBase {
-    private:
+    protected:
         virtual void Call(Event& e) = 0;
     public:
         EventCallBackBase() {};
@@ -33,7 +32,7 @@ namespace Sphynx::Events {
     public:
         typedef void (T::* MemberFunction)(EventType&);
         EventMemberCallBack(T* instance, MemberFunction memberFunction) : instance(instance), memberFunction(memberFunction) {};
-    private:
+    protected:
         T* instance;
         MemberFunction memberFunction;
         void Call(Event& e) {
@@ -46,20 +45,26 @@ namespace Sphynx::Events {
     public:
         typedef void (*Function)(EventType&);
         EventFreeMethodCallBack(Function function) : function(function) {};
-    private:
+    protected:
         Function function;
         void Call(Event& e) {
             (*function)(static_cast<EventType&>(e));
         }
     };
-    //I Don't Understand lamda so you can't use lamda function here.
 
-    class EventSystem : public Core::System{
+    class EventSystem{
     private:
         typedef std::list<EventCallBackBase*> Handlers;
         std::map<std::type_index, Handlers*> subscribers;
     public:
         EventSystem() : subscribers() {};
+        const std::list<Handlers*> GetSubscriberFunctions() {
+            std::list<Handlers*> rt;
+            for (auto& handles : subscribers) {
+                rt.push_back(handles.second);
+            }
+            return rt;
+        }
         template<class T, class EventType>
         void Subscribe(T* instance, void (T::* memberFunction)(EventType&))
         {
@@ -166,14 +171,12 @@ namespace Sphynx::Events {
     class GlobalEventSystem final : public EventSystem {
     private:
         GlobalEventSystem() {};
-        static GlobalEventSystem* Instance;
     public:
         static GlobalEventSystem* GetInstance() {
-            if (Instance == nullptr)Instance = new GlobalEventSystem();
-            return Instance;
+            static GlobalEventSystem Instance;
+            return &Instance;
         };
     };
-    inline GlobalEventSystem* GlobalEventSystem::Instance = NULL;
 }
 
 #elif

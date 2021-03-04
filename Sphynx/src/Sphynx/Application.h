@@ -22,7 +22,7 @@ namespace Sphynx {
 		void Run();
 		Events::EventSystem* GetAppEventSystem()noexcept { return &eventSystem; };
 		Core::IWindow* GetAppWindow()noexcept { return window; };
-		Sphynx::Time& GetTimeObject();
+		Sphynx::Time* GetTimeObject();
 	};
 	//To be defined in a client
 	Application* CreateApplication();

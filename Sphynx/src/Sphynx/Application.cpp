@@ -18,8 +18,9 @@ Sphynx::Application::Application() : time(Time()), imgui(Imgui())
 	eventSystem = Events::EventSystem();
 	window = new GLWindow(this, Bounds(1024, 576),"Then and There");
 	imgui.Start(this);
-	imgui.AddOverlayWindow(new AboutWindow());
-	imgui.AddOverlayWindow(new DemoWindow());
+	imgui.AddOverlayWindow(new DebugWindow(this));
+	//imgui.AddOverlayWindow(new AboutWindow());
+	//imgui.AddOverlayWindow(new DemoWindow());
 	window->Start();
 	eventSystem.Subscribe<Events::OnApplicationUpdate>(&UpdateTest);
 }
@@ -37,12 +38,14 @@ void Sphynx::Application::Run()
 
 		//imgui.Update();
 	}
+	GLWindow::TerminateGLFW();
 	imgui.Shutdown();
+	delete window;
 	time.Shutdown();
 }
 
-Time& Sphynx::Application::GetTimeObject()
+Time* Sphynx::Application::GetTimeObject()
 {
 	// TODO: insert return statement here
-	return time;
+	return &time;
 }

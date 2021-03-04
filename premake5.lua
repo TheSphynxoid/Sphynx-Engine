@@ -74,6 +74,7 @@ project "Sandbox"
 	includedirs
 	{
 		"%{wks.location}/Sphynx/dep/spdlog/include",
+		"%{wks.location}/Sphynx/src/Sphynx",
 		"%{wks.location}/Sphynx/src"
 	}
 

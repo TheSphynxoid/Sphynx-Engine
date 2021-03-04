@@ -39,8 +39,9 @@ namespace Sphynx::Core {
 		int GetWidth()override;
 		inline bool IsVsyncEnabled()override { return Vsync; };
 		void SetVsync(bool vsync)override;
+		void ChangeTitle(const char* title)override;
 		///////GLWindow Function/////////
-
+		static void TerminateGLFW() { glfwTerminate(); };
 		//Clears Window.
 		void Clear();
 		//Window Gained Input Focus.
