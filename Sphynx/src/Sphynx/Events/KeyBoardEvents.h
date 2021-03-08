@@ -8,17 +8,18 @@ namespace Sphynx::Events {
 		Keys keyCode;
 		KeyEvent(Keys keycode) :keyCode(keycode) {};
 	};
-	struct OnKeyPressEvent :public KeyEvent {
+	struct OnKeyPress :public KeyEvent {
 	private:
 		uint16_t RepeatCount;
 	public:
-		OnKeyPressEvent(Keys keycode, uint16_t repeatcount) : KeyEvent(keycode), RepeatCount(repeatcount) {};
+		OnKeyPress(Keys keycode, uint16_t repeatcount) : KeyEvent(keycode), RepeatCount(repeatcount) {};
 		uint16_t GetRepeatCount() const { return RepeatCount; }
 	};
-	struct OnKeyReleaseEvent : public KeyEvent {
-		OnKeyReleaseEvent(Keys keycode): KeyEvent(keycode) {}
+	struct OnKeyRelease : public KeyEvent {
+		OnKeyRelease(Keys keycode): KeyEvent(keycode) {}
 	};
-	struct OnKeyTypedEvent : public KeyEvent {
-		OnKeyTypedEvent(Keys keycode) : KeyEvent(keycode) {};
+	//?
+	struct OnKeyTyped : public KeyEvent {
+		OnKeyTyped(Keys keycode) : KeyEvent(keycode) {};
 	};
 }

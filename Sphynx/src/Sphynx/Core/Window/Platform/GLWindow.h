@@ -23,6 +23,7 @@ namespace Sphynx::Core {
 			static void Focus(GLFWwindow* win, int value);
 			static void Iconify(GLFWwindow* win, int value);
 			static void Maximize(GLFWwindow* win, int value);
+			static void KeyCapture(GLFWwindow* win, int keycode, int scancode, int action, int modifier);
 		};
 		static GLWindow& GetFromGLFW(GLFWwindow* win) { return *(GLWindow*)glfwGetWindowUserPointer(win); };
 	protected:

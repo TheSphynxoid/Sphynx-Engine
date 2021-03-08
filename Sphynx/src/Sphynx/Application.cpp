@@ -16,7 +16,12 @@ Sphynx::Application::Application() : time(Time()), imgui(Imgui())
 {
 	time.Start(this);
 	eventSystem = Events::EventSystem();
-	window = new GLWindow(this, Bounds(1024, 576),"Then and There");
+	char title[64] = " ";
+	memset(title, 0, sizeof(title));
+	strcat(title, "Sphynx Engine (");
+	strcat(title, Sphynx_Version);
+	strcat(title, ")");
+	window = new GLWindow(this, Bounds(1024, 576), title);
 	imgui.Start(this);
 	imgui.AddOverlayWindow(new DebugWindow(this));
 	//imgui.AddOverlayWindow(new AboutWindow());

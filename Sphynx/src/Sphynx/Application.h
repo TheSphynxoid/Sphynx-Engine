@@ -4,6 +4,9 @@
 #include "SpTime.h"
 #include "Core/Imgui.h"
 
+//Imgui.Window.EventSystem.GLFW.Broken Time Class
+#define Sphynx_Version "0.04 WIP"
+
 namespace Sphynx {
 	namespace Core {
 		class IWindow;

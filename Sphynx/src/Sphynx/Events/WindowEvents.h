@@ -1,6 +1,6 @@
 #pragma once
 #include "Event.h"
-
+#define ImplDefaultWinEvent(e) e(Sphynx::Core::IWindow* win) : WindowEvent(win){}
 namespace Sphynx {
 	namespace Core {
 		class IWindow;
@@ -19,9 +19,24 @@ namespace Sphynx::Events {
 		int Width, Height;
 		OnWindowResize(Sphynx::Core::IWindow* win, int width, int height) :Width(width), Height(height), WindowEvent(win) {};
 	};
+	struct OnWindowRestore : public WindowEvent{
+		ImplDefaultWinEvent(OnWindowRestore);
+	};
+	struct OnWindowMaximize : public WindowEvent {
+		ImplDefaultWinEvent(OnWindowMaximize);
+	};
+	struct OnWindowMinimize : public WindowEvent {
+		ImplDefaultWinEvent(OnWindowMinimize);
+	};
+	struct OnWindowFocus : public WindowEvent {
+		ImplDefaultWinEvent(OnWindowFocus);
+	};
+	struct OnWindowFocusLoss : public WindowEvent {
+		ImplDefaultWinEvent(OnWindowFocusLoss);
+	};
 	struct OnWindowUpdate : public WindowEvent {
 	public:
-		OnWindowUpdate(Sphynx::Core::IWindow* win) : WindowEvent(win) {};
+		ImplDefaultWinEvent(OnWindowUpdate);
 	};
 	struct OnWindowClose : public WindowEvent {
 		OnWindowClose(Sphynx::Core::IWindow* win) : WindowEvent(win) {};

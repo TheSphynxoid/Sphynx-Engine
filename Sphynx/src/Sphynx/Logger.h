@@ -1,11 +1,33 @@
 #pragma once
 #include "Core.h"
+#include "Events/Event.h"
 #include "spdlog/spdlog.h"
+#include "spdlog/sinks/base_sink.h"
 #include <memory>
 
 namespace Sphynx {
-	//Abstract for now(must call init). Thinking about making this class a singlton(no need to call init). 
+	struct OnLog : Events::Event {
+		std::string msg;
+		spdlog::level::level_enum level;
+		OnLog(std::string& str, spdlog::level::level_enum lvl) : msg(str), level(lvl) {};
+	};
+	struct OnLogFlush : Events::Event {
+		OnLogFlush() {};
+	};
 	class Logger final{
+	private:
+		//Custom Sink That uses events to dispatch logs.(Should it Be Private?) 
+		//TODO : Variants of this Where it logs in a file or something and dispatching events(?)
+		class LoggerSink : public spdlog::sinks::base_sink<std::mutex>{
+			Events::EventSystem eventsystem = *Events::GlobalEventSystem::GetInstance();
+		public:
+			LoggerSink() {};
+			//If desiring a specific EventsSystem. Inaccesible.
+			LoggerSink(Events::EventSystem evs) { eventsystem = evs; };
+			//We Can send the entire log_msg wrapped. but we are only sending the formatted message.
+			virtual void sink_it_(const spdlog::details::log_msg& msg) override;
+			virtual void flush_() override;
+		};
 	private:
 		static std::shared_ptr<spdlog::logger> InternalLogger;
 		static std::shared_ptr<spdlog::logger> ClientLogger;
@@ -22,7 +44,7 @@ namespace Sphynx {
 #define Core_Info(...)          ::Sphynx::Logger::GetInternalLogger()->info(__VA_ARGS__)
 #define Core_Trace(...)         ::Sphynx::Logger::GetInternalLogger()->trace(__VA_ARGS__)
 #define Core_Debug_Message(...) ::Sphynx::Logger::GetInternalLogger()->debug(__VA_ARGS__)
-								
+
 #define Client_Error(...)       ::Sphynx::Logger::GetClientLogger()->error(__VA_ARGS__)
 #define Client_Warn(...)        ::Sphynx::Logger::GetClientLogger()->warn(__VA_ARGS__)
 #define Client_Info(...)        ::Sphynx::Logger::GetClientLogger()->info(__VA_ARGS__)

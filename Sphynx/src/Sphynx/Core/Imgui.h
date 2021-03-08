@@ -2,11 +2,13 @@
 #include "Module.h"
 #include "Events/ImGuiEvents.h"
 #include "SpTime.h"
-#include "Core/System.h"
 #include <list>
 #include <typeinfo>
+#include <vector>
 
-
+namespace Sphynx {
+	struct OnLog;
+}
 namespace Sphynx::Core {
 	class IWindow;
 	class Imgui;
@@ -52,23 +54,23 @@ namespace Sphynx::Core {
 		//Get A list of type_info.
 		std::list<const char*> GetTypeInfoList();
 		//Adds a window to the draw list.WIP
-		template<class T>
-		void AddOverlayWindow(T* Window)
-		{
-			Overlays.push_back(Window);
-			Names.push_back(typeid(*Window).name());
-			Window->InternalSetup(this);
-		};
+		void AddOverlayWindow(IOverlayWindow* Window);
 		//Remove the window from the list.
 		void RemoveOverlayWindow(IOverlayWindow* Window);
 	};
 	//Main Application Debug Window
+	//For Some Reason the first log is always ignored(fixed)
 	class DebugWindow : public Core::IOverlayWindow {
 		bool WindowButton = false, TimeButton = false;
 		Application* App;
 		Events::EventSystem* eventsystem;
 		Core::IWindow* window;
 		char TitleBuffer[128];
+		//Put the in the cpp. I Couldn't include imgui.h because of SandBox.
+		//std::vector<char> Buf;
+		//std::vector<int> LineOffsets;
+
+		void OnEventLog(OnLog& e);
 	public:
 		DebugWindow(Application* app);
 		void Draw()override;

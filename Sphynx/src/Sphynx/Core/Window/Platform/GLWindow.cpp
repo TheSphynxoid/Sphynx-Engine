@@ -14,14 +14,14 @@ void Sphynx::Core::GLWindow::mid::Resize(GLFWwindow* win, int width, int height)
 {
 	GLWindow& inst = GetFromGLFW(win);
 	inst.Resize(width, height);
-	//inst->GetEventSystem().Dispatch<OnWindowResize>(OnWindowResize(inst,width,height));
+	inst.GetEventSystem()->Dispatch<OnWindowResize>(OnWindowResize(&inst, width, height));
 }
 
 void Sphynx::Core::GLWindow::mid::Close(GLFWwindow* win)
 {
 	GLWindow& inst = GetFromGLFW(win);
 	inst.OnClose();
-	//inst->GetEventSystem().Dispatch<OnWindowResize>(OnWindowResize(inst,width,height));
+	inst.GetEventSystem()->Dispatch<OnWindowClose>(OnWindowClose(&inst));
 }
 
 void Sphynx::Core::GLWindow::mid::Focus(GLFWwindow* win, int value)
@@ -29,9 +29,11 @@ void Sphynx::Core::GLWindow::mid::Focus(GLFWwindow* win, int value)
 	GLWindow& inst = GetFromGLFW(win);
 	if (value == GLFW_TRUE) {
 		inst.OnFocus();
+		inst.GetEventSystem()->Dispatch<OnWindowFocus>(OnWindowFocus(&inst));
 	}
 	else {
 		inst.OnFocusLoss();
+		inst.GetEventSystem()->Dispatch<OnWindowFocusLoss>(OnWindowFocusLoss(&inst));
 	}
 }
 
@@ -40,9 +42,11 @@ void Sphynx::Core::GLWindow::mid::Iconify(GLFWwindow* win, int value)
 	GLWindow& inst = GetFromGLFW(win);
 	if (value == GLFW_TRUE) {
 		inst.OnMinimize();
+		inst.GetEventSystem()->Dispatch<OnWindowMinimize>(OnWindowMinimize(&inst));
 	}
 	else {
 		inst.OnRestore();
+		inst.GetEventSystem()->Dispatch<OnWindowRestore>(OnWindowRestore(&inst));
 	}
 }
 
@@ -51,10 +55,18 @@ void Sphynx::Core::GLWindow::mid::Maximize(GLFWwindow* win, int value)
 	GLWindow& inst = GetFromGLFW(win);
 	if (value == GLFW_TRUE) {
 		inst.OnMaximize();
+		inst.GetEventSystem()->Dispatch<OnWindowMaximize>(OnWindowMaximize(&inst));
 	}
 	else {
 		inst.OnRestore();
+		inst.GetEventSystem()->Dispatch<OnWindowRestore>(OnWindowRestore(&inst));
+
 	}
+}
+
+void Sphynx::Core::GLWindow::mid::KeyCapture(GLFWwindow* win, int keycode, int scancode, int action, int modifier)
+{
+	//Push on OnKeyXXXX Events.
 }
 
 Sphynx::Core::GLWindow::~GLWindow()
@@ -66,7 +78,7 @@ Sphynx::Core::GLWindow::GLWindow(Application* App, Bounds WinBounds, std::string
 {
 	//Init base class.
 	Init(App, WinBounds, title, FullScreen);
-
+	Vsync = false;
 	window = nullptr;
 
 	glfwInitHint(GLFW_VERSION_MAJOR, 4);
@@ -95,6 +107,7 @@ Sphynx::Core::GLWindow::GLWindow(Application* App, Bounds WinBounds, std::string
 	glfwSetWindowFocusCallback(window, &mid::Focus);
 	glfwSetWindowIconifyCallback(window, &mid::Iconify);
 	glfwSetWindowMaximizeCallback(window, &mid::Maximize);
+	glfwSetKeyCallback(window, &mid::KeyCapture);
 	//End of callbacks.
 
 	//ToDO: Init imgui and Renderer.
@@ -158,6 +171,7 @@ void Sphynx::Core::GLWindow::Clear()
 
 void Sphynx::Core::GLWindow::OnFocus()
 {
+	
 }
 
 void Sphynx::Core::GLWindow::OnFocusLoss()
