@@ -1,11 +1,13 @@
 #pragma once
 #include "Core.h"
 #include "../Window.h"
-#define GLFW_INCLUDE_NONE
-#include "GLFW/glfw3.h"
 #define IMGUI_GLFW
-#include "Core/Imgui.h"
+#include "../Imgui.h"
 
+//Opaque Object.
+struct GLFWwindow;
+//Opaque
+typedef GLFWwindow GLFWwindow;
 
 namespace Sphynx::Core {
 	//GLFW implementation.
@@ -16,6 +18,7 @@ namespace Sphynx::Core {
 		GLFWwindow* window;
 		static bool GLFWInit;
 		bool Vsync;
+		bool Sharing = false;
 		//middle-man between GLFW and the engine.
 		struct mid{
 			static void Resize(GLFWwindow* win, int width, int height);
@@ -25,11 +28,12 @@ namespace Sphynx::Core {
 			static void Maximize(GLFWwindow* win, int value);
 			static void KeyCapture(GLFWwindow* win, int keycode, int scancode, int action, int modifier);
 		};
-		static GLWindow& GetFromGLFW(GLFWwindow* win) { return *(GLWindow*)glfwGetWindowUserPointer(win); };
-	protected:
 	public:
-		inline bool IsAlive()override { return !glfwWindowShouldClose(window); };
-		GLWindow(Application* App, Bounds WinBounds, std::string title);
+		bool IsAlive()override;
+		inline bool IsSharingResources() { return Sharing; };
+		GLWindow(Application* App, Bounds WinBounds, std::string title, bool fullscreen);
+		//We Expect that window has already been open. 
+		GLWindow(Application* App, Bounds WinBounds, std::string title, GLWindow* share);
 		~GLWindow()override;
 		void OnClose()override;
 		void OnUpdate()override;
@@ -42,7 +46,9 @@ namespace Sphynx::Core {
 		void SetVsync(bool vsync)override;
 		void ChangeTitle(const char* title)override;
 		///////GLWindow Function/////////
-		static void TerminateGLFW() { glfwTerminate(); };
+
+		static void TerminateGLFW();
+		static void SwitchContext(GLWindow window);
 		//Clears Window.
 		void Clear();
 		//Window Gained Input Focus.
@@ -59,3 +65,6 @@ namespace Sphynx::Core {
 		//friend mid;
 	};
 }
+/*
+class 
+*/

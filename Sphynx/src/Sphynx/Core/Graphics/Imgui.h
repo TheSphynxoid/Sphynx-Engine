@@ -1,5 +1,5 @@
 #pragma once
-#include "Module.h"
+#include "Core/Module.h"
 #include "Events/ImGuiEvents.h"
 #include "SpTime.h"
 #include <list>
@@ -20,10 +20,11 @@ namespace Sphynx::Core {
 	protected:
 		bool IsOpen = true;
 	public:
-		//IOverlayWindow() = default;
 		virtual void Draw() = 0;
+		//This Works because we expect the window to be instanced with new.
+		//TODO: Change the Imgui Implementation to not need an instance of IOverlayWindow but to make it itself
 		void Close() { delete this; };
-
+		//Never Call this in the constructor as it's still null And will probably have no use of it.
 		Imgui* GetImGui() { return imgui; };
 		friend class Imgui;
 	};
@@ -34,6 +35,8 @@ namespace Sphynx::Core {
 	class AboutWindow final : public IOverlayWindow {
 		void Draw()override;
 	};
+	//TODO: Change the Imgui Implementation to not need an instance of IOverlayWindow but to make it itself
+	//as this can lead to the user providing the address of a local object(example : imgui.AddOverlayWindow(&AboutWindow())).
 	class Imgui final : public Module {
 	private:
 		Application* App;

@@ -21,10 +21,10 @@
 
 //For Application Use only
 #include "Sphynx/Application.h"
-#include "Sphynx/Core/Window/Window.h"
+#include "Sphynx/Core/Graphics/Window.h"
 #include "Sphynx/Logger.h"
 #include "Sphynx/Events/Event.h"
-#include "Sphynx/Core/Imgui.h"
+#include "Sphynx/Core/Graphics/Imgui.h"
 //Exposing Imgui on its own.
 #ifdef EXPOSE_IMGUI_H
 #include "../dep/imgui/imgui.h"

@@ -5,6 +5,8 @@
 #include <list>
 #include <typeindex>
 #include <stack>
+#include <forward_list>
+#include <variant>
 
 //Observer pattern Event System
 //Header-Only EventSystem
@@ -48,14 +50,17 @@ namespace Sphynx::Events {
     protected:
         Function function;
         void Call(Event& e) {
-            (*function)(static_cast<EventType&>(e));
+            EventType& ev = static_cast<EventType&>(e);
+            (*function)(ev);
         }
     };
 
+    //A Non-Blocking Observer pattern EventSystem (Event Bus).
     class EventSystem{
     private:
         typedef std::list<EventCallBackBase*> Handlers;
         std::map<std::type_index, Handlers*> subscribers;
+        std::forward_list<std::pair<std::type_index, Event*>> Queue;
     public:
         EventSystem() : subscribers() {};
         const std::list<Handlers*> GetSubscriberFunctions() {
@@ -150,18 +155,51 @@ namespace Sphynx::Events {
             delete ToDel;
         };
         template<class EventType>
-        void Dispatch(EventType& e)
+        void QueueEvent(EventType& e)
         {
             Handlers* handlers = subscribers[std::type_index(typeid(EventType))];
+            if (handlers == nullptr)return;
+            //Extending Lifetime. Being In list doesn't count as referance thus causes the object to be collected.
+            EventType* ptr = new EventType(e);
+            auto g = std::pair(std::type_index(typeid(EventType)), ptr);
+            Queue.push_front(g);
+        };
+        //This Should not be overused. A blocking function that dispatch the event on call.
+        template<class EventType>
+        void DispatchImmediate(EventType& e) 
+        {
+            Handlers* handlers = subscribers[std::type_index(typeid(e))];
             if (handlers == nullptr)return;
             for (auto& handle : *handlers) {
                 if (handle != nullptr) {
                     handle->Invoke(e);
                     //if Event is Handled it won't propagate.
-                    if (e.isHandled == true)break;
+                    if (e.isHandled == true)return;
                 }
             }
-        };
+        }
+        //Event Bus.
+        void Dispatch() {
+            Queue.reverse();
+            //C++17
+            for (auto& pair : Queue) {
+                Handlers* handlers = subscribers[pair.first];
+                for (auto& handle : *handlers) {
+                    if (handle != nullptr) {
+                        handle->Invoke(*pair.second);
+                        //if Event is Handled it won't propagate.
+                        if ((*pair.second).isHandled == true)break;
+                    }
+                }
+                //Delete the temporary object.
+                delete pair.second;
+            }
+            //Clear Queue.
+            Queue.clear();
+        }
+        template<class EventType>
+        void ProcessFunction() {}
+
         ~EventSystem() {
         }
     };

@@ -1,4 +1,8 @@
 #include "pch.h"
+#define GLFW_INCLUDE_NONE
+//Before IMGUI.
+#include <GLFW/glfw3.h>
+//IMGUI gets loaded here.
 #include "GLWindow.h"
 #include "glad/glad.h"
 //#define GLFW_EXPOSE_NATIVE_WIN32
@@ -10,30 +14,34 @@ using namespace Sphynx::Events;
 
 bool GLWindow::GLFWInit = false;
 
+static GLWindow& GetFromGLFW(GLFWwindow* win) { return *(GLWindow*)glfwGetWindowUserPointer(win); };
+
 void Sphynx::Core::GLWindow::mid::Resize(GLFWwindow* win, int width, int height)
 {
 	GLWindow& inst = GetFromGLFW(win);
 	inst.Resize(width, height);
-	inst.GetEventSystem()->Dispatch<OnWindowResize>(OnWindowResize(&inst, width, height));
+	inst.GetEventSystem()->QueueEvent<OnWindowResize>(OnWindowResize(&inst, width, height));
 }
 
 void Sphynx::Core::GLWindow::mid::Close(GLFWwindow* win)
 {
 	GLWindow& inst = GetFromGLFW(win);
 	inst.OnClose();
-	inst.GetEventSystem()->Dispatch<OnWindowClose>(OnWindowClose(&inst));
 }
 
 void Sphynx::Core::GLWindow::mid::Focus(GLFWwindow* win, int value)
 {
 	GLWindow& inst = GetFromGLFW(win);
-	if (value == GLFW_TRUE) {
-		inst.OnFocus();
-		inst.GetEventSystem()->Dispatch<OnWindowFocus>(OnWindowFocus(&inst));
-	}
-	else {
-		inst.OnFocusLoss();
-		inst.GetEventSystem()->Dispatch<OnWindowFocusLoss>(OnWindowFocusLoss(&inst));
+	//BECAUSE THIS GETS CALLED WHEN THE WINDOW CLOSES.
+	if (inst.IsAlive()) {
+		if (value == GLFW_TRUE) {
+			inst.OnFocus();
+			inst.GetEventSystem()->QueueEvent<OnWindowFocus>(OnWindowFocus(&inst));
+		}
+		else {
+			inst.OnFocusLoss();
+			inst.GetEventSystem()->QueueEvent<OnWindowFocusLoss>(OnWindowFocusLoss(&inst));
+		}
 	}
 }
 
@@ -42,31 +50,37 @@ void Sphynx::Core::GLWindow::mid::Iconify(GLFWwindow* win, int value)
 	GLWindow& inst = GetFromGLFW(win);
 	if (value == GLFW_TRUE) {
 		inst.OnMinimize();
-		inst.GetEventSystem()->Dispatch<OnWindowMinimize>(OnWindowMinimize(&inst));
+		inst.GetEventSystem()->QueueEvent<OnWindowMinimize>(OnWindowMinimize(&inst));
 	}
 	else {
 		inst.OnRestore();
-		inst.GetEventSystem()->Dispatch<OnWindowRestore>(OnWindowRestore(&inst));
+		inst.GetEventSystem()->QueueEvent<OnWindowRestore>(OnWindowRestore(&inst));
 	}
 }
 
 void Sphynx::Core::GLWindow::mid::Maximize(GLFWwindow* win, int value)
 {
 	GLWindow& inst = GetFromGLFW(win);
-	if (value == GLFW_TRUE) {
-		inst.OnMaximize();
-		inst.GetEventSystem()->Dispatch<OnWindowMaximize>(OnWindowMaximize(&inst));
-	}
-	else {
-		inst.OnRestore();
-		inst.GetEventSystem()->Dispatch<OnWindowRestore>(OnWindowRestore(&inst));
-
+	if (inst.IsAlive()) {
+		if (value == GLFW_TRUE) {
+			inst.OnMaximize();
+			inst.GetEventSystem()->QueueEvent<OnWindowMaximize>(OnWindowMaximize(&inst));
+		}
+		else {
+			inst.OnRestore();
+			inst.GetEventSystem()->QueueEvent<OnWindowRestore>(OnWindowRestore(&inst));
+		}
 	}
 }
 
 void Sphynx::Core::GLWindow::mid::KeyCapture(GLFWwindow* win, int keycode, int scancode, int action, int modifier)
 {
-	//Push on OnKeyXXXX Events.
+	//Push OnKeyXXXX Events.
+}
+
+bool Sphynx::Core::GLWindow::IsAlive()
+{
+	return !glfwWindowShouldClose(window);
 }
 
 Sphynx::Core::GLWindow::~GLWindow()
@@ -74,10 +88,10 @@ Sphynx::Core::GLWindow::~GLWindow()
 	//Resource Deletion.
 }
 
-Sphynx::Core::GLWindow::GLWindow(Application* App, Bounds WinBounds, std::string title)
+Sphynx::Core::GLWindow::GLWindow(Application* App, Bounds WinBounds, std::string title, bool fullscreen)
 {
 	//Init base class.
-	Init(App, WinBounds, title, FullScreen);
+	Init(App, WinBounds, title, fullscreen);
 	Vsync = false;
 	window = nullptr;
 
@@ -91,10 +105,11 @@ Sphynx::Core::GLWindow::GLWindow(Application* App, Bounds WinBounds, std::string
 	}
 	//Create Window
 	window = glfwCreateWindow(WinBounds.Width, WinBounds.Height, title.c_str(), NULL, NULL);
-	WindowsOpened += 1;
 	if (!window) {
 		Core_Error("Cannot Create Window.");
+		return;
 	}
+	WindowsOpened += 1;
 
 	glfwMakeContextCurrent(window);
 	//Setting Up Glad.
@@ -116,16 +131,47 @@ Sphynx::Core::GLWindow::GLWindow(Application* App, Bounds WinBounds, std::string
 
 }
 
-void Sphynx::Core::GLWindow::OnClose() 
+Sphynx::Core::GLWindow::GLWindow(Application* App, Bounds WinBounds, std::string title, GLWindow* share)
+{
+	if (WinBounds.Height == 0 || WinBounds.Width == 0) {
+		WinBounds = DefBounds;
+	}
+	else if (title.empty()) {
+		title = "Sphynx Engine";
+	}
+	Init(App, WinBounds, title);
+	Sharing = true;
+	window = glfwCreateWindow(WinBounds.Width, WinBounds.Height, title.c_str(), NULL, share->window);
+	if (!window) {
+		Core_Error("Unable To Create Secondary Window");
+		return;
+	}
+	//Setting the glfwWindow to hold the IWindow instance
+	glfwSetWindowUserPointer(window, (void*)this);
+	//Setting Callbacks using a middle-man struct.
+	glfwSetWindowSizeCallback(window, &mid::Resize);
+	glfwSetWindowCloseCallback(window, &mid::Close);
+	glfwSetWindowFocusCallback(window, &mid::Focus);
+	glfwSetWindowIconifyCallback(window, &mid::Iconify);
+	glfwSetWindowMaximizeCallback(window, &mid::Maximize);
+	glfwSetKeyCallback(window, &mid::KeyCapture);
+	//End of callbacks.
+}
+
+void Sphynx::Core::GLWindow::OnClose()
 {
 	glfwSetWindowShouldClose(window, true);
+	Close();
 }
 
 void Sphynx::Core::GLWindow::OnUpdate()
 {
+	if (!Sharing)
+		//Handle Context Switching.
+		SwitchContext(*this);
 	Clear();
 	glfwPollEvents();
-	GetEventSystem()->Dispatch<OnOverlayUpdate>(OnOverlayUpdate(this));
+	GetEventSystem()->DispatchImmediate<OnOverlayUpdate>(OnOverlayUpdate(this));
 	glfwSwapBuffers(window);
 }
 
@@ -147,6 +193,16 @@ void Sphynx::Core::GLWindow::SetVsync(bool vsync)
 void Sphynx::Core::GLWindow::ChangeTitle(const char* title)
 {
 	glfwSetWindowTitle(window, title);
+}
+
+void Sphynx::Core::GLWindow::TerminateGLFW()
+{
+	glfwTerminate();
+}
+
+void Sphynx::Core::GLWindow::SwitchContext(GLWindow window)
+{
+	glfwMakeContextCurrent(window.window);
 }
 
 Bounds Sphynx::Core::GLWindow::GetBounds()
@@ -171,7 +227,7 @@ void Sphynx::Core::GLWindow::Clear()
 
 void Sphynx::Core::GLWindow::OnFocus()
 {
-	
+
 }
 
 void Sphynx::Core::GLWindow::OnFocusLoss()

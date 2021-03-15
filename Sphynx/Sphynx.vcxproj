@@ -97,14 +97,15 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Sphynx\Core\Pointer.h" />
     <ClInclude Include="src\Sphynx.h" />
     <ClInclude Include="src\Sphynx\Application.h" />
     <ClInclude Include="src\Sphynx\Core.h" />
-    <ClInclude Include="src\Sphynx\Core\Imgui.h" />
+    <ClInclude Include="src\Sphynx\Core\Graphics\Imgui.h" />
     <ClInclude Include="src\Sphynx\Core\Module.h" />
     <ClInclude Include="src\Sphynx\Core\System.h" />
-    <ClInclude Include="src\Sphynx\Core\Window\Platform\GLWindow.h" />
-    <ClInclude Include="src\Sphynx\Core\Window\Window.h" />
+    <ClInclude Include="src\Sphynx\Core\Graphics\Platform\GLWindow.h" />
+    <ClInclude Include="src\Sphynx\Core\Graphics\Window.h" />
     <ClInclude Include="src\Sphynx\EntryPoint.h" />
     <ClInclude Include="src\Sphynx\Events\ApplicationEvents.h" />
     <ClInclude Include="src\Sphynx\Events\Event.h" />
@@ -124,12 +125,13 @@
     <ClInclude Include="src\Sphynx\pch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Sphynx\Core\Pointer.cpp" />
     <ClCompile Include="src\Sphynx\Application.cpp" />
-    <ClCompile Include="src\Sphynx\Core\Imgui.cpp" />
+    <ClCompile Include="src\Sphynx\Core\Graphics\Imgui.cpp" />
     <ClCompile Include="src\Sphynx\Core\Module.cpp" />
     <ClCompile Include="src\Sphynx\Core\System.cpp" />
-    <ClCompile Include="src\Sphynx\Core\Window\Platform\GLWindow.cpp" />
-    <ClCompile Include="src\Sphynx\Core\Window\Window.cpp" />
+    <ClCompile Include="src\Sphynx\Core\Graphics\Platform\GLWindow.cpp" />
+    <ClCompile Include="src\Sphynx\Core\Graphics\Window.cpp" />
     <ClCompile Include="src\Sphynx\Events\ApplicationEvents.cpp" />
     <ClCompile Include="src\Sphynx\Events\KeyBoardEvents.cpp" />
     <ClCompile Include="src\Sphynx\Input.cpp" />

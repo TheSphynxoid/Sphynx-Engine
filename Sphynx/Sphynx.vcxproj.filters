@@ -28,7 +28,7 @@
     <ClInclude Include="src\Sphynx\Core.h">
       <Filter>Sphynx</Filter>
     </ClInclude>
-    <ClInclude Include="src\Sphynx\Core\Imgui.h">
+    <ClInclude Include="src\Sphynx\Core\Graphics\Imgui.h">
       <Filter>Sphynx\Core</Filter>
     </ClInclude>
     <ClInclude Include="src\Sphynx\Core\Module.h">
@@ -37,10 +37,10 @@
     <ClInclude Include="src\Sphynx\Core\System.h">
       <Filter>Sphynx\Core</Filter>
     </ClInclude>
-    <ClInclude Include="src\Sphynx\Core\Window\Platform\GLWindow.h">
+    <ClInclude Include="src\Sphynx\Core\Graphics\Platform\GLWindow.h">
       <Filter>Sphynx\Core\Window\Platform</Filter>
     </ClInclude>
-    <ClInclude Include="src\Sphynx\Core\Window\Window.h">
+    <ClInclude Include="src\Sphynx\Core\Graphics\Window.h">
       <Filter>Sphynx\Core\Window</Filter>
     </ClInclude>
     <ClInclude Include="src\Sphynx\EntryPoint.h">
@@ -92,12 +92,13 @@
       <Filter>Sphynx</Filter>
     </ClInclude>
     <ClInclude Include="src\Sphynx\Events\ImGuiEvents.h" />
+    <ClInclude Include="src\Sphynx\Core\Pointer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Sphynx\Application.cpp">
       <Filter>Sphynx</Filter>
     </ClCompile>
-    <ClCompile Include="src\Sphynx\Core\Imgui.cpp">
+    <ClCompile Include="src\Sphynx\Core\Graphics\Imgui.cpp">
       <Filter>Sphynx\Core</Filter>
     </ClCompile>
     <ClCompile Include="src\Sphynx\Core\Module.cpp">
@@ -106,10 +107,10 @@
     <ClCompile Include="src\Sphynx\Core\System.cpp">
       <Filter>Sphynx\Core</Filter>
     </ClCompile>
-    <ClCompile Include="src\Sphynx\Core\Window\Platform\GLWindow.cpp">
+    <ClCompile Include="src\Sphynx\Core\Graphics\Platform\GLWindow.cpp">
       <Filter>Sphynx\Core\Window\Platform</Filter>
     </ClCompile>
-    <ClCompile Include="src\Sphynx\Core\Window\Window.cpp">
+    <ClCompile Include="src\Sphynx\Core\Graphics\Window.cpp">
       <Filter>Sphynx\Core\Window</Filter>
     </ClCompile>
     <ClCompile Include="src\Sphynx\Events\ApplicationEvents.cpp">
@@ -145,5 +146,6 @@
     <ClCompile Include="src\Sphynx\pch.cpp">
       <Filter>Sphynx</Filter>
     </ClCompile>
+    <ClCompile Include="src\Sphynx\Core\Pointer.cpp" />
   </ItemGroup>
 </Project>

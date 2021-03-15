@@ -12,12 +12,12 @@ std::shared_ptr<spdlog::logger> Sphynx::Logger::ClientLogger;
 
 void Sphynx::Logger::Init()
 {
-	auto ostream_sink = std::make_shared<LoggerSink>();
-	InternalLogger = std::make_shared<spdlog::logger>("Sphynx", ostream_sink);
+	auto sink = std::make_shared<LoggerSink>();
+	InternalLogger = std::make_shared<spdlog::logger>("Sphynx", sink);
 	InternalLogger->set_pattern("%^[%n::%l](%!thread id:%t)%v%$");
 	InternalLogger->set_level(spdlog::level::trace);
-	ostream_sink = std::make_shared<LoggerSink>();
-	ClientLogger = std::make_shared<spdlog::logger>("Application", ostream_sink);
+	sink = std::make_shared<LoggerSink>();
+	ClientLogger = std::make_shared<spdlog::logger>("Application", sink);
 	ClientLogger->set_pattern("%^[%n::%l](%!thread id:%t)%v%$");
 	ClientLogger->set_level(spdlog::level::trace);
 }
@@ -27,10 +27,10 @@ void Sphynx::Logger::LoggerSink::sink_it_(const spdlog::details::log_msg& msg)
 	spdlog::memory_buf_t formatted;
 	base_sink<std::mutex>::formatter_->format(msg, formatted);
 	auto str = fmt::to_string(formatted);
-	Events::GlobalEventSystem::GetInstance()->Dispatch<OnLog>(OnLog(str, msg.level));
+	Events::GlobalEventSystem::GetInstance()->QueueEvent<OnLog>(OnLog(str, msg.level));
 }
 
 void Sphynx::Logger::LoggerSink::flush_()
 {
-	Events::GlobalEventSystem::GetInstance()->Dispatch<OnLogFlush>(OnLogFlush());
+	Events::GlobalEventSystem::GetInstance()->QueueEvent<OnLogFlush>(OnLogFlush());
 }

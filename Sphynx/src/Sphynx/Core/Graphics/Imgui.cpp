@@ -15,7 +15,7 @@
 #endif
 #pragma endregion
 #include "Application.h"
-#include "Window/Window.h"
+#include "Core/Graphics/Window.h"
 #include "Events/Event.h"
 #include "Logger.h"
 #include <charconv>
@@ -35,9 +35,9 @@ ImVector<ImVec4>	Colors;
 void Sphynx::Core::Imgui::Start(Application* app)
 {
 	App = app;
-	window = app->GetAppWindow();
+	window = app->GetMainWindow();
 	time = app->GetTimeObject();
-	app->GetAppEventSystem()->Subscribe<Imgui, Events::OnOverlayUpdate>(this, &Imgui::OnOverlayUpdate);
+	window->GetEventSystem()->Subscribe<Imgui, Events::OnOverlayUpdate>(this, &Imgui::OnOverlayUpdate);
 #ifdef IMGUI_DX11
 	Imgui_ImplDX11_Init();
 #else
@@ -65,7 +65,7 @@ void Sphynx::Core::Imgui::OnOverlayUpdate(Events::OnOverlayUpdate& e)
 		if (w->IsOpen == false) {
 			RemoveOverlayWindow(w);
 			//Hack or solution... Idk. it stops the iterator from causing us to use the deleted window. 
-			//why does it happen? i don't know. i can't be bothered for now.
+			//why does it happen? i don't know. i can't be bothered for now.It loses us one update cycle
 			break;
 		}
 	}
@@ -105,7 +105,7 @@ int Sphynx::Core::Imgui::GetNumberOfWindows()
 
 void Sphynx::Core::Imgui::Shutdown()
 {
-	App->GetAppEventSystem()->Dispatch<Events::OnOverlayModuleDown>(Events::OnOverlayModuleDown());
+	window->GetEventSystem()->QueueEvent<Events::OnOverlayModuleDown>(Events::OnOverlayModuleDown());
 	ImGui_ImplGlfw_Shutdown();
 	ImGui_ImplOpenGL3_Shutdown();
 }
@@ -160,7 +160,7 @@ Sphynx::Core::DebugWindow::DebugWindow(Application* app)
 {
 	App = app;
 	eventsystem = App->GetAppEventSystem();
-	window = App->GetAppWindow();
+	window = App->GetMainWindow();
 	memset(TitleBuffer, 0, sizeof(TitleBuffer));
 	LineOffsets.push_back(0);
 	GlobalEventSystem::GetInstance()->Subscribe<DebugWindow, OnLog>(this, &DebugWindow::OnEventLog);

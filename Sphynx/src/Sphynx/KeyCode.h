@@ -1,6 +1,7 @@
 #pragma once
 
 namespace Sphynx {
+    //1:1 Convertion for GLFW_KEY But Not Dependent on GLFW.
     enum class Keys : int {
         Unknown = -1,
         /* Printable keys */

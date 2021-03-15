@@ -13,6 +13,7 @@ namespace Sphynx::Events {
 		Sphynx::Core::IWindow* window;
 		WindowEvent() = delete;
 		WindowEvent(Sphynx::Core::IWindow* win) : window(win) {};
+	public:
 		Sphynx::Core::IWindow* GetWindow() { return window; };
 	};
 	struct OnWindowResize :public WindowEvent {
