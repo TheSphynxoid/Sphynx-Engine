@@ -9,6 +9,7 @@ struct GLFWwindow;
 //Opaque
 typedef GLFWwindow GLFWwindow;
 
+
 namespace Sphynx::Core {
 	//GLFW implementation.
 	class GLWindow final : public IWindow
@@ -26,7 +27,6 @@ namespace Sphynx::Core {
 			static void Focus(GLFWwindow* win, int value);
 			static void Iconify(GLFWwindow* win, int value);
 			static void Maximize(GLFWwindow* win, int value);
-			static void KeyCapture(GLFWwindow* win, int keycode, int scancode, int action, int modifier);
 		};
 	public:
 		bool IsAlive()override;
@@ -65,6 +65,3 @@ namespace Sphynx::Core {
 		//friend mid;
 	};
 }
-/*
-class 
-*/

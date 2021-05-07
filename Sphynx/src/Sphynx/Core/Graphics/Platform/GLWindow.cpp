@@ -7,6 +7,8 @@
 #include "glad/glad.h"
 //#define GLFW_EXPOSE_NATIVE_WIN32
 //#include "GLFW/glfw3native.h"
+#include "Events/InputEvents.h"
+#include "Core/Platform/GLFWInput.h"
 
 using namespace Sphynx;
 using namespace Sphynx::Core;
@@ -14,7 +16,7 @@ using namespace Sphynx::Events;
 
 bool GLWindow::GLFWInit = false;
 
-static GLWindow& GetFromGLFW(GLFWwindow* win) { return *(GLWindow*)glfwGetWindowUserPointer(win); };
+#define GetFromGLFW(win) *(::Sphynx::Core::GLWindow*)glfwGetWindowUserPointer(win)
 
 void Sphynx::Core::GLWindow::mid::Resize(GLFWwindow* win, int width, int height)
 {
@@ -73,11 +75,6 @@ void Sphynx::Core::GLWindow::mid::Maximize(GLFWwindow* win, int value)
 	}
 }
 
-void Sphynx::Core::GLWindow::mid::KeyCapture(GLFWwindow* win, int keycode, int scancode, int action, int modifier)
-{
-	//Push OnKeyXXXX Events.
-}
-
 bool Sphynx::Core::GLWindow::IsAlive()
 {
 	return !glfwWindowShouldClose(window);
@@ -111,6 +108,8 @@ Sphynx::Core::GLWindow::GLWindow(Application* App, Bounds WinBounds, std::string
 	}
 	WindowsOpened += 1;
 
+	input = new GLFWInput(window);
+
 	glfwMakeContextCurrent(window);
 	//Setting Up Glad.
 	gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
@@ -122,7 +121,6 @@ Sphynx::Core::GLWindow::GLWindow(Application* App, Bounds WinBounds, std::string
 	glfwSetWindowFocusCallback(window, &mid::Focus);
 	glfwSetWindowIconifyCallback(window, &mid::Iconify);
 	glfwSetWindowMaximizeCallback(window, &mid::Maximize);
-	glfwSetKeyCallback(window, &mid::KeyCapture);
 	//End of callbacks.
 
 	//ToDO: Init imgui and Renderer.
@@ -146,6 +144,9 @@ Sphynx::Core::GLWindow::GLWindow(Application* App, Bounds WinBounds, std::string
 		Core_Error("Unable To Create Secondary Window");
 		return;
 	}
+
+	input = new GLFWInput(window);
+
 	//Setting the glfwWindow to hold the IWindow instance
 	glfwSetWindowUserPointer(window, (void*)this);
 	//Setting Callbacks using a middle-man struct.
@@ -154,7 +155,6 @@ Sphynx::Core::GLWindow::GLWindow(Application* App, Bounds WinBounds, std::string
 	glfwSetWindowFocusCallback(window, &mid::Focus);
 	glfwSetWindowIconifyCallback(window, &mid::Iconify);
 	glfwSetWindowMaximizeCallback(window, &mid::Maximize);
-	glfwSetKeyCallback(window, &mid::KeyCapture);
 	//End of callbacks.
 }
 
@@ -162,17 +162,18 @@ void Sphynx::Core::GLWindow::OnClose()
 {
 	glfwSetWindowShouldClose(window, true);
 	Close();
+	glfwDestroyWindow(window);
 }
 
 void Sphynx::Core::GLWindow::OnUpdate()
 {
-	if (!Sharing)
-		//Handle Context Switching.
-		SwitchContext(*this);
+	//if (!Sharing)
+	//	//Handle Context Switching.
+	//	SwitchContext(*this);
 	Clear();
-	glfwPollEvents();
 	GetEventSystem()->DispatchImmediate<OnOverlayUpdate>(OnOverlayUpdate(this));
 	glfwSwapBuffers(window);
+	glfwPollEvents();
 }
 
 void Sphynx::Core::GLWindow::OnResize(Events::OnWindowResize& e)

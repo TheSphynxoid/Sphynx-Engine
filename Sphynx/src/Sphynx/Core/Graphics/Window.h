@@ -4,6 +4,7 @@
 #include "Events/WindowEvents.h"
 #include "Application.h"
 #include "Core.h"
+#include "Input.h"
 
 struct Coords {
 	int x, y;
@@ -19,13 +20,14 @@ struct Bounds {
 const Bounds DefBounds = Bounds(640, 410);
 
 namespace Sphynx::Core {
-	//Base Window Interface.
+	//Base Window Interface.(Each Derived class must ensure Input, Closing...)
 	class IWindow {
 	private:
 		Events::EventSystem OwnerEvent = *Events::GlobalEventSystem::GetInstance();
 		//Ensure that this instance is Initialized.
 		bool InstanceHasInit = false;
 	protected:
+		Input* input;
 		//Replacement for Update and Resize Functions.
 		//Current State of the window.
 	public:
@@ -46,7 +48,6 @@ namespace Sphynx::Core {
 		void Close() {
 			OwnerEvent.QueueEvent<Events::OnWindowClose>(Events::OnWindowClose(this));
 		}
-		//May be removed as all this does is QueueEvent OnWindowResize.
 		void Resize(int width, int height) {
 			if (!InstanceHasInit)
 				throw "Not Initialized. Any Class That Derives from IWindow Must Call Init";
@@ -54,9 +55,6 @@ namespace Sphynx::Core {
 			this->Height = height;
 			OwnerEvent.QueueEvent<Events::OnWindowResize>(Events::OnWindowResize(this, width, height));
 		};
-		//void Close() {
-		//	OwnerEvent.QueueEvent<Events::OnWindowClose>(Events::OnWindowClose(this));
-		//};
 
 		virtual void OnClose() = 0;
 		//Called On Every render update.
@@ -79,6 +77,7 @@ namespace Sphynx::Core {
 
 		//Returns the Window's EventSystem.
 		Events::EventSystem* GetEventSystem() { return &OwnerEvent; };
+		virtual Input* GetInput() { return this->input; };
 	protected:
 		int Height = 0, Width = 0;
 		bool FullScreen = false;
@@ -89,6 +88,8 @@ namespace Sphynx::Core {
 			Height = WinBounds.Height;
 			Width = WinBounds.Width;
 			OwnerEvent = App->RequestNewEventSystem();
+			//input = Input();
+			
 			//App->GetAppEventSystem()->Subscribe<IWindow, Events::OnWindowResize>(this, &IWindow::OnResize);
 			InstanceHasInit = true;
 		};

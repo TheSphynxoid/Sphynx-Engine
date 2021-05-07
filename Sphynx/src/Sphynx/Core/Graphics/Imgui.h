@@ -20,6 +20,7 @@ namespace Sphynx::Core {
 	protected:
 		bool IsOpen = true;
 	public:
+		virtual ~IOverlayWindow(){};
 		virtual void Draw() = 0;
 		//This Works because we expect the window to be instanced with new.
 		//TODO: Change the Imgui Implementation to not need an instance of IOverlayWindow but to make it itself

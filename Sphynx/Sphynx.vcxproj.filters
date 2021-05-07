@@ -52,7 +52,7 @@
     <ClInclude Include="src\Sphynx\Events\Event.h">
       <Filter>Sphynx\Events</Filter>
     </ClInclude>
-    <ClInclude Include="src\Sphynx\Events\KeyBoardEvents.h">
+    <ClInclude Include="src\Sphynx\Events\InputEvents.h">
       <Filter>Sphynx\Events</Filter>
     </ClInclude>
     <ClInclude Include="src\Sphynx\Events\WindowEvents.h">
@@ -92,7 +92,10 @@
       <Filter>Sphynx</Filter>
     </ClInclude>
     <ClInclude Include="src\Sphynx\Events\ImGuiEvents.h" />
-    <ClInclude Include="src\Sphynx\Core\Pointer.h" />
+    <ClInclude Include="src\Sphynx\Pointer.h" />
+    <ClInclude Include="src\Sphynx\Delegate.h" />
+    <ClInclude Include="src\Sphynx\Vector.h" />
+    <ClInclude Include="src\Sphynx\Core\Platform\GLFWInput.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Sphynx\Application.cpp">
@@ -116,7 +119,7 @@
     <ClCompile Include="src\Sphynx\Events\ApplicationEvents.cpp">
       <Filter>Sphynx\Events</Filter>
     </ClCompile>
-    <ClCompile Include="src\Sphynx\Events\KeyBoardEvents.cpp">
+    <ClCompile Include="src\Sphynx\Events\InputEvents.cpp">
       <Filter>Sphynx\Events</Filter>
     </ClCompile>
     <ClCompile Include="src\Sphynx\Input.cpp">
@@ -146,6 +149,11 @@
     <ClCompile Include="src\Sphynx\pch.cpp">
       <Filter>Sphynx</Filter>
     </ClCompile>
-    <ClCompile Include="src\Sphynx\Core\Pointer.cpp" />
+    <ClCompile Include="src\Sphynx\Pointer.cpp" />
+    <ClCompile Include="src\Sphynx\Delegate.cpp" />
+    <ClCompile Include="src\Sphynx\Core\Platform\GLFWInput.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="TODO.txt" />
   </ItemGroup>
 </Project>

@@ -18,7 +18,7 @@ namespace Sphynx::Events {
 	};
 	struct OnWindowResize :public WindowEvent {
 		int Width, Height;
-		OnWindowResize(Sphynx::Core::IWindow* win, int width, int height) :Width(width), Height(height), WindowEvent(win) {};
+		OnWindowResize(Sphynx::Core::IWindow* win, int width, int height) :WindowEvent(win), Width(width), Height(height) {};
 	};
 	struct OnWindowRestore : public WindowEvent{
 		ImplDefaultWinEvent(OnWindowRestore);

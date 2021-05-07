@@ -291,7 +291,7 @@ void Sphynx::Core::DebugWindow::Draw()
 					auto [ptr, ec] = std::to_chars(index.data(), index.data() + 5, i);
 					char d[256];
 					memset(d, '\n', sizeof(char) * (strlen(name) + index.size()));
-					strcpy(d, name);
+					strcpy_s(d, name);
 					strcat_s(d, " ##");
 					strcat_s(d, index.data());
 					//End Text Formating

@@ -4,7 +4,7 @@
 #include <iostream>
 #include <string>
 #include <Sphynx/Core/Graphics/Platform/GLWindow.h>
-
+#include <Sphynx/Core/Platform/GLFWInput.h>
 
 using namespace Sphynx;
 
@@ -38,10 +38,27 @@ void OnWindowFocusTester(Events::OnWindowFocus& e) {
 	std::cout << e.GetWindow();
 }
 
+void OnKeyPress(Sphynx::MouseButton button, Sphynx::Action action) {
+	switch (action)
+	{
+	case Sphynx::Action::Pressed:
+		if (button == MouseButton::LeftButton)Client_Trace("left Button Pressed");
+		break;
+	case Sphynx::Action::Repeat:
+		break;
+	case Sphynx::Action::Release:
+		break;
+	default:
+		break;
+	}
+}
+
 //The Main Entry Point for clients
 Sphynx::Application* Sphynx::CreateApplication() {
 	auto sandbox = new SandBox();
 	sandbox->GetAppEventSystem()->Subscribe<Events::OnApplicationUpdate>(&OnUpdateTester);
 	sandbox->GetAppEventSystem()->Subscribe<Events::OnWindowFocus>(&OnWindowFocusTester);
+	auto inp = (Sphynx::Core::GLFWInput*)sandbox->GetMainWindow()->GetInput();
+	inp->RegisterMouseButtonCallback<void>(Sphynx::Delegate<void,void,Sphynx::MouseButton,Action>(&OnKeyPress));
 	return sandbox;
 }

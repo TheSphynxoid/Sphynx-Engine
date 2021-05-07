@@ -188,6 +188,7 @@ namespace Sphynx {
 		bool operator==(const T* ptr) {
 			return ptr == this->Object;
 		};
+		//Copies The Delegate Object
 		template<typename Inst>
 		void SetDestroyCallBack(Delegate<void, Inst, T&> cb) {
 			//auto placeholder = delegate;

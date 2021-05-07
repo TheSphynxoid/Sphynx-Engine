@@ -4,7 +4,7 @@
 #include "Events/ApplicationEvents.h"
 #include "Core/Graphics/Platform/GLWindow.h"
 #include "SpTime.h"
-#include "Core/Pointer.h"
+#include "Pointer.h"
 
 using namespace Sphynx;
 using namespace Sphynx::Core;
@@ -24,6 +24,9 @@ Sphynx::Application::Application() : time(Time()), imgui(Imgui())
 	time.Start(this);
 	eventSystem = Events::EventSystem();
 	eventSystem.Subscribe<Application, Events::OnWindowClose>(this, &Application::HandleWindowClose);
+#if defined(DEBUG)
+	Events::GlobalEventSystem::GetInstance()->Subscribe<Application, OnLog>(this, &Application::StdLog);
+#endif
 	if (MainWindow) {
 		imgui.Start(this);
 		imgui.AddOverlayWindow(new DebugWindow(this));
@@ -55,22 +58,41 @@ void Sphynx::Application::Run()
 		//Events
 		Events::GlobalEventSystem::GetInstance()->Dispatch();
 		eventSystem.Dispatch();
+		for (auto& es : EventArray) {
+			es->Dispatch();
+		}
+	}
+	imgui.Shutdown();
+	for (auto& win : ExtraWindows) {
+		//A Closed Window doesn't exist.
+		RemoveExtraWindow(win);
 	}
 	GLWindow::TerminateGLFW();
-	imgui.Shutdown();
 	time.Shutdown();
+}
+
+void DTest(int i) {
+	std::cout << "wut " << i;
 }
 
 Events::EventSystem Sphynx::Application::RequestNewEventSystem()
 {
-	auto e = std::unique_ptr<Events::EventSystem>();
-	std::string s;
-	//EventArray.push_back(e);
-	return *e;
+	Pointer<Events::EventSystem>* e = AllocatePointer<Events::EventSystem>();
+	EventArray.push_back(*e);
+	e->SetDestroyCallBack<Application>(Delegate<void, Application, Events::EventSystem&>(this, &Application::DeleteEventSystem));
+	return *e->GetRaw();
 }
 
-void Sphynx::Application::DeleteEventSystem(Events::EventSystem e)
+void Sphynx::Application::DeleteEventSystem(Events::EventSystem& e)
 {
+	for (auto& ptr : EventArray) {
+		if (ptr.GetRaw() == &e) {
+			//EventArray.remove(ptr);
+			EventArray.remove_if([&,ptr](Pointer<Events::EventSystem>& p)->bool {return ptr.GetAddress() == p.GetAddress(); });
+			ptr.Release();
+			delete &ptr;
+		}
+	}
 }
 
 Time* Sphynx::Application::GetTimeObject()
