@@ -103,6 +103,7 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Renderer.h" />
     <ClInclude Include="src\Sphynx\Core\Platform\GLFWInput.h" />
     <ClInclude Include="src\Sphynx\Delegate.h" />
     <ClInclude Include="src\Sphynx\Pointer.h" />
@@ -134,6 +135,7 @@
     <ClInclude Include="src\Sphynx\Vector.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="src\Sphynx\Core\Platform\GLFWInput.cpp" />
     <ClCompile Include="src\Sphynx\Delegate.cpp" />
     <ClCompile Include="src\Sphynx\Pointer.cpp" />

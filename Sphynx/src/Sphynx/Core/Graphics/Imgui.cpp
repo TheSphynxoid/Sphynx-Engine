@@ -19,6 +19,7 @@
 #include "Events/Event.h"
 #include "Logger.h"
 #include <charconv>
+#include "Platform/GLWindow.h"
 
 using namespace Sphynx::Events;
 
@@ -161,6 +162,7 @@ Sphynx::Core::DebugWindow::DebugWindow(Application* app)
 	App = app;
 	eventsystem = App->GetAppEventSystem();
 	window = App->GetMainWindow();
+	extra = App->GetExtraWindows();
 	memset(TitleBuffer, 0, sizeof(TitleBuffer));
 	LineOffsets.push_back(0);
 	GlobalEventSystem::GetInstance()->Subscribe<DebugWindow, OnLog>(this, &DebugWindow::OnEventLog);
@@ -214,6 +216,7 @@ void HandleLogging(const char* text, int lvl, bool isClient)
 	}
 }
 
+//Long Shit for centralized debugging.
 void Sphynx::Core::DebugWindow::Draw()
 {
 	ImGui::SetNextWindowSize(ImVec2(420, 360), ImGuiCond_Once);
@@ -222,7 +225,7 @@ void Sphynx::Core::DebugWindow::Draw()
 			ImGui::Indent();
 			static int item;
 			static int rb;
-			static char* lvls[5]{ "Trace","Info","Warn","Error","Debug" };
+			static const char* lvls[5]{ "Trace","Info","Warn","Error","Debug" };
 			if (ImGui::RadioButton("Core", rb == 0)) { rb = 0; } ImGui::SameLine();
 			if (ImGui::RadioButton("Client", rb == 1)) { rb = 1; }
 			if (ImGui::BeginCombo("Log Level", lvls[item])) {
@@ -305,10 +308,34 @@ void Sphynx::Core::DebugWindow::Draw()
 			ImGui::Text("Number Of Window = %i", GetImGui()->GetNumberOfWindows());
 			ImGui::Unindent();
 		}
-		if (ImGui::CollapsingHeader("Window")) {
+		if (ImGui::CollapsingHeader("Window (Still WIP)")) {
 			ImGui::Indent();
-			ImGui::Text("Window Height:%i", window->GetHeight());
-			ImGui::Text("Window Width:%i", window->GetWidth());
+			if (ImGui::BeginListBox("ExtraWindows", ImVec2(FLT_MIN, ImGui::GetTextLineHeightWithSpacing() * 5))) {
+				extra = App->GetExtraWindows();
+				static int selected = -1;
+				int i = 0;
+				for (auto win : extra) {
+					if (ImGui::Selectable(win->GetTitle(), selected == i)) {
+						selected = i;
+					}
+					i++;
+
+				}
+				ImGui::EndListBox();
+				if (ImGui::Button("Create Extra Window")) {
+					//Extra Window Shit.
+					App->AddExtraWindow(std::make_unique<Sphynx::Core::GLWindow>(App, window->GetBounds(), "Extra", window));
+				}
+				if (ImGui::Button("Close Extra Window")) {
+					if (selected != -1) {
+						auto start = extra.begin();
+						std::advance(start, selected);
+						(*start)->Close();
+					}
+				}
+			}
+			ImGui::Text("Main Window Height:%i", window->GetHeight());
+			ImGui::Text("Main Window Width:%i", window->GetWidth());
 			bool vs = window->IsVsyncEnabled();
 			if (ImGui::Checkbox("Vsync", &vs)) {
 				window->SetVsync(vs);

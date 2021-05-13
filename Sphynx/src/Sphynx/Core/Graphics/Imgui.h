@@ -69,6 +69,7 @@ namespace Sphynx::Core {
 		Application* App;
 		Events::EventSystem* eventsystem;
 		Core::IWindow* window;
+		std::list<Core::IWindow*>extra;
 		char TitleBuffer[128];
 		//Put the in the cpp. I Couldn't include imgui.h because of SandBox.
 		//std::vector<char> Buf;

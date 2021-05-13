@@ -1,8 +1,7 @@
 #pragma once
 #include "Core.h"
 #include "../Window.h"
-#define IMGUI_GLFW
-#include "../Imgui.h"
+
 
 //Opaque Object.
 struct GLFWwindow;
@@ -44,7 +43,7 @@ namespace Sphynx::Core {
 		int GetWidth()override;
 		inline bool IsVsyncEnabled()override { return Vsync; };
 		void SetVsync(bool vsync)override;
-		void ChangeTitle(const char* title)override;
+		void Internal_ChangeTitle(const char* title)override;
 		///////GLWindow Function/////////
 
 		static void TerminateGLFW();

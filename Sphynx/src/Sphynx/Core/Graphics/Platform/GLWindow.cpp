@@ -34,7 +34,7 @@ void Sphynx::Core::GLWindow::mid::Close(GLFWwindow* win)
 void Sphynx::Core::GLWindow::mid::Focus(GLFWwindow* win, int value)
 {
 	GLWindow& inst = GetFromGLFW(win);
-	//BECAUSE THIS GETS CALLED WHEN THE WINDOW CLOSES.
+	//BECAUSE THIS GETS CALLED WHEN THE WINDOW CLOSES. WTF DOES IT DO THAT
 	if (inst.IsAlive()) {
 		if (value == GLFW_TRUE) {
 			inst.OnFocus();
@@ -83,6 +83,7 @@ bool Sphynx::Core::GLWindow::IsAlive()
 Sphynx::Core::GLWindow::~GLWindow()
 {
 	//Resource Deletion.
+	Close();
 }
 
 Sphynx::Core::GLWindow::GLWindow(Application* App, Bounds WinBounds, std::string title, bool fullscreen)
@@ -167,13 +168,16 @@ void Sphynx::Core::GLWindow::OnClose()
 
 void Sphynx::Core::GLWindow::OnUpdate()
 {
-	//if (!Sharing)
-	//	//Handle Context Switching.
-	//	SwitchContext(*this);
-	Clear();
-	GetEventSystem()->DispatchImmediate<OnOverlayUpdate>(OnOverlayUpdate(this));
-	glfwSwapBuffers(window);
-	glfwPollEvents();
+	//Find a way to stop checking
+	if (IsAlive()) {
+		if (!Sharing)
+			//Handle Context Switching.
+			SwitchContext(*this);
+		Clear();
+		GetEventSystem()->DispatchImmediate<OnOverlayUpdate>(OnOverlayUpdate(this));
+		glfwSwapBuffers(window);
+		glfwPollEvents();
+	}
 }
 
 void Sphynx::Core::GLWindow::OnResize(Events::OnWindowResize& e)
@@ -191,7 +195,7 @@ void Sphynx::Core::GLWindow::SetVsync(bool vsync)
 	Vsync = vsync;
 }
 
-void Sphynx::Core::GLWindow::ChangeTitle(const char* title)
+void Sphynx::Core::GLWindow::Internal_ChangeTitle(const char* title)
 {
 	glfwSetWindowTitle(window, title);
 }

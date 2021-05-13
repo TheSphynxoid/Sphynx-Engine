@@ -133,6 +133,8 @@ void Sphynx::Application::CloseAllWindow()
 	CloseMainWindow();
 	for (auto& win : ExtraWindows) {
 		//A Closed Window doesn't exist.
+		//Issue: Closing a extra window Raises an event that Call RemoveExtraWindow with the same window.
+		//I Don't know if it will cause problems.
 		RemoveExtraWindow(win);
 	}
 }
@@ -141,12 +143,11 @@ void Sphynx::Application::AddExtraWindow(std::unique_ptr<Core::IWindow>&& window
 {
 	//Ours now!
 	Core::IWindow* obj = window.release();
+	obj->Start();
 	ExtraWindows.push_back(obj);
 }
 
 void Sphynx::Application::RemoveExtraWindow(Core::IWindow* window)
 {
-	//It Will Close the window whether it's in the list or not.
-	//window->Close();
 	ExtraWindows.remove(window);
 }

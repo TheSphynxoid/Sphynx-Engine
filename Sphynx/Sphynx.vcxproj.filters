@@ -96,6 +96,7 @@
     <ClInclude Include="src\Sphynx\Delegate.h" />
     <ClInclude Include="src\Sphynx\Vector.h" />
     <ClInclude Include="src\Sphynx\Core\Platform\GLFWInput.h" />
+    <ClInclude Include="Renderer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Sphynx\Application.cpp">
@@ -152,6 +153,7 @@
     <ClCompile Include="src\Sphynx\Pointer.cpp" />
     <ClCompile Include="src\Sphynx\Delegate.cpp" />
     <ClCompile Include="src\Sphynx\Core\Platform\GLFWInput.cpp" />
+    <ClCompile Include="Renderer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="TODO.txt" />

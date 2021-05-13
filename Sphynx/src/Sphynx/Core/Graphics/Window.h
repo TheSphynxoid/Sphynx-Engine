@@ -30,6 +30,8 @@ namespace Sphynx::Core {
 		Input* input;
 		//Replacement for Update and Resize Functions.
 		//Current State of the window.
+
+		virtual void Internal_ChangeTitle(const char* title) = 0;
 	public:
 		virtual inline bool IsAlive() = 0;
 		//Should Probably be overriden.
@@ -71,9 +73,18 @@ namespace Sphynx::Core {
 		virtual Bounds GetBounds() = 0;
 		virtual int GetHeight() = 0;
 		virtual int GetWidth() = 0;
+		const char* GetTitle() {
+			return Title.c_str();
+		};
 
 		//Request Title Change
-		virtual void ChangeTitle(const char* title) = 0;
+		void ChangeTitle(const char* title) {
+			Title = title;
+			Internal_ChangeTitle(title);
+		};
+
+		///////////Graphics//////////////
+		
 
 		//Returns the Window's EventSystem.
 		Events::EventSystem* GetEventSystem() { return &OwnerEvent; };
@@ -81,12 +92,14 @@ namespace Sphynx::Core {
 	protected:
 		int Height = 0, Width = 0;
 		bool FullScreen = false;
+		std::string Title;
 		//Initializes the instance. Must Be call by any class that derives from IWindow.
 		void Init(Application* App, Bounds WinBounds = DefBounds, std::string title = "Sphynx Engine", bool fullscreen = false)
 		{
 			FullScreen = fullscreen;
 			Height = WinBounds.Height;
 			Width = WinBounds.Width;
+			Title = title;
 			OwnerEvent = App->RequestNewEventSystem();
 			//input = Input();
 			
