@@ -26,7 +26,7 @@ namespace Sphynx::Core::Internal {
 		struct Helper {
 			template<class comp>
 			static bool CompareTypeToComponant_typeindex(Component* c) {
-				return (std::type_index(typeid(comp) == std::type_index(typeid(*c));
+				return (std::type_index(typeid(comp) == std::type_index(typeid(*c))));
 			}
 			template<class comp>
 			static bool CompareTypeToComponant_typeid(Component* c) {
