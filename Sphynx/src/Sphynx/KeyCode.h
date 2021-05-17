@@ -1,6 +1,27 @@
 #pragma once
 
 namespace Sphynx {
+    enum class MouseButton : int {
+        LeftButton = 0,
+        RightButton = 1,
+        MiddleButton = 2,
+        //Extra Buttons
+        Button4 = 3,
+        Button5 = 4,
+        Button6 = 5,
+        Button7 = 6,
+        Button8 = 7,
+    };
+    //1:1 GLFW_MODS
+    enum class Mods : int {
+        Shift = 0x0001,
+        Control = 0x0002,
+        Alt = 0x0004,
+        Super = 0x0008,
+        CapsLock = 0x0010,
+        NumLock = 0x0020
+    };
+    //1:1 Convertion for GLFW_KEY But Not Dependent on GLFW.
     enum class Keys : int {
         Unknown = -1,
         /* Printable keys */
@@ -123,6 +144,11 @@ namespace Sphynx {
         RightControl = 345,
         RightAlt = 346,
         RightSuper = 347,
-        Menu = 348,
+        Menu = 348
     };
+    enum class Action : int {
+        Pressed, Repeat, Release
+    };
+#define Last_Key 348
+#define Last_Mouse_Button 7
 }

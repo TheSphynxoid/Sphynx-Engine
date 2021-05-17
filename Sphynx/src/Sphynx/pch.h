@@ -1,8 +1,11 @@
 #pragma once
+#include <list>
 #include <map>
 #include <vector>
 #include <memory>
 #include <iostream>
+#include <type_traits>
+#include <typeinfo>
 #include "PlatformMacros.h"
 #ifdef Platform_Win
 	#define WIN32_LEAN_AND_MEAN

@@ -6,19 +6,20 @@
 #include <memory>
 
 namespace Sphynx {
-	struct OnLog : Events::Event {
+	struct OnLog : public Events::Event {
 		std::string msg;
 		spdlog::level::level_enum level;
 		OnLog(std::string& str, spdlog::level::level_enum lvl) : msg(str), level(lvl) {};
 	};
-	struct OnLogFlush : Events::Event {
+	struct OnLogFlush : public Events::Event {
 		OnLogFlush() {};
 	};
 	class Logger final{
-	private:
+	public:
 		//Custom Sink That uses events to dispatch logs.(Should it Be Private?) 
 		//TODO : Variants of this Where it logs in a file or something and dispatching events(?)
 		class LoggerSink : public spdlog::sinks::base_sink<std::mutex>{
+		private:
 			Events::EventSystem eventsystem = *Events::GlobalEventSystem::GetInstance();
 		public:
 			LoggerSink() {};
@@ -28,6 +29,7 @@ namespace Sphynx {
 			virtual void sink_it_(const spdlog::details::log_msg& msg) override;
 			virtual void flush_() override;
 		};
+		typedef std::shared_ptr<LoggerSink> LoggerSinkPtr;
 	private:
 		static std::shared_ptr<spdlog::logger> InternalLogger;
 		static std::shared_ptr<spdlog::logger> ClientLogger;
@@ -36,6 +38,8 @@ namespace Sphynx {
 		inline static std::shared_ptr<spdlog::logger> GetInternalLogger() { return InternalLogger; };
 		inline static std::shared_ptr<spdlog::logger> GetClientLogger() { return ClientLogger;};
 
+		//inline static LoggerSinkPtr GetInternalLoggerSink() { return std::make_shared<LoggerSink>(InternalLogger->sinks()[0].get()); };
+		//inline static LoggerSinkPtr GetClientLoggerSink() { return std::make_shared<LoggerSink>(ClientLogger->sinks()[0].get()); };
 	};
 }
 

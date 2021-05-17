@@ -15,10 +15,11 @@
 #endif
 #pragma endregion
 #include "Application.h"
-#include "Window/Window.h"
+#include "Core/Graphics/Window.h"
 #include "Events/Event.h"
 #include "Logger.h"
 #include <charconv>
+#include "Platform/GLWindow.h"
 
 using namespace Sphynx::Events;
 
@@ -35,9 +36,9 @@ ImVector<ImVec4>	Colors;
 void Sphynx::Core::Imgui::Start(Application* app)
 {
 	App = app;
-	window = app->GetAppWindow();
+	window = app->GetMainWindow();
 	time = app->GetTimeObject();
-	app->GetAppEventSystem()->Subscribe<Imgui, Events::OnOverlayUpdate>(this, &Imgui::OnOverlayUpdate);
+	window->GetEventSystem()->Subscribe<Imgui, Events::OnOverlayUpdate>(this, &Imgui::OnOverlayUpdate);
 #ifdef IMGUI_DX11
 	Imgui_ImplDX11_Init();
 #else
@@ -65,7 +66,7 @@ void Sphynx::Core::Imgui::OnOverlayUpdate(Events::OnOverlayUpdate& e)
 		if (w->IsOpen == false) {
 			RemoveOverlayWindow(w);
 			//Hack or solution... Idk. it stops the iterator from causing us to use the deleted window. 
-			//why does it happen? i don't know. i can't be bothered for now.
+			//why does it happen? i don't know. i can't be bothered for now.It loses us one update cycle
 			break;
 		}
 	}
@@ -105,7 +106,7 @@ int Sphynx::Core::Imgui::GetNumberOfWindows()
 
 void Sphynx::Core::Imgui::Shutdown()
 {
-	App->GetAppEventSystem()->Dispatch<Events::OnOverlayModuleDown>(Events::OnOverlayModuleDown());
+	window->GetEventSystem()->QueueEvent<Events::OnOverlayModuleDown>(Events::OnOverlayModuleDown());
 	ImGui_ImplGlfw_Shutdown();
 	ImGui_ImplOpenGL3_Shutdown();
 }
@@ -160,7 +161,8 @@ Sphynx::Core::DebugWindow::DebugWindow(Application* app)
 {
 	App = app;
 	eventsystem = App->GetAppEventSystem();
-	window = App->GetAppWindow();
+	window = App->GetMainWindow();
+	extra = App->GetExtraWindows();
 	memset(TitleBuffer, 0, sizeof(TitleBuffer));
 	LineOffsets.push_back(0);
 	GlobalEventSystem::GetInstance()->Subscribe<DebugWindow, OnLog>(this, &DebugWindow::OnEventLog);
@@ -214,6 +216,7 @@ void HandleLogging(const char* text, int lvl, bool isClient)
 	}
 }
 
+//Long Shit for centralized debugging.
 void Sphynx::Core::DebugWindow::Draw()
 {
 	ImGui::SetNextWindowSize(ImVec2(420, 360), ImGuiCond_Once);
@@ -222,7 +225,7 @@ void Sphynx::Core::DebugWindow::Draw()
 			ImGui::Indent();
 			static int item;
 			static int rb;
-			static char* lvls[5]{ "Trace","Info","Warn","Error","Debug" };
+			static const char* lvls[5]{ "Trace","Info","Warn","Error","Debug" };
 			if (ImGui::RadioButton("Core", rb == 0)) { rb = 0; } ImGui::SameLine();
 			if (ImGui::RadioButton("Client", rb == 1)) { rb = 1; }
 			if (ImGui::BeginCombo("Log Level", lvls[item])) {
@@ -291,7 +294,7 @@ void Sphynx::Core::DebugWindow::Draw()
 					auto [ptr, ec] = std::to_chars(index.data(), index.data() + 5, i);
 					char d[256];
 					memset(d, '\n', sizeof(char) * (strlen(name) + index.size()));
-					strcpy(d, name);
+					strcpy_s(d, name);
 					strcat_s(d, " ##");
 					strcat_s(d, index.data());
 					//End Text Formating
@@ -305,10 +308,34 @@ void Sphynx::Core::DebugWindow::Draw()
 			ImGui::Text("Number Of Window = %i", GetImGui()->GetNumberOfWindows());
 			ImGui::Unindent();
 		}
-		if (ImGui::CollapsingHeader("Window")) {
+		if (ImGui::CollapsingHeader("Window (Still WIP)")) {
 			ImGui::Indent();
-			ImGui::Text("Window Height:%i", window->GetHeight());
-			ImGui::Text("Window Width:%i", window->GetWidth());
+			if (ImGui::BeginListBox("ExtraWindows", ImVec2(FLT_MIN, ImGui::GetTextLineHeightWithSpacing() * 5))) {
+				extra = App->GetExtraWindows();
+				static int selected = -1;
+				int i = 0;
+				for (auto win : extra) {
+					if (ImGui::Selectable(win->GetTitle(), selected == i)) {
+						selected = i;
+					}
+					i++;
+
+				}
+				ImGui::EndListBox();
+				if (ImGui::Button("Create Extra Window")) {
+					//Extra Window Shit.
+					App->AddExtraWindow(std::make_unique<Sphynx::Core::GLWindow>(App, window->GetBounds(), "Extra", window));
+				}
+				if (ImGui::Button("Close Extra Window")) {
+					if (selected != -1) {
+						auto start = extra.begin();
+						std::advance(start, selected);
+						(*start)->Close();
+					}
+				}
+			}
+			ImGui::Text("Main Window Height:%i", window->GetHeight());
+			ImGui::Text("Main Window Width:%i", window->GetWidth());
 			bool vs = window->IsVsyncEnabled();
 			if (ImGui::Checkbox("Vsync", &vs)) {
 				window->SetVsync(vs);

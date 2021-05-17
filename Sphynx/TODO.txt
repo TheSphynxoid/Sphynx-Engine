@@ -1,0 +1,12 @@
+Sphynx Engine V0.4.5
+Windows now close properly
+Create Pointer Class. Done
+Create Delegates. Done
+Make Event System Compatible With Delegates. WIP
+	!--Fix Event::QueueEvent (Issue: Queue is always Empty).
+	!-- Yep, Gave up.
+Design and implement Input System
+Fix:
+	list::remove throw compile error (File:Application.cpp, Line:90).
+Add Input Action Enum (Pressed,Release,Repeat). Done
+Expand DebugWindow(ImGUI).
