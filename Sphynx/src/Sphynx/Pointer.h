@@ -6,12 +6,13 @@
 #include <list>
 #include "Delegate.h"
 
+///These are Utility so they are not Object nor GameObject nor Components.
 
 namespace Sphynx {
 	template <typename T>
 	class Invalid_Type : public std::exception {
 	public:
-		Invalid_Type() : std::exception("Provided an Unvalid Type") {};
+		Invalid_Type() : std::exception("Provided an unvalid Type") {};
 	};
 
 	class Deallocator_Base {
@@ -52,7 +53,7 @@ namespace Sphynx {
 	private:
 	public:
 		virtual ~PointerBase() {};
-		virtual void* GetAddress() const = 0;
+		virtual void* GetRaw() const = 0;
 	protected:
 		int RefCount = 0;
 		void AddRef() {
@@ -65,16 +66,16 @@ namespace Sphynx {
 		inline void SetRefCount(int c) { RefCount = c; };
 	public:
 		virtual bool operator==(const PointerBase&& ptr) {
-			return this->GetAddress() == ptr.GetAddress();
+			return this->GetRaw() == ptr.GetRaw();
 		}
 	};
 	class PointerRegistry {
 	private:
 		std::map<void*,PointerBase*> Addresses;
 	public:
-		PointerBase* CreatePointer(void* add) {
+		PointerBase* CreatePointer(void* p) {
 			for (auto&[v,ptr] : Addresses) {
-				if (ptr->GetAddress() == add) {
+				if (ptr->GetRaw() == p) {
 					//Get an Already existing pointer
 					return ptr;
 				}
@@ -166,7 +167,7 @@ namespace Sphynx {
 		};
 
 		T* GetRaw() { return Object; };
-		void* GetAddress() const override { return (void*)Object; };
+		void* GetRaw() const override { return (void*)Object; };
 		T& operator* ()
 		{
 			return *Object;

@@ -43,5 +43,7 @@
 #include "../dep/glfw/include/GLFW/glfw3.h"
 #endif
 #endif//EXPOSE_IMGUI_IMPL
+//-------------------------------------------------------------
+#include "GameObject.h"
 //--------------------EntryPoint Header-------------------------
 #include "Sphynx/EntryPoint.h"

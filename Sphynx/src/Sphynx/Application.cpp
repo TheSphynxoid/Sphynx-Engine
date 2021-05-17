@@ -88,7 +88,7 @@ void Sphynx::Application::DeleteEventSystem(Events::EventSystem& e)
 	for (auto& ptr : EventArray) {
 		if (ptr.GetRaw() == &e) {
 			//EventArray.remove(ptr);
-			EventArray.remove_if([&,ptr](Pointer<Events::EventSystem>& p)->bool {return ptr.GetAddress() == p.GetAddress(); });
+			EventArray.remove_if([&,ptr](Pointer<Events::EventSystem>& p)->bool {return ptr.GetRaw() == p.GetRaw(); });
 			ptr.Release();
 			delete &ptr;
 		}

@@ -96,7 +96,12 @@
     <ClInclude Include="src\Sphynx\Delegate.h" />
     <ClInclude Include="src\Sphynx\Vector.h" />
     <ClInclude Include="src\Sphynx\Core\Platform\GLFWInput.h" />
-    <ClInclude Include="Renderer.h" />
+    <ClInclude Include="src\Sphynx\Core\Graphics\Pipeline\Renderer.h" />
+    <ClInclude Include="src\Sphynx\Object.h" />
+    <ClInclude Include="src\Sphynx\GameObject.h" />
+    <ClInclude Include="src\Sphynx\Component.h" />
+    <ClInclude Include="src\Sphynx\Core\Factories\ComponentFactory.h" />
+    <ClInclude Include="src\Sphynx\Core\TestComponent.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Sphynx\Application.cpp">
@@ -153,7 +158,11 @@
     <ClCompile Include="src\Sphynx\Pointer.cpp" />
     <ClCompile Include="src\Sphynx\Delegate.cpp" />
     <ClCompile Include="src\Sphynx\Core\Platform\GLFWInput.cpp" />
-    <ClCompile Include="Renderer.cpp" />
+    <ClCompile Include="src\Sphynx\Core\Graphics\Pipeline\Renderer.cpp" />
+    <ClCompile Include="src\Sphynx\Object.cpp" />
+    <ClCompile Include="src\Sphynx\GameObject.cpp" />
+    <ClCompile Include="src\Sphynx\Component.cpp" />
+    <ClCompile Include="src\Sphynx\Core\Factories\ComponentFactory.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="TODO.txt" />
