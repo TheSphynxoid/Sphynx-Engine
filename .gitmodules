@@ -8,3 +8,6 @@
 	path = Sphynx/dep/imgui
 	url = https://github.com/ocornut/imgui
 	branch = docking
+[submodule "sphynx\\dep\\glm"]
+	path = sphynx\\dep\\glm
+	url = https://github.com/g-truc/glm
