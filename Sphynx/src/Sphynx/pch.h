@@ -12,3 +12,5 @@
 	#include <Windows.h>
 #elif defined(__linux__)
 #endif
+//Sphynx Libraries
+#include "Logger.h"

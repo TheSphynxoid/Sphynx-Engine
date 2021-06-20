@@ -137,4 +137,7 @@
   <ItemGroup>
     <ClCompile Include="src\App.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <CopyFileToFolders Include="src\Test.lua" />
+  </ItemGroup>
 </Project>

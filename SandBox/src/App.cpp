@@ -14,7 +14,7 @@ class SandBox : public Sphynx::Application
 {
 public:
 	SandBox() {
-		OpenMainWindow(std::make_unique<Core::GLWindow>(this, Bounds(1024, 576), "Legacy", NULL));
+		OpenMainWindow(std::make_unique<Core::GLWindow>(this, Sphynx::Core::Bounds(1024, 576), "Legacy", NULL));
 	}
 	void Update() {
 

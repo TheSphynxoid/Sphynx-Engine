@@ -23,7 +23,8 @@ project "Sphynx"
 	files
 	{
 		"Sphynx/src/**.h",
-		"Sphynx/src/**.cpp"
+		"Sphynx/src/**.cpp",
+		"Sphynx/src/**.lua"
 	}
 	includedirs
 	{
@@ -31,13 +32,16 @@ project "Sphynx"
 		"%{prj.name}/src/Sphynx",
 		"%{prj.name}/dep/glfw/include",
 		"%{prj.name}/dep/glad/include",
-		"%{prj.name}/dep/imgui"
+		"%{prj.name}/dep/imgui",
+		"%{prj.name}/dep/glm",
+		"%{prj.name}/dep/lua/src"
 	}
 	links
 	{
 		"glfw",
 		"glad",
 		"imgui",
+		"Lua",
 		"opengl32.lib"
 	}
 
@@ -68,7 +72,8 @@ project "Sandbox"
 	files
 	{
 		"Sandbox/src/**.h",
-		"Sandbox/src/**.cpp"
+		"Sandbox/src/**.cpp",
+		"Sandbox/src/**.lua"
 	}
 
 	includedirs
@@ -96,3 +101,4 @@ project "Sandbox"
 include "Sphynx/dep/glfw"
 include "Sphynx/dep/glad/glad"
 include "Sphynx/dep/imgui/imgui"
+include "Sphynx/dep/Lua"

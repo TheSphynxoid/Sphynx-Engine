@@ -4,6 +4,7 @@
 #include "SpTime.h"
 #include "Core/Graphics/Imgui.h"
 #include "Pointer.h"
+#include "Core/Scripting/ScriptingEngine.h"
 #include <type_traits>
 #include <utility>
 #include <memory>
@@ -23,6 +24,7 @@ namespace Sphynx {
 		//Window API Provider.
 	private:
 		Events::EventSystem eventSystem;
+		Core::Scripting::ScriptingEngine scriptingEngine;
 		std::list<Pointer<Events::EventSystem>> EventArray;
 		Core::IWindow* MainWindow = NULL;
 		std::list<Core::IWindow*> ExtraWindows;

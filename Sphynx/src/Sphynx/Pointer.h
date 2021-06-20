@@ -127,7 +127,7 @@ namespace Sphynx {
 		Pointer(Pointer&& ptr) noexcept {
 			std::swap(this->dealloc, ptr.dealloc);
 			std::swap(this->Object, ptr.Object);
-			std::swap(this->SetRefCount, ptr.GetRefCount());
+			this->SetRefCount(ptr.GetRefCount());
 			std::swap(this->SelfDestroy, ptr.SelfDestroy);
 		}
 		//Copy

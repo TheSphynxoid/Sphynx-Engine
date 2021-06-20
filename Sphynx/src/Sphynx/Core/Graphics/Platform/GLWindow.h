@@ -1,7 +1,7 @@
 #pragma once
 #include "Core.h"
 #include "../Window.h"
-
+#include "GLRenderer.h"
 
 //Opaque Object.
 struct GLFWwindow;
@@ -14,6 +14,7 @@ namespace Sphynx::Core {
 	class GLWindow final : public IWindow
 	{
 	private:
+		Graphics::GL::GLRenderer* Renderer;
 		inline static unsigned int WindowsOpened = 0;
 		GLFWwindow* window;
 		static bool GLFWInit;
@@ -44,6 +45,7 @@ namespace Sphynx::Core {
 		inline bool IsVsyncEnabled()override { return Vsync; };
 		void SetVsync(bool vsync)override;
 		void Internal_ChangeTitle(const char* title)override;
+		Core::Graphics::IRenderer* GetRenderer()override { return Renderer; };
 		///////GLWindow Function/////////
 
 		static void TerminateGLFW();

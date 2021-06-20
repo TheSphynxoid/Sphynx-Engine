@@ -125,7 +125,7 @@ Sphynx::Core::GLWindow::GLWindow(Application* App, Bounds WinBounds, std::string
 	//End of callbacks.
 
 	//ToDO: Init imgui and Renderer.
-
+	Renderer = new Core::Graphics::GL::GLRenderer();
 	glClearColor(0.5f, 0.05f, 0.0f, 1);
 
 }
@@ -140,6 +140,8 @@ Sphynx::Core::GLWindow::GLWindow(Application* App, Bounds WinBounds, std::string
 	}
 	Init(App, WinBounds, title);
 	Sharing = true;
+	glfwInitHint(GLFW_VERSION_MAJOR, 4);
+	glfwInitHint(GLFW_VERSION_MINOR, 6);
 	window = glfwCreateWindow(WinBounds.Width, WinBounds.Height, title.c_str(), NULL, share->window);
 	if (!window) {
 		Core_Error("Unable To Create Secondary Window");

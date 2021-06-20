@@ -7,14 +7,29 @@
     <Filter Include="Sphynx\Core">
       <UniqueIdentifier>{E7DBAD19-5391-260F-DC85-20E6483A1D13}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Sphynx\Core\Window">
-      <UniqueIdentifier>{EE9E1C4A-DA82-DD9F-43E3-D7F22FE6C721}</UniqueIdentifier>
+    <Filter Include="Sphynx\Core\Factories">
+      <UniqueIdentifier>{16340174-82A0-BC6E-4B94-54CCB7BFDED6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Sphynx\Core\Window\Platform">
-      <UniqueIdentifier>{0287AF4C-6E94-DD32-F77A-D91D6387A9E9}</UniqueIdentifier>
+    <Filter Include="Sphynx\Core\Graphics">
+      <UniqueIdentifier>{07F8F016-F386-7AE0-9CA5-8EDB88138B86}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sphynx\Core\Graphics\Pipeline">
+      <UniqueIdentifier>{0C988214-78B0-693E-415D-F9D7AD34FED7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sphynx\Core\Graphics\Platform">
+      <UniqueIdentifier>{3B2C80D9-A744-6703-70F1-F69CDCC8FB9C}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sphynx\Core\Platform">
+      <UniqueIdentifier>{1B6CAB97-07FB-3461-B019-495C9C874507}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sphynx\Core\Scripting">
+      <UniqueIdentifier>{A99DEA9F-150A-A69A-DEFD-3DF84A29C802}</UniqueIdentifier>
     </Filter>
     <Filter Include="Sphynx\Events">
       <UniqueIdentifier>{3383B641-9F43-3278-687E-7BF5D4FD7654}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sphynx\Scripts">
+      <UniqueIdentifier>{66A8CC82-5276-C088-3B0A-31AF27779CED}</UniqueIdentifier>
     </Filter>
     <Filter Include="Sphynx\imgui">
       <UniqueIdentifier>{D9B61752-C519-A7F6-6E9F-DFAC5AE17279}</UniqueIdentifier>
@@ -25,23 +40,77 @@
     <ClInclude Include="src\Sphynx\Application.h">
       <Filter>Sphynx</Filter>
     </ClInclude>
+    <ClInclude Include="src\Sphynx\Component.h">
+      <Filter>Sphynx</Filter>
+    </ClInclude>
     <ClInclude Include="src\Sphynx\Core.h">
       <Filter>Sphynx</Filter>
     </ClInclude>
+    <ClInclude Include="src\Sphynx\Core\Factories\ComponentFactory.h">
+      <Filter>Sphynx\Core\Factories</Filter>
+    </ClInclude>
     <ClInclude Include="src\Sphynx\Core\Graphics\Imgui.h">
-      <Filter>Sphynx\Core</Filter>
+      <Filter>Sphynx\Core\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Sphynx\Core\Graphics\Pipeline\Camera.h">
+      <Filter>Sphynx\Core\Graphics\Pipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Sphynx\Core\Graphics\Pipeline\Material.h">
+      <Filter>Sphynx\Core\Graphics\Pipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Sphynx\Core\Graphics\Pipeline\Mesh.h">
+      <Filter>Sphynx\Core\Graphics\Pipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Sphynx\Core\Graphics\Pipeline\Renderer.h">
+      <Filter>Sphynx\Core\Graphics\Pipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Sphynx\Core\Graphics\Pipeline\Shader.h">
+      <Filter>Sphynx\Core\Graphics\Pipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Sphynx\Core\Graphics\Pipeline\Texture.h">
+      <Filter>Sphynx\Core\Graphics\Pipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Sphynx\Core\Graphics\Platform\GLMaterial.h">
+      <Filter>Sphynx\Core\Graphics\Platform</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Sphynx\Core\Graphics\Platform\GLMesh.h">
+      <Filter>Sphynx\Core\Graphics\Platform</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Sphynx\Core\Graphics\Platform\GLRenderer.h">
+      <Filter>Sphynx\Core\Graphics\Platform</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Sphynx\Core\Graphics\Platform\GLShader.h">
+      <Filter>Sphynx\Core\Graphics\Platform</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Sphynx\Core\Graphics\Platform\GLTexture.h">
+      <Filter>Sphynx\Core\Graphics\Platform</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Sphynx\Core\Graphics\Platform\GLWindow.h">
+      <Filter>Sphynx\Core\Graphics\Platform</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Sphynx\Core\Graphics\Window.h">
+      <Filter>Sphynx\Core\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="src\Sphynx\Core\Module.h">
       <Filter>Sphynx\Core</Filter>
     </ClInclude>
+    <ClInclude Include="src\Sphynx\Core\Platform\GLFWInput.h">
+      <Filter>Sphynx\Core\Platform</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Sphynx\Core\Scripting\Lua.h">
+      <Filter>Sphynx\Core\Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Sphynx\Core\Scripting\ScriptingEngine.h">
+      <Filter>Sphynx\Core\Scripting</Filter>
+    </ClInclude>
     <ClInclude Include="src\Sphynx\Core\System.h">
       <Filter>Sphynx\Core</Filter>
     </ClInclude>
-    <ClInclude Include="src\Sphynx\Core\Graphics\Platform\GLWindow.h">
-      <Filter>Sphynx\Core\Window\Platform</Filter>
+    <ClInclude Include="src\Sphynx\Core\TestComponent.h">
+      <Filter>Sphynx\Core</Filter>
     </ClInclude>
-    <ClInclude Include="src\Sphynx\Core\Graphics\Window.h">
-      <Filter>Sphynx\Core\Window</Filter>
+    <ClInclude Include="src\Sphynx\Delegate.h">
+      <Filter>Sphynx</Filter>
     </ClInclude>
     <ClInclude Include="src\Sphynx\EntryPoint.h">
       <Filter>Sphynx</Filter>
@@ -52,11 +121,17 @@
     <ClInclude Include="src\Sphynx\Events\Event.h">
       <Filter>Sphynx\Events</Filter>
     </ClInclude>
+    <ClInclude Include="src\Sphynx\Events\ImGuiEvents.h">
+      <Filter>Sphynx\Events</Filter>
+    </ClInclude>
     <ClInclude Include="src\Sphynx\Events\InputEvents.h">
       <Filter>Sphynx\Events</Filter>
     </ClInclude>
     <ClInclude Include="src\Sphynx\Events\WindowEvents.h">
       <Filter>Sphynx\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Sphynx\GameObject.h">
+      <Filter>Sphynx</Filter>
     </ClInclude>
     <ClInclude Include="src\Sphynx\Input.h">
       <Filter>Sphynx</Filter>
@@ -67,10 +142,19 @@
     <ClInclude Include="src\Sphynx\Logger.h">
       <Filter>Sphynx</Filter>
     </ClInclude>
+    <ClInclude Include="src\Sphynx\Object.h">
+      <Filter>Sphynx</Filter>
+    </ClInclude>
     <ClInclude Include="src\Sphynx\PlatformMacros.h">
       <Filter>Sphynx</Filter>
     </ClInclude>
+    <ClInclude Include="src\Sphynx\Pointer.h">
+      <Filter>Sphynx</Filter>
+    </ClInclude>
     <ClInclude Include="src\Sphynx\SpTime.h">
+      <Filter>Sphynx</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Sphynx\Vector.h">
       <Filter>Sphynx</Filter>
     </ClInclude>
     <ClInclude Include="src\Sphynx\imgui\imgui_impl_dx11.h">
@@ -91,36 +175,76 @@
     <ClInclude Include="src\Sphynx\pch.h">
       <Filter>Sphynx</Filter>
     </ClInclude>
-    <ClInclude Include="src\Sphynx\Events\ImGuiEvents.h" />
-    <ClInclude Include="src\Sphynx\Pointer.h" />
-    <ClInclude Include="src\Sphynx\Delegate.h" />
-    <ClInclude Include="src\Sphynx\Vector.h" />
-    <ClInclude Include="src\Sphynx\Core\Platform\GLFWInput.h" />
-    <ClInclude Include="src\Sphynx\Core\Graphics\Pipeline\Renderer.h" />
-    <ClInclude Include="src\Sphynx\Object.h" />
-    <ClInclude Include="src\Sphynx\GameObject.h" />
-    <ClInclude Include="src\Sphynx\Component.h" />
-    <ClInclude Include="src\Sphynx\Core\Factories\ComponentFactory.h" />
-    <ClInclude Include="src\Sphynx\Core\TestComponent.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Sphynx\Application.cpp">
       <Filter>Sphynx</Filter>
     </ClCompile>
+    <ClCompile Include="src\Sphynx\Component.cpp">
+      <Filter>Sphynx</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Sphynx\Core\Factories\ComponentFactory.cpp">
+      <Filter>Sphynx\Core\Factories</Filter>
+    </ClCompile>
     <ClCompile Include="src\Sphynx\Core\Graphics\Imgui.cpp">
-      <Filter>Sphynx\Core</Filter>
+      <Filter>Sphynx\Core\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Sphynx\Core\Graphics\Pipeline\Camera.cpp">
+      <Filter>Sphynx\Core\Graphics\Pipeline</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Sphynx\Core\Graphics\Pipeline\Material.cpp">
+      <Filter>Sphynx\Core\Graphics\Pipeline</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Sphynx\Core\Graphics\Pipeline\Mesh.cpp">
+      <Filter>Sphynx\Core\Graphics\Pipeline</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Sphynx\Core\Graphics\Pipeline\Renderer.cpp">
+      <Filter>Sphynx\Core\Graphics\Pipeline</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Sphynx\Core\Graphics\Pipeline\Shader.cpp">
+      <Filter>Sphynx\Core\Graphics\Pipeline</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Sphynx\Core\Graphics\Pipeline\Texture.cpp">
+      <Filter>Sphynx\Core\Graphics\Pipeline</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Sphynx\Core\Graphics\Platform\GLMaterial.cpp">
+      <Filter>Sphynx\Core\Graphics\Platform</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Sphynx\Core\Graphics\Platform\GLMesh.cpp">
+      <Filter>Sphynx\Core\Graphics\Platform</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Sphynx\Core\Graphics\Platform\GLRenderer.cpp">
+      <Filter>Sphynx\Core\Graphics\Platform</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Sphynx\Core\Graphics\Platform\GLShader.cpp">
+      <Filter>Sphynx\Core\Graphics\Platform</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Sphynx\Core\Graphics\Platform\GLTexture.cpp">
+      <Filter>Sphynx\Core\Graphics\Platform</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Sphynx\Core\Graphics\Platform\GLWindow.cpp">
+      <Filter>Sphynx\Core\Graphics\Platform</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Sphynx\Core\Graphics\Window.cpp">
+      <Filter>Sphynx\Core\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="src\Sphynx\Core\Module.cpp">
       <Filter>Sphynx\Core</Filter>
     </ClCompile>
+    <ClCompile Include="src\Sphynx\Core\Platform\GLFWInput.cpp">
+      <Filter>Sphynx\Core\Platform</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Sphynx\Core\Scripting\Lua.cpp">
+      <Filter>Sphynx\Core\Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Sphynx\Core\Scripting\ScriptingEngine.cpp">
+      <Filter>Sphynx\Core\Scripting</Filter>
+    </ClCompile>
     <ClCompile Include="src\Sphynx\Core\System.cpp">
       <Filter>Sphynx\Core</Filter>
     </ClCompile>
-    <ClCompile Include="src\Sphynx\Core\Graphics\Platform\GLWindow.cpp">
-      <Filter>Sphynx\Core\Window\Platform</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Sphynx\Core\Graphics\Window.cpp">
-      <Filter>Sphynx\Core\Window</Filter>
+    <ClCompile Include="src\Sphynx\Delegate.cpp">
+      <Filter>Sphynx</Filter>
     </ClCompile>
     <ClCompile Include="src\Sphynx\Events\ApplicationEvents.cpp">
       <Filter>Sphynx\Events</Filter>
@@ -128,10 +252,19 @@
     <ClCompile Include="src\Sphynx\Events\InputEvents.cpp">
       <Filter>Sphynx\Events</Filter>
     </ClCompile>
+    <ClCompile Include="src\Sphynx\GameObject.cpp">
+      <Filter>Sphynx</Filter>
+    </ClCompile>
     <ClCompile Include="src\Sphynx\Input.cpp">
       <Filter>Sphynx</Filter>
     </ClCompile>
     <ClCompile Include="src\Sphynx\Logger.cpp">
+      <Filter>Sphynx</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Sphynx\Object.cpp">
+      <Filter>Sphynx</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Sphynx\Pointer.cpp">
       <Filter>Sphynx</Filter>
     </ClCompile>
     <ClCompile Include="src\Sphynx\SpTime.cpp">
@@ -155,16 +288,5 @@
     <ClCompile Include="src\Sphynx\pch.cpp">
       <Filter>Sphynx</Filter>
     </ClCompile>
-    <ClCompile Include="src\Sphynx\Pointer.cpp" />
-    <ClCompile Include="src\Sphynx\Delegate.cpp" />
-    <ClCompile Include="src\Sphynx\Core\Platform\GLFWInput.cpp" />
-    <ClCompile Include="src\Sphynx\Core\Graphics\Pipeline\Renderer.cpp" />
-    <ClCompile Include="src\Sphynx\Object.cpp" />
-    <ClCompile Include="src\Sphynx\GameObject.cpp" />
-    <ClCompile Include="src\Sphynx\Component.cpp" />
-    <ClCompile Include="src\Sphynx\Core\Factories\ComponentFactory.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="TODO.txt" />
   </ItemGroup>
 </Project>

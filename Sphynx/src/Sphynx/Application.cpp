@@ -27,6 +27,8 @@ Sphynx::Application::Application() : time(Time()), imgui(Imgui())
 #if defined(DEBUG)
 	Events::GlobalEventSystem::GetInstance()->Subscribe<Application, OnLog>(this, &Application::StdLog);
 #endif
+	scriptingEngine = Core::Scripting::ScriptingEngine();
+	scriptingEngine.GetLua().ExecuteFile("Test.lua");
 	if (MainWindow) {
 		imgui.Start(this);
 		imgui.AddOverlayWindow(new DebugWindow(this));

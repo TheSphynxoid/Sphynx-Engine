@@ -25,15 +25,15 @@ namespace Sphynx::Core::Internal {
 		//Utility
 		struct Helper {
 			template<class comp>
-			static bool CompareTypeToComponant_typeindex(Component* c) {
+			inline static bool CompareTypeToComponant_typeindex(Component* c) {
 				return (std::type_index(typeid(comp) == std::type_index(typeid(*c))));
 			}
 			template<class comp>
-			static bool CompareTypeToComponant_typeid(Component* c) {
+			inline static bool CompareTypeToComponant_typeid(Component* c) {
 				return (typeid(comp) == typeid(*c));
 			}
 			template<class comp>
-			static bool IsComponentInGameObject(GameObject* obj) {
+			inline static bool IsComponentInGameObject(GameObject* obj) {
 				return RegisteredTypeIDs[obj].find(std::type_index(typeid(comp))) != RegisteredTypeIDs.end();
 			}
 		};

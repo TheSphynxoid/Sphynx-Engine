@@ -12,6 +12,7 @@ namespace Sphynx {
 		virtual void OnComponentDetach() = 0;
 	public:
 		virtual ~Component() = 0;
+		virtual void Update() = 0;
 	};
 }
 

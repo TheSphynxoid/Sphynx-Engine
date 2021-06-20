@@ -35,6 +35,7 @@ namespace Sphynx {
 		Vector4(double _x, double _y, double _z, double _w) :x(_x), y(_y), z(_z), w(_w) {};
 
 	};
+	typedef Vector4<> Vec4;
 	template<typename T = float>
 	struct Vector3 {
 		T x, y, z;

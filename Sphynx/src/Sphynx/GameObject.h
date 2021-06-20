@@ -10,11 +10,14 @@ namespace Sphynx {
 	{
 	private:
 		std::list<Component*> Components;
-
+		void Update() {
+			for (auto comp : Components) {
+				comp->Update();
+			}
+		}
 		bool IsAlive;
 	public:
-		//No Doubles
-
+		//No Double
 		template<class component>
 		void AddComponent() {
 			//C++17
@@ -27,11 +30,10 @@ namespace Sphynx {
 		}
 		template<class component>
 		component* GetComponent() {
+			if (!std::is_base_of_v<Component, component>) return NULL;
 			for (auto comp : Components) {
-				auto reqtid = typeid(component);
-				auto comptid = typeid(*comp);
-				if (reqtid == comptid) {
-					return comp;
+				if (Core::Internal::ComponentFactory::Helper::CompareTypeToComponant_typeid<component>(comp)) {
+					return static_cast<component*>(comp);
 				}
 			}
 			return NULL;

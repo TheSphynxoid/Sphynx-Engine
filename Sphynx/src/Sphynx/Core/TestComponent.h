@@ -12,5 +12,6 @@ namespace Sphynx::Core::Internal {
 		virtual Component* CreateSelf() { return new TestComponent(); };
 	public:
 		~TestComponent() {};
+		void Update() {};
 	};
 }
