@@ -93,16 +93,12 @@
     <ClCompile Include="src\App.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="src\Test.lua" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\Sphynx\Sphynx.vcxproj">
       <Project>{2F02A1D1-1BA4-CBA7-045F-DFFBF09F52F8}</Project>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <CopyFileToFolders Include="src\Test.lua">
-      <FileType>Document</FileType>
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</DeploymentContent>
-      <TreatOutputAsContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</TreatOutputAsContent>
-    </CopyFileToFolders>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

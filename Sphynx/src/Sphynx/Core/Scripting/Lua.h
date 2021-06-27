@@ -16,6 +16,7 @@ namespace Sphynx::Core::Scripting {
 		//Create a lua Instance
 		Lua();
 		~Lua();
+		void Close();
 		//Creates a new lua thread.
 		Lua* CreateThread();
 		//Executes the Given file (pcall)

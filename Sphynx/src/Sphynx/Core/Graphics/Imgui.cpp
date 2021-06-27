@@ -162,6 +162,7 @@ Sphynx::Core::DebugWindow::DebugWindow(Application* app)
 	App = app;
 	eventsystem = App->GetAppEventSystem();
 	window = App->GetMainWindow();
+	scripts = App->GetScriptingEngine();
 	extra = App->GetExtraWindows();
 	memset(TitleBuffer, 0, sizeof(TitleBuffer));
 	LineOffsets.push_back(0);
@@ -246,9 +247,10 @@ void Sphynx::Core::DebugWindow::Draw()
 				}
 				ImGui::EndCombo();
 			}
-			static char buffer[512];
-			if (ImGui::InputText("Log", buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue)) {
-				HandleLogging(buffer, item, rb);
+			static char buffer[1024];
+			if (ImGui::InputText("Lua", buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue)) {
+				//HandleLogging(buffer, item, rb);
+				scripts.GetLua().ExecuteString(buffer);
 				memset(buffer, 0, sizeof(buffer));
 			}
 			ImGui::Separator();
