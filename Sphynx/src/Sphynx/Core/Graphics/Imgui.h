@@ -1,6 +1,7 @@
 #pragma once
 #include "Core/Module.h"
 #include "Events/ImGuiEvents.h"
+#include "Core/Scripting/ScriptingEngine.h"
 #include "SpTime.h"
 #include <list>
 #include <typeinfo>
@@ -68,6 +69,7 @@ namespace Sphynx::Core {
 		bool WindowButton = false, TimeButton = false;
 		Application* App;
 		Events::EventSystem* eventsystem;
+		Scripting::ScriptingEngine scripts;
 		Core::IWindow* window;
 		std::list<Core::IWindow*>extra;
 		char TitleBuffer[128];

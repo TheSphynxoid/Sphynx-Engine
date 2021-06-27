@@ -100,5 +100,5 @@ project "Sandbox"
 
 include "Sphynx/dep/glfw"
 include "Sphynx/dep/glad/glad"
-include "Sphynx/dep/imgui/imgui"
+include "Sphynx/dep/imgui"
 include "Sphynx/dep/Lua"

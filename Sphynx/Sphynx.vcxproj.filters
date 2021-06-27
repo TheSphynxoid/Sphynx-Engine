@@ -28,9 +28,6 @@
     <Filter Include="Sphynx\Events">
       <UniqueIdentifier>{3383B641-9F43-3278-687E-7BF5D4FD7654}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Sphynx\Scripts">
-      <UniqueIdentifier>{66A8CC82-5276-C088-3B0A-31AF27779CED}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Sphynx\imgui">
       <UniqueIdentifier>{D9B61752-C519-A7F6-6E9F-DFAC5AE17279}</UniqueIdentifier>
     </Filter>

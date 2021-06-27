@@ -2,14 +2,29 @@
 #include "Lua.h"
 #include <lua.hpp>
 
+int print(lua_State* L) {
+	int params = lua_gettop(L);
+	for (int i = 1; i < params + 1; i++) {
+		size_t l;
+		const char* str = luaL_tolstring(L, i, &l);
+		Core_Info(str);
+	}
+	return 0;
+}
 
 Sphynx::Core::Scripting::Lua::Lua()
 {
 	State = luaL_newstate();
 	luaL_openlibs(State);
+	lua_register(State, "print", &print);
 }
 
 Sphynx::Core::Scripting::Lua::~Lua()
+{
+	//lua_close(State);
+}
+
+void Sphynx::Core::Scripting::Lua::Close()
 {
 	lua_close(State);
 }

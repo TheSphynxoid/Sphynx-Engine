@@ -28,6 +28,7 @@ Sphynx::Application::Application() : time(Time()), imgui(Imgui())
 	Events::GlobalEventSystem::GetInstance()->Subscribe<Application, OnLog>(this, &Application::StdLog);
 #endif
 	scriptingEngine = Core::Scripting::ScriptingEngine();
+	scriptingEngine.Start(this);
 	scriptingEngine.GetLua().ExecuteFile("Test.lua");
 	if (MainWindow) {
 		imgui.Start(this);

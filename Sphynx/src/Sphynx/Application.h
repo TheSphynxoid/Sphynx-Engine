@@ -11,7 +11,7 @@
 #include <iostream>
 
 //Imgui.Window.EventSystem.GLFW.Broken Time Class
-#define Sphynx_Version "0.05.5 WIP"
+#define Sphynx_Version "0.1.5 WIP"
 
 namespace Sphynx {
 	namespace Core {
@@ -56,6 +56,7 @@ namespace Sphynx {
 		}
 		Core::IWindow* GetMainWindow()noexcept { return MainWindow; };
 		Sphynx::Time* GetTimeObject();
+		Core::Scripting::ScriptingEngine GetScriptingEngine() { return scriptingEngine; };
 
 		//////////////Window Handling///////////////
 		
