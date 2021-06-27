@@ -11,10 +11,10 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{C0FF640D-2C14-8DBE-F595-301E616989EF}</ProjectGuid>
+    <ProjectGuid>{0098A80F-6CAC-D0C0-352E-7420A101CDF1}</ProjectGuid>
     <IgnoreWarnCompileDuplicatedFilename>true</IgnoreWarnCompileDuplicatedFilename>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>ImGui</RootNamespace>
+    <RootNamespace>imgui</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -41,15 +41,15 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <OutDir>..\..\build\bin\Debug-windows-x86_64\ImGui\</OutDir>
-    <IntDir>..\..\build\int\Debug-windows-x86_64\ImGui\</IntDir>
-    <TargetName>ImGui</TargetName>
+    <OutDir>..\..\build\bin\Debug-windows-x86_64\imgui\</OutDir>
+    <IntDir>..\..\build\int\Debug-windows-x86_64\imgui\</IntDir>
+    <TargetName>imgui</TargetName>
     <TargetExt>.lib</TargetExt>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <OutDir>..\..\build\bin\Release-windows-x86_64\ImGui\</OutDir>
-    <IntDir>..\..\build\int\Release-windows-x86_64\ImGui\</IntDir>
-    <TargetName>ImGui</TargetName>
+    <OutDir>..\..\build\bin\Release-windows-x86_64\imgui\</OutDir>
+    <IntDir>..\..\build\int\Release-windows-x86_64\imgui\</IntDir>
+    <TargetName>imgui</TargetName>
     <TargetExt>.lib</TargetExt>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -85,18 +85,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="imconfig.h" />
-    <ClInclude Include="imgui.h" />
-    <ClInclude Include="imgui_internal.h" />
-    <ClInclude Include="imstb_rectpack.h" />
-    <ClInclude Include="imstb_textedit.h" />
-    <ClInclude Include="imstb_truetype.h" />
+    <ClInclude Include="imgui\imconfig.h" />
+    <ClInclude Include="imgui\imgui.h" />
+    <ClInclude Include="imgui\imgui_internal.h" />
+    <ClInclude Include="imgui\imstb_rectpack.h" />
+    <ClInclude Include="imgui\imstb_textedit.h" />
+    <ClInclude Include="imgui\imstb_truetype.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="imgui.cpp" />
-    <ClCompile Include="imgui_demo.cpp" />
-    <ClCompile Include="imgui_draw.cpp" />
-    <ClCompile Include="imgui_widgets.cpp" />
+    <ClCompile Include="imgui\imgui.cpp" />
+    <ClCompile Include="imgui\imgui_demo.cpp" />
+    <ClCompile Include="imgui\imgui_draw.cpp" />
+    <ClCompile Include="imgui\imgui_tables.cpp" />
+    <ClCompile Include="imgui\imgui_widgets.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

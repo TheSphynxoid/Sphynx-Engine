@@ -23,16 +23,12 @@
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
     <PlatformToolset>v142</PlatformToolset>
-    <PreferredToolArchitecture>
-    </PreferredToolArchitecture>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
     <PlatformToolset>v142</PlatformToolset>
-    <PreferredToolArchitecture>
-    </PreferredToolArchitecture>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -67,7 +63,6 @@
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -91,7 +86,6 @@
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -103,18 +97,16 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Renderer.h" />
-    <ClInclude Include="src\Sphynx\Core\Platform\GLFWInput.h" />
-    <ClInclude Include="src\Sphynx\Delegate.h" />
-    <ClInclude Include="src\Sphynx\Pointer.h" />
     <ClInclude Include="src\Sphynx.h" />
     <ClInclude Include="src\Sphynx\Application.h" />
     <ClInclude Include="src\Sphynx\Core.h" />
     <ClInclude Include="src\Sphynx\Core\Graphics\Imgui.h" />
-    <ClInclude Include="src\Sphynx\Core\Module.h" />
-    <ClInclude Include="src\Sphynx\Core\System.h" />
     <ClInclude Include="src\Sphynx\Core\Graphics\Platform\GLWindow.h" />
     <ClInclude Include="src\Sphynx\Core\Graphics\Window.h" />
+    <ClInclude Include="src\Sphynx\Core\Module.h" />
+    <ClInclude Include="src\Sphynx\Core\Platform\GLFWInput.h" />
+    <ClInclude Include="src\Sphynx\Core\System.h" />
+    <ClInclude Include="src\Sphynx\Delegate.h" />
     <ClInclude Include="src\Sphynx\EntryPoint.h" />
     <ClInclude Include="src\Sphynx\Events\ApplicationEvents.h" />
     <ClInclude Include="src\Sphynx\Events\Event.h" />
@@ -125,30 +117,30 @@
     <ClInclude Include="src\Sphynx\KeyCode.h" />
     <ClInclude Include="src\Sphynx\Logger.h" />
     <ClInclude Include="src\Sphynx\PlatformMacros.h" />
+    <ClInclude Include="src\Sphynx\Pointer.h" />
     <ClInclude Include="src\Sphynx\SpTime.h" />
+    <ClInclude Include="src\Sphynx\Vector.h" />
     <ClInclude Include="src\Sphynx\imgui\imgui_impl_dx11.h" />
     <ClInclude Include="src\Sphynx\imgui\imgui_impl_dx12.h" />
     <ClInclude Include="src\Sphynx\imgui\imgui_impl_glfw.h" />
     <ClInclude Include="src\Sphynx\imgui\imgui_impl_opengl3.h" />
     <ClInclude Include="src\Sphynx\imgui\imgui_impl_win32.h" />
     <ClInclude Include="src\Sphynx\pch.h" />
-    <ClInclude Include="src\Sphynx\Vector.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Renderer.cpp" />
-    <ClCompile Include="src\Sphynx\Core\Platform\GLFWInput.cpp" />
-    <ClCompile Include="src\Sphynx\Delegate.cpp" />
-    <ClCompile Include="src\Sphynx\Pointer.cpp" />
     <ClCompile Include="src\Sphynx\Application.cpp" />
     <ClCompile Include="src\Sphynx\Core\Graphics\Imgui.cpp" />
-    <ClCompile Include="src\Sphynx\Core\Module.cpp" />
-    <ClCompile Include="src\Sphynx\Core\System.cpp" />
     <ClCompile Include="src\Sphynx\Core\Graphics\Platform\GLWindow.cpp" />
     <ClCompile Include="src\Sphynx\Core\Graphics\Window.cpp" />
+    <ClCompile Include="src\Sphynx\Core\Module.cpp" />
+    <ClCompile Include="src\Sphynx\Core\Platform\GLFWInput.cpp" />
+    <ClCompile Include="src\Sphynx\Core\System.cpp" />
+    <ClCompile Include="src\Sphynx\Delegate.cpp" />
     <ClCompile Include="src\Sphynx\Events\ApplicationEvents.cpp" />
     <ClCompile Include="src\Sphynx\Events\InputEvents.cpp" />
     <ClCompile Include="src\Sphynx\Input.cpp" />
     <ClCompile Include="src\Sphynx\Logger.cpp" />
+    <ClCompile Include="src\Sphynx\Pointer.cpp" />
     <ClCompile Include="src\Sphynx\SpTime.cpp" />
     <ClCompile Include="src\Sphynx\imgui\imgui_impl_dx11.cpp" />
     <ClCompile Include="src\Sphynx\imgui\imgui_impl_dx12.cpp" />
@@ -157,7 +149,6 @@
     <ClCompile Include="src\Sphynx\imgui\imgui_impl_win32.cpp" />
     <ClCompile Include="src\Sphynx\pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -167,12 +158,9 @@
     <ProjectReference Include="dep\glad\glad.vcxproj">
       <Project>{DD62977C-C999-980D-7286-7E105E9C140F}</Project>
     </ProjectReference>
-    <ProjectReference Include="dep\imgui\imgui.vcxproj">
+    <ProjectReference Include="dep\imgui.vcxproj">
       <Project>{0098A80F-6CAC-D0C0-352E-7420A101CDF1}</Project>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="TODO.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
