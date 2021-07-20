@@ -6,12 +6,12 @@
 #include <unordered_map>
 #include <unordered_set>
 namespace Sphynx::Core::Internal {
-	class ComponentFactory
+	class ComponentFactory final
 	{
 		static std::unordered_map<GameObject*,std::unordered_set<std::type_index>> RegisteredTypeIDs;
 	public:
 		template<typename component>
-		static Component* CreateComponent(GameObject* object) {
+		static component* CreateComponent(GameObject* object) {
 			//We Don't Check Because GameObject Does That.
 			auto comp = component::CreateSelf();
 			comp.OnComponentCreate(object);
@@ -21,9 +21,10 @@ namespace Sphynx::Core::Internal {
 			//	til.insert(std::type_index(typeid(component)));
 			//}
 			til.insert(std::type_index(typeid(component)));
+			return comp;
 		}
 		//Utility
-		struct Helper {
+		typedef struct ComponentHelper {
 			template<class comp>
 			inline static bool CompareTypeToComponant_typeindex(Component* c) {
 				return (std::type_index(typeid(comp) == std::type_index(typeid(*c))));
@@ -36,7 +37,7 @@ namespace Sphynx::Core::Internal {
 			inline static bool IsComponentInGameObject(GameObject* obj) {
 				return RegisteredTypeIDs[obj].find(std::type_index(typeid(comp))) != RegisteredTypeIDs.end();
 			}
-		};
+		}ComponentHelper;
 		friend class Component;
 	};
 }

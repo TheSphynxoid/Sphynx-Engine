@@ -2,9 +2,6 @@
 #include "Core/Graphics/PipeLine/Material.h"
 
 namespace Sphynx::Core::Graphics::GL{
-
-    class GLRenderer;
-
     class GLMaterial : public Material
     {
     private:
@@ -12,7 +9,8 @@ namespace Sphynx::Core::Graphics::GL{
     public:
         GLMaterial(ShaderPack shaders,Texture* texture);
         virtual void Bind() override;
+        ~GLMaterial();
 
-        friend GLRenderer;
+        friend class GLRenderer;
     };
 }

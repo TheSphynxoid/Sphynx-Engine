@@ -16,6 +16,16 @@
 #define SPDEL
 #endif
 
+//This is Fucking ugly
+
+namespace Sphynx::Events {
+    class EventSystem;
+}
+
+namespace Sphynx::Util {
+    extern void InternalSkipCurrentEvent(Events::EventSystem& es);
+};
+
 namespace Sphynx::Events {
 
     //Event Base Class
@@ -62,16 +72,20 @@ namespace Sphynx::Events {
 
     //A Non-Blocking Observer pattern EventSystem (Event Bus).
     //TODO: Replace EventCallBackXXXX with Delegates.
-    class EventSystem{
+    class EventSystem {
     private:
 #ifndef Sphynx_Delegate
         typedef std::list<EventCallBackBase*> Handlers;
 #else
-        typedef __Base_Delegate<void, Event&> BaseDelegate;
+        typedef BaseDelegate<void, Event&> BaseDelegate;
         typedef std::list <BaseDelegate*> Handlers;
 #endif // !Sphynx_Delegate
         std::map<std::type_index, Handlers*> subscribers;
         std::forward_list<std::pair<std::type_index, Event*>> Queue;
+        bool PropagateEvent = true;
+        void SkipCurrentEvent() {
+            PropagateEvent = false;
+        };
     public:
         EventSystem() : subscribers() {};
         ~EventSystem() {}
@@ -185,7 +199,7 @@ namespace Sphynx::Events {
             auto it = handlers->begin();
             for (int i = 0; i < position; i++)it++;
             handlers->push_back(it++, dynamic_cast<BaseDelegate*>(new Delegate<void, Instance, EventType&>(func)));
-        }; 
+        };
         template<class EventType>
         void Subscribe(void (*Function)(EventType&))
         {
@@ -210,8 +224,8 @@ namespace Sphynx::Events {
                 subscribers[std::type_index(typeid(EventType))] = handlers;
             }
             //auto f = Delegate<void, T, Event&>::Function<true>(instance, memberFunction);
-            Delegate<void,T,EventType&>* dt = new Delegate<void, T, EventType&>(instance, memberFunction);
-            handlers->push_back(dynamic_cast<BaseDelegate *>(dt));
+            Delegate<void, T, EventType&>* dt = new Delegate<void, T, EventType&>(instance, memberFunction);
+            handlers->push_back(dynamic_cast<BaseDelegate*>(dt));
         };
 #endif
         template<class EventType>
@@ -226,15 +240,14 @@ namespace Sphynx::Events {
         };
         //This Should not be overused. A blocking function that dispatch the event on call.
         template<class EventType>
-        void DispatchImmediate(EventType e) 
+        void DispatchImmediate(EventType e)
         {
             Handlers* handlers = subscribers[std::type_index(typeid(e))];
             if (handlers == nullptr)return;
             for (auto& handle : *handlers) {
                 if (handle != nullptr) {
                     handle->Invoke(e);
-                    //if Event is Handled it won't propagate.
-                    if (e.isHandled == true)return;
+                    if (!PropagateEvent)return;
                 }
             }
         }
@@ -248,7 +261,8 @@ namespace Sphynx::Events {
                     if (handle != nullptr) {
                         handle->Invoke(*pair.second);
                         //if Event is Handled it won't propagate.
-                        if ((*pair.second).isHandled == true)break;
+                        //if ((*pair.second).isHandled == true)break;
+                        if (!PropagateEvent)return;
                     }
                 }
                 //Delete the temporary object.
@@ -257,10 +271,10 @@ namespace Sphynx::Events {
             //Clear Queue.
             Queue.clear();
         }
+        //What's This ?
         template<class EventType>
         void ProcessFunction() {}
-
-
+        friend void Sphynx::Util::InternalSkipCurrentEvent(EventSystem& es);
     };
     //Pre-Initialize (thread-safe because of static local singleton) EventSystem. 
     //Used for Events without an EventSystem instance(idk errors for example or startup or craches).

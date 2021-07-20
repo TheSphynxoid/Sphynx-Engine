@@ -1,10 +1,10 @@
 #pragma once
 #include "Core/Module.h"
-#include "Core/Scripting/Lua.h"
+#include "Core/Scripting/Lua/Lua.h"
 #include "Pointer.h"
 
 namespace Sphynx::Core::Scripting {
-	class ScriptingEngine : public Module
+	class ScriptingEngine final : public Module
 	{
 	private:
 		Lua* LuaState = nullptr;

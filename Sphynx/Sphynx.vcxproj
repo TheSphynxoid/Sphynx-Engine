@@ -97,6 +97,8 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Sphynx\Core\InternalUtility.h" />
+    <ClInclude Include="src\Sphynx\Core\Scripting\Lua\LuaWindow.h" />
     <ClInclude Include="src\Sphynx.h" />
     <ClInclude Include="src\Sphynx\Application.h" />
     <ClInclude Include="src\Sphynx\Component.h" />
@@ -118,7 +120,7 @@
     <ClInclude Include="src\Sphynx\Core\Graphics\Window.h" />
     <ClInclude Include="src\Sphynx\Core\Module.h" />
     <ClInclude Include="src\Sphynx\Core\Platform\GLFWInput.h" />
-    <ClInclude Include="src\Sphynx\Core\Scripting\Lua.h" />
+    <ClInclude Include="src\Sphynx\Core\Scripting\Lua\Lua.h" />
     <ClInclude Include="src\Sphynx\Core\Scripting\ScriptingEngine.h" />
     <ClInclude Include="src\Sphynx\Core\System.h" />
     <ClInclude Include="src\Sphynx\Core\TestComponent.h" />
@@ -144,33 +146,23 @@
     <ClInclude Include="src\Sphynx\imgui\imgui_impl_opengl3.h" />
     <ClInclude Include="src\Sphynx\imgui\imgui_impl_win32.h" />
     <ClInclude Include="src\Sphynx\pch.h" />
+    <ClInclude Include="src\Sphynx\Core\ThreadPool.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Sphynx\Core\Scripting\Lua\LuaWindow.cpp" />
     <ClCompile Include="src\Sphynx\Application.cpp" />
     <ClCompile Include="src\Sphynx\Component.cpp" />
     <ClCompile Include="src\Sphynx\Core\Factories\ComponentFactory.cpp" />
     <ClCompile Include="src\Sphynx\Core\Graphics\Imgui.cpp" />
-    <ClCompile Include="src\Sphynx\Core\Graphics\Pipeline\Camera.cpp" />
-    <ClCompile Include="src\Sphynx\Core\Graphics\Pipeline\Material.cpp" />
-    <ClCompile Include="src\Sphynx\Core\Graphics\Pipeline\Mesh.cpp" />
-    <ClCompile Include="src\Sphynx\Core\Graphics\Pipeline\Renderer.cpp" />
-    <ClCompile Include="src\Sphynx\Core\Graphics\Pipeline\Shader.cpp" />
-    <ClCompile Include="src\Sphynx\Core\Graphics\Pipeline\Texture.cpp" />
     <ClCompile Include="src\Sphynx\Core\Graphics\Platform\GLMaterial.cpp" />
     <ClCompile Include="src\Sphynx\Core\Graphics\Platform\GLMesh.cpp" />
     <ClCompile Include="src\Sphynx\Core\Graphics\Platform\GLRenderer.cpp" />
     <ClCompile Include="src\Sphynx\Core\Graphics\Platform\GLShader.cpp" />
     <ClCompile Include="src\Sphynx\Core\Graphics\Platform\GLTexture.cpp" />
     <ClCompile Include="src\Sphynx\Core\Graphics\Platform\GLWindow.cpp" />
-    <ClCompile Include="src\Sphynx\Core\Graphics\Window.cpp" />
-    <ClCompile Include="src\Sphynx\Core\Module.cpp" />
     <ClCompile Include="src\Sphynx\Core\Platform\GLFWInput.cpp" />
-    <ClCompile Include="src\Sphynx\Core\Scripting\Lua.cpp" />
+    <ClCompile Include="src\Sphynx\Core\Scripting\Lua\Lua.cpp" />
     <ClCompile Include="src\Sphynx\Core\Scripting\ScriptingEngine.cpp" />
-    <ClCompile Include="src\Sphynx\Core\System.cpp" />
-    <ClCompile Include="src\Sphynx\Delegate.cpp" />
-    <ClCompile Include="src\Sphynx\Events\ApplicationEvents.cpp" />
-    <ClCompile Include="src\Sphynx\Events\InputEvents.cpp" />
     <ClCompile Include="src\Sphynx\GameObject.cpp" />
     <ClCompile Include="src\Sphynx\Input.cpp" />
     <ClCompile Include="src\Sphynx\Logger.cpp" />
@@ -184,7 +176,9 @@
     <ClCompile Include="src\Sphynx\imgui\imgui_impl_win32.cpp" />
     <ClCompile Include="src\Sphynx\pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="src\Sphynx\Core\ThreadPool.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="dep\GLFW.vcxproj">

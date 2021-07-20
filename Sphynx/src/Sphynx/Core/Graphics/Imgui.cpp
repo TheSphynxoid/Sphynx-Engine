@@ -37,7 +37,6 @@ void Sphynx::Core::Imgui::Start(Application* app)
 {
 	App = app;
 	window = app->GetMainWindow();
-	time = app->GetTimeObject();
 	window->GetEventSystem()->Subscribe<Imgui, Events::OnOverlayUpdate>(this, &Imgui::OnOverlayUpdate);
 #ifdef IMGUI_DX11
 	Imgui_ImplDX11_Init();
@@ -163,7 +162,7 @@ Sphynx::Core::DebugWindow::DebugWindow(Application* app)
 	eventsystem = App->GetAppEventSystem();
 	window = App->GetMainWindow();
 	scripts = App->GetScriptingEngine();
-	extra = App->GetExtraWindows();
+	extra = App->GetExtraWindow();
 	memset(TitleBuffer, 0, sizeof(TitleBuffer));
 	LineOffsets.push_back(0);
 	GlobalEventSystem::GetInstance()->Subscribe<DebugWindow, OnLog>(this, &DebugWindow::OnEventLog);
@@ -312,29 +311,8 @@ void Sphynx::Core::DebugWindow::Draw()
 		}
 		if (ImGui::CollapsingHeader("Window (Still WIP)")) {
 			ImGui::Indent();
-			if (ImGui::BeginListBox("ExtraWindows", ImVec2(FLT_MIN, ImGui::GetTextLineHeightWithSpacing() * 5))) {
-				extra = App->GetExtraWindows();
-				static int selected = -1;
-				int i = 0;
-				for (auto win : extra) {
-					if (ImGui::Selectable(win->GetTitle(), selected == i)) {
-						selected = i;
-					}
-					i++;
-
-				}
-				ImGui::EndListBox();
-				if (ImGui::Button("Create Extra Window")) {
-					//Extra Window Shit.
-					App->AddExtraWindow(std::make_unique<Sphynx::Core::GLWindow>(App, window->GetBounds(), "Extra", window));
-				}
-				if (ImGui::Button("Close Extra Window")) {
-					if (selected != -1) {
-						auto start = extra.begin();
-						std::advance(start, selected);
-						(*start)->Close();
-					}
-				}
+			if (ImGui::Button("Close Extra Window")) {
+				if (extra)extra->Close();
 			}
 			ImGui::Text("Main Window Height:%i", window->GetHeight());
 			ImGui::Text("Main Window Width:%i", window->GetWidth());
@@ -350,8 +328,8 @@ void Sphynx::Core::DebugWindow::Draw()
 		}
 		if (ImGui::CollapsingHeader("Time")) {
 			ImGui::Indent();
-			ImGui::Text("Activity Time:%f", App->GetTimeObject()->GetActivityTime());
-			ImGui::Text("Delta Time:%d", App->GetTimeObject()->GetDeltaTime());
+			//ImGui::Text("Activity Time:%f", App->GetTimeObject()->GetActivityTime());
+			//ImGui::Text("Delta Time:%d", App->GetTimeObject()->GetDeltaTime());
 			ImGui::Unindent();
 		}
 		ImGui::End();

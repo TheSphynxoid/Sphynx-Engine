@@ -26,3 +26,8 @@ GLMaterial::GLMaterial(ShaderPack shaders,Texture* texture) : Material(shaders, 
 void GLMaterial::Bind(){
     glUseProgram(ProgramId);
 }
+
+Sphynx::Core::Graphics::GL::GLMaterial::~GLMaterial()
+{
+    glDeleteProgram(ProgramId);
+}

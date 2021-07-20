@@ -13,6 +13,7 @@ namespace Sphynx {
 	class Invalid_Type : public std::exception {
 	public:
 		Invalid_Type() : std::exception("Provided an unvalid Type") {};
+		Invalid_Type(const char* e) : std::exception(e) {};
 	};
 
 	class Deallocator_Base {
@@ -69,27 +70,13 @@ namespace Sphynx {
 			return this->GetRaw() == ptr.GetRaw();
 		}
 	};
-	class PointerRegistry {
-	private:
-		std::map<void*,PointerBase*> Addresses;
-	public:
-		PointerBase* CreatePointer(void* p) {
-			for (auto&[v,ptr] : Addresses) {
-				if (ptr->GetRaw() == p) {
-					//Get an Already existing pointer
-					return ptr;
-				}
-			}
-			
-		}
-	};
 
 	template<class T>
 	class Pointer final : PointerBase {
 	public:
 		typedef std::remove_extent_t<T> Element;
 	private:
-		__Base_Delegate<void, T&>* delegate;
+		BaseDelegate<void, T&>* delegate;
 		T* Object;
 		//For Type Erasure.
 		Deallocator_Base* dealloc;
@@ -102,6 +89,7 @@ namespace Sphynx {
 		//Causes Object to self-delete.
 		bool SelfDestroy = false;
 		//Constructor
+	public:
 		Pointer(T* ptr) :Object(ptr) {
 			if (std::is_array<T>::value == true) {
 				array_info.IsArray = true;
@@ -114,14 +102,13 @@ namespace Sphynx {
 				delegate = NULL;
 			}
 			else if(std::is_pointer_v<T>) {
-				throw Invalid_Type<T>();
+				throw Invalid_Type<T>("A pointer of any type is not allowed");
 			}
 			else {
 				dealloc = new Deallocator<T>(ptr);
 			}
 			AddRef();
 		};
-	public:
 		typedef T Type;
 		//Move
 		Pointer(Pointer&& ptr) noexcept {
@@ -215,6 +202,7 @@ namespace Sphynx {
 		return Pointer<Obj>(new std::remove_pointer_t<Obj>[std::extent_v<Obj>](std::forward<Args>(args)...));
 	}
 	//Remove THIS.
+	//Application.cpp line 76 uses this
 	template<class Obj, typename... Args>
 	[[nodiscard]] static std::enable_if_t<!std::is_array_v<Obj>, Pointer<Obj>*> AllocatePointer(Args&&... args) {
 		Pointer<Obj>* ptr = new Pointer<Obj>(new Obj(std::forward<Args>(args)...));
@@ -224,7 +212,8 @@ namespace Sphynx {
 	template<class Obj, typename... Args>
 	[[nodiscard]] static std::enable_if_t<std::is_array_v<Obj>, Pointer<Obj>*> AllocatePointer(Args&&... args) {
 		//I think this shouldn't work.
-		Pointer<Obj>* ptr = new Pointer<Obj>(new std::remove_pointer_t<Obj>[std::extent_v<Obj>](std::forward<Args>(args)...));
+		const size_t size = std::index_sequence<sizeof...(args)>::size();
+		Pointer<Obj>* ptr = new Pointer<Obj>(new std::remove_pointer_t<Obj>[std::extent_v<Obj>]());
 		ptr->SelfDestroy = true;
 		return ptr;
 	}

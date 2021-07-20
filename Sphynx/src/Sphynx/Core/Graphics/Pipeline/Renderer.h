@@ -1,16 +1,20 @@
 #pragma once
 //#include "Core/Graphics/Window.h"
-#include "Mesh.h"
+#include "Core/Module.h"
 #include "Vector.h"
-#include "Material.h"
-#include "Shader.h"
-
-namespace Sphynx::Core {
-	class IWindow;
-}
+#define BIT(i) (1 << i)
 namespace Sphynx::Core::Graphics {
-
-
+	class Mesh;
+	class Material;
+	class Shader;
+	//Information For the Rendering Engine
+	typedef struct RenderObject {
+		Mesh* mesh;
+		Material* mat;
+		Vec3 Position;
+		Vec4 Rotation;
+		RenderObject(Mesh* _mesh, Material* _mat, Vec3 Pos, Vec4 Rot) : mesh(_mesh), mat(_mat), Position(Pos), Rotation(Rot) {};
+	}RenderObject;
 	//Base Class Of Renderers.
 	class IRenderer
 	{
@@ -21,17 +25,13 @@ namespace Sphynx::Core::Graphics {
 		virtual void Clear() = 0;
 		//Send Data,Shaders,Indexes,Textures (Make A Object that encapsulates them all).
 		//They are stored until deleted
-		void Submit(Mesh* mesh, Material* mat, Vec3 Position, Vec4 Rotation) {
-			OnSubmit(RenderObject(mesh, mat, Position, Rotation));
+		RenderObject& Submit(Mesh* mesh, Material* mat, Vec3 Position, Vec4 Rotation) {
+			auto& RO = RenderObject(mesh, mat, Position, Rotation);	
+			OnSubmit(RO);
+			return RO;
 		}
-		struct RenderObject {
-			Mesh* mesh;
-			Material* mat;
-			Vec3 Position;
-			Vec4 Rotation;
-			RenderObject(Mesh* _mesh, Material* _mat, Vec3 Pos, Vec4 Rot) : mesh(_mesh), mat(_mat), Position(Pos), Rotation(Rot) {};
-		};
 	private:
 		virtual void OnSubmit(RenderObject rend) = 0;
+
 	};
 }

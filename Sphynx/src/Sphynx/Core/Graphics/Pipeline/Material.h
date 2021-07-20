@@ -9,8 +9,11 @@ namespace Sphynx::Core::Graphics {
 		ShaderPack Shaders;
 		Texture* Textures;
 	public:
+		//A Material is a holder for shaders and textures.
 		Material(ShaderPack shaders, Texture* texture) :Shaders(Shaders), Textures(texture) {};
-		virtual ~Material() = 0;
+		ShaderPack GetShaders() { return Shaders; };
+		Texture* GetTextures() { return Textures; };
+		virtual ~Material() = default;
 		virtual void Bind() = 0;
 	};
 }

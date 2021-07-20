@@ -9,6 +9,7 @@
 //#include "GLFW/glfw3native.h"
 #include "Events/InputEvents.h"
 #include "Core/Platform/GLFWInput.h"
+#include "Core/Graphics/Platform/GLRenderer.h"
 
 using namespace Sphynx;
 using namespace Sphynx::Core;
@@ -127,10 +128,10 @@ Sphynx::Core::GLWindow::GLWindow(Application* App, Bounds WinBounds, std::string
 	//ToDO: Init imgui and Renderer.
 	Renderer = new Core::Graphics::GL::GLRenderer();
 	glClearColor(0.5f, 0.05f, 0.0f, 1);
-
+	Core_Warn("TODO:FullScreen not Implemented.");
 }
 
-Sphynx::Core::GLWindow::GLWindow(Application* App, Bounds WinBounds, std::string title, GLWindow* share)
+Sphynx::Core::GLWindow::GLWindow(Application* App, Bounds WinBounds, std::string title, bool fullscreen, GLWindow* share)
 {
 	if (WinBounds.Height == 0 || WinBounds.Width == 0) {
 		WinBounds = DefBounds;
@@ -159,6 +160,9 @@ Sphynx::Core::GLWindow::GLWindow(Application* App, Bounds WinBounds, std::string
 	glfwSetWindowIconifyCallback(window, &mid::Iconify);
 	glfwSetWindowMaximizeCallback(window, &mid::Maximize);
 	//End of callbacks.
+	Renderer = new Core::Graphics::GL::GLRenderer();
+
+	Core_Warn("TODO:FullScreen not Implemented.");
 }
 
 void Sphynx::Core::GLWindow::OnClose()
@@ -175,8 +179,9 @@ void Sphynx::Core::GLWindow::OnUpdate()
 		if (!Sharing)
 			//Handle Context Switching.
 			SwitchContext(*this);
-		Clear();
+		Renderer->Clear();
 		GetEventSystem()->DispatchImmediate<OnOverlayUpdate>(OnOverlayUpdate(this));
+		Renderer->Render();
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}
@@ -202,6 +207,11 @@ void Sphynx::Core::GLWindow::Internal_ChangeTitle(const char* title)
 	glfwSetWindowTitle(window, title);
 }
 
+Core::Graphics::IRenderer* Sphynx::Core::GLWindow::GetRenderer()
+{
+	return Renderer;
+}
+
 void Sphynx::Core::GLWindow::TerminateGLFW()
 {
 	glfwTerminate();
@@ -214,7 +224,7 @@ void Sphynx::Core::GLWindow::SwitchContext(GLWindow window)
 
 Bounds Sphynx::Core::GLWindow::GetBounds()
 {
-	return Bounds(Height, Width);
+	return { Height, Width };
 }
 
 int Sphynx::Core::GLWindow::GetHeight()

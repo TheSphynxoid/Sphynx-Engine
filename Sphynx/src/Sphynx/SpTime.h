@@ -1,30 +1,20 @@
 #pragma once
-#include <time.h>
+#include <chrono>
 #include "Core/Module.h"
+#define timer std::chrono::steady_clock
+
 
 namespace Sphynx {
-	class Timer {
+	class Time final {
 	private:
-		clock_t timer;
-		clock_t StartTimer;
+		typedef std::chrono::duration<double> time;
+		typedef std::chrono::time_point<timer> time_point;
+		inline static thread_local time_point last;
+		inline static thread_local time DeltaTime;
 	public:
-		Timer();
-		~Timer();
-		void Tick();
-		long TickAndReturnOld();
-		long GetTicks();
-	};
-	class Time : public Core::Module
-	{
-	private:
-		double DeltaTime;
-		Timer timer;
-	public:
-		//Time();
-		void Start(Application* app)override;
-		void Update()override;
-		double GetDeltaTime();
-		long GetActivityTime();
-		Timer& GetTimer() { return timer; };
+		static double GetDeltaTime();
+		// Inherited via Module
+		static void Start();
+		static void Update();
 	};
 }

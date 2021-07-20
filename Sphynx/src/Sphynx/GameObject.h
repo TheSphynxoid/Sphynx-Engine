@@ -22,8 +22,9 @@ namespace Sphynx {
 		void AddComponent() {
 			//C++17
 			if (std::is_base_of_v<Component, component>) {
-				if (Core::Internal::ComponentFactory::Helper::IsComponentInGameObject<component>(this)) {
+				if (Core::Internal::ComponentFactory::ComponentHelper::IsComponentInGameObject<component>(this)) {
 					//No Parameters allowed. They will be provided to the factory.
+					//Components Should not have consturctors and they will be ignored by the factory.
 					Components.push_back(Core::Internal::ComponentFactory::CreateComponent<component>(this));
 				}
 			}
@@ -32,7 +33,7 @@ namespace Sphynx {
 		component* GetComponent() {
 			if (!std::is_base_of_v<Component, component>) return NULL;
 			for (auto comp : Components) {
-				if (Core::Internal::ComponentFactory::Helper::CompareTypeToComponant_typeid<component>(comp)) {
+				if (Core::Internal::ComponentFactory::ComponentHelper::CompareTypeToComponant_typeid<component>(comp)) {
 					return static_cast<component*>(comp);
 				}
 			}

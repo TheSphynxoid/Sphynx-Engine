@@ -9,9 +9,9 @@ namespace Sphynx::Core {
 	{
 	private:
 		GLFWwindow* window;
-		std::list<__Base_Delegate<void, Keys, Action>*> OnKeyPressCallbacks;
-		std::list<__Base_Delegate<void, MouseButton, Action>*> OnMouseButtonCallbacks;
-		std::list<__Base_Delegate<void, Vec2>*> OnMouseMoveCallbacks;
+		std::list<BaseDelegate<void, Keys, Action>*> OnKeyPressCallbacks;
+		std::list<BaseDelegate<void, MouseButton, Action>*> OnMouseButtonCallbacks;
+		std::list<BaseDelegate<void, Vec2>*> OnMouseMoveCallbacks;
 		static void KeyCapture(GLFWwindow* win, int keycode, int scancode, int action, int modifier);
 		static void MouseCapture(GLFWwindow* win, int button, int action, int modifier);
 		static void MouseMove(GLFWwindow* win, double xpos, double ypos);

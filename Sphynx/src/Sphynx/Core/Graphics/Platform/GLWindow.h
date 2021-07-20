@@ -1,7 +1,6 @@
 #pragma once
 #include "Core.h"
 #include "../Window.h"
-#include "GLRenderer.h"
 
 //Opaque Object.
 struct GLFWwindow;
@@ -10,6 +9,9 @@ typedef GLFWwindow GLFWwindow;
 
 
 namespace Sphynx::Core {
+	namespace Graphics::GL {
+		class GLRenderer;
+	}
 	//GLFW implementation.
 	class GLWindow final : public IWindow
 	{
@@ -33,7 +35,7 @@ namespace Sphynx::Core {
 		inline bool IsSharingResources() { return Sharing; };
 		GLWindow(Application* App, Bounds WinBounds, std::string title, bool fullscreen);
 		//We Expect that window has already been open. 
-		GLWindow(Application* App, Bounds WinBounds, std::string title, GLWindow* share);
+		GLWindow(Application* App, Bounds WinBounds, std::string title, bool fullscreen, GLWindow* share);
 		~GLWindow()override;
 		void OnClose()override;
 		void OnUpdate()override;
@@ -45,7 +47,7 @@ namespace Sphynx::Core {
 		inline bool IsVsyncEnabled()override { return Vsync; };
 		void SetVsync(bool vsync)override;
 		void Internal_ChangeTitle(const char* title)override;
-		Core::Graphics::IRenderer* GetRenderer()override { return Renderer; };
+		Core::Graphics::IRenderer* GetRenderer()override;
 		///////GLWindow Function/////////
 
 		static void TerminateGLFW();
