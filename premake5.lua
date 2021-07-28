@@ -23,7 +23,8 @@ project "Sphynx"
 	files
 	{
 		"Sphynx/src/**.h",
-		"Sphynx/src/**.cpp"
+		"Sphynx/src/**.cpp",
+		"Sphynx/src/**.lua"
 	}
 	includedirs
 	{
@@ -31,16 +32,21 @@ project "Sphynx"
 		"%{prj.name}/src/Sphynx",
 		"%{prj.name}/dep/glfw/include",
 		"%{prj.name}/dep/glad/include",
-		"%{prj.name}/dep/imgui"
+		"%{prj.name}/dep/imgui",
+		"%{prj.name}/dep/glm",
+		"%{prj.name}/dep/lua/src"
 	}
 	links
 	{
 		"glfw",
 		"glad",
 		"imgui",
+		"Lua",
 		"opengl32.lib"
 	}
-
+	defines{
+		-- "SPDLL"
+	}
 	filter "configurations:Debug"
 		defines "DEBUG"
 		runtime "Debug"
@@ -68,7 +74,8 @@ project "Sandbox"
 	files
 	{
 		"Sandbox/src/**.h",
-		"Sandbox/src/**.cpp"
+		"Sandbox/src/**.cpp",
+		"Sandbox/src/**.lua"
 	}
 
 	includedirs
@@ -95,4 +102,9 @@ project "Sandbox"
 
 include "Sphynx/dep/glfw"
 include "Sphynx/dep/glad/glad"
+<<<<<<< HEAD
 include "Sphynx/dep/imgui"
+=======
+include "Sphynx/dep/imgui"
+include "Sphynx/dep/Lua"
+>>>>>>> Dev_ComponentSystem

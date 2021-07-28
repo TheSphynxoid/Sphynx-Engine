@@ -4,6 +4,9 @@
 
 namespace Sphynx {
 	class Application;
+	namespace Core {
+		class IWindow;
+	}
 }
 
 namespace Sphynx::Core {
@@ -12,6 +15,7 @@ namespace Sphynx::Core {
 	//};
 
 	//Base Class for all modules
+	//*Convention
 	class Module {
 	protected:
 		//ModuleState State;

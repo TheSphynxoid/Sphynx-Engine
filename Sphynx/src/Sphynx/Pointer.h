@@ -6,12 +6,21 @@
 #include <list>
 #include "Delegate.h"
 
+<<<<<<< HEAD
+=======
+///These are Utility so they are not Object nor GameObject nor Components.
+>>>>>>> Dev_ComponentSystem
 
 namespace Sphynx {
 	template <typename T>
 	class Invalid_Type : public std::exception {
 	public:
+<<<<<<< HEAD
 		Invalid_Type() : std::exception("Provided an Unvalid Type") {};
+=======
+		Invalid_Type() : std::exception("Provided an unvalid Type") {};
+		Invalid_Type(const char* e) : std::exception(e) {};
+>>>>>>> Dev_ComponentSystem
 	};
 
 	class Deallocator_Base {
@@ -52,7 +61,11 @@ namespace Sphynx {
 	private:
 	public:
 		virtual ~PointerBase() {};
+<<<<<<< HEAD
 		virtual void* GetAddress() const = 0;
+=======
+		virtual void* GetRaw() const = 0;
+>>>>>>> Dev_ComponentSystem
 	protected:
 		int RefCount = 0;
 		void AddRef() {
@@ -65,6 +78,7 @@ namespace Sphynx {
 		inline void SetRefCount(int c) { RefCount = c; };
 	public:
 		virtual bool operator==(const PointerBase&& ptr) {
+<<<<<<< HEAD
 			return this->GetAddress() == ptr.GetAddress();
 		}
 	};
@@ -80,6 +94,9 @@ namespace Sphynx {
 				}
 			}
 			
+=======
+			return this->GetRaw() == ptr.GetRaw();
+>>>>>>> Dev_ComponentSystem
 		}
 	};
 
@@ -88,7 +105,11 @@ namespace Sphynx {
 	public:
 		typedef std::remove_extent_t<T> Element;
 	private:
+<<<<<<< HEAD
 		__Base_Delegate<void, T&>* delegate;
+=======
+		BaseDelegate<void, T&>* delegate;
+>>>>>>> Dev_ComponentSystem
 		T* Object;
 		//For Type Erasure.
 		Deallocator_Base* dealloc;
@@ -101,6 +122,10 @@ namespace Sphynx {
 		//Causes Object to self-delete.
 		bool SelfDestroy = false;
 		//Constructor
+<<<<<<< HEAD
+=======
+	public:
+>>>>>>> Dev_ComponentSystem
 		Pointer(T* ptr) :Object(ptr) {
 			if (std::is_array<T>::value == true) {
 				array_info.IsArray = true;
@@ -113,20 +138,34 @@ namespace Sphynx {
 				delegate = NULL;
 			}
 			else if(std::is_pointer_v<T>) {
+<<<<<<< HEAD
 				throw Invalid_Type<T>();
+=======
+				//throw Invalid_Type<T>("A pointer of any type is not allowed");
+
+				//Weird.
+				this->Object = ptr;
+>>>>>>> Dev_ComponentSystem
 			}
 			else {
 				dealloc = new Deallocator<T>(ptr);
 			}
 			AddRef();
 		};
+<<<<<<< HEAD
 	public:
+=======
+>>>>>>> Dev_ComponentSystem
 		typedef T Type;
 		//Move
 		Pointer(Pointer&& ptr) noexcept {
 			std::swap(this->dealloc, ptr.dealloc);
 			std::swap(this->Object, ptr.Object);
+<<<<<<< HEAD
 			std::swap(this->SetRefCount, ptr.GetRefCount());
+=======
+			this->SetRefCount(ptr.GetRefCount());
+>>>>>>> Dev_ComponentSystem
 			std::swap(this->SelfDestroy, ptr.SelfDestroy);
 		}
 		//Copy
@@ -166,7 +205,11 @@ namespace Sphynx {
 		};
 
 		T* GetRaw() { return Object; };
+<<<<<<< HEAD
 		void* GetAddress() const override { return (void*)Object; };
+=======
+		void* GetRaw() const override { return (void*)Object; };
+>>>>>>> Dev_ComponentSystem
 		T& operator* ()
 		{
 			return *Object;
@@ -182,7 +225,14 @@ namespace Sphynx {
 			if (--oldcount == 0) delete old;
 			return *this;
 		};
+<<<<<<< HEAD
 		bool operator==(const Pointer& ptr) {
+=======
+		Pointer& operator=(const T& ptr) {
+
+		}
+		bool operator=(Pointer&& ptr) {
+>>>>>>> Dev_ComponentSystem
 			return ptr.Object == this->Object;
 		};
 		bool operator==(const T* ptr) {
@@ -214,6 +264,10 @@ namespace Sphynx {
 		return Pointer<Obj>(new std::remove_pointer_t<Obj>[std::extent_v<Obj>](std::forward<Args>(args)...));
 	}
 	//Remove THIS.
+<<<<<<< HEAD
+=======
+	//Application.cpp line 76 uses this
+>>>>>>> Dev_ComponentSystem
 	template<class Obj, typename... Args>
 	[[nodiscard]] static std::enable_if_t<!std::is_array_v<Obj>, Pointer<Obj>*> AllocatePointer(Args&&... args) {
 		Pointer<Obj>* ptr = new Pointer<Obj>(new Obj(std::forward<Args>(args)...));
@@ -223,7 +277,12 @@ namespace Sphynx {
 	template<class Obj, typename... Args>
 	[[nodiscard]] static std::enable_if_t<std::is_array_v<Obj>, Pointer<Obj>*> AllocatePointer(Args&&... args) {
 		//I think this shouldn't work.
+<<<<<<< HEAD
 		Pointer<Obj>* ptr = new Pointer<Obj>(new std::remove_pointer_t<Obj>[std::extent_v<Obj>](std::forward<Args>(args)...));
+=======
+		const size_t size = std::index_sequence<sizeof...(args)>::size();
+		Pointer<Obj>* ptr = new Pointer<Obj>(new std::remove_pointer_t<Obj>[std::extent_v<Obj>]());
+>>>>>>> Dev_ComponentSystem
 		ptr->SelfDestroy = true;
 		return ptr;
 	}

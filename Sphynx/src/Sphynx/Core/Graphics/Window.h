@@ -3,8 +3,10 @@
 
 #include "Events/WindowEvents.h"
 #include "Application.h"
+//#include "Core/Graphics/Pipeline/Renderer.h"
 #include "Core.h"
 #include "Input.h"
+<<<<<<< HEAD:Sphynx/src/Sphynx/Core/Graphics/Window.h
 
 struct Coords {
 	int x, y;
@@ -20,6 +22,20 @@ struct Bounds {
 const Bounds DefBounds = Bounds(640, 410);
 
 namespace Sphynx::Core {
+=======
+
+namespace Sphynx::Core {
+	namespace Graphics {
+		class IRenderer;
+	}
+	struct Coords {
+		int x, y;
+	};
+	struct Bounds {
+		int Width, Height;
+	};
+	const Bounds DefBounds = { 640, 410 };
+>>>>>>> Dev_ComponentSystem:Sphynx/src/Sphynx/Core/Window/Window.h
 	//Base Window Interface.(Each Derived class must ensure Input, Closing...)
 	class IWindow {
 	private:
@@ -84,7 +100,11 @@ namespace Sphynx::Core {
 		};
 
 		///////////Graphics//////////////
+<<<<<<< HEAD:Sphynx/src/Sphynx/Core/Graphics/Window.h
 		
+=======
+		virtual Sphynx::Core::Graphics::IRenderer* GetRenderer() = 0;
+>>>>>>> Dev_ComponentSystem:Sphynx/src/Sphynx/Core/Window/Window.h
 
 		//Returns the Window's EventSystem.
 		Events::EventSystem* GetEventSystem() { return &OwnerEvent; };

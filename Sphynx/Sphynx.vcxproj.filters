@@ -7,14 +7,35 @@
     <Filter Include="Sphynx\Core">
       <UniqueIdentifier>{E7DBAD19-5391-260F-DC85-20E6483A1D13}</UniqueIdentifier>
     </Filter>
+<<<<<<< HEAD
     <Filter Include="Sphynx\Core\Graphics">
       <UniqueIdentifier>{07F8F016-F386-7AE0-9CA5-8EDB88138B86}</UniqueIdentifier>
     </Filter>
+=======
+    <Filter Include="Sphynx\Core\Factories">
+      <UniqueIdentifier>{16340174-82A0-BC6E-4B94-54CCB7BFDED6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sphynx\Core\Graphics">
+      <UniqueIdentifier>{07F8F016-F386-7AE0-9CA5-8EDB88138B86}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sphynx\Core\Graphics\Pipeline">
+      <UniqueIdentifier>{0C988214-78B0-693E-415D-F9D7AD34FED7}</UniqueIdentifier>
+    </Filter>
+>>>>>>> Dev_ComponentSystem
     <Filter Include="Sphynx\Core\Graphics\Platform">
       <UniqueIdentifier>{3B2C80D9-A744-6703-70F1-F69CDCC8FB9C}</UniqueIdentifier>
     </Filter>
     <Filter Include="Sphynx\Core\Platform">
       <UniqueIdentifier>{1B6CAB97-07FB-3461-B019-495C9C874507}</UniqueIdentifier>
+<<<<<<< HEAD
+=======
+    </Filter>
+    <Filter Include="Sphynx\Core\Scripting">
+      <UniqueIdentifier>{A99DEA9F-150A-A69A-DEFD-3DF84A29C802}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sphynx\Core\Scripting\Lua">
+      <UniqueIdentifier>{BA62FEA9-2625-3234-6FD5-C0C0DBD60A12}</UniqueIdentifier>
+>>>>>>> Dev_ComponentSystem
     </Filter>
     <Filter Include="Sphynx\Events">
       <UniqueIdentifier>{3383B641-9F43-3278-687E-7BF5D4FD7654}</UniqueIdentifier>
@@ -28,17 +49,68 @@
     <ClInclude Include="src\Sphynx\Application.h">
       <Filter>Sphynx</Filter>
     </ClInclude>
+    <ClInclude Include="src\Sphynx\Component.h">
+      <Filter>Sphynx</Filter>
+    </ClInclude>
     <ClInclude Include="src\Sphynx\Core.h">
       <Filter>Sphynx</Filter>
+    </ClInclude>
+<<<<<<< HEAD
+    <ClInclude Include="src\Sphynx\Core\Graphics\Imgui.h">
+      <Filter>Sphynx\Core\Graphics</Filter>
+    </ClInclude>
+=======
+    <ClInclude Include="src\Sphynx\Core\Factories\ComponentFactory.h">
+      <Filter>Sphynx\Core\Factories</Filter>
     </ClInclude>
     <ClInclude Include="src\Sphynx\Core\Graphics\Imgui.h">
       <Filter>Sphynx\Core\Graphics</Filter>
     </ClInclude>
+    <ClInclude Include="src\Sphynx\Core\Graphics\Pipeline\Camera.h">
+      <Filter>Sphynx\Core\Graphics\Pipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Sphynx\Core\Graphics\Pipeline\Material.h">
+      <Filter>Sphynx\Core\Graphics\Pipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Sphynx\Core\Graphics\Pipeline\Mesh.h">
+      <Filter>Sphynx\Core\Graphics\Pipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Sphynx\Core\Graphics\Pipeline\Renderer.h">
+      <Filter>Sphynx\Core\Graphics\Pipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Sphynx\Core\Graphics\Pipeline\Shader.h">
+      <Filter>Sphynx\Core\Graphics\Pipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Sphynx\Core\Graphics\Pipeline\Texture.h">
+      <Filter>Sphynx\Core\Graphics\Pipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Sphynx\Core\Graphics\Platform\GLMaterial.h">
+      <Filter>Sphynx\Core\Graphics\Platform</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Sphynx\Core\Graphics\Platform\GLMesh.h">
+      <Filter>Sphynx\Core\Graphics\Platform</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Sphynx\Core\Graphics\Platform\GLRenderer.h">
+      <Filter>Sphynx\Core\Graphics\Platform</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Sphynx\Core\Graphics\Platform\GLShader.h">
+      <Filter>Sphynx\Core\Graphics\Platform</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Sphynx\Core\Graphics\Platform\GLTexture.h">
+      <Filter>Sphynx\Core\Graphics\Platform</Filter>
+    </ClInclude>
+>>>>>>> Dev_ComponentSystem
     <ClInclude Include="src\Sphynx\Core\Graphics\Platform\GLWindow.h">
       <Filter>Sphynx\Core\Graphics\Platform</Filter>
     </ClInclude>
     <ClInclude Include="src\Sphynx\Core\Graphics\Window.h">
       <Filter>Sphynx\Core\Graphics</Filter>
+<<<<<<< HEAD
+=======
+    </ClInclude>
+    <ClInclude Include="src\Sphynx\Core\InternalUtility.h">
+      <Filter>Sphynx\Core</Filter>
+>>>>>>> Dev_ComponentSystem
     </ClInclude>
     <ClInclude Include="src\Sphynx\Core\Module.h">
       <Filter>Sphynx\Core</Filter>
@@ -46,9 +118,30 @@
     <ClInclude Include="src\Sphynx\Core\Platform\GLFWInput.h">
       <Filter>Sphynx\Core\Platform</Filter>
     </ClInclude>
+<<<<<<< HEAD
     <ClInclude Include="src\Sphynx\Core\System.h">
       <Filter>Sphynx\Core</Filter>
     </ClInclude>
+=======
+    <ClInclude Include="src\Sphynx\Core\Scripting\Lua\Lua.h">
+      <Filter>Sphynx\Core\Scripting\Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Sphynx\Core\Scripting\Lua\LuaWindow.h">
+      <Filter>Sphynx\Core\Scripting\Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Sphynx\Core\Scripting\ScriptingEngine.h">
+      <Filter>Sphynx\Core\Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Sphynx\Core\System.h">
+      <Filter>Sphynx\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Sphynx\Core\TestComponent.h">
+      <Filter>Sphynx\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Sphynx\Core\ThreadPool.h">
+      <Filter>Sphynx\Core</Filter>
+    </ClInclude>
+>>>>>>> Dev_ComponentSystem
     <ClInclude Include="src\Sphynx\Delegate.h">
       <Filter>Sphynx</Filter>
     </ClInclude>
@@ -70,6 +163,9 @@
     <ClInclude Include="src\Sphynx\Events\WindowEvents.h">
       <Filter>Sphynx\Events</Filter>
     </ClInclude>
+    <ClInclude Include="src\Sphynx\GameObject.h">
+      <Filter>Sphynx</Filter>
+    </ClInclude>
     <ClInclude Include="src\Sphynx\Input.h">
       <Filter>Sphynx</Filter>
     </ClInclude>
@@ -77,6 +173,9 @@
       <Filter>Sphynx</Filter>
     </ClInclude>
     <ClInclude Include="src\Sphynx\Logger.h">
+      <Filter>Sphynx</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Sphynx\Object.h">
       <Filter>Sphynx</Filter>
     </ClInclude>
     <ClInclude Include="src\Sphynx\PlatformMacros.h">
@@ -109,11 +208,17 @@
     <ClInclude Include="src\Sphynx\pch.h">
       <Filter>Sphynx</Filter>
     </ClInclude>
+<<<<<<< HEAD
+=======
+    <ClInclude Include="src\Sphynx\Core\Scripting\Lua\LuaInput.h" />
+    <ClInclude Include="src\Sphynx\Core\Scripting\Lua\LuaIncludes.h" />
+>>>>>>> Dev_ComponentSystem
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Sphynx\Application.cpp">
       <Filter>Sphynx</Filter>
     </ClCompile>
+<<<<<<< HEAD
     <ClCompile Include="src\Sphynx\Core\Graphics\Imgui.cpp">
       <Filter>Sphynx\Core\Graphics</Filter>
     </ClCompile>
@@ -122,10 +227,15 @@
     </ClCompile>
     <ClCompile Include="src\Sphynx\Core\Graphics\Window.cpp">
       <Filter>Sphynx\Core\Graphics</Filter>
+=======
+    <ClCompile Include="src\Sphynx\Component.cpp">
+      <Filter>Sphynx</Filter>
+>>>>>>> Dev_ComponentSystem
     </ClCompile>
-    <ClCompile Include="src\Sphynx\Core\Module.cpp">
-      <Filter>Sphynx\Core</Filter>
+    <ClCompile Include="src\Sphynx\Core\Factories\ComponentFactory.cpp">
+      <Filter>Sphynx\Core\Factories</Filter>
     </ClCompile>
+<<<<<<< HEAD
     <ClCompile Include="src\Sphynx\Core\Platform\GLFWInput.cpp">
       <Filter>Sphynx\Core\Platform</Filter>
     </ClCompile>
@@ -134,12 +244,51 @@
     </ClCompile>
     <ClCompile Include="src\Sphynx\Delegate.cpp">
       <Filter>Sphynx</Filter>
+=======
+    <ClCompile Include="src\Sphynx\Core\Graphics\Imgui.cpp">
+      <Filter>Sphynx\Core\Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="src\Sphynx\Events\ApplicationEvents.cpp">
-      <Filter>Sphynx\Events</Filter>
+    <ClCompile Include="src\Sphynx\Core\Graphics\Platform\GLMaterial.cpp">
+      <Filter>Sphynx\Core\Graphics\Platform</Filter>
     </ClCompile>
+    <ClCompile Include="src\Sphynx\Core\Graphics\Platform\GLMesh.cpp">
+      <Filter>Sphynx\Core\Graphics\Platform</Filter>
+>>>>>>> Dev_ComponentSystem
+    </ClCompile>
+    <ClCompile Include="src\Sphynx\Core\Graphics\Platform\GLRenderer.cpp">
+      <Filter>Sphynx\Core\Graphics\Platform</Filter>
+    </ClCompile>
+<<<<<<< HEAD
     <ClCompile Include="src\Sphynx\Events\InputEvents.cpp">
       <Filter>Sphynx\Events</Filter>
+=======
+    <ClCompile Include="src\Sphynx\Core\Graphics\Platform\GLShader.cpp">
+      <Filter>Sphynx\Core\Graphics\Platform</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Sphynx\Core\Graphics\Platform\GLTexture.cpp">
+      <Filter>Sphynx\Core\Graphics\Platform</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Sphynx\Core\Graphics\Platform\GLWindow.cpp">
+      <Filter>Sphynx\Core\Graphics\Platform</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Sphynx\Core\Platform\GLFWInput.cpp">
+      <Filter>Sphynx\Core\Platform</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Sphynx\Core\Scripting\Lua\Lua.cpp">
+      <Filter>Sphynx\Core\Scripting\Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Sphynx\Core\Scripting\Lua\LuaWindow.cpp">
+      <Filter>Sphynx\Core\Scripting\Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Sphynx\Core\Scripting\ScriptingEngine.cpp">
+      <Filter>Sphynx\Core\Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Sphynx\Core\ThreadPool.cpp">
+      <Filter>Sphynx\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Sphynx\GameObject.cpp">
+      <Filter>Sphynx</Filter>
+>>>>>>> Dev_ComponentSystem
     </ClCompile>
     <ClCompile Include="src\Sphynx\Input.cpp">
       <Filter>Sphynx</Filter>
@@ -147,6 +296,12 @@
     <ClCompile Include="src\Sphynx\Logger.cpp">
       <Filter>Sphynx</Filter>
     </ClCompile>
+<<<<<<< HEAD
+=======
+    <ClCompile Include="src\Sphynx\Object.cpp">
+      <Filter>Sphynx</Filter>
+    </ClCompile>
+>>>>>>> Dev_ComponentSystem
     <ClCompile Include="src\Sphynx\Pointer.cpp">
       <Filter>Sphynx</Filter>
     </ClCompile>
@@ -171,5 +326,6 @@
     <ClCompile Include="src\Sphynx\pch.cpp">
       <Filter>Sphynx</Filter>
     </ClCompile>
+    <ClCompile Include="src\Sphynx\Core\Scripting\Lua\LuaInput.cpp" />
   </ItemGroup>
 </Project>

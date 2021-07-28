@@ -2,7 +2,10 @@
 #include "Core.h"
 #include "../Window.h"
 
+<<<<<<< HEAD:Sphynx/src/Sphynx/Core/Graphics/Platform/GLWindow.h
 
+=======
+>>>>>>> Dev_ComponentSystem:Sphynx/src/Sphynx/Core/Window/Platform/GLWindow.h
 //Opaque Object.
 struct GLFWwindow;
 //Opaque
@@ -10,11 +13,14 @@ typedef GLFWwindow GLFWwindow;
 
 
 namespace Sphynx::Core {
+	namespace Graphics::GL {
+		class GLRenderer;
+	}
 	//GLFW implementation.
 	class GLWindow final : public IWindow
 	{
 	private:
-		inline static unsigned int WindowsOpened = 0;
+		Graphics::GL::GLRenderer* Renderer;
 		GLFWwindow* window;
 		static bool GLFWInit;
 		bool Vsync;
@@ -32,7 +38,11 @@ namespace Sphynx::Core {
 		inline bool IsSharingResources() { return Sharing; };
 		GLWindow(Application* App, Bounds WinBounds, std::string title, bool fullscreen);
 		//We Expect that window has already been open. 
+<<<<<<< HEAD:Sphynx/src/Sphynx/Core/Graphics/Platform/GLWindow.h
 		GLWindow(Application* App, Bounds WinBounds, std::string title, GLWindow* share);
+=======
+		GLWindow(Application* App, Bounds WinBounds, std::string title, bool fullscreen, GLWindow* share);
+>>>>>>> Dev_ComponentSystem:Sphynx/src/Sphynx/Core/Window/Platform/GLWindow.h
 		~GLWindow()override;
 		void OnClose()override;
 		void OnUpdate()override;
@@ -44,6 +54,10 @@ namespace Sphynx::Core {
 		inline bool IsVsyncEnabled()override { return Vsync; };
 		void SetVsync(bool vsync)override;
 		void Internal_ChangeTitle(const char* title)override;
+<<<<<<< HEAD:Sphynx/src/Sphynx/Core/Graphics/Platform/GLWindow.h
+=======
+		Core::Graphics::IRenderer* GetRenderer()override;
+>>>>>>> Dev_ComponentSystem:Sphynx/src/Sphynx/Core/Window/Platform/GLWindow.h
 		///////GLWindow Function/////////
 
 		static void TerminateGLFW();

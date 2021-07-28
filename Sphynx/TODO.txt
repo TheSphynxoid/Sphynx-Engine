@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 Sphynx Engine V0.4.5
 Windows now close properly
 Create Pointer Class. Done
@@ -10,3 +11,11 @@ Fix:
 	list::remove throw compile error (File:Application.cpp, Line:90).
 Add Input Action Enum (Pressed,Release,Repeat). Done
 Expand DebugWindow(ImGUI).
+=======
+Sphynx Engine - Components V0.1
+Implemented GameObject and Components
+Implemented a Component Factory
+
+Sphynx Engine - Components V0.1.1
+Implementing Renderer
+>>>>>>> Dev_ComponentSystem

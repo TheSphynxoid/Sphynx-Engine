@@ -1,6 +1,7 @@
 #pragma once
 #include "Core/Module.h"
 #include "Events/ImGuiEvents.h"
+#include "Core/Scripting/ScriptingEngine.h"
 #include "SpTime.h"
 #include <list>
 #include <typeinfo>
@@ -43,7 +44,6 @@ namespace Sphynx::Core {
 		Application* App;
 		IWindow* window = NULL;
 		std::list<IOverlayWindow*> Overlays;
-		Time* time;
 		//Storing Names of the window classes for The Debug Window.
 		std::list<const char*> Names;
 	public:
@@ -68,8 +68,13 @@ namespace Sphynx::Core {
 		bool WindowButton = false, TimeButton = false;
 		Application* App;
 		Events::EventSystem* eventsystem;
+		Scripting::ScriptingEngine scripts;
 		Core::IWindow* window;
+<<<<<<< HEAD:Sphynx/src/Sphynx/Core/Graphics/Imgui.h
 		std::list<Core::IWindow*>extra;
+=======
+		Core::IWindow*extra;
+>>>>>>> Dev_ComponentSystem:Sphynx/src/Sphynx/Core/Imgui.h
 		char TitleBuffer[128];
 		//Put the in the cpp. I Couldn't include imgui.h because of SandBox.
 		//std::vector<char> Buf;

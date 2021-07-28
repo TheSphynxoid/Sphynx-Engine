@@ -5,5 +5,8 @@ namespace Sphynx::Core {
 	class System {
 	public:
 		virtual ~System() = default;
+		virtual void Start() = 0;
+		virtual void Update() = 0;
+		virtual void Shutdown() = 0;
 	};
 }

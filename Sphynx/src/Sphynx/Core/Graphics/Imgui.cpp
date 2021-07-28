@@ -37,7 +37,10 @@ void Sphynx::Core::Imgui::Start(Application* app)
 {
 	App = app;
 	window = app->GetMainWindow();
+<<<<<<< HEAD:Sphynx/src/Sphynx/Core/Graphics/Imgui.cpp
 	time = app->GetTimeObject();
+=======
+>>>>>>> Dev_ComponentSystem:Sphynx/src/Sphynx/Core/Imgui.cpp
 	window->GetEventSystem()->Subscribe<Imgui, Events::OnOverlayUpdate>(this, &Imgui::OnOverlayUpdate);
 #ifdef IMGUI_DX11
 	Imgui_ImplDX11_Init();
@@ -126,9 +129,9 @@ void Sphynx::Core::IOverlayWindow::InternalSetup(Imgui* instance)
 	imgui = instance;
 }
 
-ImVec4 GetColorLevel(spdlog::level::level_enum& le)
+ImVec4 GetLevelColor(spdlog::level::level_enum& lvl)
 {
-	switch (le)
+	switch (lvl)
 	{
 	default:
 		return ImVec4(0, 0, 0, 1);
@@ -152,7 +155,7 @@ void Sphynx::Core::DebugWindow::OnEventLog(OnLog& e)
 	for (int new_size = Buf.size(); old_size < new_size; old_size++) {
 		if (Buf[old_size] == '\n') {
 			LineOffsets.push_back(old_size + 1);
-			Colors.push_back(GetColorLevel(e.level));
+			Colors.push_back(GetLevelColor(e.level));
 		}
 	}
 }
@@ -162,7 +165,11 @@ Sphynx::Core::DebugWindow::DebugWindow(Application* app)
 	App = app;
 	eventsystem = App->GetAppEventSystem();
 	window = App->GetMainWindow();
+<<<<<<< HEAD:Sphynx/src/Sphynx/Core/Graphics/Imgui.cpp
 	extra = App->GetExtraWindows();
+=======
+	scripts = App->GetScriptingEngine();
+>>>>>>> Dev_ComponentSystem:Sphynx/src/Sphynx/Core/Imgui.cpp
 	memset(TitleBuffer, 0, sizeof(TitleBuffer));
 	LineOffsets.push_back(0);
 	GlobalEventSystem::GetInstance()->Subscribe<DebugWindow, OnLog>(this, &DebugWindow::OnEventLog);
@@ -246,9 +253,10 @@ void Sphynx::Core::DebugWindow::Draw()
 				}
 				ImGui::EndCombo();
 			}
-			static char buffer[512];
-			if (ImGui::InputText("Log", buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue)) {
-				HandleLogging(buffer, item, rb);
+			static char buffer[1024];
+			if (ImGui::InputText("Lua", buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue)) {
+				//HandleLogging(buffer, item, rb);
+				scripts.GetLua().ExecuteString(buffer);
 				memset(buffer, 0, sizeof(buffer));
 			}
 			ImGui::Separator();
@@ -310,6 +318,7 @@ void Sphynx::Core::DebugWindow::Draw()
 		}
 		if (ImGui::CollapsingHeader("Window (Still WIP)")) {
 			ImGui::Indent();
+<<<<<<< HEAD:Sphynx/src/Sphynx/Core/Graphics/Imgui.cpp
 			if (ImGui::BeginListBox("ExtraWindows", ImVec2(FLT_MIN, ImGui::GetTextLineHeightWithSpacing() * 5))) {
 				extra = App->GetExtraWindows();
 				static int selected = -1;
@@ -333,6 +342,10 @@ void Sphynx::Core::DebugWindow::Draw()
 						(*start)->Close();
 					}
 				}
+=======
+			if (ImGui::Button("Close Extra Window")) {
+				if (extra)extra->Close();
+>>>>>>> Dev_ComponentSystem:Sphynx/src/Sphynx/Core/Imgui.cpp
 			}
 			ImGui::Text("Main Window Height:%i", window->GetHeight());
 			ImGui::Text("Main Window Width:%i", window->GetWidth());
@@ -348,8 +361,8 @@ void Sphynx::Core::DebugWindow::Draw()
 		}
 		if (ImGui::CollapsingHeader("Time")) {
 			ImGui::Indent();
-			ImGui::Text("Activity Time:%f", App->GetTimeObject()->GetActivityTime());
-			ImGui::Text("Delta Time:%d", App->GetTimeObject()->GetDeltaTime());
+			//ImGui::Text("Activity Time:%f", App->GetTimeObject()->GetActivityTime());
+			//ImGui::Text("Delta Time:%d", App->GetTimeObject()->GetDeltaTime());
 			ImGui::Unindent();
 		}
 		ImGui::End();

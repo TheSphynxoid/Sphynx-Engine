@@ -1,55 +1,33 @@
 #include "pch.h"
 #include "SpTime.h"
+#ifdef _MSC_VER
+#include <intrin.h>
+#else
+#include <x86intrin.h>
+#endif
 
-Sphynx::Timer::Timer()
+double Sphynx::Time::GetDeltaTime()
 {
-	timer = clock();
-	StartTimer = timer;
+	return DeltaTime.count();
 }
 
-Sphynx::Timer::~Timer()
+unsigned __int64 Sphynx::Time::GetTicks()
 {
+	return diff_tick;
 }
 
-void Sphynx::Timer::Tick()
+void Sphynx::Time::Start()
 {
-	timer = clock();
-}
-
-long Sphynx::Timer::TickAndReturnOld()
-{
-	long curr = GetTicks();
-	Tick();
-	return curr;
-}
-
-long Sphynx::Timer::GetTicks()
-{
-	return timer;
-}
-
-//Sphynx::Time::Time()
-//{
-//}
-
-void Sphynx::Time::Start(Application* app)
-{
-	timer = Timer();
+	last = timer::now();
+	last_tick = __rdtsc();
 }
 
 void Sphynx::Time::Update()
 {
-	double old = timer.GetTicks();
-	timer.Tick();
-	DeltaTime = timer.GetTicks() - old;
-}
-
-double Sphynx::Time::GetDeltaTime()
-{
-	return DeltaTime;
-}
-
-long Sphynx::Time::GetActivityTime()
-{
-	return timer.GetTicks();
+	auto cycles = __rdtsc();
+	time_point curr = timer::now();
+	DeltaTime = curr - last;
+	diff_tick = cycles - last_tick;
+	last_tick = cycles;
+	last = curr;
 }

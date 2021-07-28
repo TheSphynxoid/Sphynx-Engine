@@ -1,5 +1,4 @@
 #include <Sphynx.h>
-#include <Sphynx/Events/Event.h>
 #include <Sphynx/Events/ApplicationEvents.h>
 #include <iostream>
 #include <string>
@@ -14,7 +13,8 @@ class SandBox : public Sphynx::Application
 {
 public:
 	SandBox() {
-		OpenMainWindow(std::make_unique<Core::GLWindow>(this, Bounds(1024, 576), "Legacy", NULL));
+		Sphynx::Core::Bounds b = { 1024, 768 };
+		CreateMainWindow(std::make_unique<Core::GLWindow>(this, b, "SandBox", false));
 	}
 	void Update() {
 
@@ -42,7 +42,8 @@ void OnKeyPress(Sphynx::MouseButton button, Sphynx::Action action) {
 	switch (action)
 	{
 	case Sphynx::Action::Pressed:
-		if (button == MouseButton::LeftButton)Client_Trace("left Button Pressed");
+		if (button == MouseButton::LeftButton)Client_Trace("Left Button Pressed");
+		if (button == MouseButton::RightButton)Client_Trace("Right Button Pressed");
 		break;
 	case Sphynx::Action::Repeat:
 		break;

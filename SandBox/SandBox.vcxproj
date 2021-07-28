@@ -93,6 +93,9 @@
     <ClCompile Include="src\App.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="src\Test.lua" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\Sphynx\Sphynx.vcxproj">
       <Project>{2F02A1D1-1BA4-CBA7-045F-DFFBF09F52F8}</Project>
     </ProjectReference>

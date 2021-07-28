@@ -16,6 +16,19 @@
 #define SPDEL
 #endif
 
+<<<<<<< HEAD
+=======
+//This is Fucking ugly
+
+namespace Sphynx::Events {
+    class EventSystem;
+}
+
+namespace Sphynx::Util {
+    extern void InternalSkipCurrentEvent(Events::EventSystem& es);
+};
+
+>>>>>>> Dev_ComponentSystem
 namespace Sphynx::Events {
 
     //Event Base Class
@@ -62,16 +75,31 @@ namespace Sphynx::Events {
 
     //A Non-Blocking Observer pattern EventSystem (Event Bus).
     //TODO: Replace EventCallBackXXXX with Delegates.
+<<<<<<< HEAD
     class EventSystem{
+=======
+    class EventSystem {
+>>>>>>> Dev_ComponentSystem
     private:
 #ifndef Sphynx_Delegate
         typedef std::list<EventCallBackBase*> Handlers;
 #else
+<<<<<<< HEAD
         typedef __Base_Delegate<void, Event&> BaseDelegate;
+=======
+        typedef BaseDelegate<void, Event&> BaseDelegate;
+>>>>>>> Dev_ComponentSystem
         typedef std::list <BaseDelegate*> Handlers;
 #endif // !Sphynx_Delegate
         std::map<std::type_index, Handlers*> subscribers;
         std::forward_list<std::pair<std::type_index, Event*>> Queue;
+<<<<<<< HEAD
+=======
+        bool PropagateEvent = true;
+        void SkipCurrentEvent() {
+            PropagateEvent = false;
+        };
+>>>>>>> Dev_ComponentSystem
     public:
         EventSystem() : subscribers() {};
         ~EventSystem() {}
@@ -185,6 +213,7 @@ namespace Sphynx::Events {
             auto it = handlers->begin();
             for (int i = 0; i < position; i++)it++;
             handlers->push_back(it++, dynamic_cast<BaseDelegate*>(new Delegate<void, Instance, EventType&>(func)));
+<<<<<<< HEAD
         }; 
         template<class EventType>
         void Subscribe(void (*Function)(EventType&))
@@ -215,6 +244,38 @@ namespace Sphynx::Events {
         };
 #endif
         template<class EventType>
+=======
+        };
+        template<class EventType>
+        void Subscribe(void (*Function)(EventType&))
+        {
+            Handlers* handlers = subscribers[std::type_index(typeid(EventType))];
+
+            //First time initialization
+            if (handlers == nullptr) {
+                handlers = new Handlers();
+                subscribers[std::type_index(typeid(EventType))] = handlers;
+            }
+
+            handlers->push_back(dynamic_cast<BaseDelegate*>(new Delegate<void, void, EventType&>(Function)));
+        };
+        template<class T, class EventType>
+        void Subscribe(T* instance, void (T::* memberFunction)(EventType&))
+        {
+            Handlers* handlers = subscribers[std::type_index(typeid(EventType))];
+
+            //First time initialization
+            if (handlers == nullptr) {
+                handlers = new Handlers();
+                subscribers[std::type_index(typeid(EventType))] = handlers;
+            }
+            //auto f = Delegate<void, T, Event&>::Function<true>(instance, memberFunction);
+            Delegate<void, T, EventType&>* dt = new Delegate<void, T, EventType&>(instance, memberFunction);
+            handlers->push_back(dynamic_cast<BaseDelegate*>(dt));
+        };
+#endif
+        template<class EventType>
+>>>>>>> Dev_ComponentSystem
         void QueueEvent(EventType e)
         {
             Handlers* handlers = subscribers[std::type_index(typeid(EventType))];
@@ -226,15 +287,23 @@ namespace Sphynx::Events {
         };
         //This Should not be overused. A blocking function that dispatch the event on call.
         template<class EventType>
+<<<<<<< HEAD
         void DispatchImmediate(EventType e) 
+=======
+        void DispatchImmediate(EventType e)
+>>>>>>> Dev_ComponentSystem
         {
             Handlers* handlers = subscribers[std::type_index(typeid(e))];
             if (handlers == nullptr)return;
             for (auto& handle : *handlers) {
                 if (handle != nullptr) {
                     handle->Invoke(e);
+<<<<<<< HEAD
                     //if Event is Handled it won't propagate.
                     if (e.isHandled == true)return;
+=======
+                    if (!PropagateEvent)return;
+>>>>>>> Dev_ComponentSystem
                 }
             }
         }
@@ -248,7 +317,12 @@ namespace Sphynx::Events {
                     if (handle != nullptr) {
                         handle->Invoke(*pair.second);
                         //if Event is Handled it won't propagate.
+<<<<<<< HEAD
                         if ((*pair.second).isHandled == true)break;
+=======
+                        //if ((*pair.second).isHandled == true)break;
+                        if (!PropagateEvent)return;
+>>>>>>> Dev_ComponentSystem
                     }
                 }
                 //Delete the temporary object.
@@ -257,10 +331,17 @@ namespace Sphynx::Events {
             //Clear Queue.
             Queue.clear();
         }
+<<<<<<< HEAD
         template<class EventType>
         void ProcessFunction() {}
 
 
+=======
+        //What's This ?
+        template<class EventType>
+        void ProcessFunction() {}
+        friend void Sphynx::Util::InternalSkipCurrentEvent(EventSystem& es);
+>>>>>>> Dev_ComponentSystem
     };
     //Pre-Initialize (thread-safe because of static local singleton) EventSystem. 
     //Used for Events without an EventSystem instance(idk errors for example or startup or craches).
