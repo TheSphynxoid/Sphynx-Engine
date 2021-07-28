@@ -1,4 +1,6 @@
 #pragma once
+#ifndef SphynxApplication
+#define SphynxApplication
 #include "Core.h"
 #include "Events/Event.h"
 #include "SpTime.h"
@@ -11,7 +13,7 @@
 #include <iostream>
 #include "Core/ThreadPool.h"
 //Imgui&Window&EventSystem&GLFW&Scripting&Time&GLRenderer(WIP) Classes
-#define Sphynx_Version "0.2.2 WIP"
+#define Sphynx_Version "0.2.25 WIP"
 
 namespace Sphynx {
 	namespace Core {
@@ -27,7 +29,6 @@ namespace Sphynx {
 		Core::Scripting::ScriptingEngine scriptingEngine;
 		std::list<Pointer<Events::EventSystem>> EventSystemArray;
 		Core::IWindow* MainWindow = nullptr;
-		Core::IWindow* ExtraWindow = nullptr;
 		bool AppAlive = true;
 		inline void HandleWindowClose(Events::OnWindowClose& e);
 #if defined(DEBUG)
@@ -35,6 +36,7 @@ namespace Sphynx {
 #endif
 	public:
 		Application();
+		static Application* GetApplication();
 		virtual ~Application();
 		virtual void Update() = 0;
 		void Run();
@@ -44,7 +46,7 @@ namespace Sphynx {
 		Events::EventSystem RequestNewEventSystem();
 		void DeleteEventSystem(Events::EventSystem& e);
 		template<typename EventType>
-		void DispatchToActiveEventSystems(EventType& e, bool Immediate)
+		inline void DispatchToActiveEventSystems(EventType& e, bool Immediate)
 		{
 			for (auto& es : EventSystemArray) {
 				if (Immediate) {
@@ -57,17 +59,13 @@ namespace Sphynx {
 
 		inline Events::EventSystem* GetAppEventSystem()noexcept { return &eventSystem; };
 		inline Core::IWindow* GetMainWindow()noexcept { return MainWindow; };
-		inline Core::IWindow* GetExtraWindow()noexcept { return ExtraWindow; };
 		inline Core::Scripting::ScriptingEngine GetScriptingEngine()noexcept { return scriptingEngine; };
 		//////////////Window Handling///////////////
 
 		///Create the Main Window using a premade IWindow Pointer to allow Backend Choice(GL or DX)
 		Core::IWindow* CreateMainWindow(std::unique_ptr<Core::IWindow>&& window /*We Want to steal it*/);
-		void CloseAllWindows();
-		Core::IWindow* CreateExtraWindow(std::unique_ptr<Core::IWindow>&& window);
-		//AKA. Close The Extra Window
-		void CloseExtraWindow();
 	};
 	//To be defined in a client
 	Application* CreateApplication();
 }
+#endif

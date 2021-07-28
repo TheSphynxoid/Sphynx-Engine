@@ -94,7 +94,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Test.lua" />
-    <None Include="Test.lua" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Sphynx\Sphynx.vcxproj">

@@ -6,13 +6,15 @@ namespace Sphynx::Core::Graphics {
 	class Material
 	{
 	protected:
-		ShaderPack Shaders;
-		Texture* Textures;
+		Texture* Textures = nullptr;
+		virtual void i_CreateMaterial(ShaderPack& pack) = 0;
+		Material(ShaderPack& shader, Texture* texture) : Textures(texture) {};
 	public:
-		//A Material is a holder for shaders and textures.
-		Material(ShaderPack shaders, Texture* texture) :Shaders(Shaders), Textures(texture) {};
-		ShaderPack GetShaders() { return Shaders; };
+		Material() {};
+		//A Material is stroage for shaders and textures.
+		Material& CreateMaterial(ShaderPack& shaders, Texture* texture) { i_CreateMaterial(shaders); return *this; };
 		Texture* GetTextures() { return Textures; };
+		virtual bool IsValid() = 0;
 		virtual ~Material() = default;
 		virtual void Bind() = 0;
 	};

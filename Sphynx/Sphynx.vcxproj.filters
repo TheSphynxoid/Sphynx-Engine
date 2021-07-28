@@ -25,6 +25,9 @@
     <Filter Include="Sphynx\Core\Scripting">
       <UniqueIdentifier>{A99DEA9F-150A-A69A-DEFD-3DF84A29C802}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Sphynx\Core\Scripting\Lua">
+      <UniqueIdentifier>{BA62FEA9-2625-3234-6FD5-C0C0DBD60A12}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Sphynx\Events">
       <UniqueIdentifier>{3383B641-9F43-3278-687E-7BF5D4FD7654}</UniqueIdentifier>
     </Filter>
@@ -88,6 +91,9 @@
     <ClInclude Include="src\Sphynx\Core\Graphics\Window.h">
       <Filter>Sphynx\Core\Graphics</Filter>
     </ClInclude>
+    <ClInclude Include="src\Sphynx\Core\InternalUtility.h">
+      <Filter>Sphynx\Core</Filter>
+    </ClInclude>
     <ClInclude Include="src\Sphynx\Core\Module.h">
       <Filter>Sphynx\Core</Filter>
     </ClInclude>
@@ -95,7 +101,10 @@
       <Filter>Sphynx\Core\Platform</Filter>
     </ClInclude>
     <ClInclude Include="src\Sphynx\Core\Scripting\Lua\Lua.h">
-      <Filter>Sphynx\Core\Scripting</Filter>
+      <Filter>Sphynx\Core\Scripting\Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Sphynx\Core\Scripting\Lua\LuaWindow.h">
+      <Filter>Sphynx\Core\Scripting\Lua</Filter>
     </ClInclude>
     <ClInclude Include="src\Sphynx\Core\Scripting\ScriptingEngine.h">
       <Filter>Sphynx\Core\Scripting</Filter>
@@ -104,6 +113,9 @@
       <Filter>Sphynx\Core</Filter>
     </ClInclude>
     <ClInclude Include="src\Sphynx\Core\TestComponent.h">
+      <Filter>Sphynx\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Sphynx\Core\ThreadPool.h">
       <Filter>Sphynx\Core</Filter>
     </ClInclude>
     <ClInclude Include="src\Sphynx\Delegate.h">
@@ -172,9 +184,8 @@
     <ClInclude Include="src\Sphynx\pch.h">
       <Filter>Sphynx</Filter>
     </ClInclude>
-    <ClInclude Include="src\Sphynx\Core\Scripting\Lua\LuaWindow.h" />
-    <ClInclude Include="src\Sphynx\Core\ThreadPool.h" />
-    <ClInclude Include="src\Sphynx\Core\InternalUtility.h" />
+    <ClInclude Include="src\Sphynx\Core\Scripting\Lua\LuaInput.h" />
+    <ClInclude Include="src\Sphynx\Core\Scripting\Lua\LuaIncludes.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Sphynx\Application.cpp">
@@ -211,10 +222,16 @@
       <Filter>Sphynx\Core\Platform</Filter>
     </ClCompile>
     <ClCompile Include="src\Sphynx\Core\Scripting\Lua\Lua.cpp">
-      <Filter>Sphynx\Core\Scripting</Filter>
+      <Filter>Sphynx\Core\Scripting\Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Sphynx\Core\Scripting\Lua\LuaWindow.cpp">
+      <Filter>Sphynx\Core\Scripting\Lua</Filter>
     </ClCompile>
     <ClCompile Include="src\Sphynx\Core\Scripting\ScriptingEngine.cpp">
       <Filter>Sphynx\Core\Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Sphynx\Core\ThreadPool.cpp">
+      <Filter>Sphynx\Core</Filter>
     </ClCompile>
     <ClCompile Include="src\Sphynx\GameObject.cpp">
       <Filter>Sphynx</Filter>
@@ -252,7 +269,6 @@
     <ClCompile Include="src\Sphynx\pch.cpp">
       <Filter>Sphynx</Filter>
     </ClCompile>
-    <ClCompile Include="src\Sphynx\Core\Scripting\Lua\LuaWindow.cpp" />
-    <ClCompile Include="src\Sphynx\Core\ThreadPool.cpp" />
+    <ClCompile Include="src\Sphynx\Core\Scripting\Lua\LuaInput.cpp" />
   </ItemGroup>
 </Project>

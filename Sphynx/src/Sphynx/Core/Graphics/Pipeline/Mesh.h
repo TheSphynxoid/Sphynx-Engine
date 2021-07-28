@@ -15,5 +15,6 @@ namespace Sphynx::Core::Graphics {
 		virtual void Create(float* vertexes, size_t vertsize, int* indexes, size_t indexsize, MeshType meshtype) = 0;
 		virtual void Bind() = 0;
 		virtual void UnBind() = 0;
+		virtual bool IsValid() = 0;
 	};
 }

@@ -44,7 +44,9 @@ project "Sphynx"
 		"Lua",
 		"opengl32.lib"
 	}
-
+	defines{
+		-- "SPDLL"
+	}
 	filter "configurations:Debug"
 		defines "DEBUG"
 		runtime "Debug"

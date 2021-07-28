@@ -5,6 +5,7 @@
 
 namespace Sphynx {
 	//Per-Window.
+	//TODO: Make it static.
 	class Input {
 	public:
 		//not using pure virtuals to allow application to hold a Input Reference not pointer, i don't know why tho

@@ -49,9 +49,22 @@ namespace Sphynx {
 #define Core_Info(...)          ::Sphynx::Logger::GetInternalLogger()->info(__VA_ARGS__)
 #define Core_Trace(...)         ::Sphynx::Logger::GetInternalLogger()->trace(__VA_ARGS__)
 #define Core_Debug_Message(...) ::Sphynx::Logger::GetInternalLogger()->debug(__VA_ARGS__)
+#define Core_Print_Memory(ptr)  
 
 #define Client_Error(...)       ::Sphynx::Logger::GetClientLogger()->error(__VA_ARGS__)
 #define Client_Warn(...)        ::Sphynx::Logger::GetClientLogger()->warn(__VA_ARGS__)
 #define Client_Info(...)        ::Sphynx::Logger::GetClientLogger()->info(__VA_ARGS__)
 #define Client_Trace(...)       ::Sphynx::Logger::GetClientLogger()->trace(__VA_ARGS__)
+#else
+#define Core_Error(...)        
+#define Core_Warn(...)         
+#define Core_Info(...)         
+#define Core_Trace(...)        
+#define Core_Debug_Message(...)
+#define Core_Print_Memory(ptr) 
+
+#define Client_Error(...)      
+#define Client_Warn(...)       
+#define Client_Info(...)       
+#define Client_Trace(...)      
 #endif

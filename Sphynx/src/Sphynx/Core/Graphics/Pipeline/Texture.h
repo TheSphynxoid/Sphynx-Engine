@@ -2,8 +2,8 @@
 
 namespace Sphynx::Core::Graphics {
 	class Texture
-	{
-		virtual void Create() = 0;
+	{	
+		virtual void CreateTexture() = 0;
 		virtual void Bind() = 0;
 	};
 }

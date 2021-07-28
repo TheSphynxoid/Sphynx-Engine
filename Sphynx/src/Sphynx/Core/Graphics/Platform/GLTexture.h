@@ -3,6 +3,6 @@
 namespace Sphynx::Core::Graphics::GL {
 	class GLTexture : public Texture
 	{
-		virtual void Create()override;
+		virtual void CreateTexture()override {};
 	};
 }

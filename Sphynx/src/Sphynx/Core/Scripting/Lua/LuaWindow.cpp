@@ -41,11 +41,7 @@ int createWindow(lua_State* L) {
 				Bounds b = { width, height };
 				size_t tsize;
 				const char* title = lua_tolstring(L, 4, &tsize);
-				IWindow* win;
-				if (App->GetMainWindow() == nullptr) {
-					win = App->CreateMainWindow(std::make_unique<Sphynx::Core::GLWindow>(App, b, title, App->GetMainWindow()));
-				}
-				else { win = App->CreateExtraWindow(std::make_unique<Sphynx::Core::GLWindow>(App, b, title, App->GetMainWindow())); }
+				IWindow* win = new Sphynx::Core::GLWindow(App, b, title, App->GetMainWindow());
 				auto lwin = createLuaWindow(L, win);
 				return 1;
 			}
@@ -62,6 +58,7 @@ int createWindow(lua_State* L) {
 int w_gc(lua_State* L) {
 	L_Window* w = reinterpret_cast<L_Window*>(luaL_checkudata(L, 1, "Window"));
 	w->IWin->Close();
+	w = nullptr;
 	lua_getmetatable(L, -1);
 	lua_pushboolean(L, false);
 	lua_setfield(L, -2, "IsOpen");

@@ -13,8 +13,8 @@ class SandBox : public Sphynx::Application
 {
 public:
 	SandBox() {
-		Sphynx::Core::Bounds b = { 1024, 576 };
-		CreateMainWindow(std::make_unique<Core::GLWindow>(this, b, "Legacy", NULL));
+		Sphynx::Core::Bounds b = { 1024, 768 };
+		CreateMainWindow(std::make_unique<Core::GLWindow>(this, b, "SandBox", false));
 	}
 	void Update() {
 
@@ -61,8 +61,5 @@ Sphynx::Application* Sphynx::CreateApplication() {
 	sandbox->GetAppEventSystem()->Subscribe<Events::OnWindowFocus>(&OnWindowFocusTester);
 	auto inp = (Sphynx::Core::GLFWInput*)sandbox->GetMainWindow()->GetInput();
 	inp->RegisterMouseButtonCallback<void>(Sphynx::Delegate<void,void,Sphynx::MouseButton,Action>(&OnKeyPress));
-	typedef int(*t)(int);
-	typedef std::decay_t<t> test;
-	test t = nullptr;
 	return sandbox;
 }

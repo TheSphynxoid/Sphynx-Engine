@@ -22,6 +22,7 @@ namespace Sphynx::Core::Graphics {
 			Load(path, type);
 		}
 		ShaderType GetShaderType() { return Type; };
+		virtual bool IsValid() = 0;
 		virtual ~Shader() = default;
 	};
 

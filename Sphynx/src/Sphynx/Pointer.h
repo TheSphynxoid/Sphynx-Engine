@@ -102,7 +102,10 @@ namespace Sphynx {
 				delegate = NULL;
 			}
 			else if(std::is_pointer_v<T>) {
-				throw Invalid_Type<T>("A pointer of any type is not allowed");
+				//throw Invalid_Type<T>("A pointer of any type is not allowed");
+
+				//Weird.
+				this->Object = ptr;
 			}
 			else {
 				dealloc = new Deallocator<T>(ptr);
@@ -170,7 +173,10 @@ namespace Sphynx {
 			if (--oldcount == 0) delete old;
 			return *this;
 		};
-		bool operator==(const Pointer& ptr) {
+		Pointer& operator=(const T& ptr) {
+
+		}
+		bool operator=(Pointer&& ptr) {
 			return ptr.Object == this->Object;
 		};
 		bool operator==(const T* ptr) {

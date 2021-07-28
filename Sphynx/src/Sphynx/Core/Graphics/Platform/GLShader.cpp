@@ -14,7 +14,7 @@ void Sphynx::Core::Graphics::GL::GLShader::CreateShader(std::string path, int SH
 		std::istreambuf_iterator<char>());
 	auto c = glsl.c_str();
 	//Creating Shader
-	if (id = glCreateShader(SHADER_TYPE)) {
+	if (!(id = glCreateShader(SHADER_TYPE))) {
 		Core_Error("Unable to create shader object (GL)");
 	}
 	//Setting the source.
@@ -65,6 +65,13 @@ void Sphynx::Core::Graphics::GL::GLShader::Load(std::string path, ShaderType Typ
 	}
 	CreateShader(path, Flag);
 }
+
+void Sphynx::Core::Graphics::GL::GLShader::Release()noexcept
+{
+	glDeleteShader(id);
+	id = 0;
+}
+
 void Sphynx::Core::Graphics::GL::GLShader::CreateFromCode(const char* code, ShaderType Type)
 {
 	//redundancy
@@ -93,7 +100,7 @@ void Sphynx::Core::Graphics::GL::GLShader::CreateFromCode(const char* code, Shad
 		return;
 	}
 	//GL
-	if (id = glCreateShader(Flag)) {
+	if (!(id = glCreateShader(Flag))) {
 		Core_Error("Unable to create shader object (GL)");
 	}
 	//Setting the source.
@@ -111,7 +118,21 @@ void Sphynx::Core::Graphics::GL::GLShader::CreateFromCode(const char* code, Shad
 	}
 }
 
+Sphynx::Core::Graphics::GL::GLShader::GLShader(GLShader&& shader)noexcept : id(shader.id)
+{
+}
+
+Sphynx::Core::Graphics::GL::GLShader& Sphynx::Core::Graphics::GL::GLShader::operator=(GLShader&& shader)noexcept
+{
+	if (this != &shader) {
+		this->Release();
+		std::swap(id, shader.id);
+		std::swap(Type, shader.Type);
+	}
+	return *this;
+}
+
 Sphynx::Core::Graphics::GL::GLShader::~GLShader()
 {
-	glDeleteShader(id);
+	this->Release();
 }

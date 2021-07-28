@@ -102,14 +102,17 @@ Sphynx::Core::GLWindow::GLWindow(Application* App, Bounds WinBounds, std::string
 		Core_Error("Glfw couldn't initialize.");
 		return;
 	}
+	GLFWmonitor* monitor = 0;
+	if (fullscreen) {
+		monitor = glfwGetPrimaryMonitor();
+		//glfwSetWindowSize(window, Width, Height);
+	}
+	window = glfwCreateWindow(Width, Height, title.c_str(), monitor, NULL);
 	//Create Window
-	window = glfwCreateWindow(WinBounds.Width, WinBounds.Height, title.c_str(), NULL, NULL);
 	if (!window) {
 		Core_Error("Cannot Create Window.");
 		return;
 	}
-	WindowsOpened += 1;
-
 	input = new GLFWInput(window);
 
 	glfwMakeContextCurrent(window);
@@ -125,8 +128,11 @@ Sphynx::Core::GLWindow::GLWindow(Application* App, Bounds WinBounds, std::string
 	glfwSetWindowMaximizeCallback(window, &mid::Maximize);
 	//End of callbacks.
 
+	glfwFocusWindow(window);
+
 	//ToDO: Init imgui and Renderer.
 	Renderer = new Core::Graphics::GL::GLRenderer();
+	Renderer->Start(this);
 	glClearColor(0.5f, 0.05f, 0.0f, 1);
 	Core_Warn("TODO:FullScreen not Implemented.");
 }
@@ -142,8 +148,18 @@ Sphynx::Core::GLWindow::GLWindow(Application* App, Bounds WinBounds, std::string
 	Init(App, WinBounds, title);
 	Sharing = true;
 	glfwInitHint(GLFW_VERSION_MAJOR, 4);
-	glfwInitHint(GLFW_VERSION_MINOR, 6);
-	window = glfwCreateWindow(WinBounds.Width, WinBounds.Height, title.c_str(), NULL, share->window);
+	glfwInitHint(GLFW_VERSION_MINOR, 6);	
+	//Init GLFW
+	GLFWInit = glfwInit();
+	if (!GLFWInit) {
+		Core_Error("Glfw couldn't initialize.");
+		return;
+	}
+	glfwWindowHint(GLFW_DOUBLEBUFFER, GLFW_TRUE);
+	glfwWindowHint(GLFW_FOCUSED, GLFW_TRUE);
+	GLFWmonitor* monitor = 0;
+	if (fullscreen)monitor = glfwGetPrimaryMonitor();
+	window = glfwCreateWindow(WinBounds.Width, WinBounds.Height, title.c_str(), monitor, share->window);
 	if (!window) {
 		Core_Error("Unable To Create Secondary Window");
 		return;
@@ -161,8 +177,7 @@ Sphynx::Core::GLWindow::GLWindow(Application* App, Bounds WinBounds, std::string
 	glfwSetWindowMaximizeCallback(window, &mid::Maximize);
 	//End of callbacks.
 	Renderer = new Core::Graphics::GL::GLRenderer();
-
-	Core_Warn("TODO:FullScreen not Implemented.");
+	Renderer->Start(this);
 }
 
 void Sphynx::Core::GLWindow::OnClose()
@@ -180,8 +195,8 @@ void Sphynx::Core::GLWindow::OnUpdate()
 			//Handle Context Switching.
 			SwitchContext(*this);
 		Renderer->Clear();
-		GetEventSystem()->DispatchImmediate<OnOverlayUpdate>(OnOverlayUpdate(this));
 		Renderer->Render();
+		GetEventSystem()->DispatchImmediate<OnOverlayUpdate>(OnOverlayUpdate(this));
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}

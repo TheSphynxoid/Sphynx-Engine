@@ -125,9 +125,9 @@ void Sphynx::Core::IOverlayWindow::InternalSetup(Imgui* instance)
 	imgui = instance;
 }
 
-ImVec4 GetColorLevel(spdlog::level::level_enum& le)
+ImVec4 GetLevelColor(spdlog::level::level_enum& lvl)
 {
-	switch (le)
+	switch (lvl)
 	{
 	default:
 		return ImVec4(0, 0, 0, 1);
@@ -151,7 +151,7 @@ void Sphynx::Core::DebugWindow::OnEventLog(OnLog& e)
 	for (int new_size = Buf.size(); old_size < new_size; old_size++) {
 		if (Buf[old_size] == '\n') {
 			LineOffsets.push_back(old_size + 1);
-			Colors.push_back(GetColorLevel(e.level));
+			Colors.push_back(GetLevelColor(e.level));
 		}
 	}
 }
@@ -162,7 +162,6 @@ Sphynx::Core::DebugWindow::DebugWindow(Application* app)
 	eventsystem = App->GetAppEventSystem();
 	window = App->GetMainWindow();
 	scripts = App->GetScriptingEngine();
-	extra = App->GetExtraWindow();
 	memset(TitleBuffer, 0, sizeof(TitleBuffer));
 	LineOffsets.push_back(0);
 	GlobalEventSystem::GetInstance()->Subscribe<DebugWindow, OnLog>(this, &DebugWindow::OnEventLog);

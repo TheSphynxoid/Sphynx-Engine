@@ -17,7 +17,6 @@ namespace Sphynx::Core {
 	{
 	private:
 		Graphics::GL::GLRenderer* Renderer;
-		inline static unsigned int WindowsOpened = 0;
 		GLFWwindow* window;
 		static bool GLFWInit;
 		bool Vsync;
