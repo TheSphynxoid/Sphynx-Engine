@@ -3,6 +3,7 @@
 #include <lua.hpp>
 #include "Application.h"
 #include "LuaWindow.h"
+#include "LuaInput.h"
 
 using namespace Sphynx::Core::Scripting;
 
@@ -93,10 +94,11 @@ Sphynx::Core::Scripting::Lua::Lua(Sphynx::Application* app)
 {
 	State = luaL_newstate();
 	LuaWindow::CreateModule(State, app);
+	LuaInput::CreateModule(State);
 	luaL_openlibs(State);
 	lua_atpanic(State, &lua_panic);
 	lua_getglobal(State, "print");
-	lua_setglobal(State, "printf"); //So we don't lose the original print
+	lua_setglobal(State, "stdprint"); //So we don't lose the original print
 	lua_register(State, "print", &print);
 	lua_register(State, "LoadFile", &loadfile);
 	lua_register(State, "ExecuteFile", &executefile);

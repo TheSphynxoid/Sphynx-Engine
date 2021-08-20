@@ -12,8 +12,8 @@
 #include <memory>
 #include <iostream>
 #include "Core/ThreadPool.h"
-//Imgui&Window&EventSystem&GLFW&Scripting&Time&GLRenderer(WIP) Classes
-#define Sphynx_Version "0.2.25 WIP"
+
+#define Sphynx_Version "0.2.8"
 
 namespace Sphynx {
 	namespace Core {
@@ -22,8 +22,8 @@ namespace Sphynx {
 	class Application
 	{
 	private:
-		//Window API Provider.
 		Core::Imgui imgui;
+		//TODO:Finish the class.
 		Core::ThreadPool threadpool = Core::ThreadPool();
 		Events::EventSystem eventSystem;
 		Core::Scripting::ScriptingEngine scriptingEngine;
@@ -34,13 +34,14 @@ namespace Sphynx {
 #if defined(DEBUG)
 		inline void StdLog(OnLog& e) { std::cout << e.msg; };
 #endif
+		void UpdateWindow();
 	public:
 		Application();
 		static Application* GetApplication();
 		virtual ~Application();
 		virtual void Update() = 0;
 		void Run();
-		void UpdateWindow();
+		bool HasWindow()const noexcept{ return static_cast<bool>(MainWindow); };
 		inline void CloseApplication() noexcept { AppAlive = false; };
 		//Should the app be aware of the eventsystems or not ?(Currently it is)
 		Events::EventSystem RequestNewEventSystem();
@@ -68,4 +69,5 @@ namespace Sphynx {
 	//To be defined in a client
 	Application* CreateApplication();
 }
+#define GetApplication() ::Sphynx::Application::GetApplication()
 #endif

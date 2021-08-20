@@ -77,13 +77,14 @@ namespace Sphynx {
 		typedef std::remove_extent_t<T> Element;
 	private:
 		BaseDelegate<void, T&>* delegate;
-		T* Object;
+		T* Object = nullptr;
 		//For Type Erasure.
-		Deallocator_Base* dealloc;
+		Deallocator_Base* dealloc = nullptr;
 		struct ArrayID {
 			bool IsArray = false;
 			bool IsBounded = true;
 			unsigned int Dimensions = 0;
+			int TotalElements;
 			//std::list<unsigned int> ElementSizePerRank;
 		}array_info;
 		//Causes Object to self-delete.
@@ -97,7 +98,7 @@ namespace Sphynx {
 				array_info.Dimensions = std::rank<T>{};
 				if (array_info.Dimensions == 0)array_info.IsBounded = false;
 				if (array_info.IsBounded) {
-					const int TotalElements = sizeof(T) / sizeof(std::remove_all_extents_t<T>);
+					array_info.TotalElements = sizeof(T) / sizeof(std::remove_all_extents_t<T>);
 				}
 				delegate = NULL;
 			}
@@ -177,7 +178,12 @@ namespace Sphynx {
 
 		}
 		bool operator=(Pointer&& ptr) {
-			return ptr.Object == this->Object;
+			if (this != &ptr) {
+				this->Object = ptr.Object;
+				this->array_info = ptr.array_info;
+				this->dealloc = ptr.dealloc;
+				this->delegate = ptr.delegate;
+			}
 		};
 		bool operator==(const T* ptr) {
 			return ptr == this->Object;
@@ -186,7 +192,7 @@ namespace Sphynx {
 		template<typename Inst>
 		void SetDestroyCallBack(Delegate<void, Inst, T&> cb) {
 			//auto placeholder = delegate;
-			delegate = new Delegate(cb);
+			delegate = new Delegate<void, Inst, T&>(cb);
 			//return placeholder;
 		}
 		template<class Obj, typename... Args>

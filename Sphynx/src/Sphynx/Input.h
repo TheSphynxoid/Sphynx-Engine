@@ -3,16 +3,24 @@
 #include "Events/InputEvents.h"
 #include "Vector.h"
 
+struct GLFWwindow;
+
 namespace Sphynx {
+	namespace Core {
+		class IWindow;
+	}
 	//Per-Window.
 	//TODO: Make it static.
 	class Input {
+	private:
+		inline static bool keyStates[Last_Key];
+		inline static Core::IWindow* window = nullptr;
+		static void KeyHandler(GLFWwindow* window, int code, int scan, int action, int mods);
+		static void HandleNewWindow(Core::IWindow* _window);
 	public:
-		//not using pure virtuals to allow application to hold a Input Reference not pointer, i don't know why tho
-		//as i mostly inherit and override these.
-
-		virtual bool IsKeyPressed(Keys key) { return 0; };
-		virtual bool IsMouseButtonPressed(MouseButton button) { return 0; };
-		virtual Vec2 GetMousePosition() { return Vector2<float>(0, 0); };
+		static void Init();
+		static bool IsKeyPressed(Keys key);
+		static bool IsMouseButtonPressed(MouseButton button);
+		static Sphynx::Vector2<double> GetMousePosition();
 	};
 }

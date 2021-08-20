@@ -1,4 +1,6 @@
 #pragma once
+#ifndef Sphynx_PCH
+#define Sphynx_PCH
 #include <list>
 #include <map>
 #include <vector>
@@ -7,11 +9,14 @@
 #include <type_traits>
 #include <typeinfo>
 #include <cassert>
+#include <cstddef>
 #include "PlatformMacros.h"
-#ifdef Platform_Win
+#ifdef Platform_Windows
 	#define WIN32_LEAN_AND_MEAN
 	#include <Windows.h>
 #elif defined(__linux__)
 #endif
 //Sphynx Libraries
 #include "Logger.h"
+#else
+#endif

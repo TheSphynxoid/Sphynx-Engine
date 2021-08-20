@@ -8,7 +8,6 @@
 //#define GLFW_EXPOSE_NATIVE_WIN32
 //#include "GLFW/glfw3native.h"
 #include "Events/InputEvents.h"
-#include "Core/Platform/GLFWInput.h"
 #include "Core/Graphics/Platform/GLRenderer.h"
 
 using namespace Sphynx;
@@ -113,7 +112,6 @@ Sphynx::Core::GLWindow::GLWindow(Application* App, Bounds WinBounds, std::string
 		Core_Error("Cannot Create Window.");
 		return;
 	}
-	input = new GLFWInput(window);
 
 	glfwMakeContextCurrent(window);
 	//Setting Up Glad.
@@ -164,8 +162,6 @@ Sphynx::Core::GLWindow::GLWindow(Application* App, Bounds WinBounds, std::string
 		Core_Error("Unable To Create Secondary Window");
 		return;
 	}
-
-	input = new GLFWInput(window);
 
 	//Setting the glfwWindow to hold the IWindow instance
 	glfwSetWindowUserPointer(window, (void*)this);

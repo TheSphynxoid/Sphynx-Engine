@@ -19,9 +19,6 @@
     <Filter Include="Sphynx\Core\Graphics\Platform">
       <UniqueIdentifier>{3B2C80D9-A744-6703-70F1-F69CDCC8FB9C}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Sphynx\Core\Platform">
-      <UniqueIdentifier>{1B6CAB97-07FB-3461-B019-495C9C874507}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Sphynx\Core\Scripting">
       <UniqueIdentifier>{A99DEA9F-150A-A69A-DEFD-3DF84A29C802}</UniqueIdentifier>
     </Filter>
@@ -38,6 +35,9 @@
   <ItemGroup>
     <ClInclude Include="src\Sphynx.h" />
     <ClInclude Include="src\Sphynx\Application.h">
+      <Filter>Sphynx</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Sphynx\BitBool.h">
       <Filter>Sphynx</Filter>
     </ClInclude>
     <ClInclude Include="src\Sphynx\Component.h">
@@ -70,9 +70,6 @@
     <ClInclude Include="src\Sphynx\Core\Graphics\Pipeline\Texture.h">
       <Filter>Sphynx\Core\Graphics\Pipeline</Filter>
     </ClInclude>
-    <ClInclude Include="src\Sphynx\Core\Graphics\Platform\GLMaterial.h">
-      <Filter>Sphynx\Core\Graphics\Platform</Filter>
-    </ClInclude>
     <ClInclude Include="src\Sphynx\Core\Graphics\Platform\GLMesh.h">
       <Filter>Sphynx\Core\Graphics\Platform</Filter>
     </ClInclude>
@@ -97,10 +94,13 @@
     <ClInclude Include="src\Sphynx\Core\Module.h">
       <Filter>Sphynx\Core</Filter>
     </ClInclude>
-    <ClInclude Include="src\Sphynx\Core\Platform\GLFWInput.h">
-      <Filter>Sphynx\Core\Platform</Filter>
-    </ClInclude>
     <ClInclude Include="src\Sphynx\Core\Scripting\Lua\Lua.h">
+      <Filter>Sphynx\Core\Scripting\Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Sphynx\Core\Scripting\Lua\LuaIncludes.h">
+      <Filter>Sphynx\Core\Scripting\Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Sphynx\Core\Scripting\Lua\LuaInput.h">
       <Filter>Sphynx\Core\Scripting\Lua</Filter>
     </ClInclude>
     <ClInclude Include="src\Sphynx\Core\Scripting\Lua\LuaWindow.h">
@@ -184,8 +184,8 @@
     <ClInclude Include="src\Sphynx\pch.h">
       <Filter>Sphynx</Filter>
     </ClInclude>
-    <ClInclude Include="src\Sphynx\Core\Scripting\Lua\LuaInput.h" />
-    <ClInclude Include="src\Sphynx\Core\Scripting\Lua\LuaIncludes.h" />
+    <ClInclude Include="src\Sphynx\Core\Graphics\Platform\GLMaterial.h" />
+    <ClInclude Include="src\Sphynx\Core\Exceptions.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Sphynx\Application.cpp">
@@ -199,9 +199,6 @@
     </ClCompile>
     <ClCompile Include="src\Sphynx\Core\Graphics\Imgui.cpp">
       <Filter>Sphynx\Core\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Sphynx\Core\Graphics\Platform\GLMaterial.cpp">
-      <Filter>Sphynx\Core\Graphics\Platform</Filter>
     </ClCompile>
     <ClCompile Include="src\Sphynx\Core\Graphics\Platform\GLMesh.cpp">
       <Filter>Sphynx\Core\Graphics\Platform</Filter>
@@ -218,10 +215,10 @@
     <ClCompile Include="src\Sphynx\Core\Graphics\Platform\GLWindow.cpp">
       <Filter>Sphynx\Core\Graphics\Platform</Filter>
     </ClCompile>
-    <ClCompile Include="src\Sphynx\Core\Platform\GLFWInput.cpp">
-      <Filter>Sphynx\Core\Platform</Filter>
-    </ClCompile>
     <ClCompile Include="src\Sphynx\Core\Scripting\Lua\Lua.cpp">
+      <Filter>Sphynx\Core\Scripting\Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Sphynx\Core\Scripting\Lua\LuaInput.cpp">
       <Filter>Sphynx\Core\Scripting\Lua</Filter>
     </ClCompile>
     <ClCompile Include="src\Sphynx\Core\Scripting\Lua\LuaWindow.cpp">
@@ -269,6 +266,7 @@
     <ClCompile Include="src\Sphynx\pch.cpp">
       <Filter>Sphynx</Filter>
     </ClCompile>
-    <ClCompile Include="src\Sphynx\Core\Scripting\Lua\LuaInput.cpp" />
+    <ClCompile Include="src\Sphynx\Core\Graphics\Platform\GLMaterial.cpp" />
+    <ClCompile Include="src\Sphynx\Core\Graphics\Pipeline\Mesh.cpp" />
   </ItemGroup>
 </Project>

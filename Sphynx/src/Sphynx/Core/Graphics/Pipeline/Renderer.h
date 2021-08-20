@@ -10,7 +10,7 @@ namespace Sphynx::Core::Graphics {
 	//Information For the Rendering Engine
 	typedef struct RenderObject {
 	private:
-		char padding = NULL;//Padding
+		char padding = 0;//Padding
 	public:
 		Mesh* mesh;
 		Material* mat;
@@ -28,11 +28,12 @@ namespace Sphynx::Core::Graphics {
 		virtual void Clear() = 0;
 		//Send Data,Shaders,Indexes,Textures (Make A Object that encapsulates them all).
 		//They are stored until deleted
-		inline void Submit(RenderObject& RO) {
+		inline void Submit(const RenderObject& RO) {
 			OnSubmit(RO);
 		}
+
 	private:
-		virtual void OnSubmit(RenderObject& rend) = 0;
+		virtual void OnSubmit(RenderObject rend) = 0;
 
 	};
 }
