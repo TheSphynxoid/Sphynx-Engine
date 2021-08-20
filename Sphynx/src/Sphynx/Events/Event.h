@@ -235,7 +235,7 @@ namespace Sphynx::Events {
             if (handlers == nullptr)return;
             //Extending Lifetime. Being In list doesn't count as referance thus causes the object to be collected.
             EventType* ptr = new EventType(e);
-            auto g = std::pair(std::type_index(typeid(EventType)), ptr);
+            auto g = std::pair<std::type_index,EventType*>(std::type_index(typeid(EventType)), ptr);
             Queue.push_front(g);
         };
         //This Should not be overused. A blocking function that dispatch the event on call.

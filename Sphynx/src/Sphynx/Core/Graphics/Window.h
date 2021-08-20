@@ -25,10 +25,6 @@ namespace Sphynx::Core {
 		//Ensure that this instance is Initialized.
 		bool InstanceHasInit = false;
 	protected:
-		Input* input;
-		//Replacement for Update and Resize Functions.
-		//Current State of the window.
-
 		virtual void Internal_ChangeTitle(const char* title) = 0;
 	public:
 		virtual inline bool IsAlive() = 0;
@@ -86,7 +82,6 @@ namespace Sphynx::Core {
 
 		//Returns the Window's EventSystem.
 		Events::EventSystem* GetEventSystem() { return &OwnerEvent; };
-		virtual Input* GetInput() { return this->input; };
 	protected:
 		int Height = 0, Width = 0;
 		bool FullScreen = false;

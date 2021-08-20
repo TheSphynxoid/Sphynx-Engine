@@ -2,14 +2,19 @@
 #include "GLMaterial.h"
 #include "GLShader.h"
 #include "GLTexture.h"
-#include "glad/glad.h"
+//#include "glad/glad.h"
 
 using namespace Sphynx::Core::Graphics::GL;
 
 GLMaterial* GLMaterial::Bound = nullptr;
 GLMaterial GLMaterial::DefaultMaterial;
 
-void GLMaterial::i_CreateMaterial(ShaderPack& shaders){
+void Sphynx::Core::Graphics::GL::UniformData::SetUniform(Sphynx::Core::Graphics::GL::GLMaterial* Mat)
+{
+    Mat->SetUniformValue(*this);
+}
+
+void GLMaterial::i_CreateMaterial(const ShaderPack& shaders){
     ProgramId = glCreateProgram();
     glUseProgram(ProgramId);
     glAttachShader(ProgramId,((GLShader*)shaders.Vert)->id);
@@ -34,11 +39,11 @@ void GLMaterial::i_CreateMaterial(ShaderPack& shaders){
 GLMaterial Sphynx::Core::Graphics::GL::GLMaterial::CreateDefaultMaterial()
 {
     GLMaterial mat = GLMaterial();
-    GLShader vert = GLShader();
-    GLShader frag = GLShader();
-    vert.CreateFromCode(DEF_VSHADER, ShaderType::VertexShader);
-    frag.CreateFromCode(DEF_FSHADER, ShaderType::FragmentShader);
-    ShaderPack pack = ShaderPack(&vert, &frag, nullptr, nullptr);
+    GLShader::DefaultVertexShader = new GLShader();
+    GLShader::DefaultFragmentShader = new GLShader();
+    GLShader::DefaultVertexShader->CreateFromCode(DEF_VSHADER, ShaderType::VertexShader);
+    GLShader::DefaultFragmentShader->CreateFromCode(DEF_FSHADER, ShaderType::FragmentShader);
+    ShaderPack pack = ShaderPack(GLShader::DefaultVertexShader, GLShader::DefaultFragmentShader, nullptr, nullptr);
     mat.CreateMaterial(pack, nullptr);
     return mat;
 }
@@ -75,4 +80,20 @@ Sphynx::Core::Graphics::GL::GLMaterial::~GLMaterial()
 {
     if (IsBound())Bound = nullptr;
     Release();
+}
+
+int Sphynx::Core::Graphics::GL::GLMaterial::GetAttributeLocation(std::string name)
+{
+    return glGetAttribLocation(ProgramId, name.c_str());
+}
+
+int Sphynx::Core::Graphics::GL::GLMaterial::GetUniformLocation(std::string name)
+{
+    return glGetUniformLocation(ProgramId,name.c_str());
+}
+
+void Sphynx::Core::Graphics::GL::GLMaterial::SetUniformValue(Sphynx::Core::Graphics::GL::UniformData data)
+{
+    //Hopefully this works.
+    data.command();
 }

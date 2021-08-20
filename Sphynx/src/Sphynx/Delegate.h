@@ -1,4 +1,3 @@
-#pragma once
 #ifndef Sphynx_Delegate
 #define Sphynx_Delegate
 #include "Object.h"
@@ -16,6 +15,7 @@ namespace Sphynx {
     public:
         template<typename rt, typename...args>
         BaseDelegate(BaseDelegate<rt, args...>& bd) {}
+        virtual ~BaseDelegate() = default;
         //What is this function ?
         Return Invoke(Args... args) { Invokation(std::forward<Args>(args)...); };
         Return operator()(Args&... args) { Invoke(std::forward<Args&>(args)...); };
@@ -67,6 +67,7 @@ namespace Sphynx {
         //func is the struct InstFunc.
         Delegate(I_Function cb) : callback(cb) {};
         Delegate(Instance* inst, typename I_Function::InstFunc f) : callback(inst, f) {}
+        virtual ~Delegate()override { callback = nullptr; };
         Delegate& operator=(Delegate d) {
             std::swap(callback, d.callback);
         }

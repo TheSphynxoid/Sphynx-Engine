@@ -9,7 +9,7 @@
 #include "Core/Graphics/Platform/GLMesh.h"
 #include "Core/Graphics/Platform/GLMaterial.h"
 #include "Core/Graphics/Platform/GLShader.h"
-
+#undef GetApplication
 using namespace Sphynx;
 using namespace Sphynx::Core;
 
@@ -72,10 +72,8 @@ void Sphynx::Application::Run()
 	//threadpool.Submit(Delegate<void,void>(&test));
 	//threadpool.Submit(Delegate<void, void>(&test2));
 	Time::Start();
-	g = new Graphics::GL::GLMesh();
-	g->Create(vertices, sizeof(vertices), nullptr, 0, Core::Graphics::MeshType::Static);
-	g2 = new Graphics::GL::GLMesh();
-	g2->Create(vertices2, sizeof(vertices2), nullptr, 0, Core::Graphics::MeshType::Static);
+	g = Graphics::Mesh::Create(vertices, sizeof(vertices), nullptr, 0, Core::Graphics::MeshType::Static);
+	g2 = Graphics::Mesh::Create(vertices2, sizeof(vertices2), nullptr, 0, Core::Graphics::MeshType::Static);
 	auto s = Graphics::GL::GLShader();
 	auto s1 = Graphics::GL::GLShader();
 	s.CreateFromCode(DEF_FSHADER, Graphics::ShaderType::FragmentShader);
@@ -85,9 +83,9 @@ void Sphynx::Application::Run()
 		"void main()"
 		"{"
 		"	gl_Position = vec4(aPos, 1.0);"
-		"	vertexColor = vec4(1.0, 0.0, 0.0, 0.5);"
+		"	vertexColor = vec4(0.0, 1.0, 0.0, 0.5);"
 		" }", Graphics::ShaderType::VertexShader);
-	g2mat = Graphics::GL::GLMaterial(Graphics::ShaderPack(&s1, &s, nullptr, nullptr), nullptr);
+	g2mat = Graphics::GL::GLMaterial(Graphics::ShaderPack(&s1, &s, nullptr, nullptr), (Graphics::GL::GLTexture*)nullptr);
 	while (AppAlive) {
 		Update();
 		eventSystem.DispatchImmediate<Events::OnApplicationUpdate>(Events::OnApplicationUpdate());
@@ -110,8 +108,8 @@ void Sphynx::Application::UpdateWindow()
 {
 	if (MainWindow != NULL) {
 		if (MainWindow->IsAlive()) {
+			MainWindow->GetRenderer()->Submit(Core::Graphics::RenderObject(g2, &g2mat, p, r));
 			MainWindow->GetRenderer()->Submit(Core::Graphics::RenderObject(g, nullptr, p, r));
-			MainWindow->GetRenderer()->Submit(Core::Graphics::RenderObject(g, &g2mat, p, r));
 			MainWindow->Update();
 		}
 	}

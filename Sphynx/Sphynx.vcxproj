@@ -22,7 +22,7 @@
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>ClangCL</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
@@ -93,16 +93,16 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <Lib>
-      <AdditionalDependencies>DXGI.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\Sphynx\Core\Scripting\Lua\LuaIncludes.h" />
-    <ClInclude Include="src\Sphynx\Core\Scripting\Lua\LuaInput.h" />
     <ClInclude Include="src\Sphynx.h" />
     <ClInclude Include="src\Sphynx\Application.h" />
+    <ClInclude Include="src\Sphynx\BitBool.h" />
     <ClInclude Include="src\Sphynx\Component.h" />
     <ClInclude Include="src\Sphynx\Core.h" />
+    <ClInclude Include="src\Sphynx\Core\Exceptions.h" />
     <ClInclude Include="src\Sphynx\Core\Factories\ComponentFactory.h" />
     <ClInclude Include="src\Sphynx\Core\Graphics\Imgui.h" />
     <ClInclude Include="src\Sphynx\Core\Graphics\Pipeline\Camera.h" />
@@ -120,8 +120,9 @@
     <ClInclude Include="src\Sphynx\Core\Graphics\Window.h" />
     <ClInclude Include="src\Sphynx\Core\InternalUtility.h" />
     <ClInclude Include="src\Sphynx\Core\Module.h" />
-    <ClInclude Include="src\Sphynx\Core\Platform\GLFWInput.h" />
     <ClInclude Include="src\Sphynx\Core\Scripting\Lua\Lua.h" />
+    <ClInclude Include="src\Sphynx\Core\Scripting\Lua\LuaIncludes.h" />
+    <ClInclude Include="src\Sphynx\Core\Scripting\Lua\LuaInput.h" />
     <ClInclude Include="src\Sphynx\Core\Scripting\Lua\LuaWindow.h" />
     <ClInclude Include="src\Sphynx\Core\Scripting\ScriptingEngine.h" />
     <ClInclude Include="src\Sphynx\Core\System.h" />
@@ -151,19 +152,19 @@
     <ClInclude Include="src\Sphynx\pch.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Sphynx\Core\Scripting\Lua\LuaInput.cpp" />
     <ClCompile Include="src\Sphynx\Application.cpp" />
     <ClCompile Include="src\Sphynx\Component.cpp" />
     <ClCompile Include="src\Sphynx\Core\Factories\ComponentFactory.cpp" />
     <ClCompile Include="src\Sphynx\Core\Graphics\Imgui.cpp" />
+    <ClCompile Include="src\Sphynx\Core\Graphics\Pipeline\Mesh.cpp" />
     <ClCompile Include="src\Sphynx\Core\Graphics\Platform\GLMaterial.cpp" />
     <ClCompile Include="src\Sphynx\Core\Graphics\Platform\GLMesh.cpp" />
     <ClCompile Include="src\Sphynx\Core\Graphics\Platform\GLRenderer.cpp" />
     <ClCompile Include="src\Sphynx\Core\Graphics\Platform\GLShader.cpp" />
     <ClCompile Include="src\Sphynx\Core\Graphics\Platform\GLTexture.cpp" />
     <ClCompile Include="src\Sphynx\Core\Graphics\Platform\GLWindow.cpp" />
-    <ClCompile Include="src\Sphynx\Core\Platform\GLFWInput.cpp" />
     <ClCompile Include="src\Sphynx\Core\Scripting\Lua\Lua.cpp" />
+    <ClCompile Include="src\Sphynx\Core\Scripting\Lua\LuaInput.cpp" />
     <ClCompile Include="src\Sphynx\Core\Scripting\Lua\LuaWindow.cpp" />
     <ClCompile Include="src\Sphynx\Core\Scripting\ScriptingEngine.cpp" />
     <ClCompile Include="src\Sphynx\Core\ThreadPool.cpp" />

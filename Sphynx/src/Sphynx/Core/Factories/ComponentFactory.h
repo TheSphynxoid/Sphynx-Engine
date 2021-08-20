@@ -1,4 +1,5 @@
-#pragma once
+#ifndef ComponentFactory
+#define ComponentFactory
 #include "Component.h"
 #include "GameObject.h"
 #include "../TestComponent.h"
@@ -38,6 +39,8 @@ namespace Sphynx::Core::Internal {
 				return RegisteredTypeIDs[obj].find(std::type_index(typeid(comp))) != RegisteredTypeIDs.end();
 			}
 		}ComponentHelper;
-		friend class Component;
+		friend class Sphynx::Component;
 	};
 }
+#else
+#endif

@@ -2,7 +2,7 @@
 #ifndef EntryPoint 
 #define EntryPoint
 #include <setjmp.h>
-#if defined(Platform_Win) && !defined(No_EntryPoint) && !defined(Allow_Custom_Main)
+#if defined(Platform_Windows) && !defined(No_EntryPoint) && !defined(Allow_Custom_Main)
 #define main main
 extern Sphynx::Application* Sphynx::CreateApplication();
 
@@ -29,6 +29,6 @@ int main(int argc, char** argv)
 	return _main_(argc, argv);
 }
 #define main _main_
-#endif // Platform_Win
+#endif // Platform_Windows
 #else
 #endif // !EntryPoint

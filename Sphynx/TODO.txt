@@ -4,3 +4,6 @@ Implemented a Component Factory
 
 Sphynx Engine - Components V0.1.1
 Implementing Renderer
+
+Sphynx Engine V0.2.5
+TODO: Switch off from Events

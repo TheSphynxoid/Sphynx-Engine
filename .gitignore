@@ -6,7 +6,7 @@
 #Build Directories
 build/
 #Unused Files
-unused/
+[Uu]nused/
 
 # User-specific files
 *.rsuser

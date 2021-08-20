@@ -21,7 +21,7 @@ namespace Sphynx::Events {
 	struct OnKeyRelease : public KeyEvent {
 		OnKeyRelease(Keys keycode): KeyEvent(keycode) {}
 	};
-	//?
+	//GLFW Specific ?
 	struct OnKeyTyped : public KeyEvent {
 		OnKeyTyped(Keys keycode) : KeyEvent(keycode) {};
 	};

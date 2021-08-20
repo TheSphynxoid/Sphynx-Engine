@@ -14,10 +14,11 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#ifdef Platform_Windows
 extern "C" {
 	__declspec(dllexport) DWORD NvOptimusEnablement = 1;
 }
-
+#endif
 void Sphynx::Core::Graphics::GL::GLRenderer::RendererResizeEvent(Events::OnWindowResize& e)
 {
 	glViewport(0, 0, e.Width, e.Height);
@@ -27,25 +28,27 @@ void Sphynx::Core::Graphics::GL::GLRenderer::Start(IWindow* app)
 {
 	app->GetEventSystem()->Subscribe(this, &GLRenderer::RendererResizeEvent);
 	GLMaterial::DefaultMaterial = GLMaterial::CreateDefaultMaterial();
-	DefaultRenderObject = RenderObject(nullptr, GLMaterial::GetDefaultMaterial(), { 0,0,0 }, { 0,0,0,0 });
+	DefaultRenderObject = RenderObject(nullptr, &GLMaterial::DefaultMaterial, { 0,0,0 }, { 0,0,0,0 });
+	//GL features.
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glEnable(GL_DEPTH_TEST);
 }
 
 void Sphynx::Core::Graphics::GL::GLRenderer::Render()
 {
 	//packed.
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-	glEnableVertexAttribArray(0);
-	for (auto pair : RenderQueue) {
+	for (auto& pair : RenderQueue) {
 		pair.second->front().mat->Bind();
 		glUseProgram(pair.first);
 		for (auto rend : *pair.second) {
 			rend.mesh->Bind();
 			GLMesh* mesh = (GLMesh*)rend.mesh;
 			if (mesh->HasIndexArray()) {
-				glDrawElements(GL_TRIANGLES, mesh->GetIndexArraySize(), GL_INT, 0);
+				glDrawElements(GL_TRIANGLES, mesh->GetIndexBufferSize(), GL_INT, 0);
 			}
 			else {
-				glDrawArrays(GL_TRIANGLES, 0, mesh->GetVertexArraySize());
+				glDrawArrays(GL_TRIANGLES, 0, mesh->GetVertexBuffer()[0]->GetVertexBufferSize());
 			}
 		}
 		//Clearing Queue for new loop.
@@ -59,12 +62,12 @@ void Sphynx::Core::Graphics::GL::GLRenderer::Clear()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-void Sphynx::Core::Graphics::GL::GLRenderer::OnSubmit(RenderObject& rend)
+void Sphynx::Core::Graphics::GL::GLRenderer::OnSubmit(RenderObject rend)
 {
 	if (rend.mat == nullptr) {
 		rend.mat = DefaultRenderObject.mat;
 	}
-	//TODO: Handle Empty Mesh, show some kind of error like a red box with text on top.48
+	//TODO: Handle Empty Mesh, show some kind of error like a red box with text on top.
 	if (rend.mesh == nullptr) {
 	}
 	//I think this is sorted.

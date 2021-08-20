@@ -3,7 +3,6 @@
 #include <iostream>
 #include <string>
 #include <Sphynx/Core/Graphics/Platform/GLWindow.h>
-#include <Sphynx/Core/Platform/GLFWInput.h>
 
 using namespace Sphynx;
 
@@ -59,7 +58,5 @@ Sphynx::Application* Sphynx::CreateApplication() {
 	auto sandbox = new SandBox();
 	sandbox->GetAppEventSystem()->Subscribe<Events::OnApplicationUpdate>(&OnUpdateTester);
 	sandbox->GetAppEventSystem()->Subscribe<Events::OnWindowFocus>(&OnWindowFocusTester);
-	auto inp = (Sphynx::Core::GLFWInput*)sandbox->GetMainWindow()->GetInput();
-	inp->RegisterMouseButtonCallback<void>(Sphynx::Delegate<void,void,Sphynx::MouseButton,Action>(&OnKeyPress));
 	return sandbox;
 }
