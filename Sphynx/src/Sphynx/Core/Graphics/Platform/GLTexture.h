@@ -3,6 +3,14 @@
 namespace Sphynx::Core::Graphics::GL {
 	class GLTexture : public Texture
 	{
-		virtual void CreateTexture()override {};
+	private:
+		unsigned int TextureID = 0;
+		void Release();
+	public:
+		GLTexture();
+		GLTexture(const GLTexture&) = delete;
+		GLTexture& operator=(const GLTexture&) = delete;
+		GLTexture(GLTexture&& tex);
+		GLTexture& operator=(GLTexture&& tex);
 	};
 }

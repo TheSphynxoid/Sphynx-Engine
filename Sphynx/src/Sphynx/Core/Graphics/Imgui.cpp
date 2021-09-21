@@ -2,7 +2,7 @@
 #include "Imgui.h"
 #pragma region ImGui Includes
 #include <imgui.h>
-#ifdef IMGUI_GLFW
+#ifdef IMGUI_GLFW && !defined(IMGUI_DX11)
 #include "imgui/imgui_impl_opengl3.h"
 #include "imgui/imgui_impl_glfw.h"
 #elif defined(IMGUI_DX11) && !defined(IMGUI_GLFW)
@@ -23,11 +23,11 @@
 
 using namespace Sphynx::Events;
 
-//Because of the inablity to put this in DebugWindow,it's are here.
+//Because of the inablity to put this in DebugWindow,it's here.
 ImGuiTextBuffer     Buf;							 
-//Because of the inablity to put this in DebugWindow,it's are here.
+//Because of the inablity to put this in DebugWindow,it's here.
 ImGuiTextFilter     Filter;							 
-//Because of the inablity to put this in DebugWindow,it's are here.
+//Because of the inablity to put this in DebugWindow,it's here.
 ImVector<int>       LineOffsets;
 //For Consistancy's sake this going to be ImVector and here.
 ImVector<ImVec4>	Colors;
@@ -64,8 +64,6 @@ void Sphynx::Core::Imgui::OnOverlayUpdate(Events::OnOverlayUpdate& e)
 		w->Draw();
 		if (w->IsOpen == false) {
 			RemoveOverlayWindow(w);
-			//Hack or solution... Idk. it stops the iterator from causing us to use the deleted window. 
-			//why does it happen? i don't know. i can't be bothered for now.It loses us one update cycle
 			break;
 		}
 	}
@@ -222,29 +220,6 @@ void Sphynx::Core::DebugWindow::Draw()
 	if (ImGui::Begin("Debug Window", &IsOpen, ImGuiWindowFlags_NoDocking)) {
 		if (ImGui::CollapsingHeader("Logger")) {
 			ImGui::Indent();
-			static int item;
-			static int rb;
-			static const char* lvls[5]{ "Trace","Info","Warn","Error","Debug" };
-			if (ImGui::RadioButton("Core", rb == 0)) { rb = 0; } ImGui::SameLine();
-			if (ImGui::RadioButton("Client", rb == 1)) { rb = 1; }
-			if (ImGui::BeginCombo("Log Level", lvls[item])) {
-				if (ImGui::Selectable("Trace", item == 0)) {
-					item = 0;
-				}
-				if (ImGui::Selectable("Info", item == 1)) {
-					item = 1;
-				}
-				if (ImGui::Selectable("Warn", item == 2)) {
-					item = 2;
-				}
-				if (ImGui::Selectable("Error", item == 3)) {
-					item = 3;
-				}
-				if (ImGui::Selectable("Debug", item == 4)) {
-					item = 4;
-				}
-				ImGui::EndCombo();
-			}
 			static char buffer[1024];
 			if (ImGui::InputText("Lua", buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue)) {
 				//HandleLogging(buffer, item, rb);
@@ -327,8 +302,8 @@ void Sphynx::Core::DebugWindow::Draw()
 		}
 		if (ImGui::CollapsingHeader("Time")) {
 			ImGui::Indent();
-			//ImGui::Text("Activity Time:%f", App->GetTimeObject()->GetActivityTime());
-			//ImGui::Text("Delta Time:%d", App->GetTimeObject()->GetDeltaTime());
+			ImGui::Text("Delta Time:%f", Time::GetDeltaTime());
+			ImGui::Text("Ticks:%llu", Time::GetTicks());
 			ImGui::Unindent();
 		}
 		ImGui::End();

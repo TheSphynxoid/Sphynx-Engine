@@ -18,7 +18,7 @@ namespace Sphynx::Core::Graphics::GL {
 		virtual ~GLVertexBuffer()override { Release(); };
 		virtual void Bind()const override;
 		virtual void Unbind()const override;
-		//Sets the Buffer's Data. 
+		//Sets the Buffer's Data.
 		//In Case size is larger then the Original Size, a new Buffer Will allocated and Offset Will Be Ignored.
 		virtual void SetData(const void* data, size_t offset, size_t size)noexcept override;
 		virtual void SetDataLayout(BufferLayout layout) override { Layout = layout; };

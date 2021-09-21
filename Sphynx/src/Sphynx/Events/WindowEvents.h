@@ -16,6 +16,10 @@ namespace Sphynx::Events {
 	public:
 		Sphynx::Core::IWindow* GetWindow() { return window; };
 	};
+	struct OnWindowOpen : public WindowEvent {
+	public:
+		OnWindowOpen(Sphynx::Core::IWindow* win) : WindowEvent(win) {};
+	};
 	struct OnWindowResize :public WindowEvent {
 		int Width, Height;
 		OnWindowResize(Sphynx::Core::IWindow* win, int width, int height) :WindowEvent(win), Width(width), Height(height) {};

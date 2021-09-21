@@ -12,5 +12,6 @@ namespace Sphynx::Core {
 		glm::mat4 ViewMatrix,ProjectionMatrix, RotationMatrix;
 	public:
 		Camera(glm::vec3 Position, glm::vec4 Rotation);
+		static Camera GetPrimaryCamera();
 	};
 }

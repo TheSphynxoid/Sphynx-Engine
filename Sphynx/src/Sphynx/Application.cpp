@@ -32,6 +32,11 @@ float vertices2[] = {
 	 0.5f, -0.5f, 0.0f,
 	 0.0f,  0.5f, 0.0f
 };
+float texCoords[] = {
+	0.0f, 0.0f,  // lower-left corner  
+	1.0f, 0.0f,  // lower-right corner
+	0.5f, 1.0f   // top-center corner
+};
 Graphics::Mesh* g;
 Graphics::Mesh* g2;
 Graphics::GL::GLMaterial g2mat;
@@ -45,13 +50,6 @@ Sphynx::Application::Application() : imgui(Imgui())
 	scriptingEngine = Core::Scripting::ScriptingEngine();
 	scriptingEngine.Start(this);
 	scriptingEngine.GetLua().ExecuteFile("Test.lua");
-	if (MainWindow) {
-		imgui.Start(this);
-		imgui.AddOverlayWindow(new DebugWindow(this));
-		//imgui.AddOverlayWindow(new AboutWindow());
-		//imgui.AddOverlayWindow(new DemoWindow());
-		MainWindow->Start();
-	}
 	MainApplication = this;
 }
 
@@ -72,6 +70,7 @@ void Sphynx::Application::Run()
 	//threadpool.Submit(Delegate<void,void>(&test));
 	//threadpool.Submit(Delegate<void, void>(&test2));
 	Time::Start();
+	Input::Init();
 	g = Graphics::Mesh::Create(vertices, sizeof(vertices), nullptr, 0, Core::Graphics::MeshType::Static);
 	g2 = Graphics::Mesh::Create(vertices2, sizeof(vertices2), nullptr, 0, Core::Graphics::MeshType::Static);
 	auto s = Graphics::GL::GLShader();
@@ -147,5 +146,6 @@ Sphynx::Core::IWindow* Sphynx::Application::CreateMainWindow(std::unique_ptr<Cor
 	else {
 		Core_Warn("A Window Is Already Open.");
 	}
+	eventSystem.DispatchImmediate(Events::OnWindowOpen(MainWindow));
 	return MainWindow;
 }

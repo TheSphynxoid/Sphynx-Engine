@@ -11,7 +11,7 @@ namespace Sphynx::Core::Graphics {
 		Material(const ShaderPack& shader, Texture* texture) : Textures(texture) {};
 	public:
 		Material() {};
-		//A Material is stroage for shaders and textures.
+		//A Material is storage for shaders and textures.
 		Material& CreateMaterial(const ShaderPack& shaders, Texture* texture) { i_CreateMaterial(shaders); return *this; };
 		Texture* GetTextures() { return Textures; };
 		virtual bool IsValid() = 0;

@@ -11,3 +11,6 @@
 [submodule "Sphynx/dep/glm"]
 	path = Sphynx/dep/glm
 	url = https://github.com/g-truc/glm.git
+[submodule "Sphynx/dep/stb"]
+	path = Sphynx/dep/stb
+	url = https://github.com/nothings/stb

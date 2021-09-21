@@ -14,11 +14,13 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+
 #ifdef Platform_Windows
 extern "C" {
 	__declspec(dllexport) DWORD NvOptimusEnablement = 1;
 }
 #endif
+
 void Sphynx::Core::Graphics::GL::GLRenderer::RendererResizeEvent(Events::OnWindowResize& e)
 {
 	glViewport(0, 0, e.Width, e.Height);

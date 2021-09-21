@@ -93,9 +93,7 @@ namespace Sphynx::Core {
 			Height = WinBounds.Height;
 			Width = WinBounds.Width;
 			Title = title;
-			OwnerEvent = App->RequestNewEventSystem();
-			//input = Input();
-			
+			OwnerEvent = *App->GetAppEventSystem();
 			//App->GetAppEventSystem()->Subscribe<IWindow, Events::OnWindowResize>(this, &IWindow::OnResize);
 			InstanceHasInit = true;
 		};

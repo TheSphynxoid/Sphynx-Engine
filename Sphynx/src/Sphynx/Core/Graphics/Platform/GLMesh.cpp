@@ -5,7 +5,7 @@
 
 void SetVertexAttribs(Sphynx::Core::Graphics::VertexBuffer* buffs, unsigned int& Index) {
 	buffs->Bind();
-	//TODO: Matrix Attrib.
+	//TODO: Check.
 	for (auto& e : buffs->GetLayout()) {
 		switch (e.GetDataType())
 		{
@@ -61,21 +61,22 @@ void SetVertexAttribs(Sphynx::Core::Graphics::VertexBuffer* buffs, unsigned int&
 			break;
 		case Sphynx::Core::Graphics::ShaderDataType::Mat2x2: [[fallthrough]];
 		case Sphynx::Core::Graphics::ShaderDataType::Mat2x3: [[fallthrough]];
-		case Sphynx::Core::Graphics::ShaderDataType::Mat2x4:
-			for (int i = 0; i < e.GetComponentCount(); i++) {
-				glEnableVertexAttribArray(Index);
-				//glVertexAttribPointer(Index,e.GetComponentCount(),GL_FLOAT,e.IsNormalized(),e.GetOffset())
-				//Incrementing The index For the attribute
-				Index++;
-			}
-			break;
+		case Sphynx::Core::Graphics::ShaderDataType::Mat2x4: [[fallthrough]];
 		case Sphynx::Core::Graphics::ShaderDataType::Mat3x2: [[fallthrough]];
 		case Sphynx::Core::Graphics::ShaderDataType::Mat3x3: [[fallthrough]];
-		case Sphynx::Core::Graphics::ShaderDataType::Mat3x4:
-			break;
+		case Sphynx::Core::Graphics::ShaderDataType::Mat3x4: [[fallthrough]];
 		case Sphynx::Core::Graphics::ShaderDataType::Mat4x2: [[fallthrough]];
 		case Sphynx::Core::Graphics::ShaderDataType::Mat4x3: [[fallthrough]];
 		case Sphynx::Core::Graphics::ShaderDataType::Mat4x4:
+			for (int i = 0; i < e.GetComponentCount(); i++) {
+				glEnableVertexAttribArray(Index);
+				glVertexAttribPointer(Index, e.GetComponentCount(), GL_FLOAT, e.IsNormalized(),
+					buffs->GetLayout().GetStride(), (const void*)e.GetOffset());
+				//modify the rate at which generic vertex attributes advance during instanced rendering.
+				glVertexAttribDivisor(Index, 1);
+				//Incrementing The index For the attribute
+				Index++;
+			}
 			break;
 		default:
 			Core_Error("Unknown Shader Data Type : {0},{1},{2}", __FILE__, __FUNCTION__, __LINE__);

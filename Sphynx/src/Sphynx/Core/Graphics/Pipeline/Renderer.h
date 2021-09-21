@@ -2,7 +2,8 @@
 //#include "Core/Graphics/Window.h"
 #include "Core/Module.h"
 #include "Vector.h"
-#define BIT(i) (1 << i)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-parameter"
 namespace Sphynx::Core::Graphics {
 	class Mesh;
 	class Material;
@@ -37,3 +38,4 @@ namespace Sphynx::Core::Graphics {
 
 	};
 }
+#pragma GCC diagnostic pop
