@@ -24,5 +24,14 @@ namespace Sphynx::Core::Graphics {
 			TextureFilterMode filter, TextureMipmapMode Mipmap);
 		virtual void Bind() = 0;
 		virtual void Unbind() = 0;
+<<<<<<< Updated upstream
+=======
+		void MarkForCleanup() { DeleteFlag = true; };
+
+		friend class IRenderer;
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
 	};
 }

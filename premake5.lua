@@ -25,7 +25,6 @@ project "Sphynx"
 	{
 		"Sphynx/src/**.h",
 		"Sphynx/src/**.cpp",
-		"Sphynx/src/**.lua"
 	}
 	includedirs
 	{
@@ -35,14 +34,20 @@ project "Sphynx"
 		"%{prj.name}/dep/glad/include",
 		"%{prj.name}/dep/imgui",
 		"%{prj.name}/dep/glm",
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
 		"%{prj.name}/dep/lua/src"
+=======
+=======
+>>>>>>> Stashed changes
+		"%{prj.name}/dep/stb"
+>>>>>>> Stashed changes
 	}
 	links
 	{
 		"glfw",
 		"glad",
 		"imgui",
-		"Lua",
 		"opengl32.lib"
 	}
 	defines{
@@ -82,6 +87,14 @@ project "Sandbox"
 	includedirs
 	{
 		"%{wks.location}/Sphynx/dep/spdlog/include",
+<<<<<<< Updated upstream
+=======
+		"%{wks.location}/Sphynx/dep/stb",
+		"%{wks.location}/Sphynx/dep/glm",
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
 		"%{wks.location}/Sphynx/src/Sphynx",
 		"%{wks.location}/Sphynx/src"
 	}
@@ -104,4 +117,12 @@ project "Sandbox"
 include "Sphynx/dep/glfw"
 include "Sphynx/dep/glad/glad"
 include "Sphynx/dep/imgui"
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
 include "Sphynx/dep/Lua"
+=======
+-- include "Sphynx/dep/stb"
+>>>>>>> Stashed changes
+=======
+-- include "Sphynx/dep/stb"
+>>>>>>> Stashed changes

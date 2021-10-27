@@ -30,7 +30,7 @@ void Sphynx::Core::Graphics::GL::GLRenderer::Start(IWindow* app)
 {
 	app->GetEventSystem()->Subscribe(this, &GLRenderer::RendererResizeEvent);
 	GLMaterial::DefaultMaterial = GLMaterial::CreateDefaultMaterial();
-	DefaultRenderObject = RenderObject(nullptr, &GLMaterial::DefaultMaterial, { 0,0,0 }, { 0,0,0,0 });
+	DefaultRenderObject = RenderObject(nullptr, &GLMaterial::DefaultMaterial);
 	//GL features.
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -45,13 +45,18 @@ void Sphynx::Core::Graphics::GL::GLRenderer::Render()
 		glUseProgram(pair.first);
 		for (auto rend : *pair.second) {
 			rend.mesh->Bind();
-			GLMesh* mesh = (GLMesh*)rend.mesh;
-			if (mesh->HasIndexArray()) {
-				glDrawElements(GL_TRIANGLES, mesh->GetIndexBufferSize(), GL_INT, 0);
+			//This is Probably the reason The Cubes Renderer on the same place.
+			for (auto& uni : ((GLMaterial*)rend.mat)->uniforms) {
+				((GLUniform*)uni)->Set();
+			}
+			GLMesh* Mesh = (GLMesh*)rend.mesh;
+			if (Mesh->HasIndexArray()) {
+				glDrawElements(GL_TRIANGLES, Mesh->GetIndexBufferSize(), GL_UNSIGNED_INT, 0);
 			}
 			else {
-				glDrawArrays(GL_TRIANGLES, 0, mesh->GetVertexBuffer()[0]->GetVertexBufferSize());
+				glDrawArrays(GL_TRIANGLES, 0, Mesh->GetVertexBuffer()[0]->GetVertexBufferSize());
 			}
+			rend.mesh->UnBind();
 		}
 		//Clearing Queue for new loop.
 		pair.second->clear();
@@ -61,6 +66,8 @@ void Sphynx::Core::Graphics::GL::GLRenderer::Render()
 
 void Sphynx::Core::Graphics::GL::GLRenderer::Clear()
 {
+	//TODO:using Nvidia Nsight makes it seem like glClear is Returning GL_Invalid_Operation, there is an error
+	//occuring, Fix it.
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 

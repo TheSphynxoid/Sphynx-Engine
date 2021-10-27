@@ -18,7 +18,7 @@ namespace Sphynx::Core::Graphics::GL {
 		//calls glViewport.
 		void RendererResizeEvent(Events::OnWindowResize& e);
 		//Default.
-		inline static RenderObject DefaultRenderObject = RenderObject(nullptr, nullptr, { 0,0,0 }, { 0,0,0,0 });
+		inline static RenderObject DefaultRenderObject = RenderObject(nullptr, nullptr);
 		virtual void OnSubmit(RenderObject rend) override;
 	public:
 		//Starts The Rendering Engine.

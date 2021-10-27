@@ -6,19 +6,29 @@
 #include "Pointer.h"
 #include "Core/Graphics/Window.h"
 #include "Core/Graphics/Pipeline/Renderer.h"
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
 #include "Core/Graphics/Platform/GLMesh.h"
 #include "Core/Graphics/Platform/GLMaterial.h"
 #include "Core/Graphics/Platform/GLShader.h"
+=======
+=======
+>>>>>>> Stashed changes
+#include "glm/gtx/quaternion.hpp"
+#include "GameObject.h"
+#include "Camera.h"
+#include "Core/MeshRenderer.h"
+>>>>>>> Stashed changes
 #undef GetApplication
 using namespace Sphynx;
 using namespace Sphynx::Core;
 
 Application* MainApplication;
 
-void Sphynx::Application::HandleWindowClose(Events::OnWindowClose& e)
-{
-	e.GetWindow()->Close();
-}
+//void Sphynx::Application::HandleWindowClose(Events::OnWindowClose& e)
+//{
+//	e.GetWindow()->Close();
+//}
 
 Vec3 p = { 0,0,0 };
 Vec4 r = { 0,0,0,0 };
@@ -43,7 +53,7 @@ Graphics::GL::GLMaterial g2mat;
 Sphynx::Application::Application() : imgui(Imgui())
 {
 	eventSystem = Events::EventSystem();
-	eventSystem.Subscribe<Application, Events::OnWindowClose>(this, &Application::HandleWindowClose);
+	//eventSystem.Subscribe<Application, Events::OnWindowClose>(this, &Application::HandleWindowClose);
 #if defined(DEBUG)
 	Events::GlobalEventSystem::GetInstance()->Subscribe<Application, OnLog>(this, &Application::StdLog);
 #endif
@@ -63,10 +73,35 @@ Sphynx::Application::~Application()
 	this->eventSystem.QueueEvent<Events::OnApplicationClose>(Events::OnApplicationClose());
 }
 
+class MovementComp : public Sphynx::Component {
+	// Inherited via Component
+	virtual void OnComponentAttach(GameObject* parent) override
+	{
+		Core_Info("MovementComp Attached to {0}",parent->GetID());
+	}
+	virtual void OnComponentDetach() override
+	{
+	}
+	virtual void Update() override
+	{
+		if (Input::IsKeyPressed(Keys::Up))
+			GetTransform()->Translate(glm::vec3(0.0f, 0.5f * Time::GetDeltaTime(), 0.0f));
+		if (Input::IsKeyPressed(Keys::Down))
+			GetTransform()->Translate(glm::vec3(0.0f, -0.5f * Time::GetDeltaTime(), 0.0f));
+		if (Input::IsKeyPressed(Keys::Left))
+			GetTransform()->Rotate(60 * Time::GetDeltaTime(), glm::vec3(0.0f, 1.0f, 0.0f));
+		if (Input::IsKeyPressed(Keys::Right))
+			GetTransform()->Rotate(-60 * Time::GetDeltaTime(), glm::vec3(0.0f, 1.0f, 0.0f));
+	}
+};
+
 void Sphynx::Application::Run()
 {
+	Camera::PrimaryCamera->AddComponent<Camera>();
 	eventSystem.DispatchImmediate<Events::OnApplicationStart>(Events::OnApplicationStart());
 	threadpool.Start(this);
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
 	//threadpool.Submit(Delegate<void,void>(&test));
 	//threadpool.Submit(Delegate<void, void>(&test2));
 	Time::Start();
@@ -85,6 +120,23 @@ void Sphynx::Application::Run()
 		"	vertexColor = vec4(0.0, 1.0, 0.0, 0.5);"
 		" }", Graphics::ShaderType::VertexShader);
 	g2mat = Graphics::GL::GLMaterial(Graphics::ShaderPack(&s1, &s, nullptr, nullptr), (Graphics::GL::GLTexture*)nullptr);
+=======
+=======
+>>>>>>> Stashed changes
+	Camera::PrimaryCamera->GetTransform()->Translate(glm::vec3(0.0f, 0.0f, -3.0f));
+	auto Square = GameObject::CreatePrimitive(Primitives::Cube);
+	auto Square2 = GameObject::CreatePrimitive(Primitives::Cube);
+	Square2.GetTransform()->Translate(glm::vec3(3.0f, 0.0f, 0.0f));
+	Square.GetTransform()->Translate(glm::vec3(-3.0f, 0.0f, 0.0f));
+	Square.GetTransform()->Rotate(30, glm::vec3(0.0f, 1.0f, 0.0f));
+	Camera::PrimaryCamera->AddComponent<MovementComp>();
+	Input::Init();
+	Start();
+	Time::Start();
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
 	while (AppAlive) {
 		Update();
 		eventSystem.DispatchImmediate<Events::OnApplicationUpdate>(Events::OnApplicationUpdate());
@@ -94,11 +146,26 @@ void Sphynx::Application::Run()
 		for (auto& es : EventSystemArray) {
 			es->Dispatch();
 		}
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
 		UpdateWindow();
+=======
+=======
+>>>>>>> Stashed changes
+		Square.Update();
+		Square2.Update();
+		Camera::PrimaryCamera->Update();
+		if (MainWindow != NULL) {
+			if (MainWindow->IsAlive()) {
+				MainWindow->Update();
+			}
+		}
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
 		Time::Update();
 	}
-	threadpool.Stop();
 	imgui.Shutdown();
+<<<<<<< Updated upstream
 	delete g;
 	delete g2;
 }
@@ -112,6 +179,15 @@ void Sphynx::Application::UpdateWindow()
 			MainWindow->Update();
 		}
 	}
+=======
+	threadpool.Stop();
+>>>>>>> Stashed changes
+=======
+		Time::Update();
+	}
+	imgui.Shutdown();
+	threadpool.Stop();
+>>>>>>> Stashed changes
 }
 
 Events::EventSystem Sphynx::Application::RequestNewEventSystem()

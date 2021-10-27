@@ -100,24 +100,40 @@ GLenum MeshTypeToGLenum(Sphynx::Core::Graphics::MeshType meshtype) {
 	}
 }
 
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
 Sphynx::Core::Graphics::GL::GLMesh::GLMesh(GLMesh&& mesh)
+=======
+Sphynx::Core::Graphics::GL::GLMesh::GLMesh(GLMesh&& Mesh)noexcept
+>>>>>>> Stashed changes
+=======
+Sphynx::Core::Graphics::GL::GLMesh::GLMesh(GLMesh&& Mesh)noexcept
+>>>>>>> Stashed changes
 {
-	std::swap(this->VAO, mesh.VAO);
-	std::swap(this->VAttribIndex, mesh.VAttribIndex);
-	std::swap(this->VBuffers, mesh.VBuffers);
-	std::swap(this->IBuffer, mesh.IBuffer);
-	std::swap(this->hasIndexArray, mesh.hasIndexArray);
+	std::swap(this->VAO, Mesh.VAO);
+	std::swap(this->VAttribIndex, Mesh.VAttribIndex);
+	std::swap(this->VBuffers, Mesh.VBuffers);
+	std::swap(this->IBuffer, Mesh.IBuffer);
+	std::swap(this->hasIndexArray, Mesh.hasIndexArray);
 }
 
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
 Sphynx::Core::Graphics::GL::GLMesh& Sphynx::Core::Graphics::GL::GLMesh::operator=(GLMesh&& mesh)
+=======
+Sphynx::Core::Graphics::GL::GLMesh& Sphynx::Core::Graphics::GL::GLMesh::operator=(GLMesh&& Mesh)noexcept
+>>>>>>> Stashed changes
+=======
+Sphynx::Core::Graphics::GL::GLMesh& Sphynx::Core::Graphics::GL::GLMesh::operator=(GLMesh&& Mesh)noexcept
+>>>>>>> Stashed changes
 {
-	if (this != &mesh) {
+	if (this != &Mesh) {
 		Release();
-		std::swap(this->VAO, mesh.VAO);
-		std::swap(this->VAttribIndex, mesh.VAttribIndex);
-		std::swap(this->VBuffers, mesh.VBuffers);
-		std::swap(this->IBuffer, mesh.IBuffer);
-		std::swap(this->hasIndexArray, mesh.hasIndexArray);
+		std::swap(this->VAO, Mesh.VAO);
+		std::swap(this->VAttribIndex, Mesh.VAttribIndex);
+		std::swap(this->VBuffers, Mesh.VBuffers);
+		std::swap(this->IBuffer, Mesh.IBuffer);
+		std::swap(this->hasIndexArray, Mesh.hasIndexArray);
 	}
 	return *this;
 }
@@ -132,7 +148,7 @@ Sphynx::Core::Graphics::GL::GLMesh::GLMesh()
 	glCreateVertexArrays(1, &VAO);
 }
 
-Sphynx::Core::Graphics::GL::GLMesh::GLMesh(float* vertexes, size_t vertsize, uint64_t* indexes, size_t indexsize, MeshType meshtype)
+Sphynx::Core::Graphics::GL::GLMesh::GLMesh(float* vertexes, size_t vertsize, unsigned int* indexes, size_t indexsize, MeshType meshtype)
 {
 	//Create VAO
 	glCreateVertexArrays(1, &VAO);
@@ -302,17 +318,41 @@ Sphynx::Core::Graphics::GL::GLIndexBuffer::GLIndexBuffer(uint32_t count)noexcept
 	// GL_ELEMENT_ARRAY_BUFFER need a bound VAO to be valid.
 	// Binding with GL_ARRAY_BUFFER allows the data to be loaded regardless of VAO state. 
 	glBindBuffer(GL_ARRAY_BUFFER, BufferID);
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
 	glBufferData(BufferID, count * sizeof(UINT64), 0, GL_DYNAMIC_DRAW);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
 Sphynx::Core::Graphics::GL::GLIndexBuffer::GLIndexBuffer(uint64_t* indices, uint32_t count)noexcept : Count(count)
+=======
+	glBufferData(GL_ARRAY_BUFFER, count * sizeof(unsigned int), 0, GL_DYNAMIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+}
+
+Sphynx::Core::Graphics::GL::GLIndexBuffer::GLIndexBuffer(unsigned int* indices, size_t count)noexcept : Count(count)
+>>>>>>> Stashed changes
+=======
+	glBufferData(GL_ARRAY_BUFFER, count * sizeof(unsigned int), 0, GL_DYNAMIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+}
+
+Sphynx::Core::Graphics::GL::GLIndexBuffer::GLIndexBuffer(unsigned int* indices, size_t count)noexcept : Count(count)
+>>>>>>> Stashed changes
 {
 	glCreateBuffers(1, &BufferID);
 	// GL_ELEMENT_ARRAY_BUFFER need a bound VAO to be valid.
 	// Binding with GL_ARRAY_BUFFER allows the data to be loaded regardless of VAO state. 
 	glBindBuffer(GL_ARRAY_BUFFER, BufferID);
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
 	glBufferData(BufferID, count * sizeof(uint64_t), indices, GL_STATIC_DRAW);
+=======
+	glBufferData(GL_ARRAY_BUFFER, count * sizeof(unsigned int), indices, GL_STATIC_DRAW);
+>>>>>>> Stashed changes
+=======
+	glBufferData(GL_ARRAY_BUFFER, count * sizeof(unsigned int), indices, GL_STATIC_DRAW);
+>>>>>>> Stashed changes
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
@@ -345,7 +385,18 @@ void Sphynx::Core::Graphics::GL::GLIndexBuffer::Unbind() const
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
 void Sphynx::Core::Graphics::GL::GLIndexBuffer::SetData(const uint64_t* data, uint32_t count)
 {
 	Core_Warn("GLIndexBuffer::SetData(const uint64_t*,uint32_t) Not Implemented.");
+=======
+=======
+>>>>>>> Stashed changes
+void Sphynx::Core::Graphics::GL::GLIndexBuffer::SetData(const unsigned int* data, uint64_t count)
+{
+	Bind();
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(unsigned int), data, GL_DYNAMIC_DRAW);
+	Unbind();
+>>>>>>> Stashed changes
 }

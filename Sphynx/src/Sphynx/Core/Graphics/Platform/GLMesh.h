@@ -33,7 +33,15 @@ namespace Sphynx::Core::Graphics::GL {
 		void Release();
 	public:
 		GLIndexBuffer(uint32_t count)noexcept;
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
 		GLIndexBuffer(uint64_t* indices, uint32_t count)noexcept;
+=======
+		GLIndexBuffer(unsigned int* indices, size_t count)noexcept;
+>>>>>>> Stashed changes
+=======
+		GLIndexBuffer(unsigned int* indices, size_t count)noexcept;
+>>>>>>> Stashed changes
 		GLIndexBuffer(const GLIndexBuffer& ibuf) = delete;
 		GLIndexBuffer& operator=(const GLIndexBuffer& ibuf) = delete;
 		GLIndexBuffer(GLIndexBuffer&& ibuf)noexcept;
@@ -41,7 +49,15 @@ namespace Sphynx::Core::Graphics::GL {
 		virtual ~GLIndexBuffer()override;
 		virtual void Bind()const override;
 		virtual void Unbind()const override;
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
 		virtual void SetData(const uint64_t* data, uint32_t count)override;
+=======
+		virtual void SetData(const unsigned int* data, uint64_t count)override;
+>>>>>>> Stashed changes
+=======
+		virtual void SetData(const unsigned int* data, uint64_t count)override;
+>>>>>>> Stashed changes
 		virtual int GetCount()const noexcept override { return Count; };
 
 		friend class GLMesh;
@@ -51,12 +67,28 @@ namespace Sphynx::Core::Graphics::GL {
 	public:
 		//Empty Mesh
 		GLMesh();
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
 		GLMesh(float* vertexes, size_t vertsize, uint64_t* indexes, size_t indexsize, MeshType meshtype);
 		GLMesh(std::vector<VertexBuffer*> VertBuf, IndexBuffer* IndexBuf);
 		GLMesh(const GLMesh&) = delete;
 		GLMesh& operator=(const GLMesh&) = delete;
 		GLMesh(GLMesh&& mesh);
 		GLMesh& operator=(GLMesh&& mesh);
+=======
+=======
+>>>>>>> Stashed changes
+		GLMesh(float* vertexes, size_t vertsize, unsigned int* indexes, size_t indexsize, MeshType meshtype);
+		GLMesh(VertexBuffer* VertBuf, IndexBuffer* IndexBuf);
+		GLMesh(std::vector<VertexBuffer*> VertBuf, IndexBuffer* IndexBuf);
+		GLMesh(const GLMesh&) = delete;
+		GLMesh& operator=(const GLMesh&) = delete;
+		GLMesh(GLMesh&& Mesh)noexcept;
+		GLMesh& operator=(GLMesh&& Mesh)noexcept;
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
 		virtual ~GLMesh()override;
 		virtual void Bind()const override;
 		virtual void UnBind()const override;

@@ -13,7 +13,14 @@
 #include <iostream>
 #include "Core/ThreadPool.h"
 
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
 #define Sphynx_Version "0.2.8"
+=======
+=======
+>>>>>>> Stashed changes
+#define Sphynx_Version "0.3.6"
+>>>>>>> Stashed changes
 
 namespace Sphynx {
 	namespace Core {
@@ -34,12 +41,12 @@ namespace Sphynx {
 #if defined(DEBUG)
 		inline void StdLog(OnLog& e) { std::cout << e.msg; };
 #endif
-		void UpdateWindow();
 	public:
 		Application();
 		static Application* GetApplication();
 		virtual ~Application();
 		virtual void Update() = 0;
+		virtual void Start() = 0;
 		void Run();
 		bool HasWindow()const noexcept{ return static_cast<bool>(MainWindow); };
 		inline void CloseApplication() noexcept { AppAlive = false; };
@@ -63,8 +70,9 @@ namespace Sphynx {
 		inline Core::Scripting::ScriptingEngine GetScriptingEngine()noexcept { return scriptingEngine; };
 		//////////////Window Handling///////////////
 
-		///Create the Main Window using a premade IWindow Pointer to allow Backend Choice(GL or DX)
-		Core::IWindow* CreateMainWindow(std::unique_ptr<Core::IWindow>&& window /*We Want to steal it*/);
+		//Create the Main Window using a premade IWindow Pointer to allow Backend Choice(GL or DX)
+		//TODO: LOL, NO more Choice.
+		Core::IWindow* CreateMainWindow(std::unique_ptr<Core::IWindow>&& window /*We Want to steal it, NEW: We Don't Need it.*/);
 	};
 	//To be defined in a client
 	Application* CreateApplication();

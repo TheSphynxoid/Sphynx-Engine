@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include "Shader.h"
 
 namespace Sphynx::Core::Graphics {
 	enum class MeshType {
@@ -10,11 +11,7 @@ namespace Sphynx::Core::Graphics {
 		//GL Specific (Meaning : contents will be modified once and used at most a few times.)
 		Stream
 	};
-	enum class ShaderDataType
-	{
-		None = 0, Float, Float2, Float3, Float4, Double, Double2, Double3, Double4, Int, Int2, Int3, Int4, UInt, UInt2, UInt3, UInt4, Bool,
-		Mat2x2, Mat2x3, Mat2x4, Mat3x2, Mat3x3, Mat3x4, Mat4x2, Mat4x3, Mat4x4
-	};
+
 	static size_t GetShaderDataTypeSize(ShaderDataType Type) {
 		switch (Type)
 		{
@@ -92,6 +89,7 @@ namespace Sphynx::Core::Graphics {
 			case ShaderDataType::Mat4x2:	return 2;
 			case ShaderDataType::Mat4x3:	return 3;
 			case ShaderDataType::Mat4x4:	return 4;
+			default:						return 0;
 			}
 		}
 	};
@@ -127,22 +125,24 @@ namespace Sphynx::Core::Graphics {
 		virtual void SetDataLayout(BufferLayout layout) = 0;
 		virtual BufferLayout GetLayout()const = 0;
 		virtual size_t GetVertexBufferSize()const noexcept = 0;
-		static VertexBuffer* Create(float* vertices, uint32_t size);
+		static VertexBuffer* Create(float* vertices, size_t size);
+		static VertexBuffer* CreateEmpty(size_t size);
 	};
 	struct IndexBuffer {
 		virtual ~IndexBuffer() = default;
 		virtual void Bind()const = 0;
 		virtual void Unbind()const = 0;
-		virtual void SetData(const uint64_t* data, uint32_t count) = 0;
+		virtual void SetData(const unsigned int* data, uint64_t count) = 0;
 		virtual int GetCount()const noexcept = 0;
-		static IndexBuffer* Create(uint64_t* indices, size_t size);
+		static IndexBuffer* Create(unsigned int* indices, size_t size);
 	};
 	class Mesh
 	{
 	public:
 		virtual ~Mesh() = default;
 		static Mesh* CreateEmpty();
-		static Mesh* Create(float* vertexes, size_t vertsize, uint64_t* indexes, size_t indexsize, MeshType meshtype);
+		static Mesh* Create(float* vertexes, size_t vertsize, unsigned int* indexes, size_t indexsize, MeshType meshtype);
+		static Mesh* Create(VertexBuffer* VBuffer, IndexBuffer* IBuffer);
 		static Mesh* Create(std::vector<VertexBuffer*> VBuffers, IndexBuffer* IBuffer);
 		virtual void Bind()const = 0;
 		virtual void UnBind()const = 0;

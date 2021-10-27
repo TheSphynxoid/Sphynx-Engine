@@ -37,7 +37,15 @@
     <ClInclude Include="src\Sphynx\Application.h">
       <Filter>Sphynx</Filter>
     </ClInclude>
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
     <ClInclude Include="src\Sphynx\BitBool.h">
+=======
+    <ClInclude Include="src\Sphynx\Camera.h">
+>>>>>>> Stashed changes
+=======
+    <ClInclude Include="src\Sphynx\Camera.h">
+>>>>>>> Stashed changes
       <Filter>Sphynx</Filter>
     </ClInclude>
     <ClInclude Include="src\Sphynx\Component.h">
@@ -46,13 +54,32 @@
     <ClInclude Include="src\Sphynx\Core.h">
       <Filter>Sphynx</Filter>
     </ClInclude>
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+=======
+>>>>>>> Stashed changes
+    <ClInclude Include="src\Sphynx\Core\ComponentCollection.h">
+      <Filter>Sphynx\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Sphynx\Core\Exceptions.h">
+      <Filter>Sphynx\Core</Filter>
+    </ClInclude>
+>>>>>>> Stashed changes
     <ClInclude Include="src\Sphynx\Core\Factories\ComponentFactory.h">
       <Filter>Sphynx\Core\Factories</Filter>
     </ClInclude>
     <ClInclude Include="src\Sphynx\Core\Graphics\Imgui.h">
       <Filter>Sphynx\Core\Graphics</Filter>
     </ClInclude>
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
     <ClInclude Include="src\Sphynx\Core\Graphics\Pipeline\Camera.h">
+=======
+=======
+>>>>>>> Stashed changes
+    <ClInclude Include="src\Sphynx\Core\Graphics\Pipeline\FrameBuffer.h">
+>>>>>>> Stashed changes
       <Filter>Sphynx\Core\Graphics\Pipeline</Filter>
     </ClInclude>
     <ClInclude Include="src\Sphynx\Core\Graphics\Pipeline\Material.h">
@@ -70,6 +97,18 @@
     <ClInclude Include="src\Sphynx\Core\Graphics\Pipeline\Texture.h">
       <Filter>Sphynx\Core\Graphics\Pipeline</Filter>
     </ClInclude>
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+=======
+>>>>>>> Stashed changes
+    <ClInclude Include="src\Sphynx\Core\Graphics\Pipeline\UniformBuffer.h">
+      <Filter>Sphynx\Core\Graphics\Pipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Sphynx\Core\Graphics\Platform\GLMaterial.h">
+      <Filter>Sphynx\Core\Graphics\Platform</Filter>
+    </ClInclude>
+>>>>>>> Stashed changes
     <ClInclude Include="src\Sphynx\Core\Graphics\Platform\GLMesh.h">
       <Filter>Sphynx\Core\Graphics\Platform</Filter>
     </ClInclude>
@@ -82,6 +121,9 @@
     <ClInclude Include="src\Sphynx\Core\Graphics\Platform\GLTexture.h">
       <Filter>Sphynx\Core\Graphics\Platform</Filter>
     </ClInclude>
+    <ClInclude Include="src\Sphynx\Core\Graphics\Platform\GLUniformBuffer.h">
+      <Filter>Sphynx\Core\Graphics\Platform</Filter>
+    </ClInclude>
     <ClInclude Include="src\Sphynx\Core\Graphics\Platform\GLWindow.h">
       <Filter>Sphynx\Core\Graphics\Platform</Filter>
     </ClInclude>
@@ -91,20 +133,11 @@
     <ClInclude Include="src\Sphynx\Core\InternalUtility.h">
       <Filter>Sphynx\Core</Filter>
     </ClInclude>
-    <ClInclude Include="src\Sphynx\Core\Module.h">
+    <ClInclude Include="src\Sphynx\Core\MeshRenderer.h">
       <Filter>Sphynx\Core</Filter>
     </ClInclude>
-    <ClInclude Include="src\Sphynx\Core\Scripting\Lua\Lua.h">
-      <Filter>Sphynx\Core\Scripting\Lua</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Sphynx\Core\Scripting\Lua\LuaIncludes.h">
-      <Filter>Sphynx\Core\Scripting\Lua</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Sphynx\Core\Scripting\Lua\LuaInput.h">
-      <Filter>Sphynx\Core\Scripting\Lua</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Sphynx\Core\Scripting\Lua\LuaWindow.h">
-      <Filter>Sphynx\Core\Scripting\Lua</Filter>
+    <ClInclude Include="src\Sphynx\Core\Module.h">
+      <Filter>Sphynx\Core</Filter>
     </ClInclude>
     <ClInclude Include="src\Sphynx\Core\Scripting\ScriptingEngine.h">
       <Filter>Sphynx\Core\Scripting</Filter>
@@ -116,6 +149,9 @@
       <Filter>Sphynx\Core</Filter>
     </ClInclude>
     <ClInclude Include="src\Sphynx\Core\ThreadPool.h">
+      <Filter>Sphynx\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Sphynx\Core\Transform.h">
       <Filter>Sphynx\Core</Filter>
     </ClInclude>
     <ClInclude Include="src\Sphynx\Delegate.h">
@@ -151,6 +187,9 @@
     <ClInclude Include="src\Sphynx\Logger.h">
       <Filter>Sphynx</Filter>
     </ClInclude>
+    <ClInclude Include="src\Sphynx\Matrix.h">
+      <Filter>Sphynx</Filter>
+    </ClInclude>
     <ClInclude Include="src\Sphynx\Object.h">
       <Filter>Sphynx</Filter>
     </ClInclude>
@@ -184,15 +223,29 @@
     <ClInclude Include="src\Sphynx\pch.h">
       <Filter>Sphynx</Filter>
     </ClInclude>
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
     <ClInclude Include="src\Sphynx\Core\Graphics\Platform\GLMaterial.h" />
     <ClInclude Include="src\Sphynx\Core\Exceptions.h" />
+=======
+    <ClInclude Include="src\Sphynx\Scene.h" />
+>>>>>>> Stashed changes
+=======
+    <ClInclude Include="src\Sphynx\Scene.h" />
+>>>>>>> Stashed changes
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Sphynx\Application.cpp">
       <Filter>Sphynx</Filter>
     </ClCompile>
+    <ClCompile Include="src\Sphynx\Camera.cpp">
+      <Filter>Sphynx</Filter>
+    </ClCompile>
     <ClCompile Include="src\Sphynx\Component.cpp">
       <Filter>Sphynx</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Sphynx\Core\ComponentCollection.cpp">
+      <Filter>Sphynx\Core</Filter>
     </ClCompile>
     <ClCompile Include="src\Sphynx\Core\Factories\ComponentFactory.cpp">
       <Filter>Sphynx\Core\Factories</Filter>
@@ -200,6 +253,30 @@
     <ClCompile Include="src\Sphynx\Core\Graphics\Imgui.cpp">
       <Filter>Sphynx\Core\Graphics</Filter>
     </ClCompile>
+<<<<<<< Updated upstream
+=======
+    <ClCompile Include="src\Sphynx\Core\Graphics\Pipeline\FrameBuffer.cpp">
+      <Filter>Sphynx\Core\Graphics\Pipeline</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Sphynx\Core\Graphics\Pipeline\Material.cpp">
+      <Filter>Sphynx\Core\Graphics\Pipeline</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Sphynx\Core\Graphics\Pipeline\Mesh.cpp">
+      <Filter>Sphynx\Core\Graphics\Pipeline</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Sphynx\Core\Graphics\Pipeline\Shader.cpp">
+      <Filter>Sphynx\Core\Graphics\Pipeline</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Sphynx\Core\Graphics\Pipeline\Texture.cpp">
+      <Filter>Sphynx\Core\Graphics\Pipeline</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Sphynx\Core\Graphics\Pipeline\UniformBuffer.cpp">
+      <Filter>Sphynx\Core\Graphics\Pipeline</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Sphynx\Core\Graphics\Platform\GLMaterial.cpp">
+      <Filter>Sphynx\Core\Graphics\Platform</Filter>
+    </ClCompile>
+>>>>>>> Stashed changes
     <ClCompile Include="src\Sphynx\Core\Graphics\Platform\GLMesh.cpp">
       <Filter>Sphynx\Core\Graphics\Platform</Filter>
     </ClCompile>
@@ -212,22 +289,22 @@
     <ClCompile Include="src\Sphynx\Core\Graphics\Platform\GLTexture.cpp">
       <Filter>Sphynx\Core\Graphics\Platform</Filter>
     </ClCompile>
+    <ClCompile Include="src\Sphynx\Core\Graphics\Platform\GLUniformBuffer.cpp">
+      <Filter>Sphynx\Core\Graphics\Platform</Filter>
+    </ClCompile>
     <ClCompile Include="src\Sphynx\Core\Graphics\Platform\GLWindow.cpp">
       <Filter>Sphynx\Core\Graphics\Platform</Filter>
     </ClCompile>
-    <ClCompile Include="src\Sphynx\Core\Scripting\Lua\Lua.cpp">
-      <Filter>Sphynx\Core\Scripting\Lua</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Sphynx\Core\Scripting\Lua\LuaInput.cpp">
-      <Filter>Sphynx\Core\Scripting\Lua</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Sphynx\Core\Scripting\Lua\LuaWindow.cpp">
-      <Filter>Sphynx\Core\Scripting\Lua</Filter>
+    <ClCompile Include="src\Sphynx\Core\MeshRenderer.cpp">
+      <Filter>Sphynx\Core</Filter>
     </ClCompile>
     <ClCompile Include="src\Sphynx\Core\Scripting\ScriptingEngine.cpp">
       <Filter>Sphynx\Core\Scripting</Filter>
     </ClCompile>
     <ClCompile Include="src\Sphynx\Core\ThreadPool.cpp">
+      <Filter>Sphynx\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Sphynx\Core\Transform.cpp">
       <Filter>Sphynx\Core</Filter>
     </ClCompile>
     <ClCompile Include="src\Sphynx\GameObject.cpp">
@@ -266,7 +343,15 @@
     <ClCompile Include="src\Sphynx\pch.cpp">
       <Filter>Sphynx</Filter>
     </ClCompile>
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
     <ClCompile Include="src\Sphynx\Core\Graphics\Platform\GLMaterial.cpp" />
     <ClCompile Include="src\Sphynx\Core\Graphics\Pipeline\Mesh.cpp" />
+=======
+    <ClCompile Include="src\Sphynx\Scene.cpp" />
+>>>>>>> Stashed changes
+=======
+    <ClCompile Include="src\Sphynx\Scene.cpp" />
+>>>>>>> Stashed changes
   </ItemGroup>
 </Project>

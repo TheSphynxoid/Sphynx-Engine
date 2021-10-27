@@ -11,17 +11,30 @@ namespace Sphynx::Core::Graphics::GL {
 		std::string ReadFile(std::string path);
 		//Handles OpenGl Shader Creation, Compiles The Code from the given file and 
 		//creates the shader object of which the id is stored
-		void CreateShader(std::string path, int SHADER_TYPE);
+		void Create(std::string path, int SHADER_TYPE);
 		//Inherited From Shader, Gets Called To Create Shader.
-		void Load(std::string path, ShaderType type)override;
 		void Release()noexcept;
 	public:
-		void CreateFromCode(const char* code, ShaderType Type);
+		GLShader(std::string path, ShaderType type);
+		GLShader(const char* code, ShaderType Type);
 		//Spec:
 		//location 0 :Will always be for Vertex Position,
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
 		//location 1 :Will Be for normal.
 		//location 2 :Will be for textures if they are present.
 		//Custom Attributes Should begin at 3. The Engine 
+=======
+=======
+>>>>>>> Stashed changes
+		//location 1 :Will be for clip matrix.
+		//location 2 :Will be for textures if they are present.
+		//location 3 :Will Be for normal.
+		//Custom Attributes Should begin at 4.
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
 		GLShader() = default;
 		//Move-Only
 		GLShader(const GLShader&) = delete;

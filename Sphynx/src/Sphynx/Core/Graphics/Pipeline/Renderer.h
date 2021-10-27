@@ -1,9 +1,12 @@
 #pragma once
 //#include "Core/Graphics/Window.h"
 #include "Core/Module.h"
-#include "Vector.h"
+#include "glm/glm.hpp"
+#include "glm/gtx/quaternion.hpp"
+#ifdef GCC || CLANG
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunused-parameter"
+#endif
 namespace Sphynx::Core::Graphics {
 	class Mesh;
 	class Material;
@@ -15,9 +18,7 @@ namespace Sphynx::Core::Graphics {
 	public:
 		Mesh* mesh;
 		Material* mat;
-		Vec3 Position;
-		Vec4 Rotation;
-		RenderObject(Mesh* _mesh, Material* _mat, Vec3 Pos, Vec4 Rot) : mesh(_mesh), mat(_mat), Position(Pos), Rotation(Rot) {};
+		RenderObject(Mesh* _mesh, Material* _mat) : mesh(_mesh), mat(_mat) {};
 	}RenderObject;
 	//Base Class Of Renderers.
 	class IRenderer
@@ -27,7 +28,7 @@ namespace Sphynx::Core::Graphics {
 		virtual void Start(IWindow* app) = 0;
 		virtual void Render() = 0;
 		virtual void Clear() = 0;
-		//Send Data,Shaders,Indexes,Textures (Make A Object that encapsulates them all).
+		//Send Data,Shaders,Indexes,textures (Make A Object that encapsulates them all).
 		//They are stored until deleted
 		inline void Submit(const RenderObject& RO) {
 			OnSubmit(RO);
@@ -38,4 +39,6 @@ namespace Sphynx::Core::Graphics {
 
 	};
 }
+#ifdef GCC
 #pragma GCC diagnostic pop
+#endif // GCC

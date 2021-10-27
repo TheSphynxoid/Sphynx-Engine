@@ -42,7 +42,7 @@ std::string Sphynx::Core::Graphics::GL::GLShader::ReadFile(std::string path)
 	return glsl;
 }
 
-void Sphynx::Core::Graphics::GL::GLShader::CreateShader(std::string path, int SHADER_TYPE)
+void Sphynx::Core::Graphics::GL::GLShader::Create(std::string path, int SHADER_TYPE)
 {
 	std::string glsl = ReadFile(path);
 	const char* c = glsl.c_str();
@@ -68,10 +68,10 @@ void Sphynx::Core::Graphics::GL::GLShader::CreateShader(std::string path, int SH
 		Core_Error(message);
 	}
 }
-void Sphynx::Core::Graphics::GL::GLShader::Load(std::string path, ShaderType Type)
+Sphynx::Core::Graphics::GL::GLShader::GLShader(std::string path, ShaderType Type)
 {
 	int Flag = GetShaderTypeFromEnum(Type);
-	CreateShader(path, Flag);
+	Create(path, Flag);
 }
 
 void Sphynx::Core::Graphics::GL::GLShader::Release()noexcept
@@ -80,7 +80,7 @@ void Sphynx::Core::Graphics::GL::GLShader::Release()noexcept
 	id = 0;
 }
 
-void Sphynx::Core::Graphics::GL::GLShader::CreateFromCode(const char* code, ShaderType Type)
+Sphynx::Core::Graphics::GL::GLShader::GLShader(const char* code, ShaderType Type)
 {
 	GLint Flag = GetShaderTypeFromEnum(Type);
 	//GL

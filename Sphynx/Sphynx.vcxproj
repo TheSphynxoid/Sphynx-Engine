@@ -97,37 +97,59 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
     <ClInclude Include="src\Sphynx.h" />
     <ClInclude Include="src\Sphynx\Application.h" />
     <ClInclude Include="src\Sphynx\BitBool.h" />
+=======
+    <ClInclude Include="src\Sphynx\Scene.h" />
+    <ClInclude Include="src\Sphynx.h" />
+    <ClInclude Include="src\Sphynx\Application.h" />
+    <ClInclude Include="src\Sphynx\Camera.h" />
+>>>>>>> Stashed changes
+=======
+    <ClInclude Include="src\Sphynx\Scene.h" />
+    <ClInclude Include="src\Sphynx.h" />
+    <ClInclude Include="src\Sphynx\Application.h" />
+    <ClInclude Include="src\Sphynx\Camera.h" />
+>>>>>>> Stashed changes
     <ClInclude Include="src\Sphynx\Component.h" />
     <ClInclude Include="src\Sphynx\Core.h" />
+    <ClInclude Include="src\Sphynx\Core\ComponentCollection.h" />
     <ClInclude Include="src\Sphynx\Core\Exceptions.h" />
     <ClInclude Include="src\Sphynx\Core\Factories\ComponentFactory.h" />
     <ClInclude Include="src\Sphynx\Core\Graphics\Imgui.h" />
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
     <ClInclude Include="src\Sphynx\Core\Graphics\Pipeline\Camera.h" />
+=======
+=======
+>>>>>>> Stashed changes
+    <ClInclude Include="src\Sphynx\Core\Graphics\Pipeline\FrameBuffer.h" />
+>>>>>>> Stashed changes
     <ClInclude Include="src\Sphynx\Core\Graphics\Pipeline\Material.h" />
     <ClInclude Include="src\Sphynx\Core\Graphics\Pipeline\Mesh.h" />
     <ClInclude Include="src\Sphynx\Core\Graphics\Pipeline\Renderer.h" />
     <ClInclude Include="src\Sphynx\Core\Graphics\Pipeline\Shader.h" />
     <ClInclude Include="src\Sphynx\Core\Graphics\Pipeline\Texture.h" />
+    <ClInclude Include="src\Sphynx\Core\Graphics\Pipeline\UniformBuffer.h" />
     <ClInclude Include="src\Sphynx\Core\Graphics\Platform\GLMaterial.h" />
     <ClInclude Include="src\Sphynx\Core\Graphics\Platform\GLMesh.h" />
     <ClInclude Include="src\Sphynx\Core\Graphics\Platform\GLRenderer.h" />
     <ClInclude Include="src\Sphynx\Core\Graphics\Platform\GLShader.h" />
     <ClInclude Include="src\Sphynx\Core\Graphics\Platform\GLTexture.h" />
+    <ClInclude Include="src\Sphynx\Core\Graphics\Platform\GLUniformBuffer.h" />
     <ClInclude Include="src\Sphynx\Core\Graphics\Platform\GLWindow.h" />
     <ClInclude Include="src\Sphynx\Core\Graphics\Window.h" />
     <ClInclude Include="src\Sphynx\Core\InternalUtility.h" />
+    <ClInclude Include="src\Sphynx\Core\MeshRenderer.h" />
     <ClInclude Include="src\Sphynx\Core\Module.h" />
-    <ClInclude Include="src\Sphynx\Core\Scripting\Lua\Lua.h" />
-    <ClInclude Include="src\Sphynx\Core\Scripting\Lua\LuaIncludes.h" />
-    <ClInclude Include="src\Sphynx\Core\Scripting\Lua\LuaInput.h" />
-    <ClInclude Include="src\Sphynx\Core\Scripting\Lua\LuaWindow.h" />
     <ClInclude Include="src\Sphynx\Core\Scripting\ScriptingEngine.h" />
     <ClInclude Include="src\Sphynx\Core\System.h" />
     <ClInclude Include="src\Sphynx\Core\TestComponent.h" />
     <ClInclude Include="src\Sphynx\Core\ThreadPool.h" />
+    <ClInclude Include="src\Sphynx\Core\Transform.h" />
     <ClInclude Include="src\Sphynx\Delegate.h" />
     <ClInclude Include="src\Sphynx\EntryPoint.h" />
     <ClInclude Include="src\Sphynx\Events\ApplicationEvents.h" />
@@ -139,6 +161,7 @@
     <ClInclude Include="src\Sphynx\Input.h" />
     <ClInclude Include="src\Sphynx\KeyCode.h" />
     <ClInclude Include="src\Sphynx\Logger.h" />
+    <ClInclude Include="src\Sphynx\Matrix.h" />
     <ClInclude Include="src\Sphynx\Object.h" />
     <ClInclude Include="src\Sphynx\PlatformMacros.h" />
     <ClInclude Include="src\Sphynx\Pointer.h" />
@@ -152,22 +175,47 @@
     <ClInclude Include="src\Sphynx\pch.h" />
   </ItemGroup>
   <ItemGroup>
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+    <ClCompile Include="src\Sphynx\Scene.cpp" />
+>>>>>>> Stashed changes
+=======
+    <ClCompile Include="src\Sphynx\Scene.cpp" />
+>>>>>>> Stashed changes
     <ClCompile Include="src\Sphynx\Application.cpp" />
+    <ClCompile Include="src\Sphynx\Camera.cpp" />
     <ClCompile Include="src\Sphynx\Component.cpp" />
+    <ClCompile Include="src\Sphynx\Core\ComponentCollection.cpp" />
     <ClCompile Include="src\Sphynx\Core\Factories\ComponentFactory.cpp" />
     <ClCompile Include="src\Sphynx\Core\Graphics\Imgui.cpp" />
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
     <ClCompile Include="src\Sphynx\Core\Graphics\Pipeline\Mesh.cpp" />
+=======
+=======
+>>>>>>> Stashed changes
+    <ClCompile Include="src\Sphynx\Core\Graphics\Pipeline\FrameBuffer.cpp" />
+    <ClCompile Include="src\Sphynx\Core\Graphics\Pipeline\Material.cpp" />
+    <ClCompile Include="src\Sphynx\Core\Graphics\Pipeline\Mesh.cpp" />
+    <ClCompile Include="src\Sphynx\Core\Graphics\Pipeline\Shader.cpp" />
+    <ClCompile Include="src\Sphynx\Core\Graphics\Pipeline\Texture.cpp" />
+    <ClCompile Include="src\Sphynx\Core\Graphics\Pipeline\UniformBuffer.cpp" />
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
     <ClCompile Include="src\Sphynx\Core\Graphics\Platform\GLMaterial.cpp" />
     <ClCompile Include="src\Sphynx\Core\Graphics\Platform\GLMesh.cpp" />
     <ClCompile Include="src\Sphynx\Core\Graphics\Platform\GLRenderer.cpp" />
     <ClCompile Include="src\Sphynx\Core\Graphics\Platform\GLShader.cpp" />
     <ClCompile Include="src\Sphynx\Core\Graphics\Platform\GLTexture.cpp" />
+    <ClCompile Include="src\Sphynx\Core\Graphics\Platform\GLUniformBuffer.cpp" />
     <ClCompile Include="src\Sphynx\Core\Graphics\Platform\GLWindow.cpp" />
-    <ClCompile Include="src\Sphynx\Core\Scripting\Lua\Lua.cpp" />
-    <ClCompile Include="src\Sphynx\Core\Scripting\Lua\LuaInput.cpp" />
-    <ClCompile Include="src\Sphynx\Core\Scripting\Lua\LuaWindow.cpp" />
+    <ClCompile Include="src\Sphynx\Core\MeshRenderer.cpp" />
     <ClCompile Include="src\Sphynx\Core\Scripting\ScriptingEngine.cpp" />
     <ClCompile Include="src\Sphynx\Core\ThreadPool.cpp" />
+    <ClCompile Include="src\Sphynx\Core\Transform.cpp" />
     <ClCompile Include="src\Sphynx\GameObject.cpp" />
     <ClCompile Include="src\Sphynx\Input.cpp" />
     <ClCompile Include="src\Sphynx\Logger.cpp" />
