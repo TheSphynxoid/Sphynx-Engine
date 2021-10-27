@@ -10,7 +10,12 @@ using namespace Sphynx::Events;
 void Sphynx::Input::GLKeyHandler(GLFWwindow* window, int code, int scan, int action, int mods) {
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 	keyStates[code] = { (action == GLFW_PRESS ? true : false),(Mods)mods };
+=======
+	keyStates[code] = { ((action == GLFW_PRESS || action == GLFW_REPEAT) ? true : false),(Mods)mods };
+	ImguiKeyFunc(window, code, scan, action, mods);
+>>>>>>> Stashed changes
 =======
 	keyStates[code] = { ((action == GLFW_PRESS || action == GLFW_REPEAT) ? true : false),(Mods)mods };
 	ImguiKeyFunc(window, code, scan, action, mods);

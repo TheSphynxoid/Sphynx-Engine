@@ -8,10 +8,13 @@
 #include "Core/Graphics/Pipeline/Renderer.h"
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 #include "Core/Graphics/Platform/GLMesh.h"
 #include "Core/Graphics/Platform/GLMaterial.h"
 #include "Core/Graphics/Platform/GLShader.h"
 =======
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 #include "glm/gtx/quaternion.hpp"
@@ -102,6 +105,7 @@ void Sphynx::Application::Run()
 	threadpool.Start(this);
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 	//threadpool.Submit(Delegate<void,void>(&test));
 	//threadpool.Submit(Delegate<void, void>(&test2));
 	Time::Start();
@@ -123,6 +127,8 @@ void Sphynx::Application::Run()
 =======
 =======
 >>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
 	Camera::PrimaryCamera->GetTransform()->Translate(glm::vec3(0.0f, 0.0f, -3.0f));
 	auto Square = GameObject::CreatePrimitive(Primitives::Cube);
 	auto Square2 = GameObject::CreatePrimitive(Primitives::Cube);
@@ -134,6 +140,9 @@ void Sphynx::Application::Run()
 	Start();
 	Time::Start();
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
@@ -148,8 +157,11 @@ void Sphynx::Application::Run()
 		}
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 		UpdateWindow();
 =======
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 		Square.Update();
@@ -160,6 +172,7 @@ void Sphynx::Application::Run()
 				MainWindow->Update();
 			}
 		}
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 >>>>>>> Stashed changes
 		Time::Update();
@@ -180,6 +193,12 @@ void Sphynx::Application::UpdateWindow()
 		}
 	}
 =======
+	threadpool.Stop();
+>>>>>>> Stashed changes
+=======
+		Time::Update();
+	}
+	imgui.Shutdown();
 	threadpool.Stop();
 >>>>>>> Stashed changes
 =======

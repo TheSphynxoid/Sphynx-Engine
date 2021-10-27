@@ -30,6 +30,9 @@ namespace Sphynx::Core::Graphics {
 
 		friend class IRenderer;
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes

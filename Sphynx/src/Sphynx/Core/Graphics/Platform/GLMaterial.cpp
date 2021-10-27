@@ -11,6 +11,7 @@ GLMaterial GLMaterial::DefaultMaterial;
 
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 void Sphynx::Core::Graphics::GL::UniformData::SetUniform(Sphynx::Core::Graphics::GL::GLMaterial* Mat)
 {
     Mat->SetUniformValue(*this);
@@ -18,6 +19,8 @@ void Sphynx::Core::Graphics::GL::UniformData::SetUniform(Sphynx::Core::Graphics:
 
 void GLMaterial::i_CreateMaterial(const ShaderPack& shaders){
 =======
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 Sphynx::Core::Graphics::GL::GLMaterial::GLMaterial(const ShaderPack& shaders)
@@ -160,6 +163,9 @@ GLMaterial Sphynx::Core::Graphics::GL::GLMaterial::CreateDefaultMaterial()
     GLShader::DefaultVertexShader = new GLShader(DEF_VSHADER, ShaderType::VertexShader);
     GLShader::DefaultFragmentShader = new GLShader(DEF_FSHADER, ShaderType::FragmentShader);
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes

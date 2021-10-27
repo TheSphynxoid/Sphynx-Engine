@@ -36,8 +36,11 @@ project "Sphynx"
 		"%{prj.name}/dep/glm",
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 		"%{prj.name}/dep/lua/src"
 =======
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 		"%{prj.name}/dep/stb"
@@ -92,6 +95,9 @@ project "Sandbox"
 		"%{wks.location}/Sphynx/dep/stb",
 		"%{wks.location}/Sphynx/dep/glm",
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
@@ -119,7 +125,11 @@ include "Sphynx/dep/glad/glad"
 include "Sphynx/dep/imgui"
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 include "Sphynx/dep/Lua"
+=======
+-- include "Sphynx/dep/stb"
+>>>>>>> Stashed changes
 =======
 -- include "Sphynx/dep/stb"
 >>>>>>> Stashed changes

@@ -35,7 +35,11 @@ namespace Sphynx::Core::Graphics::GL {
 		GLIndexBuffer(uint32_t count)noexcept;
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 		GLIndexBuffer(uint64_t* indices, uint32_t count)noexcept;
+=======
+		GLIndexBuffer(unsigned int* indices, size_t count)noexcept;
+>>>>>>> Stashed changes
 =======
 		GLIndexBuffer(unsigned int* indices, size_t count)noexcept;
 >>>>>>> Stashed changes
@@ -51,7 +55,11 @@ namespace Sphynx::Core::Graphics::GL {
 		virtual void Unbind()const override;
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 		virtual void SetData(const uint64_t* data, uint32_t count)override;
+=======
+		virtual void SetData(const unsigned int* data, uint64_t count)override;
+>>>>>>> Stashed changes
 =======
 		virtual void SetData(const unsigned int* data, uint64_t count)override;
 >>>>>>> Stashed changes
@@ -69,6 +77,7 @@ namespace Sphynx::Core::Graphics::GL {
 		GLMesh();
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 		GLMesh(float* vertexes, size_t vertsize, uint64_t* indexes, size_t indexsize, MeshType meshtype);
 		GLMesh(std::vector<VertexBuffer*> VertBuf, IndexBuffer* IndexBuf);
 		GLMesh(const GLMesh&) = delete;
@@ -76,6 +85,8 @@ namespace Sphynx::Core::Graphics::GL {
 		GLMesh(GLMesh&& mesh);
 		GLMesh& operator=(GLMesh&& mesh);
 =======
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 		GLMesh(float* vertexes, size_t vertsize, unsigned int* indexes, size_t indexsize, MeshType meshtype);
@@ -86,6 +97,9 @@ namespace Sphynx::Core::Graphics::GL {
 		GLMesh(GLMesh&& Mesh)noexcept;
 		GLMesh& operator=(GLMesh&& Mesh)noexcept;
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes

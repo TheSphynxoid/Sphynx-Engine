@@ -133,7 +133,10 @@ Sphynx::Core::GLWindow::GLWindow(Application* App, Bounds WinBounds, std::string
 	Renderer->Start(this);
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 	glClearColor(0.5f, 0.05f, 0.0f, 1);
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 =======

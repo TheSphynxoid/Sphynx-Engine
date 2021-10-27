@@ -99,6 +99,7 @@
   <ItemGroup>
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     <ClInclude Include="src\Sphynx.h" />
     <ClInclude Include="src\Sphynx\Application.h" />
     <ClInclude Include="src\Sphynx\BitBool.h" />
@@ -109,10 +110,15 @@
     <ClInclude Include="src\Sphynx\Camera.h" />
 >>>>>>> Stashed changes
 =======
+=======
+>>>>>>> Stashed changes
     <ClInclude Include="src\Sphynx\Scene.h" />
     <ClInclude Include="src\Sphynx.h" />
     <ClInclude Include="src\Sphynx\Application.h" />
     <ClInclude Include="src\Sphynx\Camera.h" />
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
     <ClInclude Include="src\Sphynx\Component.h" />
     <ClInclude Include="src\Sphynx\Core.h" />
@@ -122,8 +128,11 @@
     <ClInclude Include="src\Sphynx\Core\Graphics\Imgui.h" />
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     <ClInclude Include="src\Sphynx\Core\Graphics\Pipeline\Camera.h" />
 =======
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
     <ClInclude Include="src\Sphynx\Core\Graphics\Pipeline\FrameBuffer.h" />
@@ -177,6 +186,10 @@
   <ItemGroup>
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+    <ClCompile Include="src\Sphynx\Scene.cpp" />
+>>>>>>> Stashed changes
 =======
     <ClCompile Include="src\Sphynx\Scene.cpp" />
 >>>>>>> Stashed changes
@@ -191,8 +204,11 @@
     <ClCompile Include="src\Sphynx\Core\Graphics\Imgui.cpp" />
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     <ClCompile Include="src\Sphynx\Core\Graphics\Pipeline\Mesh.cpp" />
 =======
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
     <ClCompile Include="src\Sphynx\Core\Graphics\Pipeline\FrameBuffer.cpp" />
@@ -202,6 +218,9 @@
     <ClCompile Include="src\Sphynx\Core\Graphics\Pipeline\Texture.cpp" />
     <ClCompile Include="src\Sphynx\Core\Graphics\Pipeline\UniformBuffer.cpp" />
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes

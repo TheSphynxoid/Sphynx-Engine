@@ -61,7 +61,11 @@
       <PreprocessorDefinitions>DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
       <AdditionalIncludeDirectories>..\Sphynx\dep\spdlog\include;..\Sphynx\src\Sphynx;..\Sphynx\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+=======
+      <AdditionalIncludeDirectories>..\Sphynx\dep\spdlog\include;..\Sphynx\dep\stb;..\Sphynx\dep\glm;..\Sphynx\src\Sphynx;..\Sphynx\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+>>>>>>> Stashed changes
 =======
       <AdditionalIncludeDirectories>..\Sphynx\dep\spdlog\include;..\Sphynx\dep\stb;..\Sphynx\dep\glm;..\Sphynx\src\Sphynx;..\Sphynx\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
 >>>>>>> Stashed changes
@@ -85,7 +89,11 @@
       <PreprocessorDefinitions>RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
       <AdditionalIncludeDirectories>..\Sphynx\dep\spdlog\include;..\Sphynx\src\Sphynx;..\Sphynx\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+=======
+      <AdditionalIncludeDirectories>..\Sphynx\dep\spdlog\include;..\Sphynx\dep\stb;..\Sphynx\dep\glm;..\Sphynx\src\Sphynx;..\Sphynx\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+>>>>>>> Stashed changes
 =======
       <AdditionalIncludeDirectories>..\Sphynx\dep\spdlog\include;..\Sphynx\dep\stb;..\Sphynx\dep\glm;..\Sphynx\src\Sphynx;..\Sphynx\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
 >>>>>>> Stashed changes

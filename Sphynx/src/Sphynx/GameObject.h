@@ -14,6 +14,9 @@ namespace Sphynx {
 	};
 	//Native GameObject
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
@@ -23,8 +26,11 @@ namespace Sphynx {
 	private:
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 		std::list<Component*> Components;
 =======
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 		std::list<Component*> Components = std::list<Component*>();
@@ -41,6 +47,9 @@ namespace Sphynx {
 		GameObject& operator=(const GameObject& obj)noexcept;
 		bool IsActive() { return IsAlive; };
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
@@ -102,6 +111,9 @@ namespace Sphynx {
 			return !(*this == other);
 		}
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes

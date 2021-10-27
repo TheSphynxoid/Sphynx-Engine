@@ -60,8 +60,11 @@ void Sphynx::Core::Imgui::OnOverlayUpdate(Events::OnOverlayUpdate& e)
 {
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 	//ImGuiIO& io = ImGui::GetIO();
 //io.DeltaTime = time.GetDeltaTime();
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 =======
@@ -238,8 +241,13 @@ void Sphynx::Core::DebugWindow::Draw()
 	ImGui::SetNextWindowSize(ImVec2(420, 360), ImGuiCond_Once);
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 	if (ImGui::Begin("Debug Window", &IsOpen, ImGuiWindowFlags_NoDocking)) {
 		if (ImGui::CollapsingHeader("Logger")) {
+=======
+	if (ImGui::Begin("Debug Window", &IsOpen)) {
+		if (ImGui::CollapsingHeader("Script")) {
+>>>>>>> Stashed changes
 =======
 	if (ImGui::Begin("Debug Window", &IsOpen)) {
 		if (ImGui::CollapsingHeader("Script")) {

@@ -15,8 +15,11 @@
 
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 #define Sphynx_Version "0.2.8"
 =======
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 #define Sphynx_Version "0.3.6"

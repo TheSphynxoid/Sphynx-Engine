@@ -6,6 +6,7 @@ namespace Sphynx {
 	class GameObject;
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 	class Component : public Object
 	{
 	private:
@@ -16,6 +17,8 @@ namespace Sphynx {
 =======
 =======
 >>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
 	class Transform;
 	//Native Components
 	class Component : public Object
@@ -24,6 +27,9 @@ namespace Sphynx {
 		//Called When Component is Created and attached to the GameObject.
 		virtual void OnComponentAttach(GameObject* parent) = 0;
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
@@ -36,7 +42,10 @@ namespace Sphynx {
 		virtual void Update() = 0;
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 		GameObject* GetGameObject() { return Parent; };
@@ -46,6 +55,9 @@ namespace Sphynx {
 		friend Core::Internal::ComponentFactory;
 		friend GameObject;
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes

@@ -52,6 +52,9 @@ namespace Sphynx::Core::Graphics::GL {
         std::list<Texture*> textures;
         std::list<Uniform*> uniforms;
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
@@ -113,6 +116,9 @@ namespace Sphynx::Core::Graphics::GL {
         virtual void ReloadShaders(const ShaderPack& pack);
         virtual Shader* GetDefaultShader(ShaderType type);
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes

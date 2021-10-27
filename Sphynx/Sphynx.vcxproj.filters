@@ -39,7 +39,11 @@
     </ClInclude>
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     <ClInclude Include="src\Sphynx\BitBool.h">
+=======
+    <ClInclude Include="src\Sphynx\Camera.h">
+>>>>>>> Stashed changes
 =======
     <ClInclude Include="src\Sphynx\Camera.h">
 >>>>>>> Stashed changes
@@ -56,7 +60,10 @@
     </ClInclude>
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
     <ClInclude Include="src\Sphynx\Core\ComponentCollection.h">
@@ -74,8 +81,11 @@
     </ClInclude>
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     <ClInclude Include="src\Sphynx\Core\Graphics\Pipeline\Camera.h">
 =======
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
     <ClInclude Include="src\Sphynx\Core\Graphics\Pipeline\FrameBuffer.h">
@@ -99,7 +109,10 @@
     </ClInclude>
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
     <ClInclude Include="src\Sphynx\Core\Graphics\Pipeline\UniformBuffer.h">
@@ -225,8 +238,12 @@
     </ClInclude>
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     <ClInclude Include="src\Sphynx\Core\Graphics\Platform\GLMaterial.h" />
     <ClInclude Include="src\Sphynx\Core\Exceptions.h" />
+=======
+    <ClInclude Include="src\Sphynx\Scene.h" />
+>>>>>>> Stashed changes
 =======
     <ClInclude Include="src\Sphynx\Scene.h" />
 >>>>>>> Stashed changes
@@ -345,8 +362,12 @@
     </ClCompile>
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     <ClCompile Include="src\Sphynx\Core\Graphics\Platform\GLMaterial.cpp" />
     <ClCompile Include="src\Sphynx\Core\Graphics\Pipeline\Mesh.cpp" />
+=======
+    <ClCompile Include="src\Sphynx\Scene.cpp" />
+>>>>>>> Stashed changes
 =======
     <ClCompile Include="src\Sphynx\Scene.cpp" />
 >>>>>>> Stashed changes

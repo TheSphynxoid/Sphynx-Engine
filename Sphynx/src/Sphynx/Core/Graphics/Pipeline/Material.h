@@ -52,6 +52,9 @@ namespace Sphynx::Core::Graphics {
 		virtual const unsigned int GetUniformLocation(const char* name) = 0;
 		virtual void ReloadShaders(const ShaderPack& pack) = 0;
 		virtual Shader* GetDefaultShader(ShaderType type) = 0;
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 	};
 }

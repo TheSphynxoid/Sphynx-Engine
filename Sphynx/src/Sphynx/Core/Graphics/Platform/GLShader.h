@@ -21,10 +21,13 @@ namespace Sphynx::Core::Graphics::GL {
 		//location 0 :Will always be for Vertex Position,
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 		//location 1 :Will Be for normal.
 		//location 2 :Will be for textures if they are present.
 		//Custom Attributes Should begin at 3. The Engine 
 =======
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 		//location 1 :Will be for clip matrix.
@@ -32,6 +35,9 @@ namespace Sphynx::Core::Graphics::GL {
 		//location 3 :Will Be for normal.
 		//Custom Attributes Should begin at 4.
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes

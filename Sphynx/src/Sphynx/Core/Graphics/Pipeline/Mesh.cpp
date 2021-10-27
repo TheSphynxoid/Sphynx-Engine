@@ -9,9 +9,12 @@ using namespace Sphynx::Core::Graphics;
 
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 
 VertexBuffer* Sphynx::Core::Graphics::VertexBuffer::Create(float* vertices, uint32_t size)
 =======
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 VertexBuffer* Sphynx::Core::Graphics::VertexBuffer::Create(float* vertices, size_t size)
@@ -56,6 +59,9 @@ VertexBuffer* Sphynx::Core::Graphics::VertexBuffer::CreateEmpty(size_t size)
 
 IndexBuffer* Sphynx::Core::Graphics::IndexBuffer::Create(unsigned int* indices, size_t size)
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
