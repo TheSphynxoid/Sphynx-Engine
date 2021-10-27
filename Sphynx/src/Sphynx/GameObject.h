@@ -6,33 +6,16 @@
 #include "Core/Transform.h"
 
 namespace Sphynx {
-<<<<<<< Updated upstream
-=======
 	class Transform;
 	enum class Primitives {
 		Sphere, Capsule, Cube, Plane, Triangle
 	};
 	//Native GameObject
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
 	class GameObject :
 		public Object
 	{
 	private:
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
 		std::list<Component*> Components;
-=======
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
 		std::list<Component*> Components = std::list<Component*>();
 		size_t InstanceID = 0;
 		bool IsAlive = false;
@@ -46,13 +29,6 @@ namespace Sphynx {
 		GameObject& operator=(GameObject&& obj)noexcept;
 		GameObject& operator=(const GameObject& obj)noexcept;
 		bool IsActive() { return IsAlive; };
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
 		void Update() {
 			for (auto comp : Components) {
 				comp->Update();
@@ -84,8 +60,6 @@ namespace Sphynx {
 			}
 			return nullptr;
 		}
-<<<<<<< Updated upstream
-=======
 		template<class component>
 		void RemoveComponent() {
 			if (!std::is_base_of_v<Component, component>) return;
@@ -110,12 +84,5 @@ namespace Sphynx {
 		bool operator!=(const GameObject& other) {
 			return !(*this == other);
 		}
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
 	};
 }

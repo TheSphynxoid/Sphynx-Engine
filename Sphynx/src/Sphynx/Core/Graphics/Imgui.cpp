@@ -58,17 +58,6 @@ void Sphynx::Core::Imgui::Start(Application* app)
 
 void Sphynx::Core::Imgui::OnOverlayUpdate(Events::OnOverlayUpdate& e)
 {
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-	//ImGuiIO& io = ImGui::GetIO();
-//io.DeltaTime = time.GetDeltaTime();
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplGlfw_NewFrame();
 	ImGui::NewFrame();
@@ -239,23 +228,8 @@ void HandleLogging(const char* text, int lvl, bool isClient)
 void Sphynx::Core::DebugWindow::Draw()
 {
 	ImGui::SetNextWindowSize(ImVec2(420, 360), ImGuiCond_Once);
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-	if (ImGui::Begin("Debug Window", &IsOpen, ImGuiWindowFlags_NoDocking)) {
-		if (ImGui::CollapsingHeader("Logger")) {
-=======
 	if (ImGui::Begin("Debug Window", &IsOpen)) {
 		if (ImGui::CollapsingHeader("Script")) {
->>>>>>> Stashed changes
-=======
-	if (ImGui::Begin("Debug Window", &IsOpen)) {
-		if (ImGui::CollapsingHeader("Script")) {
->>>>>>> Stashed changes
-=======
-	if (ImGui::Begin("Debug Window", &IsOpen)) {
-		if (ImGui::CollapsingHeader("Script")) {
->>>>>>> Stashed changes
 			ImGui::Indent();
 			static char buffer[1024];
 			if (ImGui::InputText("Lua", buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue)) {

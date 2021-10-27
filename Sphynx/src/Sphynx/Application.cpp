@@ -6,22 +6,10 @@
 #include "Pointer.h"
 #include "Core/Graphics/Window.h"
 #include "Core/Graphics/Pipeline/Renderer.h"
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-#include "Core/Graphics/Platform/GLMesh.h"
-#include "Core/Graphics/Platform/GLMaterial.h"
-#include "Core/Graphics/Platform/GLShader.h"
-=======
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
 #include "glm/gtx/quaternion.hpp"
 #include "GameObject.h"
 #include "Camera.h"
 #include "Core/MeshRenderer.h"
->>>>>>> Stashed changes
 #undef GetApplication
 using namespace Sphynx;
 using namespace Sphynx::Core;
@@ -32,27 +20,6 @@ Application* MainApplication;
 //{
 //	e.GetWindow()->Close();
 //}
-
-Vec3 p = { 0,0,0 };
-Vec4 r = { 0,0,0,0 };
-float vertices[] = {
-	-0.5f, -0.5f, 0.0f,
-	 0.5f, -0.5f, 0.0f,
-	 0.0f,  0.5f, 0.0f
-};
-float vertices2[] = {
-	-1.5f, -1.5f, 1.0f,
-	 0.5f, -0.5f, 0.0f,
-	 0.0f,  0.5f, 0.0f
-};
-float texCoords[] = {
-	0.0f, 0.0f,  // lower-left corner  
-	1.0f, 0.0f,  // lower-right corner
-	0.5f, 1.0f   // top-center corner
-};
-Graphics::Mesh* g;
-Graphics::Mesh* g2;
-Graphics::GL::GLMaterial g2mat;
 Sphynx::Application::Application() : imgui(Imgui())
 {
 	eventSystem = Events::EventSystem();
@@ -62,7 +29,6 @@ Sphynx::Application::Application() : imgui(Imgui())
 #endif
 	scriptingEngine = Core::Scripting::ScriptingEngine();
 	scriptingEngine.Start(this);
-	scriptingEngine.GetLua().ExecuteFile("Test.lua");
 	MainApplication = this;
 }
 
@@ -103,32 +69,6 @@ void Sphynx::Application::Run()
 	Camera::PrimaryCamera->AddComponent<Camera>();
 	eventSystem.DispatchImmediate<Events::OnApplicationStart>(Events::OnApplicationStart());
 	threadpool.Start(this);
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-	//threadpool.Submit(Delegate<void,void>(&test));
-	//threadpool.Submit(Delegate<void, void>(&test2));
-	Time::Start();
-	Input::Init();
-	g = Graphics::Mesh::Create(vertices, sizeof(vertices), nullptr, 0, Core::Graphics::MeshType::Static);
-	g2 = Graphics::Mesh::Create(vertices2, sizeof(vertices2), nullptr, 0, Core::Graphics::MeshType::Static);
-	auto s = Graphics::GL::GLShader();
-	auto s1 = Graphics::GL::GLShader();
-	s.CreateFromCode(DEF_FSHADER, Graphics::ShaderType::FragmentShader);
-	s1.CreateFromCode("#version 330 core\n"
-		"layout(location = 0) in vec3 aPos;"
-		"out vec4 vertexColor;"
-		"void main()"
-		"{"
-		"	gl_Position = vec4(aPos, 1.0);"
-		"	vertexColor = vec4(0.0, 1.0, 0.0, 0.5);"
-		" }", Graphics::ShaderType::VertexShader);
-	g2mat = Graphics::GL::GLMaterial(Graphics::ShaderPack(&s1, &s, nullptr, nullptr), (Graphics::GL::GLTexture*)nullptr);
-=======
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
 	Camera::PrimaryCamera->GetTransform()->Translate(glm::vec3(0.0f, 0.0f, -3.0f));
 	auto Square = GameObject::CreatePrimitive(Primitives::Cube);
 	auto Square2 = GameObject::CreatePrimitive(Primitives::Cube);
@@ -139,13 +79,16 @@ void Sphynx::Application::Run()
 	Input::Init();
 	Start();
 	Time::Start();
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
+	Camera::PrimaryCamera->GetTransform()->Translate(glm::vec3(0.0f, 0.0f, -3.0f));
+	auto Square = GameObject::CreatePrimitive(Primitives::Cube);
+	auto Square2 = GameObject::CreatePrimitive(Primitives::Cube);
+	Square2.GetTransform()->Translate(glm::vec3(3.0f, 0.0f, 0.0f));
+	Square.GetTransform()->Translate(glm::vec3(-3.0f, 0.0f, 0.0f));
+	Square.GetTransform()->Rotate(30, glm::vec3(0.0f, 1.0f, 0.0f));
+	Camera::PrimaryCamera->AddComponent<MovementComp>();
+	Input::Init();
+	Start();
+	Time::Start();
 	while (AppAlive) {
 		Update();
 		eventSystem.DispatchImmediate<Events::OnApplicationUpdate>(Events::OnApplicationUpdate());
@@ -155,15 +98,6 @@ void Sphynx::Application::Run()
 		for (auto& es : EventSystemArray) {
 			es->Dispatch();
 		}
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-		UpdateWindow();
-=======
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
 		Square.Update();
 		Square2.Update();
 		Camera::PrimaryCamera->Update();
@@ -172,41 +106,9 @@ void Sphynx::Application::Run()
 				MainWindow->Update();
 			}
 		}
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
 		Time::Update();
 	}
 	imgui.Shutdown();
-<<<<<<< Updated upstream
-	delete g;
-	delete g2;
-}
-
-void Sphynx::Application::UpdateWindow()
-{
-	if (MainWindow != NULL) {
-		if (MainWindow->IsAlive()) {
-			MainWindow->GetRenderer()->Submit(Core::Graphics::RenderObject(g2, &g2mat, p, r));
-			MainWindow->GetRenderer()->Submit(Core::Graphics::RenderObject(g, nullptr, p, r));
-			MainWindow->Update();
-		}
-	}
-=======
-	threadpool.Stop();
->>>>>>> Stashed changes
-=======
-		Time::Update();
-	}
-	imgui.Shutdown();
-	threadpool.Stop();
->>>>>>> Stashed changes
-=======
-		Time::Update();
-	}
-	imgui.Shutdown();
-	threadpool.Stop();
->>>>>>> Stashed changes
 }
 
 Events::EventSystem Sphynx::Application::RequestNewEventSystem()

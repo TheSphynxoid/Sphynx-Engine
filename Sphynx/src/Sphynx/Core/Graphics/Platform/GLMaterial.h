@@ -47,32 +47,16 @@ namespace Sphynx::Core::Graphics::GL {
     {
     private:
         unsigned int ProgramId = 0;
-<<<<<<< Updated upstream
-=======
         std::list<Texture*> textures;
         std::list<Uniform*> uniforms;
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
         static GLMaterial* Bound;
         static GLMaterial DefaultMaterial;
-        //Creates The GL Program.
-        virtual void i_CreateMaterial(const ShaderPack& pack)override;
         //Gets Called By the Renderer To Ensure that this gets called after OpenGL Context is created.
         static GLMaterial CreateDefaultMaterial();
         void Release();
         //Texture Missing.
     public:
         GLMaterial() { ProgramId = 0; };
-<<<<<<< Updated upstream
-        GLMaterial(ShaderPack&& pack, GLTexture* _tex) : Material(pack, _tex) { i_CreateMaterial(pack); };
-        //Binds The Program.
-        virtual void Bind() override;
-=======
         GLMaterial(const ShaderPack& shaders);
         GLMaterial(const ShaderPack& pack, Texture* _tex);
         GLMaterial(const ShaderPack& shaders, std::initializer_list<Texture*> _tex);
@@ -115,13 +99,6 @@ namespace Sphynx::Core::Graphics::GL {
         virtual const unsigned int GetUniformLocation(const char* name);
         virtual void ReloadShaders(const ShaderPack& pack);
         virtual Shader* GetDefaultShader(ShaderType type);
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
         GLMaterial(const GLMaterial& mat) = delete;
         GLMaterial& operator=(const GLMaterial& mat) = delete;
         GLMaterial(GLMaterial&& mat)noexcept;

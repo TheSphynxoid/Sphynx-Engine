@@ -9,53 +9,6 @@ using namespace Sphynx::Core::Graphics::GL;
 GLMaterial* GLMaterial::Bound = nullptr;
 GLMaterial GLMaterial::DefaultMaterial;
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-void Sphynx::Core::Graphics::GL::UniformData::SetUniform(Sphynx::Core::Graphics::GL::GLMaterial* Mat)
-{
-    Mat->SetUniformValue(*this);
-}
-
-void GLMaterial::i_CreateMaterial(const ShaderPack& shaders){
-=======
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-Sphynx::Core::Graphics::GL::GLMaterial::GLMaterial(const ShaderPack& shaders)
-{
->>>>>>> Stashed changes
-    ProgramId = glCreateProgram();
-    glUseProgram(ProgramId);
-    glAttachShader(ProgramId,((GLShader*)shaders.Vert)->id);
-    glAttachShader(ProgramId,((GLShader*)shaders.Frag)->id);
-    if(shaders.Geom != NULL){
-        glAttachShader(ProgramId,((GLShader*)shaders.Geom)->id);
-    }
-    if(shaders.Tess != NULL){
-        glAttachShader(ProgramId,((GLShader*)shaders.Tess)->id);
-    }
-    glLinkProgram(ProgramId);
-    int success;
-    glGetProgramiv(ProgramId, GL_LINK_STATUS, &success);
-    if (!success) {
-        char log[1024];
-        glGetProgramInfoLog(ProgramId, 512, NULL, log);
-        Core_Error(log);
-        return;
-    }
-}
-
-<<<<<<< Updated upstream
-GLMaterial Sphynx::Core::Graphics::GL::GLMaterial::CreateDefaultMaterial()
-{
-    GLMaterial mat = GLMaterial();
-    GLShader::DefaultVertexShader = new GLShader();
-    GLShader::DefaultFragmentShader = new GLShader();
-    GLShader::DefaultVertexShader->CreateFromCode(DEF_VSHADER, ShaderType::VertexShader);
-    GLShader::DefaultFragmentShader->CreateFromCode(DEF_FSHADER, ShaderType::FragmentShader);
-=======
 Sphynx::Core::Graphics::GL::GLMaterial::GLMaterial(const ShaderPack& shaders, std::initializer_list<Texture*> _tex) : textures(_tex)
 {
     
@@ -156,22 +109,6 @@ Sphynx::Core::Graphics::Shader* Sphynx::Core::Graphics::GL::GLMaterial::GetDefau
     default:
         return nullptr;
     }
-}
-
-GLMaterial Sphynx::Core::Graphics::GL::GLMaterial::CreateDefaultMaterial()
-{
-    GLShader::DefaultVertexShader = new GLShader(DEF_VSHADER, ShaderType::VertexShader);
-    GLShader::DefaultFragmentShader = new GLShader(DEF_FSHADER, ShaderType::FragmentShader);
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-    ShaderPack pack = ShaderPack(GLShader::DefaultVertexShader, GLShader::DefaultFragmentShader, nullptr, nullptr);
-    mat.CreateMaterial(pack, nullptr);
-    return mat;
 }
 
 void Sphynx::Core::Graphics::GL::GLMaterial::Release()
