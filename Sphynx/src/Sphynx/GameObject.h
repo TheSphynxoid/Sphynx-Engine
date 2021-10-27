@@ -15,7 +15,6 @@ namespace Sphynx {
 		public Object
 	{
 	private:
-		std::list<Component*> Components;
 		std::list<Component*> Components = std::list<Component*>();
 		size_t InstanceID = 0;
 		bool IsAlive = false;
@@ -34,17 +33,13 @@ namespace Sphynx {
 				comp->Update();
 			}
 		}
-		bool IsAlive;
-	public:
 		//No Double
-		template<class component>
-		void AddComponent() {
+		template<class component, class ...Args>
+		void AddComponent(Args&& ...args) {
 			//C++17
 			if (std::is_base_of_v<Component, component>) {
-				if (Core::Internal::ComponentFactory::ComponentHelper::IsComponentInGameObject<component>(this)) {
-					//No Parameters allowed. They will be provided to the factory.
-					//Components Should not have consturctors and they will be ignored by the factory.
-					Components.push_back(Core::Internal::ComponentFactory::CreateComponent<component>(this));
+				if (!Core::Internal::ComponentFactory::ComponentHelper::IsComponentInGameObject<component>(this)) {
+					Components.push_back(Core::Internal::ComponentFactory::CreateComponent<component>(this, std::forward<Args>(args)...));
 				}
 			}
 		}

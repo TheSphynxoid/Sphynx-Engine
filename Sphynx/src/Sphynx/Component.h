@@ -3,6 +3,9 @@
 #define Sphynx_Component
 #include "Object.h"
 namespace Sphynx {
+	namespace Core::Internal {
+		class ComponentFactory;
+	}
 	class GameObject;
 	class Transform;
 	//Native Components
@@ -16,7 +19,6 @@ namespace Sphynx {
 		Transform* _transform;
 		size_t InstanceID = (size_t)this;
 	public:
-		virtual ~Component() = 0;
 		virtual void Update() = 0;
 		GameObject* GetGameObject() { return Parent; };
 		Transform* GetTransform() {

@@ -7,6 +7,9 @@
 #endif
 using namespace Sphynx::Events;
 
+GLFWkeyfun ImguiKeyFunc;
+GLFWmousebuttonfun ImGuiMouseFunc;
+
 void Sphynx::Input::GLKeyHandler(GLFWwindow* window, int code, int scan, int action, int mods) {
 	keyStates[code] = { ((action == GLFW_PRESS || action == GLFW_REPEAT) ? true : false),(Mods)mods };
 	ImguiKeyFunc(window, code, scan, action, mods);
@@ -14,6 +17,7 @@ void Sphynx::Input::GLKeyHandler(GLFWwindow* window, int code, int scan, int act
 void Sphynx::Input::GLMouseHandler(GLFWwindow* window, int button, int action, int mods)
 {
 	MouseStates[button] = { (action == GLFW_PRESS ? true : false),(Mods)mods };
+	ImGuiMouseFunc(window, button, action, mods);
 }
 void Sphynx::Input::GLHandleNewWindow(Events::OnWindowOpen& e)
 {
@@ -51,8 +55,8 @@ void Sphynx::Input::Init()
 		GetApplication()->GetAppEventSystem()->Subscribe<OnWindowOpen>(&Input::GLHandleNewWindow);
 		if (GetApplication()->HasWindow()) {
 			GLFWwindow* win = reinterpret_cast<GLFWwindow*>(window->GetNativePointer());
-			glfwSetKeyCallback(win, &Input::GLKeyHandler);
-			glfwSetMouseButtonCallback(win, &Input::GLMouseHandler);
+			ImguiKeyFunc = glfwSetKeyCallback(win, &Input::GLKeyHandler);
+			ImGuiMouseFunc = glfwSetMouseButtonCallback(win, &Input::GLMouseHandler);
 		}
 		break;
 	default:

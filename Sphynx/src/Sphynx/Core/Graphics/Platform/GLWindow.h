@@ -50,7 +50,7 @@ namespace Sphynx::Core {
 		///////GLWindow Function/////////
 
 		static void TerminateGLFW();
-		static void SwitchContext(GLWindow window);
+		static void SwitchContext(GLWindow* window);
 		//Clears Window.
 		void Clear();
 		//Window Gained Input Focus.

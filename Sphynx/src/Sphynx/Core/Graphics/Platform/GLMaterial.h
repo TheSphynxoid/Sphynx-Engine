@@ -7,7 +7,7 @@
 #include <functional>
 #pragma region Default Shader
 #define DEF_VSHADER \
-"#version 330 core\n"\
+"#version 440 core\n"\
 "layout(location = 0) in vec3 aPos;"\
 "layout(location = 1) in vec2 texcoord;"\
 "uniform mat4 MVP;"\
@@ -20,13 +20,13 @@
 "   TexCoord = texcoord;"\
 " }"
 #define DEF_FSHADER \
-"#version 330 core\n"\
+"#version 440 core\n"\
 "out vec4 FragColor;"\
 "in vec4 vertexColor;"\
 "in vec2 TexCoord;"\
 "void main()"\
 "{"\
-"	FragColor = vertexColor;"\
+"   FragColor = vertexColor;"\
 "}"
 #pragma endregion
 
@@ -87,7 +87,7 @@ namespace Sphynx::Core::Graphics::GL {
                 }
             }
         }
-        virtual Texture* GetTexture(unsigned int index) 
+        virtual Texture* GetTexture(unsigned int index)
         {
             int i = 0;
             for (auto& tex : textures) {

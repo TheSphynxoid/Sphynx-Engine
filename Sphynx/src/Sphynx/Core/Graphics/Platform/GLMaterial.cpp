@@ -9,6 +9,53 @@ using namespace Sphynx::Core::Graphics::GL;
 GLMaterial* GLMaterial::Bound = nullptr;
 GLMaterial GLMaterial::DefaultMaterial;
 
+Sphynx::Core::Graphics::GL::GLMaterial::GLMaterial(const ShaderPack& shaders)
+{
+    ProgramId = glCreateProgram();
+    glUseProgram(ProgramId);
+    glAttachShader(ProgramId, ((GLShader*)shaders.Vert)->id);
+    glAttachShader(ProgramId, ((GLShader*)shaders.Frag)->id);
+    if (shaders.Geom != NULL) {
+        glAttachShader(ProgramId, ((GLShader*)shaders.Geom)->id);
+    }
+    if (shaders.Tess != NULL) {
+        glAttachShader(ProgramId, ((GLShader*)shaders.Tess)->id);
+    }
+    glLinkProgram(ProgramId);
+    int success;
+    glGetProgramiv(ProgramId, GL_LINK_STATUS, &success);
+    if (!success) {
+        char log[1024];
+        glGetProgramInfoLog(ProgramId, 512, NULL, log);
+        Core_Error(log);
+        return;
+    }
+}
+
+Sphynx::Core::Graphics::GL::GLMaterial::GLMaterial(const Sphynx::Core::Graphics::ShaderPack& shaders,Sphynx::Core::Graphics::Texture* _tex) 
+    : textures()
+{
+    textures.push_back(_tex);
+    ProgramId = glCreateProgram();
+    glAttachShader(ProgramId,((GLShader*)shaders.Vert)->id);
+    glAttachShader(ProgramId,((GLShader*)shaders.Frag)->id);
+    if(shaders.Geom != NULL){
+        glAttachShader(ProgramId,((GLShader*)shaders.Geom)->id);
+    }
+    if(shaders.Tess != NULL){
+        glAttachShader(ProgramId,((GLShader*)shaders.Tess)->id);
+    }
+    glLinkProgram(ProgramId);
+    int success;
+    glGetProgramiv(ProgramId, GL_LINK_STATUS, &success);
+    if (!success) {
+        char log[1024];
+        glGetProgramInfoLog(ProgramId, 512, NULL, log);
+        Core_Error(log);
+        return;
+    }
+}
+
 Sphynx::Core::Graphics::GL::GLMaterial::GLMaterial(const ShaderPack& shaders, std::initializer_list<Texture*> _tex) : textures(_tex)
 {
     
@@ -111,6 +158,15 @@ Sphynx::Core::Graphics::Shader* Sphynx::Core::Graphics::GL::GLMaterial::GetDefau
     }
 }
 
+GLMaterial Sphynx::Core::Graphics::GL::GLMaterial::CreateDefaultMaterial()
+{
+    GLShader::DefaultVertexShader = new GLShader(DEF_VSHADER, ShaderType::VertexShader);
+    GLShader::DefaultFragmentShader = new GLShader(DEF_FSHADER, ShaderType::FragmentShader);
+    ShaderPack pack = ShaderPack(GLShader::DefaultVertexShader, GLShader::DefaultFragmentShader, nullptr, nullptr);
+    GLMaterial mat = GLMaterial(pack);
+    return mat;
+}
+
 void Sphynx::Core::Graphics::GL::GLMaterial::Release()
 {
     glDeleteProgram(ProgramId);
@@ -120,13 +176,28 @@ void Sphynx::Core::Graphics::GL::GLMaterial::Release()
 void GLMaterial::Bind()
 {
     glUseProgram(ProgramId);
+    int i = 0;
+    for (auto& tex : textures) {
+        glActiveTexture(GL_TEXTURE0 + i);
+        tex->Bind();
+        i++;
+    }
     Bound = this;
+}
+
+void Sphynx::Core::Graphics::GL::GLMaterial::Unbind()
+{
+    for (auto& tex : textures) {
+        tex->Unbind();
+    }
+    glUseProgram(0);
+    Bound = nullptr;
 }
 
 Sphynx::Core::Graphics::GL::GLMaterial::GLMaterial(GLMaterial&& mat) noexcept
 {
     std::swap(ProgramId, mat.ProgramId);
-    std::swap(Textures, mat.Textures);
+    std::swap(textures, mat.textures);
 }
 
 GLMaterial& Sphynx::Core::Graphics::GL::GLMaterial::operator=(GLMaterial&& mat) noexcept
@@ -134,7 +205,7 @@ GLMaterial& Sphynx::Core::Graphics::GL::GLMaterial::operator=(GLMaterial&& mat) 
     if (this != &mat) {
         Release();
         std::swap(ProgramId, mat.ProgramId);
-        std::swap(Textures, mat.Textures);
+        std::swap(textures, mat.textures);
     }
     return *this;
 }

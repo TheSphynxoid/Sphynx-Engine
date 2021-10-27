@@ -70,4 +70,5 @@ namespace Sphynx {
 	Application* CreateApplication();
 }
 #define GetApplication() ::Sphynx::Application::GetApplication()
+#define GetMainWindow() GetApplication()->GetMainWindow()
 #endif

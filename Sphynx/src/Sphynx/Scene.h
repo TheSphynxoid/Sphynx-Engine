@@ -3,7 +3,19 @@
 #include "Events/Event.h"
 
 namespace Sphynx::Core {
-	struct OnSceneObjectAdded;
+	class Scene;
+	struct SceneEvent : public Events::Event {
+	protected:
+		Scene* scene;
+	public:
+		SceneEvent(Scene* s) : scene(s) {};
+		Scene* GetScene() { return scene; };
+	};
+	struct OnSceneObjectAdded final : public SceneEvent {
+		GameObject* obj;
+	public:
+		OnSceneObjectAdded(Scene* s, GameObject* o) : SceneEvent(s), obj(o) {};
+	};
 	class Scene
 	{
 	private:
@@ -23,17 +35,5 @@ namespace Sphynx::Core {
 					GO->Update();
 			};
 		}
-	};
-	struct SceneEvent : public Events::Event {
-	protected:
-		Scene* scene;
-	public:
-		SceneEvent(Scene* s) : scene(s) {};
-		Scene* GetScene() { return scene; };
-	};
-	struct OnSceneObjectAdded final : public SceneEvent {
-		GameObject* obj;
-	public:
-		OnSceneObjectAdded(Scene* s, GameObject* o) : SceneEvent(s), obj(o) {};
 	};
 }

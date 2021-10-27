@@ -284,7 +284,7 @@ namespace Sphynx::Events {
     };
     //Pre-Initialize (thread-safe because of static local singleton) EventSystem. 
     //Used for Events without an EventSystem instance(idk errors for example or startup or craches).
-    //Static local makes it that Instance (The local variable in this case) gets initialized before any posible call to GetInstance.
+    //Static local makes it that the Instance gets initialized before any posible call to GetInstance.
     class GlobalEventSystem final : public EventSystem {
     private:
         GlobalEventSystem() {};

@@ -95,8 +95,38 @@ Mesh* Sphynx::Core::Graphics::Mesh::Create(float* vertexes, size_t vertsize, uns
 	}
 	return nullptr;
 }
+Mesh* Sphynx::Core::Graphics::Mesh::Create(VertexBuffer* VBuffer, IndexBuffer* IBuffer)
+{
+	switch (CurrentPlatform)
+	{
+	case Sphynx::Platform::Windows:
+#ifdef DX_IMPL
+		static_assert(true, "DirectX Not Implemented");
+#else
+		return new GLMesh(VBuffer, IBuffer);
+#endif
+	case Sphynx::Platform::Linux:
+		return new GLMesh(VBuffer, IBuffer);
+	default:
+		break;
+	}
+	return nullptr;
+}
 
 Mesh* Sphynx::Core::Graphics::Mesh::Create(std::vector<VertexBuffer*> VBuffers, IndexBuffer* IBuffer)
 {
+	switch (CurrentPlatform)
+	{
+	case Sphynx::Platform::Windows:
+#ifdef DX_IMPL
+		static_assert(true, "DirectX Not Implemented");
+#else
+		return new GLMesh(VBuffers, IBuffer);
+#endif
+	case Sphynx::Platform::Linux:
+		return new GLMesh(VBuffers, IBuffer);
+	default:
+		break;
+	}
 	return nullptr;
 }

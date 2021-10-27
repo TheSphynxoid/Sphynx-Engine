@@ -11,8 +11,11 @@
 #include "Camera.h"
 #include "Core/MeshRenderer.h"
 #undef GetApplication
+#undef GetMainWindow
+
 using namespace Sphynx;
 using namespace Sphynx::Core;
+using namespace Sphynx::Core::Graphics;
 
 Application* MainApplication;
 
@@ -20,6 +23,7 @@ Application* MainApplication;
 //{
 //	e.GetWindow()->Close();
 //}
+
 Sphynx::Application::Application() : imgui(Imgui())
 {
 	eventSystem = Events::EventSystem();
@@ -46,7 +50,7 @@ class MovementComp : public Sphynx::Component {
 	// Inherited via Component
 	virtual void OnComponentAttach(GameObject* parent) override
 	{
-		Core_Info("MovementComp Attached to {0}",parent->GetID());
+		Core_Info("MovementComp Attached to {0}", parent->GetID());
 	}
 	virtual void OnComponentDetach() override
 	{
@@ -79,16 +83,6 @@ void Sphynx::Application::Run()
 	Input::Init();
 	Start();
 	Time::Start();
-	Camera::PrimaryCamera->GetTransform()->Translate(glm::vec3(0.0f, 0.0f, -3.0f));
-	auto Square = GameObject::CreatePrimitive(Primitives::Cube);
-	auto Square2 = GameObject::CreatePrimitive(Primitives::Cube);
-	Square2.GetTransform()->Translate(glm::vec3(3.0f, 0.0f, 0.0f));
-	Square.GetTransform()->Translate(glm::vec3(-3.0f, 0.0f, 0.0f));
-	Square.GetTransform()->Rotate(30, glm::vec3(0.0f, 1.0f, 0.0f));
-	Camera::PrimaryCamera->AddComponent<MovementComp>();
-	Input::Init();
-	Start();
-	Time::Start();
 	while (AppAlive) {
 		Update();
 		eventSystem.DispatchImmediate<Events::OnApplicationUpdate>(Events::OnApplicationUpdate());
@@ -109,6 +103,7 @@ void Sphynx::Application::Run()
 		Time::Update();
 	}
 	imgui.Shutdown();
+	threadpool.Stop();
 }
 
 Events::EventSystem Sphynx::Application::RequestNewEventSystem()
@@ -123,9 +118,9 @@ void Sphynx::Application::DeleteEventSystem(Events::EventSystem& e)
 {
 	for (auto& ptr : EventSystemArray) {
 		if (ptr.GetRaw() == &e) {
-			EventSystemArray.remove_if([&,ptr](Pointer<Events::EventSystem>& p)->bool {return ptr.GetRaw() == p.GetRaw(); });
+			EventSystemArray.remove_if([&, ptr](Pointer<Events::EventSystem>& p)->bool {return ptr.GetRaw() == p.GetRaw(); });
 			ptr.Release();
-			delete &ptr;
+			delete& ptr;
 		}
 	}
 }

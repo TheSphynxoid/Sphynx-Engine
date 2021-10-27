@@ -68,7 +68,7 @@ void SetVertexAttribs(Sphynx::Core::Graphics::VertexBuffer* buffs, unsigned int&
 		case Sphynx::Core::Graphics::ShaderDataType::Mat4x2: [[fallthrough]];
 		case Sphynx::Core::Graphics::ShaderDataType::Mat4x3: [[fallthrough]];
 		case Sphynx::Core::Graphics::ShaderDataType::Mat4x4:
-			for (int i = 0; i < e.GetComponentCount(); i++) {
+			for (unsigned int i = 0; i < e.GetComponentCount(); i++) {
 				glEnableVertexAttribArray(Index);
 				glVertexAttribPointer(Index, e.GetComponentCount(), GL_FLOAT, e.IsNormalized(),
 					buffs->GetLayout().GetStride(), (const void*)e.GetOffset());
@@ -136,16 +136,15 @@ Sphynx::Core::Graphics::GL::GLMesh::GLMesh(float* vertexes, size_t vertsize, uns
 {
 	//Create VAO
 	glCreateVertexArrays(1, &VAO);
+	//Binding the Vertex Buffers in the VAO
+	glBindVertexArray(VAO);
 	//Create Vertex Buffer
 	auto temp = new GLVertexBuffer(vertexes, vertsize);
 	temp->SetDataLayout(BufferLayout({ BufferElement(ShaderDataType::Float3, false) }));
 	VBuffers.push_back(temp);
-	temp = nullptr;
-	//Binding the Vertex Buffers in the VAO
-	glBindVertexArray(VAO);
-	auto vb = ((GLVertexBuffer*)VBuffers[0]);
-	glBindBuffer(GL_ARRAY_BUFFER, vb->BufferID);
-	glBufferData(GL_ARRAY_BUFFER, vertsize, vertexes, MeshTypeToGLenum(meshtype));
+	VBuffers[0]->Bind();
+	VBuffers[0]->SetData(vertexes, 0, vertsize);
+	SetVertexAttribs(temp, VAttribIndex);
 	//Create and Bind Index Buffers
 	if ((hasIndexArray = (indexes != nullptr))) {
 		IBuffer = new GLIndexBuffer(indexes, indexsize / sizeof(*indexes));
@@ -153,15 +152,28 @@ Sphynx::Core::Graphics::GL::GLMesh::GLMesh(float* vertexes, size_t vertsize, uns
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexsize, indexes, MeshTypeToGLenum(meshtype));
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	}
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 3, GL_FLOAT, false, 3 * sizeof(float), (void*)0);
-	VAttribIndex = 1;
+	temp = nullptr;
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
 }
 
+Sphynx::Core::Graphics::GL::GLMesh::GLMesh(VertexBuffer* VertBuf, IndexBuffer* IndexBuf) : VBuffers(), IBuffer((GLIndexBuffer*)IndexBuf)
+{
+	VBuffers.push_back(VertBuf);
+	glCreateVertexArrays(1, &VAO);
+	glBindVertexArray(VAO);
+	VertBuf->Bind();
+	if ((hasIndexArray = (IndexBuf != nullptr))) {
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ((GLIndexBuffer*)IndexBuf)->BufferID);
+	}
+	//Attributes For Vertex Buffers
+	SetVertexAttribs(VertBuf, VAttribIndex);
+	//Unbinding The VAO for Clean-ness
+	glBindVertexArray(0);
+}
+
 Sphynx::Core::Graphics::GL::GLMesh::GLMesh(std::vector<VertexBuffer*> VertBuf, IndexBuffer* IndexBuf)
-	: VBuffers(VertBuf), IBuffer(static_cast<GLIndexBuffer*>(IndexBuf))
+	: VBuffers(VertBuf), IBuffer((GLIndexBuffer*)(IndexBuf))
 {
 	glCreateVertexArrays(1, &VAO);
 	glBindVertexArray(VAO);
@@ -208,6 +220,7 @@ void Sphynx::Core::Graphics::GL::GLMesh::AddVertexBuffers(std::vector<VertexBuff
 
 void Sphynx::Core::Graphics::GL::GLMesh::SetIndexBuffer(IndexBuffer* ibuf)
 {
+	if (ibuf == nullptr)return;
 	hasIndexArray = true;
 	IBuffer = static_cast<GLIndexBuffer*>(ibuf);
 }
@@ -220,7 +233,7 @@ void Sphynx::Core::Graphics::GL::GLMesh::Release()
 	}
 	glDeleteVertexArrays(1, &VAO);
 	VAO = 0;
-	for (auto v : VBuffers) { static_cast<GLVertexBuffer*>(v)->Release(); }
+	for (auto v : VBuffers) { delete v; }
 }
 
 void Sphynx::Core::Graphics::GL::GLVertexBuffer::Release()
@@ -243,7 +256,7 @@ Sphynx::Core::Graphics::GL::GLVertexBuffer::GLVertexBuffer(float* verts, size_t 
 {
 	glCreateBuffers(1, &BufferID);
 	glBindBuffer(GL_ARRAY_BUFFER, BufferID);
-	glBufferData(BufferID, size, verts, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, size, verts, GL_STATIC_DRAW);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
@@ -278,13 +291,14 @@ void Sphynx::Core::Graphics::GL::GLVertexBuffer::Unbind()const
 void Sphynx::Core::Graphics::GL::GLVertexBuffer::SetData(const void* data, size_t offset, size_t size)noexcept
 {
 	if (size <= this->Size) {
+		GLenum err = 0;
 		glBindBuffer(GL_ARRAY_BUFFER, BufferID);
-		glBufferSubData(BufferID, offset, size, data);
+		glBufferSubData(GL_ARRAY_BUFFER, offset, size, data);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 	}
 	else {
 		glBindBuffer(GL_ARRAY_BUFFER, BufferID);
-		glBufferData(BufferID, size, data, GL_DYNAMIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, size, data, GL_DYNAMIC_DRAW);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		this->Size = size;
 	}
@@ -302,18 +316,16 @@ Sphynx::Core::Graphics::GL::GLIndexBuffer::GLIndexBuffer(uint32_t count)noexcept
 	// GL_ELEMENT_ARRAY_BUFFER need a bound VAO to be valid.
 	// Binding with GL_ARRAY_BUFFER allows the data to be loaded regardless of VAO state. 
 	glBindBuffer(GL_ARRAY_BUFFER, BufferID);
-	glBufferData(BufferID, count * sizeof(UINT64), 0, GL_DYNAMIC_DRAW);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-}
-
-Sphynx::Core::Graphics::GL::GLIndexBuffer::GLIndexBuffer(unsigned int* indices, size_t count)noexcept : Count(count)
-{
 	glBufferData(GL_ARRAY_BUFFER, count * sizeof(unsigned int), 0, GL_DYNAMIC_DRAW);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
 Sphynx::Core::Graphics::GL::GLIndexBuffer::GLIndexBuffer(unsigned int* indices, size_t count)noexcept : Count(count)
 {
+	glCreateBuffers(1, &BufferID);
+	// GL_ELEMENT_ARRAY_BUFFER need a bound VAO to be valid.
+	// Binding with GL_ARRAY_BUFFER allows the data to be loaded regardless of VAO state. 
+	glBindBuffer(GL_ARRAY_BUFFER, BufferID);
 	glBufferData(GL_ARRAY_BUFFER, count * sizeof(unsigned int), indices, GL_STATIC_DRAW);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
@@ -346,6 +358,7 @@ void Sphynx::Core::Graphics::GL::GLIndexBuffer::Unbind() const
 {
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
+
 void Sphynx::Core::Graphics::GL::GLIndexBuffer::SetData(const unsigned int* data, uint64_t count)
 {
 	Bind();

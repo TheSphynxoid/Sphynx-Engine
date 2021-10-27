@@ -15,18 +15,10 @@ namespace Sphynx::Core::Graphics {
 	{
 	protected:
 		Texture* Textures = nullptr;
-		virtual void i_CreateMaterial(const ShaderPack& pack) = 0;
 		Material(const ShaderPack& shader, Texture* texture) : Textures(texture) {};
 	public:
 		Material() {};
 		//A Material is storage for shaders and textures.
-<<<<<<< Updated upstream
-		Material& CreateMaterial(const ShaderPack& shaders, Texture* texture) { i_CreateMaterial(shaders); return *this; };
-		Texture* GetTextures() { return Textures; };
-		virtual bool IsValid() = 0;
-		virtual ~Material() = default;
-		virtual void Bind() = 0;
-=======
 		static Material* Create(const ShaderPack& shaders);
 		static Material* Create(const ShaderPack& shaders, Texture* textures);
 		static Material* Create(const ShaderPack& shaders, std::initializer_list<Texture*> textures);
@@ -52,9 +44,5 @@ namespace Sphynx::Core::Graphics {
 		virtual const unsigned int GetUniformLocation(const char* name) = 0;
 		virtual void ReloadShaders(const ShaderPack& pack) = 0;
 		virtual Shader* GetDefaultShader(ShaderType type) = 0;
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
 	};
 }

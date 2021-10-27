@@ -1,8 +1,8 @@
 #include "pch.h"
 #include "GameObject.h"
+#include "Core/Graphics/Pipeline/Mesh.h"
+#include "Core/MeshRenderer.h"
 
-<<<<<<< Updated upstream
-=======
 using namespace Sphynx::Core::Graphics;
 
 const Sphynx::GameObject Sphynx::GameObject::PlaceHolder;
@@ -125,4 +125,3 @@ Sphynx::GameObject Sphynx::GameObject::CreatePrimitive(Primitives primitive)
     rt.AddComponent<MeshRenderer>(Mesh, Material::GetDefaultMaterialCopy());
     return rt;
 }
->>>>>>> Stashed changes

@@ -185,11 +185,7 @@ void Sphynx::Core::GLWindow::OnClose()
 
 void Sphynx::Core::GLWindow::OnUpdate()
 {
-	//Find a way to stop checking
 	if (IsAlive()) {
-		if (!Sharing)
-			//Handle Context Switching.
-			SwitchContext(*this);
 		Renderer->Clear();
 		Renderer->Render();
 		GetEventSystem()->DispatchImmediate<OnOverlayUpdate>(OnOverlayUpdate(this));
@@ -228,9 +224,9 @@ void Sphynx::Core::GLWindow::TerminateGLFW()
 	glfwTerminate();
 }
 
-void Sphynx::Core::GLWindow::SwitchContext(GLWindow window)
+void Sphynx::Core::GLWindow::SwitchContext(GLWindow* window)
 {
-	glfwMakeContextCurrent(window.window);
+	glfwMakeContextCurrent(window->window);
 }
 
 Bounds Sphynx::Core::GLWindow::GetBounds()
