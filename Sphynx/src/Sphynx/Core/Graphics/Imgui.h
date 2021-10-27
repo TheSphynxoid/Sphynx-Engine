@@ -46,6 +46,7 @@ namespace Sphynx::Core {
 		std::list<IOverlayWindow*> Overlays;
 		//Storing Names of the window classes for The Debug Window.
 		std::list<const char*> Names;
+		void ImGuiOnWindowShutdown(Events::OnWindowClose& e);
 	public:
 		void Start(Application* app)override;
 		void OnOverlayUpdate(Events::OnOverlayUpdate& e);
@@ -70,7 +71,7 @@ namespace Sphynx::Core {
 		Events::EventSystem* eventsystem;
 		Scripting::ScriptingEngine scripts;
 		Core::IWindow* window;
-		Core::IWindow*extra;
+		Core::IWindow* extra;
 		char TitleBuffer[128];
 		//Put the in the cpp. I Couldn't include imgui.h because of SandBox.
 		//std::vector<char> Buf;

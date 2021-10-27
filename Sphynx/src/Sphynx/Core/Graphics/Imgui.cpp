@@ -32,12 +32,16 @@ ImVector<int>       LineOffsets;
 //For Consistancy's sake this going to be ImVector and here.
 ImVector<ImVec4>	Colors;
 
+void Sphynx::Core::Imgui::ImGuiOnWindowShutdown(Sphynx::Events::OnWindowClose& e) {
+	Shutdown();
+}
 
 void Sphynx::Core::Imgui::Start(Application* app)
 {
 	App = app;
 	window = app->GetMainWindow();
 	window->GetEventSystem()->Subscribe<Imgui, Events::OnOverlayUpdate>(this, &Imgui::OnOverlayUpdate);
+	window->GetEventSystem()->Subscribe<Imgui, Events::OnWindowClose>(this, &Imgui::ImGuiOnWindowShutdown);
 #ifdef IMGUI_DX11
 	Imgui_ImplDX11_Init();
 #else
@@ -47,7 +51,6 @@ void Sphynx::Core::Imgui::Start(Application* app)
 	ImGuiIO& io = ImGui::GetIO();
 	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
 	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
-	//io.DisplaySize = ImVec2(window->GetWidth(), window->GetHeight());
 	ImGui_ImplGlfw_InitForOpenGL((GLFWwindow*)window->GetNativePointer(), true);
 	ImGui_ImplOpenGL3_Init("#version 430 core");
 #endif
@@ -103,9 +106,19 @@ int Sphynx::Core::Imgui::GetNumberOfWindows()
 
 void Sphynx::Core::Imgui::Shutdown()
 {
-	window->GetEventSystem()->QueueEvent<Events::OnOverlayModuleDown>(Events::OnOverlayModuleDown());
+	//window->GetEventSystem()->QueueEvent<Events::OnOverlayModuleDown>(Events::OnOverlayModuleDown());
+	for (auto& w : Overlays) {
+		if (w->IsOpen == false) {
+			RemoveOverlayWindow(w);
+			break;
+		}
+	}
 	ImGui_ImplGlfw_Shutdown();
-	ImGui_ImplOpenGL3_Shutdown();
+	ImGui_ImplOpenGL3_Shutdown();	
+#ifdef DEBUG
+	//a "hack" to avoid a bug where imgui has shutdown and still Recives this event for some reason.
+	window->GetEventSystem()->UnSubscribe<Imgui, Events::OnOverlayUpdate>(this, &Imgui::OnOverlayUpdate);
+#endif
 }
 
 void Sphynx::Core::DemoWindow::Draw()
@@ -223,7 +236,6 @@ void Sphynx::Core::DebugWindow::Draw()
 			static char buffer[1024];
 			if (ImGui::InputText("Lua", buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue)) {
 				//HandleLogging(buffer, item, rb);
-				scripts.GetLua().ExecuteString(buffer);
 				memset(buffer, 0, sizeof(buffer));
 			}
 			ImGui::Separator();

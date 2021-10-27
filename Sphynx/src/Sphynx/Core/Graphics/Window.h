@@ -42,7 +42,7 @@ namespace Sphynx::Core {
 			OwnerEvent.QueueEvent<Events::OnWindowUpdate>(Events::OnWindowUpdate(this));
 		};
 		void Close() {
-			OwnerEvent.QueueEvent<Events::OnWindowClose>(Events::OnWindowClose(this));
+			OwnerEvent.DispatchImmediate<Events::OnWindowClose>(Events::OnWindowClose(this));
 		}
 		void Resize(int width, int height) {
 			if (!InstanceHasInit)

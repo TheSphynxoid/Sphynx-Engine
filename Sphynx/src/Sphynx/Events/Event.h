@@ -27,7 +27,8 @@ namespace Sphynx::Util {
 };
 
 namespace Sphynx::Events {
-
+    template<class T, class EventType>
+    class EventMemberCallBack;
     //Event Base Class
     class Event
     {
@@ -41,7 +42,6 @@ namespace Sphynx::Events {
     public:
         EventCallBackBase() {};
         void Invoke(Event& e) { Call(e); };
-
     };
 
     template<class T, class EventType>
@@ -159,15 +159,15 @@ namespace Sphynx::Events {
         void UnSubscribe(T* instance, void (T::* memberFunction)(EventType&))
         {
             Handlers* handlers = subscribers[std::type_index(typeid(EventType))];
-            EventMemberCallBack<T, EventType> mf = EventMemberCallBack(memberFunction);
+            //EventMemberCallBack<T, EventType> mf = EventMemberCallBack<T, EventType>(instance, memberFunction);
             EventCallBackBase* ToDel;
             for (auto& handle : *handlers) {
-                if (*handle == mf) {
+                if (typeid(*handle) == typeid(EventMemberCallBack<T, EventType>)) {
                     ToDel = handle;
                     break;
                 }
             }
-            handlers->remove(memberFunction);
+            handlers->remove(ToDel);
             delete ToDel;
         };
         template<class EventType>
@@ -177,7 +177,7 @@ namespace Sphynx::Events {
             EventFreeMethodCallBack<EventType> mf = EventFreeMethodCallBack(function);
             EventCallBackBase* ToDel;
             for (auto& handle : *handlers) {
-                if (*handle == mf) {
+                if (typeid(*handle) == typeid(mf)) {
                     ToDel = handle;
                     break;
                 }
@@ -235,7 +235,7 @@ namespace Sphynx::Events {
             if (handlers == nullptr)return;
             //Extending Lifetime. Being In list doesn't count as referance thus causes the object to be collected.
             EventType* ptr = new EventType(e);
-            auto g = std::pair<std::type_index,EventType*>(std::type_index(typeid(EventType)), ptr);
+            auto g = std::pair<std::type_index, EventType*>(std::type_index(typeid(EventType)), ptr);
             Queue.push_front(g);
         };
         //This Should not be overused. A blocking function that dispatch the event on call.
@@ -253,7 +253,6 @@ namespace Sphynx::Events {
         }
         //Event Bus.
         void Dispatch() {
-            Queue.reverse();
             //C++17
             for (auto& pair : Queue) {
                 Handlers* handlers = subscribers[pair.first];
@@ -271,9 +270,16 @@ namespace Sphynx::Events {
             //Clear Queue.
             Queue.clear();
         }
-        //What's This ?
         template<class EventType>
-        void ProcessFunction() {}
+        void ClearEventSubscibers() {
+            for (auto& pair : subscribers) {
+                if (pair.first == typeid(EventType)) {
+                    delete pair.second;
+                    subscribers.erase(pair.first);
+                    return;
+                }
+            }
+        };
         friend void Sphynx::Util::InternalSkipCurrentEvent(EventSystem& es);
     };
     //Pre-Initialize (thread-safe because of static local singleton) EventSystem. 
@@ -290,7 +296,7 @@ namespace Sphynx::Events {
     };
 }
 
-#elif
+#else
 #endif
 #ifdef SPDEL
 #define Sphynx_Delegate
