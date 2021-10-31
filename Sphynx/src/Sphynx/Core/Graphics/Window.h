@@ -14,8 +14,9 @@ namespace Sphynx::Core {
 	struct Coords {
 		int x, y;
 	};
+	//Width Then Height
 	struct Bounds {
-		int Width, Height;
+		int Width, Height = 0;
 	};
 	const Bounds DefBounds = { 640, 410 };
 	//Base Window Interface.(Each Derived class must ensure Input, Closing...)
@@ -30,6 +31,9 @@ namespace Sphynx::Core {
 		virtual inline bool IsAlive() = 0;
 		//Should Probably be overriden.
 		virtual ~IWindow() = default;
+
+		static IWindow* Create(Application* App, Bounds WinBounds = DefBounds, std::string title = "Sphynx Engine", bool fullscreen = false);
+
 		//Start Window.
 		void Start() {
 			if (!InstanceHasInit)
@@ -49,7 +53,7 @@ namespace Sphynx::Core {
 				throw "Not Initialized. Any Class That Derives from IWindow Must Call Init";
 			this->Width = width;
 			this->Height = height;
-			OwnerEvent.QueueEvent<Events::OnWindowResize>(Events::OnWindowResize(this, width, height));
+			Events::GlobalEventSystem::GetInstance()->QueueEvent<Events::OnWindowResize>(Events::OnWindowResize(this, width, height));
 		};
 
 		virtual void OnClose() = 0;
@@ -94,7 +98,7 @@ namespace Sphynx::Core {
 			Width = WinBounds.Width;
 			Title = title;
 			OwnerEvent = *App->GetAppEventSystem();
-			//App->GetAppEventSystem()->Subscribe<IWindow, Events::OnWindowResize>(this, &IWindow::OnResize);
+			Events::GlobalEventSystem::GetInstance()->Subscribe<IWindow, Events::OnWindowResize>(this, &IWindow::OnResize);
 			InstanceHasInit = true;
 		};
 	};

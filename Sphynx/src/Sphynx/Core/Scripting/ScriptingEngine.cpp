@@ -1,10 +1,11 @@
 #include "pch.h"
 #include "ScriptingEngine.h"
+#include "AsScript.h"
 
-void Sphynx::Core::Scripting::ScriptingEngine::Start(Application* app)
-{
-}
+using namespace Sphynx::Core::Scripting;
 
-void Sphynx::Core::Scripting::ScriptingEngine::Update()
+AngelScript ScriptingEngine::As;
+
+void Sphynx::Core::Scripting::ScriptingEngine::InitScripting()
 {
 }

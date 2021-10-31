@@ -3,12 +3,13 @@
 #include "Pointer.h"
 
 namespace Sphynx::Core::Scripting {
-	class ScriptingEngine final : public Module
+	class AngelScript;
+	class ScriptingEngine final
 	{
+	private:
+		static AngelScript As;
 	public:
-		// Inherited via Module
-		virtual void Start(Application* app) override;
-		virtual void Update() override;
-		//Creates and Returns the Old Lua State if it exists.
+		static void InitScripting();
+		static AngelScript& GetAngelScript() { return As; };
 	};
 }

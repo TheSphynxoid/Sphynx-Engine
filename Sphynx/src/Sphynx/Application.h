@@ -6,13 +6,11 @@
 #include "SpTime.h"
 #include "Core/Graphics/Imgui.h"
 #include "Pointer.h"
-#include "Core/Scripting/ScriptingEngine.h"
 #include <type_traits>
 #include <utility>
 #include <memory>
 #include <iostream>
 #include "Core/ThreadPool.h"
-#define Sphynx_Version "0.3.6"
 
 namespace Sphynx {
 	namespace Core {
@@ -25,11 +23,9 @@ namespace Sphynx {
 		//TODO:Finish the class.
 		Core::ThreadPool threadpool = Core::ThreadPool();
 		Events::EventSystem eventSystem;
-		Core::Scripting::ScriptingEngine scriptingEngine;
 		std::list<Pointer<Events::EventSystem>> EventSystemArray;
 		Core::IWindow* MainWindow = nullptr;
 		bool AppAlive = true;
-		inline void HandleWindowClose(Events::OnWindowClose& e);
 #if defined(DEBUG)
 		inline void StdLog(OnLog& e) { std::cout << e.msg; };
 #endif
@@ -59,12 +55,11 @@ namespace Sphynx {
 
 		inline Events::EventSystem* GetAppEventSystem()noexcept { return &eventSystem; };
 		inline Core::IWindow* GetMainWindow()noexcept { return MainWindow; };
-		inline Core::Scripting::ScriptingEngine GetScriptingEngine()noexcept { return scriptingEngine; };
 		//////////////Window Handling///////////////
 
 		//Create the Main Window using a premade IWindow Pointer to allow Backend Choice(GL or DX)
 		//TODO: LOL, NO more Choice.
-		Core::IWindow* CreateMainWindow(std::unique_ptr<Core::IWindow>&& window /*We Want to steal it, NEW: We Don't Need it.*/);
+		Core::IWindow* CreateMainWindow(Core::IWindow* window);
 	};
 	//To be defined in a client
 	Application* CreateApplication();

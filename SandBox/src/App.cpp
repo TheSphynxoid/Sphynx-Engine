@@ -18,17 +18,11 @@ public:
 	SandBox() {
 		Sphynx::Core::Bounds b = { 1024, 768 };
 		//TODO: Remove The code that allows this.
-		CreateMainWindow(std::make_unique<Core::GLWindow>(this, b, "SandBox", false));
+		this->GetMainWindow()->Resize(b.Width, b.Height);
 	}
 	void Start() {
-		Cam = Camera::GetPrimaryCamera();
-		TransCam = Cam->GetTransform();
-		CamComp = Cam->GetComponent<Camera>();
 	}
 	void Update() {
-		if (Input::IsKeyPressed(Keys::Up)) {
-			//TransCam.Translate(glm::vec3(0.0f, 10.0f, 0.0f));
-		}
 	}
 	~SandBox() {
 

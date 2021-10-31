@@ -21,8 +21,9 @@ bool GLWindow::GLFWInit = false;
 void Sphynx::Core::GLWindow::mid::Resize(GLFWwindow* win, int width, int height)
 {
 	GLWindow& inst = GetFromGLFW(win);
-	inst.Resize(width, height);
-	inst.GetEventSystem()->QueueEvent<OnWindowResize>(OnWindowResize(&inst, width, height));
+	inst.Width = width;
+	inst.Height = height;
+	//inst.GetEventSystem()->QueueEvent<OnWindowResize>(OnWindowResize(&inst, width, height));
 }
 
 void Sphynx::Core::GLWindow::mid::Close(GLFWwindow* win)
@@ -196,6 +197,8 @@ void Sphynx::Core::GLWindow::OnUpdate()
 
 void Sphynx::Core::GLWindow::OnResize(Events::OnWindowResize& e)
 {
+	glfwSetWindowSize(((GLFWwindow*)e.GetWindow()->GetNativePointer()), e.Width, e.Height);
+	//glViewport(0, 0, e.Width, e.Height);
 }
 
 void* Sphynx::Core::GLWindow::GetNativePointer()

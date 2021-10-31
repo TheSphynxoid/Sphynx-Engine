@@ -32,6 +32,7 @@
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
+    <Import Project="..\AngelScriptRule.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
@@ -58,7 +59,7 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>dep\spdlog\include;src\Sphynx;dep\glfw\include;dep\glad\include;dep\imgui;dep\glm;dep\stb;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>dep\spdlog\include;src\Sphynx;dep\glfw\include;dep\glad\include;dep\imgui;dep\glm;dep\stb;dep\angelscript\sdk\angelscript\include;dep\angelscript\sdk\add_on;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -78,7 +79,7 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>dep\spdlog\include;src\Sphynx;dep\glfw\include;dep\glad\include;dep\imgui;dep\glm;dep\stb;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>dep\spdlog\include;src\Sphynx;dep\glfw\include;dep\glad\include;dep\imgui;dep\glm;dep\stb;dep\angelscript\sdk\angelscript\include;dep\angelscript\sdk\add_on;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -97,6 +98,8 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Sphynx\Scene.h" />
+    <ClInclude Include="src\Sphynx\Core\SceneManager.h" />
     <ClInclude Include="src\Sphynx.h" />
     <ClInclude Include="src\Sphynx\Application.h" />
     <ClInclude Include="src\Sphynx\Camera.h" />
@@ -123,9 +126,10 @@
     <ClInclude Include="src\Sphynx\Core\InternalUtility.h" />
     <ClInclude Include="src\Sphynx\Core\MeshRenderer.h" />
     <ClInclude Include="src\Sphynx\Core\Module.h" />
+    <ClInclude Include="src\Sphynx\Core\Scripting\AsScript.h" />
+    <ClInclude Include="src\Sphynx\Core\Scripting\Script.h" />
     <ClInclude Include="src\Sphynx\Core\Scripting\ScriptingEngine.h" />
     <ClInclude Include="src\Sphynx\Core\System.h" />
-    <ClInclude Include="src\Sphynx\Core\TestComponent.h" />
     <ClInclude Include="src\Sphynx\Core\ThreadPool.h" />
     <ClInclude Include="src\Sphynx\Core\Transform.h" />
     <ClInclude Include="src\Sphynx\Delegate.h" />
@@ -142,7 +146,6 @@
     <ClInclude Include="src\Sphynx\Object.h" />
     <ClInclude Include="src\Sphynx\PlatformMacros.h" />
     <ClInclude Include="src\Sphynx\Pointer.h" />
-    <ClInclude Include="src\Sphynx\Scene.h" />
     <ClInclude Include="src\Sphynx\SpTime.h" />
     <ClInclude Include="src\Sphynx\Vector.h" />
     <ClInclude Include="src\Sphynx\imgui\imgui_impl_dx11.h" />
@@ -153,6 +156,8 @@
     <ClInclude Include="src\Sphynx\pch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Sphynx\Scene.cpp" />
+    <ClCompile Include="src\Sphynx\Core\SceneManager.cpp" />
     <ClCompile Include="src\Sphynx\Application.cpp" />
     <ClCompile Include="src\Sphynx\Camera.cpp" />
     <ClCompile Include="src\Sphynx\Component.cpp" />
@@ -171,7 +176,10 @@
     <ClCompile Include="src\Sphynx\Core\Graphics\Platform\GLTexture.cpp" />
     <ClCompile Include="src\Sphynx\Core\Graphics\Platform\GLUniformBuffer.cpp" />
     <ClCompile Include="src\Sphynx\Core\Graphics\Platform\GLWindow.cpp" />
+    <ClCompile Include="src\Sphynx\Core\Graphics\Window.cpp" />
     <ClCompile Include="src\Sphynx\Core\MeshRenderer.cpp" />
+    <ClCompile Include="src\Sphynx\Core\Scripting\AsScript.cpp" />
+    <ClCompile Include="src\Sphynx\Core\Scripting\Script.cpp" />
     <ClCompile Include="src\Sphynx\Core\Scripting\ScriptingEngine.cpp" />
     <ClCompile Include="src\Sphynx\Core\ThreadPool.cpp" />
     <ClCompile Include="src\Sphynx\Core\Transform.cpp" />
@@ -180,7 +188,6 @@
     <ClCompile Include="src\Sphynx\Logger.cpp" />
     <ClCompile Include="src\Sphynx\Object.cpp" />
     <ClCompile Include="src\Sphynx\Pointer.cpp" />
-    <ClCompile Include="src\Sphynx\Scene.cpp" />
     <ClCompile Include="src\Sphynx\SpTime.cpp" />
     <ClCompile Include="src\Sphynx\imgui\imgui_impl_dx11.cpp" />
     <ClCompile Include="src\Sphynx\imgui\imgui_impl_dx12.cpp" />
@@ -189,8 +196,12 @@
     <ClCompile Include="src\Sphynx\imgui\imgui_impl_win32.cpp" />
     <ClCompile Include="src\Sphynx\pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CopyFileToFolders Include="src\Sphynx\Scripts\Testing.as">
+      <FileType>Document</FileType>
+    </CopyFileToFolders>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="dep\GLFW.vcxproj">
@@ -202,8 +213,15 @@
     <ProjectReference Include="dep\imgui.vcxproj">
       <Project>{0098A80F-6CAC-D0C0-352E-7420A101CDF1}</Project>
     </ProjectReference>
+    <ProjectReference Include="dep\angelscript\sdk\angelscript\projects\msvc2019\angelscript.vcxproj">
+      <Project>{39E6AF97-6BA3-4A72-8C61-BCEBF214EBFD}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <AngelScriptRule Include="src\Sphynx\Scripts\Component.as" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
+    <Import Project="..\AngelScriptRule.targets" />
   </ImportGroup>
 </Project>

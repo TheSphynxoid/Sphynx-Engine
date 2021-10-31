@@ -1,3 +1,6 @@
+rule "AngelScriptRule"
+	display "AngelScriptRule"
+	fileextension ".as"
 workspace "NewSphynx"
 	architecture "x86_64"
 	startproject "Sandbox"
@@ -21,10 +24,13 @@ project "Sphynx"
 	targetdir ("%{wks.location}/build/bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("%{wks.location}/build/int/" .. outputdir .. "/%{prj.name}")
 
+	rules{ "AngelScriptRule" }
+
 	files
 	{
 		"Sphynx/src/**.h",
 		"Sphynx/src/**.cpp",
+		"Sphynx/src/**.as"
 	}
 	includedirs
 	{
@@ -34,31 +40,38 @@ project "Sphynx"
 		"%{prj.name}/dep/glad/include",
 		"%{prj.name}/dep/imgui",
 		"%{prj.name}/dep/glm",
-		"%{prj.name}/dep/stb"
+		"%{prj.name}/dep/stb",
+		"%{prj.name}/dep/angelscript/sdk/angelscript/include",
+		"%{prj.name}/dep/angelscript/sdk/add_on"
 	}
 	links
 	{
 		"glfw",
 		"glad",
 		"imgui",
-		"opengl32.lib"
+		"opengl32.lib",
+		"angelscript",
 	}
 	defines{
 		-- "SPDLL"
 	}
+	filter "files:**.as"
+		buildaction "Copy"
 	filter "configurations:Debug"
 		defines "DEBUG"
 		runtime "Debug"
 		symbols "on"
-
+		-- links{ "%{wks.location}/%{prj.name}/dep/angelscript/sdk/angelscript/lib/angelscriptd.lib" }
 
 	filter "configurations:Release"
 		defines "RELEASE"
 		runtime "Release"
 		optimize "on"
+		-- links{ "%{wks.location}/%{prj.name}/dep/angelscript/sdk/angelscript/lib/angelscript.lib" }
 
 	filter "system:windows"
 		systemversion "latest"
+	filter{}
 
 project "Sandbox"
 	location "Sandbox"
@@ -82,12 +95,16 @@ project "Sandbox"
 		"%{wks.location}/Sphynx/dep/spdlog/include",
 		"%{wks.location}/Sphynx/dep/glm",
 		"%{wks.location}/Sphynx/src/Sphynx",
-		"%{wks.location}/Sphynx/src"
+		"%{wks.location}/Sphynx/src",
+		"%{prj.name}/dep/angelscript/sdk/angelscript/include",
+		"%{prj.name}/dep/angelscript/sdk/add_on"
 	}
 
 	links
 	{
 		"Sphynx",
+		--I think I am force to do this.
+		"AngelScript"
 	}
 
 	filter "configurations:Debug"
@@ -102,4 +119,5 @@ project "Sandbox"
 
 include "Sphynx/dep/glfw"
 include "Sphynx/dep/glad/glad"
-include "Sphynx/dep/imgui"		
+include "Sphynx/dep/imgui"
+include "Sphynx/dep/AngelScript.lua"

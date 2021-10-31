@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <PropertyPageSchema
+      Include="$(MSBuildThisFileDirectory)$(MSBuildThisFileName).xml" />
+    <AvailableItemName Include="AngelScriptRule">
+      <Targets>_AngelScriptRule</Targets>
+    </AvailableItemName>
+  </ItemGroup>
+  <PropertyGroup>
+    <ComputeCompileInputsTargets>
+      $(ComputeCompileInputsTargets);
+      ComputeAngelScriptRuleOutput;
+    </ComputeCompileInputsTargets>
+    <ComputeLinkInputsTargets>
+      $(ComputeLinkInputsTargets);
+      ComputeAngelScriptRuleOutput;
+    </ComputeLinkInputsTargets>
+    <ComputeLibInputsTargets>
+      $(ComputeLibInputsTargets);
+      ComputeAngelScriptRuleOutput;
+    </ComputeLibInputsTargets>
+  </PropertyGroup>
+  <UsingTask
+    TaskName="AngelScriptRule"
+    TaskFactory="XamlTaskFactory"
+    AssemblyName="Microsoft.Build.Tasks.v4.0">
+    <Task>$(MSBuildThisFileDirectory)$(MSBuildThisFileName).xml</Task>
+  </UsingTask>
+  <Target
+    Name="_AngelScriptRule"
+    BeforeTargets="$(AngelScriptRuleBeforeTargets)"
+    AfterTargets="$(AngelScriptRuleAfterTargets)"
+    Condition="'@(AngelScriptRule)' != ''"
+    Outputs="%(AngelScriptRule.Outputs)"
+    Inputs="%(AngelScriptRule.Identity);%(AngelScriptRule.AdditionalDependencies);$(MSBuildProjectFile)"
+    DependsOnTargets="$(AngelScriptRuleDependsOn);ComputeAngelScriptRuleOutput">
+    <ItemGroup Condition="'@(SelectedFiles)' != ''">
+      <AngelScriptRule Remove="@(AngelScriptRule)" Condition="'%(Identity)' != '@(SelectedFiles)'" />
+    </ItemGroup>
+    <ItemGroup>
+      <AngelScriptRule_tlog
+        Include="%(AngelScriptRule.Outputs)"
+        Condition="'%(AngelScriptRule.Outputs)' != '' and '%(AngelScriptRule.ExcludedFromBuild)' != 'true'">
+        <Source>@(AngelScriptRule, '|')</Source>
+        <Inputs>@(AngelScriptRule, ';')</Inputs>
+      </AngelScriptRule_tlog>
+    </ItemGroup>
+    <Message
+      Importance="High"
+      Text="%(AngelScriptRule.ExecutionDescription)" />
+    <WriteLinesToFile
+      Condition="'@(AngelScriptRule_tlog)' != '' and '%(AngelScriptRule_tlog.ExcludedFromBuild)' != 'true'"
+      File="$(TLogLocation)AngelScriptRule.write.1.tlog"
+      Lines="^%(AngelScriptRule_tlog.Source);%(AngelScriptRule_tlog.Fullpath)" />
+    <WriteLinesToFile
+      Condition="'@(AngelScriptRule_tlog)' != '' and '%(AngelScriptRule_tlog.ExcludedFromBuild)' != 'true'"
+      File="$(TLogLocation)AngelScriptRule.read.1.tlog"
+      Lines="^%(AngelScriptRule_tlog.Inputs);$(MSBuildProjectFullPath);%(AngelScriptRule_tlog.Fullpath)" />
+    <AngelScriptRule
+      Condition="'@(AngelScriptRule)' != '' and '%(AngelScriptRule.ExcludedFromBuild)' != 'true'"
+      CommandLineTemplate="%(AngelScriptRule.CommandLineTemplate)"
+      AdditionalOptions="%(AngelScriptRule.AdditionalOptions)"
+      Inputs="%(AngelScriptRule.Identity)"
+      StandardOutputImportance="High"
+      StandardErrorImportance="High" />
+  </Target>
+  <Target
+    Name="ComputeAngelScriptRuleOutput"
+    Condition="'@(AngelScriptRule)' != ''">
+    <ItemGroup>
+      <AngelScriptRuleOutputs
+        Condition="'@(AngelScriptRule)' != '' and '%(AngelScriptRule.ExcludedFromBuild)' != 'true'"
+        Include="%(AngelScriptRule.Outputs)" />
+    </ItemGroup>
+    <MakeDir Directories="@(AngelScriptRuleOutputs->'%(RootDir)%(Directory)')" />
+  </Target>
+</Project>

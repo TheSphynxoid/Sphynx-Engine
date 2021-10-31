@@ -10,6 +10,7 @@
 #include "GameObject.h"
 #include "Camera.h"
 #include "Core/MeshRenderer.h"
+#include "Core/Scripting/AsScript.h"
 #undef GetApplication
 #undef GetMainWindow
 
@@ -31,9 +32,9 @@ Sphynx::Application::Application() : imgui(Imgui())
 #if defined(DEBUG)
 	Events::GlobalEventSystem::GetInstance()->Subscribe<Application, OnLog>(this, &Application::StdLog);
 #endif
-	scriptingEngine = Core::Scripting::ScriptingEngine();
-	scriptingEngine.Start(this);
 	MainApplication = this;
+	this->CreateMainWindow(IWindow::Create(this));
+	Scripting::ScriptingEngine::InitScripting();
 }
 
 Application* Sphynx::Application::GetApplication()
@@ -71,21 +72,21 @@ class MovementComp : public Sphynx::Component {
 void Sphynx::Application::Run()
 {
 	Camera::PrimaryCamera->AddComponent<Camera>();
-	eventSystem.DispatchImmediate<Events::OnApplicationStart>(Events::OnApplicationStart());
+	Events::GlobalEventSystem::GetInstance()->DispatchImmediate<Events::OnApplicationStart>(Events::OnApplicationStart());
 	threadpool.Start(this);
 	Camera::PrimaryCamera->GetTransform()->Translate(glm::vec3(0.0f, 0.0f, -3.0f));
 	auto Square = GameObject::CreatePrimitive(Primitives::Cube);
-	auto Square2 = GameObject::CreatePrimitive(Primitives::Cube);
+	auto Square2 = GameObject::CreatePrimitive(Primitives::Plane);
 	Square2.GetTransform()->Translate(glm::vec3(3.0f, 0.0f, 0.0f));
-	Square.GetTransform()->Translate(glm::vec3(-3.0f, 0.0f, 0.0f));
 	Square.GetTransform()->Rotate(30, glm::vec3(0.0f, 1.0f, 0.0f));
-	Camera::PrimaryCamera->AddComponent<MovementComp>();
+	Square.AddComponent<Sphynx::Core::Scripting::AsScript>("AsScript.as","TestModule");
+	Square.AddComponent<MovementComp>();
 	Input::Init();
 	Start();
 	Time::Start();
 	while (AppAlive) {
 		Update();
-		eventSystem.DispatchImmediate<Events::OnApplicationUpdate>(Events::OnApplicationUpdate());
+		Events::GlobalEventSystem::GetInstance()->DispatchImmediate<Events::OnApplicationUpdate>(Events::OnApplicationUpdate());
 		//Events
 		Events::GlobalEventSystem::GetInstance()->Dispatch();
 		eventSystem.Dispatch();
@@ -95,10 +96,8 @@ void Sphynx::Application::Run()
 		Square.Update();
 		Square2.Update();
 		Camera::PrimaryCamera->Update();
-		if (MainWindow != NULL) {
-			if (MainWindow->IsAlive()) {
-				MainWindow->Update();
-			}
+		if (MainWindow->IsAlive()) {
+			MainWindow->Update();
 		}
 		Time::Update();
 	}
@@ -125,12 +124,10 @@ void Sphynx::Application::DeleteEventSystem(Events::EventSystem& e)
 	}
 }
 
-Sphynx::Core::IWindow* Sphynx::Application::CreateMainWindow(std::unique_ptr<Core::IWindow>&& window)
+Sphynx::Core::IWindow* Sphynx::Application::CreateMainWindow(Core::IWindow* window)
 {
 	if (!MainWindow) {
-		//Pointer Stolen!
-		Core::IWindow* obj = window.release();
-		MainWindow = obj;
+		MainWindow = window;
 		imgui.Start(this);
 		imgui.AddOverlayWindow(new DebugWindow(this));
 		MainWindow->Start();
@@ -138,6 +135,6 @@ Sphynx::Core::IWindow* Sphynx::Application::CreateMainWindow(std::unique_ptr<Cor
 	else {
 		Core_Warn("A Window Is Already Open.");
 	}
-	eventSystem.DispatchImmediate(Events::OnWindowOpen(MainWindow));
+	Events::GlobalEventSystem::GetInstance()->DispatchImmediate(Events::OnWindowOpen(MainWindow));
 	return MainWindow;
 }

@@ -25,6 +25,9 @@
     <Filter Include="Sphynx\Events">
       <UniqueIdentifier>{3383B641-9F43-3278-687E-7BF5D4FD7654}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Sphynx\Scripts">
+      <UniqueIdentifier>{66A8CC82-5276-C088-3B0A-31AF27779CED}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Sphynx\imgui">
       <UniqueIdentifier>{D9B61752-C519-A7F6-6E9F-DFAC5AE17279}</UniqueIdentifier>
     </Filter>
@@ -106,13 +109,16 @@
     <ClInclude Include="src\Sphynx\Core\Module.h">
       <Filter>Sphynx\Core</Filter>
     </ClInclude>
+    <ClInclude Include="src\Sphynx\Core\Scripting\AsScript.h">
+      <Filter>Sphynx\Core\Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Sphynx\Core\Scripting\Script.h">
+      <Filter>Sphynx\Core\Scripting</Filter>
+    </ClInclude>
     <ClInclude Include="src\Sphynx\Core\Scripting\ScriptingEngine.h">
       <Filter>Sphynx\Core\Scripting</Filter>
     </ClInclude>
     <ClInclude Include="src\Sphynx\Core\System.h">
-      <Filter>Sphynx\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Sphynx\Core\TestComponent.h">
       <Filter>Sphynx\Core</Filter>
     </ClInclude>
     <ClInclude Include="src\Sphynx\Core\ThreadPool.h">
@@ -163,9 +169,6 @@
     <ClInclude Include="src\Sphynx\Pointer.h">
       <Filter>Sphynx</Filter>
     </ClInclude>
-    <ClInclude Include="src\Sphynx\Scene.h">
-      <Filter>Sphynx</Filter>
-    </ClInclude>
     <ClInclude Include="src\Sphynx\SpTime.h">
       <Filter>Sphynx</Filter>
     </ClInclude>
@@ -190,6 +193,8 @@
     <ClInclude Include="src\Sphynx\pch.h">
       <Filter>Sphynx</Filter>
     </ClInclude>
+    <ClInclude Include="src\Sphynx\Scene.h" />
+    <ClInclude Include="src\Sphynx\Core\SceneManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Sphynx\Application.cpp">
@@ -249,6 +254,12 @@
     <ClCompile Include="src\Sphynx\Core\MeshRenderer.cpp">
       <Filter>Sphynx\Core</Filter>
     </ClCompile>
+    <ClCompile Include="src\Sphynx\Core\Scripting\AsScript.cpp">
+      <Filter>Sphynx\Core\Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Sphynx\Core\Scripting\Script.cpp">
+      <Filter>Sphynx\Core\Scripting</Filter>
+    </ClCompile>
     <ClCompile Include="src\Sphynx\Core\Scripting\ScriptingEngine.cpp">
       <Filter>Sphynx\Core\Scripting</Filter>
     </ClCompile>
@@ -273,9 +284,6 @@
     <ClCompile Include="src\Sphynx\Pointer.cpp">
       <Filter>Sphynx</Filter>
     </ClCompile>
-    <ClCompile Include="src\Sphynx\Scene.cpp">
-      <Filter>Sphynx</Filter>
-    </ClCompile>
     <ClCompile Include="src\Sphynx\SpTime.cpp">
       <Filter>Sphynx</Filter>
     </ClCompile>
@@ -297,5 +305,16 @@
     <ClCompile Include="src\Sphynx\pch.cpp">
       <Filter>Sphynx</Filter>
     </ClCompile>
+    <ClCompile Include="src\Sphynx\Core\Graphics\Window.cpp" />
+    <ClCompile Include="src\Sphynx\Scene.cpp" />
+    <ClCompile Include="src\Sphynx\Core\SceneManager.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <CopyFileToFolders Include="src\Sphynx\Scripts\Testing.as">
+      <Filter>Sphynx\Scripts</Filter>
+    </CopyFileToFolders>
+  </ItemGroup>
+  <ItemGroup>
+    <AngelScriptRule Include="src\Sphynx\Scripts\Component.as" />
   </ItemGroup>
 </Project>

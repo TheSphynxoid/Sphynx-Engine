@@ -28,7 +28,7 @@ void Sphynx::Core::Graphics::GL::GLRenderer::RendererResizeEvent(Events::OnWindo
 
 void Sphynx::Core::Graphics::GL::GLRenderer::Start(IWindow* app)
 {
-	app->GetEventSystem()->Subscribe(this, &GLRenderer::RendererResizeEvent);
+	Events::GlobalEventSystem::GetInstance()->Subscribe(this, &GLRenderer::RendererResizeEvent);
 	GLMaterial::DefaultMaterial = GLMaterial::CreateDefaultMaterial();
 	DefaultRenderObject = RenderObject(nullptr, &GLMaterial::DefaultMaterial);
 	//GL features.

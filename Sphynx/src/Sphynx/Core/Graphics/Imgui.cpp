@@ -170,7 +170,6 @@ Sphynx::Core::DebugWindow::DebugWindow(Application* app)
 	App = app;
 	eventsystem = App->GetAppEventSystem();
 	window = App->GetMainWindow();
-	scripts = App->GetScriptingEngine();
 	memset(TitleBuffer, 0, sizeof(TitleBuffer));
 	LineOffsets.push_back(0);
 	GlobalEventSystem::GetInstance()->Subscribe<DebugWindow, OnLog>(this, &DebugWindow::OnEventLog);
@@ -229,10 +228,11 @@ void Sphynx::Core::DebugWindow::Draw()
 {
 	ImGui::SetNextWindowSize(ImVec2(420, 360), ImGuiCond_Once);
 	if (ImGui::Begin("Debug Window", &IsOpen)) {
-		if (ImGui::CollapsingHeader("Script")) {
+		if (ImGui::CollapsingHeader("Script & Logging")) {
 			ImGui::Indent();
 			static char buffer[1024];
-			if (ImGui::InputText("Lua", buffer, sizeof(buffer), ImGuiInputTextFlags_EnterReturnsTrue)) {
+			if (ImGui::InputTextMultiline("Scripting", buffer, sizeof(buffer),ImVec2(0,0),
+					ImGuiInputTextFlags_AllowTabInput | ImGuiInputTextFlags_CtrlEnterForNewLine)) {
 				//HandleLogging(buffer, item, rb);
 				memset(buffer, 0, sizeof(buffer));
 			}

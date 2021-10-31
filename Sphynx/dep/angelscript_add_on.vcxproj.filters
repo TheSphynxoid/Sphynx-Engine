@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="autowrapper">
+      <UniqueIdentifier>{3F3EA65E-ABF3-1E54-34E8-182BA09C1558}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="autowrapper\generator">
+      <UniqueIdentifier>{15AB3C85-8117-F87F-4A0B-90DDB6361AE8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="contextmgr">
+      <UniqueIdentifier>{F0FBBBA1-DCB3-FDEE-45BB-D64A319298DF}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="datetime">
+      <UniqueIdentifier>{F2F33606-DEC0-9111-07DA-7FB9F305C79F}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="debugger">
+      <UniqueIdentifier>{4A693D11-3636-981C-5F4F-86C44B7BCDAA}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="scriptany">
+      <UniqueIdentifier>{C25801E8-2EC3-B55E-7701-6704E3AA93B3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="scriptarray">
+      <UniqueIdentifier>{F9B1BCED-6567-35E3-EE5B-2FBA5A102CE7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="scriptbuilder">
+      <UniqueIdentifier>{A1AA0DA3-0D6B-89D9-D6A5-D2564225CEB5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="scriptdictionary">
+      <UniqueIdentifier>{70AC62BE-5CA5-8110-85D7-6695712F611C}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="scriptfile">
+      <UniqueIdentifier>{5A182FE8-46D0-7035-AFD7-49919BAE0B26}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="scriptgrid">
+      <UniqueIdentifier>{A0CA2FE8-8C82-7135-F589-4A91E1600C26}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="scripthandle">
+      <UniqueIdentifier>{E64671B4-D2A9-0059-7B2F-390F6771CCDB}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="scripthelper">
+      <UniqueIdentifier>{5AC2B8B4-4625-4859-EFAA-800FDBEC13DC}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="scriptmath">
+      <UniqueIdentifier>{04CE32E8-F085-7435-598D-4D9145640F26}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="scriptstdstring">
+      <UniqueIdentifier>{FC00BEFD-688C-2BC2-719D-AEB6DDA787C2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="serializer">
+      <UniqueIdentifier>{7FC19BAD-6B79-DDFA-D480-B656C05778EB}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="weakref">
+      <UniqueIdentifier>{6ACAC2BE-D6A9-415A-DFC1-CC304B20A8BB}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="angelscript\sdk\add_on\autowrapper\aswrappedcall.h">
+      <Filter>autowrapper</Filter>
+    </ClInclude>
+    <ClInclude Include="angelscript\sdk\add_on\contextmgr\contextmgr.h">
+      <Filter>contextmgr</Filter>
+    </ClInclude>
+    <ClInclude Include="angelscript\sdk\add_on\datetime\datetime.h">
+      <Filter>datetime</Filter>
+    </ClInclude>
+    <ClInclude Include="angelscript\sdk\add_on\debugger\debugger.h">
+      <Filter>debugger</Filter>
+    </ClInclude>
+    <ClInclude Include="angelscript\sdk\add_on\scriptany\scriptany.h">
+      <Filter>scriptany</Filter>
+    </ClInclude>
+    <ClInclude Include="angelscript\sdk\add_on\scriptarray\scriptarray.h">
+      <Filter>scriptarray</Filter>
+    </ClInclude>
+    <ClInclude Include="angelscript\sdk\add_on\scriptbuilder\scriptbuilder.h">
+      <Filter>scriptbuilder</Filter>
+    </ClInclude>
+    <ClInclude Include="angelscript\sdk\add_on\scriptdictionary\scriptdictionary.h">
+      <Filter>scriptdictionary</Filter>
+    </ClInclude>
+    <ClInclude Include="angelscript\sdk\add_on\scriptfile\scriptfile.h">
+      <Filter>scriptfile</Filter>
+    </ClInclude>
+    <ClInclude Include="angelscript\sdk\add_on\scriptfile\scriptfilesystem.h">
+      <Filter>scriptfile</Filter>
+    </ClInclude>
+    <ClInclude Include="angelscript\sdk\add_on\scriptgrid\scriptgrid.h">
+      <Filter>scriptgrid</Filter>
+    </ClInclude>
+    <ClInclude Include="angelscript\sdk\add_on\scripthandle\scripthandle.h">
+      <Filter>scripthandle</Filter>
+    </ClInclude>
+    <ClInclude Include="angelscript\sdk\add_on\scripthelper\scripthelper.h">
+      <Filter>scripthelper</Filter>
+    </ClInclude>
+    <ClInclude Include="angelscript\sdk\add_on\scriptmath\scriptmath.h">
+      <Filter>scriptmath</Filter>
+    </ClInclude>
+    <ClInclude Include="angelscript\sdk\add_on\scriptmath\scriptmathcomplex.h">
+      <Filter>scriptmath</Filter>
+    </ClInclude>
+    <ClInclude Include="angelscript\sdk\add_on\scriptstdstring\scriptstdstring.h">
+      <Filter>scriptstdstring</Filter>
+    </ClInclude>
+    <ClInclude Include="angelscript\sdk\add_on\serializer\serializer.h">
+      <Filter>serializer</Filter>
+    </ClInclude>
+    <ClInclude Include="angelscript\sdk\add_on\weakref\weakref.h">
+      <Filter>weakref</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="angelscript\sdk\add_on\autowrapper\generator\generateheader.cpp">
+      <Filter>autowrapper\generator</Filter>
+    </ClCompile>
+    <ClCompile Include="angelscript\sdk\add_on\contextmgr\contextmgr.cpp">
+      <Filter>contextmgr</Filter>
+    </ClCompile>
+    <ClCompile Include="angelscript\sdk\add_on\datetime\datetime.cpp">
+      <Filter>datetime</Filter>
+    </ClCompile>
+    <ClCompile Include="angelscript\sdk\add_on\debugger\debugger.cpp">
+      <Filter>debugger</Filter>
+    </ClCompile>
+    <ClCompile Include="angelscript\sdk\add_on\scriptany\scriptany.cpp">
+      <Filter>scriptany</Filter>
+    </ClCompile>
+    <ClCompile Include="angelscript\sdk\add_on\scriptarray\scriptarray.cpp">
+      <Filter>scriptarray</Filter>
+    </ClCompile>
+    <ClCompile Include="angelscript\sdk\add_on\scriptbuilder\scriptbuilder.cpp">
+      <Filter>scriptbuilder</Filter>
+    </ClCompile>
+    <ClCompile Include="angelscript\sdk\add_on\scriptdictionary\scriptdictionary.cpp">
+      <Filter>scriptdictionary</Filter>
+    </ClCompile>
+    <ClCompile Include="angelscript\sdk\add_on\scriptfile\scriptfile.cpp">
+      <Filter>scriptfile</Filter>
+    </ClCompile>
+    <ClCompile Include="angelscript\sdk\add_on\scriptfile\scriptfilesystem.cpp">
+      <Filter>scriptfile</Filter>
+    </ClCompile>
+    <ClCompile Include="angelscript\sdk\add_on\scriptgrid\scriptgrid.cpp">
+      <Filter>scriptgrid</Filter>
+    </ClCompile>
+    <ClCompile Include="angelscript\sdk\add_on\scripthandle\scripthandle.cpp">
+      <Filter>scripthandle</Filter>
+    </ClCompile>
+    <ClCompile Include="angelscript\sdk\add_on\scripthelper\scripthelper.cpp">
+      <Filter>scripthelper</Filter>
+    </ClCompile>
+    <ClCompile Include="angelscript\sdk\add_on\scriptmath\scriptmath.cpp">
+      <Filter>scriptmath</Filter>
+    </ClCompile>
+    <ClCompile Include="angelscript\sdk\add_on\scriptmath\scriptmathcomplex.cpp">
+      <Filter>scriptmath</Filter>
+    </ClCompile>
+    <ClCompile Include="angelscript\sdk\add_on\scriptstdstring\scriptstdstring.cpp">
+      <Filter>scriptstdstring</Filter>
+    </ClCompile>
+    <ClCompile Include="angelscript\sdk\add_on\scriptstdstring\scriptstdstring_utils.cpp">
+      <Filter>scriptstdstring</Filter>
+    </ClCompile>
+    <ClCompile Include="angelscript\sdk\add_on\serializer\serializer.cpp">
+      <Filter>serializer</Filter>
+    </ClCompile>
+    <ClCompile Include="angelscript\sdk\add_on\weakref\weakref.cpp">
+      <Filter>weakref</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

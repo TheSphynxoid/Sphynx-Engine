@@ -1,39 +1,31 @@
 #pragma once
 #include "GameObject.h"
-#include "Events/Event.h"
 
 namespace Sphynx::Core {
-	class Scene;
-	struct SceneEvent : public Events::Event {
-	protected:
-		Scene* scene;
-	public:
-		SceneEvent(Scene* s) : scene(s) {};
-		Scene* GetScene() { return scene; };
-	};
-	struct OnSceneObjectAdded final : public SceneEvent {
-		GameObject* obj;
-	public:
-		OnSceneObjectAdded(Scene* s, GameObject* o) : SceneEvent(s), obj(o) {};
-	};
 	class Scene
 	{
 	private:
 		typedef std::list<GameObject*> GameObjects;
-		GameObjects _gameObjects;
-
+		GameObjects GObjs = GameObjects();
+		unsigned int SceneNum = 0;
+		std::string SceneName = "Scene";
+		bool IsCurrent = false;
+		Scene* NextScene;
 	public:
-		const GameObjects& GetGameObjects() { return _gameObjects; };
-		void AddGameObject(GameObject* GO) 
-		{
-			_gameObjects.push_back(GO);
-			Events::GlobalEventSystem::GetInstance()->QueueEvent<OnSceneObjectAdded>(OnSceneObjectAdded(this, GO));
+		Scene();
+		~Scene();
+		std::string& GetName() { 
+			return SceneName; 
 		};
-		void Update(){
-			for (auto GO : _gameObjects) {
-				if(GO->IsActive())
-					GO->Update();
-			};
-		}
+		void SetName(const std::string& name) { 
+			SceneName = name; 
+		};
+		void AddGameObject(GameObject* obj);
+		void RemoveGameObject(GameObject* obj);
+		GameObjects GetGameObjects();
+		void Start();
+		void Update();
+
+		friend class SceneManager;
 	};
 }
