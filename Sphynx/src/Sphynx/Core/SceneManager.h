@@ -2,7 +2,7 @@
 #include "Scene.h"
 
 namespace Sphynx::Core {
-	class SceneManager
+	class SceneManager final
 	{
 	private:
 		static Scene CurrScene;

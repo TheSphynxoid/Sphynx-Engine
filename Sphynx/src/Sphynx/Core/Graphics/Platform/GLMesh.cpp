@@ -244,19 +244,19 @@ void Sphynx::Core::Graphics::GL::GLVertexBuffer::Release()
 
 }
 
-Sphynx::Core::Graphics::GL::GLVertexBuffer::GLVertexBuffer(size_t size) : Size(size)
+Sphynx::Core::Graphics::GL::GLVertexBuffer::GLVertexBuffer(size_t Size) : Size(Size)
 {
 	glCreateBuffers(1, &BufferID);
 	glBindBuffer(GL_ARRAY_BUFFER, BufferID);
-	glBufferData(GL_ARRAY_BUFFER, size, 0, GL_DYNAMIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, Size, 0, GL_DYNAMIC_DRAW);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-Sphynx::Core::Graphics::GL::GLVertexBuffer::GLVertexBuffer(float* verts, size_t size) : Size(size)
+Sphynx::Core::Graphics::GL::GLVertexBuffer::GLVertexBuffer(float* verts, size_t Size) : Size(Size)
 {
 	glCreateBuffers(1, &BufferID);
 	glBindBuffer(GL_ARRAY_BUFFER, BufferID);
-	glBufferData(GL_ARRAY_BUFFER, size, verts, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, Size, verts, GL_STATIC_DRAW);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
@@ -288,19 +288,19 @@ void Sphynx::Core::Graphics::GL::GLVertexBuffer::Unbind()const
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-void Sphynx::Core::Graphics::GL::GLVertexBuffer::SetData(const void* data, size_t offset, size_t size)noexcept
+void Sphynx::Core::Graphics::GL::GLVertexBuffer::SetData(const void* data, size_t offset, size_t Size)noexcept
 {
-	if (size <= this->Size) {
+	if (Size <= this->Size) {
 		GLenum err = 0;
 		glBindBuffer(GL_ARRAY_BUFFER, BufferID);
-		glBufferSubData(GL_ARRAY_BUFFER, offset, size, data);
+		glBufferSubData(GL_ARRAY_BUFFER, offset, Size, data);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 	}
 	else {
 		glBindBuffer(GL_ARRAY_BUFFER, BufferID);
-		glBufferData(GL_ARRAY_BUFFER, size, data, GL_DYNAMIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, Size, data, GL_DYNAMIC_DRAW);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
-		this->Size = size;
+		this->Size = Size;
 	}
 }
 

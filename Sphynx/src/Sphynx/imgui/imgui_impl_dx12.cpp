@@ -109,7 +109,7 @@ struct ImGuiViewportDataDx12
             FrameCtx[i].CommandAllocator = NULL;
             FrameCtx[i].RenderTarget = NULL;
 
-            // Create buffers with a default size (they will later be grown as needed)
+            // Create buffers with a default Size (they will later be grown as needed)
             FrameRenderBuffers[i].IndexBuffer = NULL;
             FrameRenderBuffers[i].VertexBuffer = NULL;
             FrameRenderBuffers[i].VertexBufferSize = 5000;
@@ -938,7 +938,7 @@ static void ImGui_ImplDX12_DestroyWindow(ImGuiViewport* viewport)
     viewport->RendererUserData = NULL;
 }
 
-static void ImGui_ImplDX12_SetWindowSize(ImGuiViewport* viewport, ImVec2 size)
+static void ImGui_ImplDX12_SetWindowSize(ImGuiViewport* viewport, ImVec2 Size)
 {
     ImGuiViewportDataDx12* data = (ImGuiViewportDataDx12*)viewport->RendererUserData;
 
@@ -950,7 +950,7 @@ static void ImGui_ImplDX12_SetWindowSize(ImGuiViewport* viewport, ImVec2 size)
     if (data->SwapChain)
     {
         ID3D12Resource* back_buffer = NULL;
-        data->SwapChain->ResizeBuffers(0, (UINT)size.x, (UINT)size.y, DXGI_FORMAT_UNKNOWN, 0);
+        data->SwapChain->ResizeBuffers(0, (UINT)Size.x, (UINT)Size.y, DXGI_FORMAT_UNKNOWN, 0);
         for (UINT i = 0; i < g_numFramesInFlight; i++)
         {
             data->SwapChain->GetBuffer(i, IID_PPV_ARGS(&back_buffer));

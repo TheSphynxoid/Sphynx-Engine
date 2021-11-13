@@ -7,6 +7,7 @@
 build/
 #Unused Files
 [Uu]nused/
+AS_DEBUG/
 
 # User-specific files
 *.rsuser
@@ -344,16 +345,3 @@ ASALocalRun/
 
 # BeatPulse healthcheck temp database
 healthchecksdb
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-/ - Copy.gitmodules
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes

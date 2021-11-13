@@ -72,12 +72,12 @@ asIScriptModule *CScriptBuilder::GetModule()
 
 unsigned int CScriptBuilder::GetSectionCount() const
 {
-	return (unsigned int)(includedScripts.size());
+	return (unsigned int)(includedScripts.Size());
 }
 
 string CScriptBuilder::GetSectionName(unsigned int idx) const
 {
-	if( idx >= includedScripts.size() ) return "";
+	if( idx >= includedScripts.Size() ) return "";
 
 #ifdef _WIN32
 	set<string, ci_less>::const_iterator it = includedScripts.begin();
@@ -191,7 +191,7 @@ int CScriptBuilder::LoadScriptSection(const char *filename)
 		return -1;
 	}
 
-	// Determine size of the file
+	// Determine Size of the file
 	fseek(f, 0, SEEK_END);
 	int len = ftell(f);
 	fseek(f, 0, SEEK_SET);
@@ -235,16 +235,16 @@ int CScriptBuilder::ProcessScriptSection(const char *script, unsigned int length
 	// First perform the checks for #if directives to exclude code that shouldn't be compiled
 	unsigned int pos = 0;
 	int nested = 0;
-	while( pos < modifiedScript.size() )
+	while( pos < modifiedScript.Size() )
 	{
 		asUINT len = 0;
-		asETokenClass t = engine->ParseToken(&modifiedScript[pos], modifiedScript.size() - pos, &len);
-		if( t == asTC_UNKNOWN && modifiedScript[pos] == '#' && (pos + 1 < modifiedScript.size()) )
+		asETokenClass t = engine->ParseToken(&modifiedScript[pos], modifiedScript.Size() - pos, &len);
+		if( t == asTC_UNKNOWN && modifiedScript[pos] == '#' && (pos + 1 < modifiedScript.Size()) )
 		{
 			int start = pos++;
 
 			// Is this an #if directive?
-			t = engine->ParseToken(&modifiedScript[pos], modifiedScript.size() - pos, &len);
+			t = engine->ParseToken(&modifiedScript[pos], modifiedScript.Size() - pos, &len);
 
 			string token;
 			token.assign(&modifiedScript[pos], len);
@@ -253,11 +253,11 @@ int CScriptBuilder::ProcessScriptSection(const char *script, unsigned int length
 
 			if( token == "if" )
 			{
-				t = engine->ParseToken(&modifiedScript[pos], modifiedScript.size() - pos, &len);
+				t = engine->ParseToken(&modifiedScript[pos], modifiedScript.Size() - pos, &len);
 				if( t == asTC_WHITESPACE )
 				{
 					pos += len;
-					t = engine->ParseToken(&modifiedScript[pos], modifiedScript.size() - pos, &len);
+					t = engine->ParseToken(&modifiedScript[pos], modifiedScript.Size() - pos, &len);
 				}
 
 				if( t == asTC_IDENTIFIER )
@@ -304,10 +304,10 @@ int CScriptBuilder::ProcessScriptSection(const char *script, unsigned int length
 
 	// Then check for meta data and pre-processor directives
 	pos = 0;
-	while( pos < modifiedScript.size() )
+	while( pos < modifiedScript.Size() )
 	{
 		asUINT len = 0;
-		asETokenClass t = engine->ParseToken(&modifiedScript[pos], modifiedScript.size() - pos, &len);
+		asETokenClass t = engine->ParseToken(&modifiedScript[pos], modifiedScript.Size() - pos, &len);
 		if( t == asTC_COMMENT || t == asTC_WHITESPACE )
 		{
 			pos += len;
@@ -331,12 +331,12 @@ int CScriptBuilder::ProcessScriptSection(const char *script, unsigned int length
 			do
 			{
 				pos += len;
-				if( pos >= modifiedScript.size() )
+				if( pos >= modifiedScript.Size() )
 				{
 					t = asTC_UNKNOWN;
 					break;
 				}
-				t = engine->ParseToken(&modifiedScript[pos], modifiedScript.size() - pos, &len);
+				t = engine->ParseToken(&modifiedScript[pos], modifiedScript.Size() - pos, &len);
 			} while(t == asTC_COMMENT || t == asTC_WHITESPACE);
 
 			if( t == asTC_IDENTIFIER )
@@ -346,7 +346,7 @@ int CScriptBuilder::ProcessScriptSection(const char *script, unsigned int length
 				// Search until first { or ; is encountered
 				while( pos < modifiedScript.length() )
 				{
-					engine->ParseToken(&modifiedScript[pos], modifiedScript.size() - pos, &len);
+					engine->ParseToken(&modifiedScript[pos], modifiedScript.Size() - pos, &len);
 
 					// If start of class section encountered stop
 					if( modifiedScript[pos] == '{' )
@@ -385,7 +385,7 @@ int CScriptBuilder::ProcessScriptSection(const char *script, unsigned int length
 			do
 			{
 				pos += len;
-				t = engine->ParseToken(&modifiedScript[pos], modifiedScript.size() - pos, &len);
+				t = engine->ParseToken(&modifiedScript[pos], modifiedScript.Size() - pos, &len);
 			} while(t == asTC_COMMENT || t == asTC_WHITESPACE);
 
 			if( currentNamespace != "" )
@@ -395,7 +395,7 @@ int CScriptBuilder::ProcessScriptSection(const char *script, unsigned int length
 			// Search until first { is encountered
 			while( pos < modifiedScript.length() )
 			{
-				engine->ParseToken(&modifiedScript[pos], modifiedScript.size() - pos, &len);
+				engine->ParseToken(&modifiedScript[pos], modifiedScript.Size() - pos, &len);
 
 				// If start of namespace section encountered stop
 				if( modifiedScript[pos] == '{' )
@@ -447,22 +447,22 @@ int CScriptBuilder::ProcessScriptSection(const char *script, unsigned int length
 		else
 #endif
 		// Is this a preprocessor directive?
-		if( token == "#" && (pos + 1 < modifiedScript.size()) )
+		if( token == "#" && (pos + 1 < modifiedScript.Size()) )
 		{
 			int start = pos++;
 
-			t = engine->ParseToken(&modifiedScript[pos], modifiedScript.size() - pos, &len);
+			t = engine->ParseToken(&modifiedScript[pos], modifiedScript.Size() - pos, &len);
 			if (t == asTC_IDENTIFIER)
 			{
 				token.assign(&modifiedScript[pos], len);
 				if (token == "include")
 				{
 					pos += len;
-					t = engine->ParseToken(&modifiedScript[pos], modifiedScript.size() - pos, &len);
+					t = engine->ParseToken(&modifiedScript[pos], modifiedScript.Size() - pos, &len);
 					if (t == asTC_WHITESPACE)
 					{
 						pos += len;
-						t = engine->ParseToken(&modifiedScript[pos], modifiedScript.size() - pos, &len);
+						t = engine->ParseToken(&modifiedScript[pos], modifiedScript.Size() - pos, &len);
 					}
 
 					if (t == asTC_VALUE && len > 2 && (modifiedScript[pos] == '"' || modifiedScript[pos] == '\''))
@@ -483,7 +483,7 @@ int CScriptBuilder::ProcessScriptSection(const char *script, unsigned int length
 				{
 					// Read until the end of the line
 					pos += len;
-					for (; pos < modifiedScript.size() && modifiedScript[pos] != '\n'; pos++);
+					for (; pos < modifiedScript.Size() && modifiedScript[pos] != '\n'; pos++);
 
 					// Call the pragma callback
 					string pragmaText(&modifiedScript[start + 7], pos - start - 7);
@@ -506,7 +506,7 @@ int CScriptBuilder::ProcessScriptSection(const char *script, unsigned int length
 				{
 					// Read until the end of the line
 					pos += len;
-					for (; pos < modifiedScript.size() && modifiedScript[pos] != '\n'; pos++);
+					for (; pos < modifiedScript.Size() && modifiedScript[pos] != '\n'; pos++);
 
 					// Overwrite the directive with space characters to avoid compiler error
 					OverwriteCode(start, pos - start);
@@ -522,14 +522,14 @@ int CScriptBuilder::ProcessScriptSection(const char *script, unsigned int length
 
 	// Build the actual script
 	engine->SetEngineProperty(asEP_COPY_SCRIPT_SECTIONS, true);
-	module->AddScriptSection(sectionname, modifiedScript.c_str(), modifiedScript.size(), lineOffset);
+	module->AddScriptSection(sectionname, modifiedScript.c_str(), modifiedScript.Size(), lineOffset);
 
-	if( includes.size() > 0 )
+	if( includes.Size() > 0 )
 	{
 		// If the callback has been set, then call it for each included file
 		if( includeCallback )
 		{
-			for( int n = 0; n < (int)includes.size(); n++ )
+			for( int n = 0; n < (int)includes.Size(); n++ )
 			{
 				int r = includeCallback(includes[n].c_str(), sectionname, this, includeParam);
 				if( r < 0 )
@@ -549,7 +549,7 @@ int CScriptBuilder::ProcessScriptSection(const char *script, unsigned int length
 				path = "";
 
 			// Load the included scripts
-			for( int n = 0; n < (int)includes.size(); n++ )
+			for( int n = 0; n < (int)includes.Size(); n++ )
 			{
 				// If the include is a relative path, then prepend the path of the originating script
 				if( includes[n].find_first_of("/\\") != 0 &&
@@ -578,7 +578,7 @@ int CScriptBuilder::Build()
 #if AS_PROCESS_METADATA == 1
 	// After the script has been built, the metadata strings should be
 	// stored for later lookup by function id, type id, and variable index
-	for( int n = 0; n < (int)foundDeclarations.size(); n++ )
+	for( int n = 0; n < (int)foundDeclarations.Size(); n++ )
 	{
 		SMetadataDecl *decl = &foundDeclarations[n];
 		module->SetDefaultNamespace(decl->nameSpace.c_str());
@@ -769,7 +769,7 @@ int CScriptBuilder::SkipStatement(int pos)
 	// Skip until ; or { whichever comes first
 	while( pos < (int)modifiedScript.length() && modifiedScript[pos] != ';' && modifiedScript[pos] != '{' )
 	{
-		engine->ParseToken(&modifiedScript[pos], modifiedScript.size() - pos, &len);
+		engine->ParseToken(&modifiedScript[pos], modifiedScript.Size() - pos, &len);
 		pos += len;
 	}
 
@@ -780,9 +780,9 @@ int CScriptBuilder::SkipStatement(int pos)
 
 		// Find the end of the statement block
 		int level = 1;
-		while( level > 0 && pos < (int)modifiedScript.size() )
+		while( level > 0 && pos < (int)modifiedScript.Size() )
 		{
-			asETokenClass t = engine->ParseToken(&modifiedScript[pos], modifiedScript.size() - pos, &len);
+			asETokenClass t = engine->ParseToken(&modifiedScript[pos], modifiedScript.Size() - pos, &len);
 			if( t == asTC_KEYWORD )
 			{
 				if( modifiedScript[pos] == '{' )
@@ -805,16 +805,16 @@ int CScriptBuilder::ExcludeCode(int pos)
 {
 	asUINT len = 0;
 	int nested = 0;
-	while( pos < (int)modifiedScript.size() )
+	while( pos < (int)modifiedScript.Size() )
 	{
-		engine->ParseToken(&modifiedScript[pos], modifiedScript.size() - pos, &len);
+		engine->ParseToken(&modifiedScript[pos], modifiedScript.Size() - pos, &len);
 		if( modifiedScript[pos] == '#' )
 		{
 			modifiedScript[pos] = ' ';
 			pos++;
 
 			// Is it an #if or #endif directive?
-			engine->ParseToken(&modifiedScript[pos], modifiedScript.size() - pos, &len);
+			engine->ParseToken(&modifiedScript[pos], modifiedScript.Size() - pos, &len);
 			string token;
 			token.assign(&modifiedScript[pos], len);
 			OverwriteCode(pos, len);
@@ -872,9 +872,9 @@ int CScriptBuilder::ExtractMetadata(int pos, vector<string> &metadata)
 
 		int level = 1;
 		asUINT len = 0;
-		while (level > 0 && pos < (int)modifiedScript.size())
+		while (level > 0 && pos < (int)modifiedScript.Size())
 		{
-			asETokenClass t = engine->ParseToken(&modifiedScript[pos], modifiedScript.size() - pos, &len);
+			asETokenClass t = engine->ParseToken(&modifiedScript[pos], modifiedScript.Size() - pos, &len);
 			if (t == asTC_KEYWORD)
 			{
 				if (modifiedScript[pos] == '[')
@@ -897,11 +897,11 @@ int CScriptBuilder::ExtractMetadata(int pos, vector<string> &metadata)
 		metadata.push_back(metadataString);
 
 		// Check for more metadata. Possibly separated by comments
-		asETokenClass t = engine->ParseToken(&modifiedScript[pos], modifiedScript.size() - pos, &len);
+		asETokenClass t = engine->ParseToken(&modifiedScript[pos], modifiedScript.Size() - pos, &len);
 		while (t == asTC_COMMENT || t == asTC_WHITESPACE)
 		{
 			pos += len;
-			t = engine->ParseToken(&modifiedScript[pos], modifiedScript.size() - pos, &len);
+			t = engine->ParseToken(&modifiedScript[pos], modifiedScript.Size() - pos, &len);
 		}
 
 		if (modifiedScript[pos] != '[')
@@ -926,7 +926,7 @@ int CScriptBuilder::ExtractDeclaration(int pos, string &name, string &declaratio
 	do
 	{
 		pos += len;
-		t = engine->ParseToken(&modifiedScript[pos], modifiedScript.size() - pos, &len);
+		t = engine->ParseToken(&modifiedScript[pos], modifiedScript.Size() - pos, &len);
 		token.assign(&modifiedScript[pos], len);
 	} while ( t == asTC_WHITESPACE || t == asTC_COMMENT || 
 	          token == "private" || token == "protected" || 
@@ -943,7 +943,7 @@ int CScriptBuilder::ExtractDeclaration(int pos, string &name, string &declaratio
 			do
 			{
 				pos += len;
-				t = engine->ParseToken(&modifiedScript[pos], modifiedScript.size() - pos, &len);
+				t = engine->ParseToken(&modifiedScript[pos], modifiedScript.Size() - pos, &len);
 			} while ( t == asTC_WHITESPACE || t == asTC_COMMENT );
 
 			if( t == asTC_IDENTIFIER )
@@ -967,9 +967,9 @@ int CScriptBuilder::ExtractDeclaration(int pos, string &name, string &declaratio
 			int nestedParenthesis = 0;
 			declaration.append(&modifiedScript[pos], len);
 			pos += len;
-			for(; pos < (int)modifiedScript.size();)
+			for(; pos < (int)modifiedScript.Size();)
 			{
-				t = engine->ParseToken(&modifiedScript[pos], modifiedScript.size() - pos, &len);
+				t = engine->ParseToken(&modifiedScript[pos], modifiedScript.Size() - pos, &len);
 				token.assign(&modifiedScript[pos], len);
 				if (t == asTC_KEYWORD)
 				{

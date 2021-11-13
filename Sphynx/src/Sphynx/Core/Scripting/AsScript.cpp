@@ -39,8 +39,7 @@ void PrintI(int& msg) {
 
 void Sphynx::Core::Scripting::AngelScript::OnAppStart(Events::OnApplicationStart& e)
 {
-	auto r = Engine->RegisterGlobalProperty("Sphynx::Application App", GetApplication());
-	r = Engine->RegisterObjectMethod("Sphynx::Application", "bool HasWindow()", asMETHOD(Application, Application::HasWindow), asCALL_THISCALL);
+	auto r = Engine->RegisterGlobalProperty("Sphynx::Application App", GetApplication()); assert(r >= 0);
 }
 
 void Sphynx::Core::Scripting::AngelScript::OnWindowOpen(Events::OnWindowOpen& e)
@@ -54,20 +53,20 @@ int getWindowWidth(/*Sphynx::Core::IWindow* win*/) {
 }
 
 template<class T>
-void ConstructBasic(void* mem) 
+void ConstructBasic(void* mem)
 {
 	new(mem)T();
 }
 
 template<class T>
 T* CreateBasic() {
-	T* t= new T();
+	T* t = new T();
 	return t;
 }
 
 template<class T, typename ...Args>
-void ConstuctArgs(void* mem, Args&& ...args) {
-	new(mem)T(std::forward<Args>(args));
+void ConstructArgs(void* mem, Args&& ...args) {
+	new(mem)T(std::forward<Args>(args)...);
 }
 
 template<class T>
@@ -94,9 +93,22 @@ public:
 	ScriptObjectWrapper() {
 		Obj = new T();
 	}
+	template<typename ...Args>
+	ScriptObjectWrapper(Args&& ...args) {
+		Obj = new T(std::forward<Args>(args...));
+	}
+
 	void AddRef() { Refs++; };
 	void Release() { Refs--; };
 };
+
+void CreateWindowAS(Application* app, std::string title, Bounds b, bool fullscreen) {
+	app->CreateMainWindow(IWindow::Create(app, b, title, fullscreen));
+}
+
+int IncludeCallBack(const char* include, const char* from, CScriptBuilder* builder, void* UserParam) {
+	return builder->AddSectionFromFile(include);
+}
 
 Sphynx::Core::Scripting::AngelScript::AngelScript()
 {
@@ -106,55 +118,78 @@ Sphynx::Core::Scripting::AngelScript::AngelScript()
 	Engine = asCreateScriptEngine();
 	Engine->SetMessageCallback(asFunctionPtr(&MessageCallback), NULL, asCALL_CDECL);
 	Engine->SetEngineProperty(asEP_BUILD_WITHOUT_LINE_CUES, true);
+	Engine->SetEngineProperty(asEP_REQUIRE_ENUM_SCOPE, true);
 	RegisterStdString(Engine);
 	Engine->RegisterGlobalFunction("void Print(const string &in)", asFUNCTION(Print), asCALL_CDECL);
 	Engine->RegisterGlobalFunction("void PrintI(int &in)", asFUNCTION(PrintI), asCALL_CDECL);
 	Engine->SetDefaultNamespace("Sphynx");
-	//APPLICATION REGISTRATION
-	Engine->RegisterObjectType("Application", 0, asOBJ_REF | asOBJ_NOHANDLE);
 	//BOUNDS REGISTRATION
-	auto r = Engine->RegisterObjectType("Bounds", sizeof(Bounds),
-		asOBJ_VALUE | asOBJ_APP_CLASS_MORE_CONSTRUCTORS | asOBJ_POD | asGetTypeTraits<Bounds>()); assert(r >= 0);
+	Engine->RegisterObjectType("Bounds", sizeof(Bounds),
+		asOBJ_VALUE | asOBJ_APP_CLASS_MORE_CONSTRUCTORS | asOBJ_POD | asGetTypeTraits<Bounds>());
 	Engine->RegisterObjectProperty("Bounds", "int Height", asOFFSET(Bounds, Height));
 	Engine->RegisterObjectProperty("Bounds", "int Width", asOFFSET(Bounds, Width));
 	Engine->RegisterObjectBehaviour("Bounds", asBEHAVE_CONSTRUCT, "void bounds()", asFUNCTION(ConstructBasic<Bounds>), asCALL_CDECL_OBJFIRST);
 	Engine->RegisterObjectBehaviour("Bounds", asBEHAVE_CONSTRUCT, "void bounds(int h,int w)", asFUNCTION(ConstructBounds), asCALL_CDECL_OBJFIRST);
 	Engine->RegisterObjectBehaviour("Bounds", asBEHAVE_DESTRUCT, "void bounds()", asFUNCTION(Destruct<Bounds>), asCALL_CDECL_OBJFIRST);
+	//VECTOR2 REGISTRATION
+	Engine->RegisterObjectType("Vector2", sizeof(glm::vec2),
+		asOBJ_VALUE | asOBJ_APP_CLASS_MORE_CONSTRUCTORS | asOBJ_POD | asGetTypeTraits<glm::vec2>());
+	Engine->RegisterObjectBehaviour("Vector2", asBEHAVE_CONSTRUCT, "void v2()", asFUNCTION(ConstructBasic<glm::vec2>), asCALL_CDECL_OBJFIRST);
+	Engine->RegisterObjectBehaviour("Vector2", asBEHAVE_CONSTRUCT, "void v2(float x,float y)",
+		asFunctionPtr(ConstructArgs<glm::vec2, float, float>), asCALL_CDECL_OBJFIRST);
+	Engine->RegisterObjectBehaviour("Vector2", asBEHAVE_DESTRUCT, "void v2()", asFUNCTION(Destruct<glm::vec2>), asCALL_CDECL_OBJFIRST);
+	//VECTOR3 REGISTRATION
+	Engine->RegisterObjectType("Vector3", sizeof(glm::vec3),
+		asOBJ_VALUE | asOBJ_APP_CLASS_MORE_CONSTRUCTORS | asOBJ_POD | asGetTypeTraits<glm::vec3>());
+	Engine->RegisterObjectBehaviour("Vector3", asBEHAVE_CONSTRUCT, "void v2()", asFUNCTION(ConstructBasic<glm::vec3>), asCALL_CDECL_OBJFIRST);
+	Engine->RegisterObjectBehaviour("Vector3", asBEHAVE_CONSTRUCT, "void v2(float x,float y,float z)",
+		asFunctionPtr(ConstructArgs<glm::vec3, float, float, float>), asCALL_CDECL_OBJFIRST);
+	Engine->RegisterObjectBehaviour("Vector3", asBEHAVE_DESTRUCT, "void v2()", asFUNCTION(Destruct<glm::vec3>), asCALL_CDECL_OBJFIRST);
+	//VECTOR4 REGISTRATION
+	Engine->RegisterObjectType("Vector4", sizeof(glm::vec4),
+		asOBJ_VALUE | asOBJ_APP_CLASS_MORE_CONSTRUCTORS | asOBJ_POD | asGetTypeTraits<glm::vec4>());
+	Engine->RegisterObjectBehaviour("Vector4", asBEHAVE_CONSTRUCT, "void v2()", asFUNCTION(ConstructBasic<glm::vec4>), asCALL_CDECL_OBJFIRST);
+	Engine->RegisterObjectBehaviour("Vector4", asBEHAVE_CONSTRUCT, "void v2(float x,float y,float z,float w)",
+		asFunctionPtr(ConstructArgs<glm::vec4, float, float, float, float>), asCALL_CDECL_OBJFIRST);
+	Engine->RegisterObjectBehaviour("Vector4", asBEHAVE_DESTRUCT, "void v2()", asFUNCTION(Destruct<glm::vec4>), asCALL_CDECL_OBJFIRST);
 	//WINDOW REGISTRATION
 	Engine->RegisterObjectType("Window", 0, asOBJ_REF | asOBJ_NOHANDLE);
 	Engine->RegisterObjectMethod("Window", "int GetWidth()", asFUNCTION(getWindowWidth), asCALL_CDECL_OBJLAST);
-	Engine->RegisterObjectMethod("Window", "int GetHeight()", asMETHOD(IWindow, GetHeight), asCALL_THISCALL); 
+	Engine->RegisterObjectMethod("Window", "int GetHeight()", asMETHOD(IWindow, GetHeight), asCALL_THISCALL);
 	Engine->RegisterObjectMethod("Window", "const Bounds GetBounds()", asMETHOD(IWindow, GetBounds), asCALL_THISCALL);
 	Engine->RegisterObjectMethod("Window", "void SetTitle(const string &in)", asFUNCTION(ChangeTitle), asCALL_CDECL_OBJFIRST);
 	Engine->RegisterObjectMethod("Window", "bool IsVsyncEnabled()", asMETHOD(IWindow, IsVsyncEnabled), asCALL_THISCALL);
 	Engine->RegisterObjectMethod("Window", "void Resize(int Width,int Height)", asMETHOD(IWindow, Resize), asCALL_THISCALL);
-	//GAMEOBJECT REGSITRATION
-	r = Engine->RegisterObjectType("GameObject", 0, asOBJ_REF); assert(r >= 0);
-	r = Engine->SetDefaultNamespace("GameObject"); assert(r >= 0);
-	Engine->RegisterEnum("Primitives");
-	SpRegisterEnumValue(Engine, Primitives, Cube);
-	SpRegisterEnumValue(Engine, Primitives, Plane);
-	SpRegisterEnumValue(Engine, Primitives, Sphere);
-	SpRegisterEnumValue(Engine, Primitives, Triangle);
-	SpRegisterEnumValue(Engine, Primitives, Capsule);
-	r = Engine->RegisterGlobalFunction("GameObject@ CreatePrimitive(Primitives)", asFUNCTION(GameObject::CreatePrimitive), asCALL_CDECL);
-	assert(r >= 0);
-	Engine->SetDefaultNamespace("Sphynx");
-	Engine->RegisterObjectBehaviour("GameObject", asBEHAVE_ADDREF, "void addref()",
-		asMETHOD(ScriptObjectWrapper<GameObject>, AddRef), asCALL_THISCALL);
-	Engine->RegisterObjectBehaviour("GameObject", asBEHAVE_RELEASE, "void release()",
-		asMETHOD(ScriptObjectWrapper<GameObject>, Release), asCALL_THISCALL);
-	//SCENE REGSITRATION
+	auto r = Engine->RegisterObjectMethod("Window", "void Close()", asMETHOD(IWindow, Close), asCALL_THISCALL); assert(r >= 0);
+	//APPLICATION REGISTRATION
+	Engine->RegisterObjectType("Application", 0, asOBJ_REF | asOBJ_NOHANDLE);
+	Engine->RegisterObjectMethod("Application", "bool HasWindow()", asMETHOD(Application, Application::HasWindow), asCALL_THISCALL);
+	Engine->RegisterObjectMethod("Application", "void CreateWindow(string,Bounds,bool)", asFUNCTION(CreateWindowAS), asCALL_CDECL_OBJFIRST);
+	//GAMEOBJECT REGISTRATION
+	Engine->RegisterInterface("Component");
+	Engine->RegisterInterfaceMethod("Component", "void Update()");
+	Engine->RegisterInterfaceMethod("Component", "void Start()");
+	Engine->RegisterInterfaceMethod("Component", "void OnDetach()");
+
+	//Transform Registration
+	Engine->RegisterObjectType("Transform", 0, asOBJ_REF | asOBJ_NOHANDLE);
+	Engine->RegisterObjectMethod("Transform", "void Translate(Vector3)", asMETHOD(Transform, Translate), asCALL_THISCALL);
+	Engine->RegisterObjectMethod("Transform", "void Rotate(Vector3)", asMETHOD(Transform, Rotate), asCALL_THISCALL);
+	Engine->RegisterObjectMethod("Transform", "void Scale(Vector3)", asMETHOD(Transform, Scale), asCALL_THISCALL);
+	//GAMEOBJECT
+	Engine->RegisterObjectType("GameObject", 0, asOBJ_REF | asOBJ_NOHANDLE);
+	//SCENE REGISTRATION
 	Engine->RegisterObjectType("Scene", 0, asOBJ_REF | asOBJ_NOCOUNT);
 	Engine->RegisterObjectBehaviour("Scene", asBEHAVE_FACTORY, "Scene@ s()", asFUNCTION(CreateBasic<Scene>), asCALL_CDECL);
 	Engine->RegisterObjectMethod("Scene", "string& GetName()", asMETHOD(Scene, GetName), asCALL_THISCALL);
 	Engine->RegisterObjectMethod("Scene", "void SetName(const string &in)", asMETHOD(Scene, SetName), asCALL_THISCALL);
-	//SCENEMANAGER REGSITRATION
+	//SCENEMANAGER REGISTRATION
 	Engine->SetDefaultNamespace("Sphynx::SceneManager");
 	Engine->RegisterGlobalFunction("Scene@ GetCurrentScene()", asFUNCTION(SceneManager::GetScene), asCALL_CDECL);
 	r = Engine->RegisterGlobalFunction("void AddScene(Scene@ s)", asFUNCTION(SceneManager::AddScene), asCALL_CDECL); assert(r >= 0);
-	Engine->SetDefaultNamespace("Sphynx");
 	Engine->SetDefaultNamespace("");
+	builder.SetIncludeCallback(IncludeCallBack, NULL);
+
 }
 
 Sphynx::Core::Scripting::AngelScript::~AngelScript()
@@ -176,6 +211,7 @@ void Sphynx::Core::Scripting::AngelScript::CreateScript(AsScript* script, std::s
 
 void Sphynx::Core::Scripting::AngelScript::CreateScript(AsScript* script, const char* path, const char* ModuleName)
 {
+
 	int r = builder.StartNewModule(Engine, ModuleName);
 	if (r < 0)
 	{
@@ -200,7 +236,7 @@ void Sphynx::Core::Scripting::AngelScript::CreateScript(AsScript* script, const 
 		return;
 	}
 	script->Module = Engine->GetModule(ModuleName);
-	script->Context = Engine->CreateContext();
+	script->Context = Engine->RequestContext();
 }
 
 void Sphynx::Core::Scripting::AsScript::OnComponentAttach(GameObject* parent)
@@ -214,6 +250,17 @@ void Sphynx::Core::Scripting::AsScript::OnComponentDetach()
 
 void Sphynx::Core::Scripting::AsScript::Update()
 {
+	auto r = Context->Execute();
+	if (r != asEXECUTION_FINISHED)
+	{
+		// The execution didn't complete as expected. Determine what happened.
+		if (r == asEXECUTION_EXCEPTION)
+		{
+			// An exception occurred, let the script writer know what happened so it can be corrected.
+			Core_Error("An exception '{0}' occurred. Please correct the code and try again.\n", Context->GetExceptionString());
+		}
+	}
+	Context->Prepare(UpdateFunc);
 }
 
 Sphynx::Core::Scripting::AsScript::AsScript(const char* path, const char* ModuleName)
@@ -229,12 +276,18 @@ Sphynx::Core::Scripting::AsScript::~AsScript()
 void Sphynx::Core::Scripting::AsScript::Run()
 {
 	if (!Module || !Context)return;
-	asIScriptFunction* func = Module->GetFunctionByDecl("void main()");
+	scriptBehaviour.Holder = this->GetGameObject();
+	scriptBehaviour.TypeInfo = Module->GetObjectTypeByIndex(0);
+	scriptBehaviour.Name = scriptBehaviour.TypeInfo->GetName();
+	scriptBehaviour.ScriptObject = Context->GetEngine()->CreateScriptObject(scriptBehaviour.TypeInfo);
+	Context->SetObject(&scriptBehaviour.ScriptObject);
+	asIScriptFunction* func = scriptBehaviour.TypeInfo->GetMethodByDecl("void Start()", false);
+	UpdateFunc = scriptBehaviour.TypeInfo->GetMethodByDecl("void Update()", false);
 	if (func == 0)
 	{
 		// The function couldn't be found. Instruct the script writer
 		// to include the expected function in the script.
-		Core_Error("The script must have the function 'void main()'. Please add it and try again.");
+		Core_Error("The script must have the function 'void Start()' and 'void Update()'. Please add it and try again.");
 		return;
 	}
 	Context->Prepare(func);
@@ -248,4 +301,5 @@ void Sphynx::Core::Scripting::AsScript::Run()
 			Core_Error("An exception '{0}' occurred. Please correct the code and try again.\n", Context->GetExceptionString());
 		}
 	}
+	Context->Prepare(UpdateFunc);
 }

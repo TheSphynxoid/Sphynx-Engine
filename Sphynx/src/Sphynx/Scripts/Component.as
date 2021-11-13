@@ -1,6 +1,7 @@
 [Native("Component.h")]
-shared abstract class Component{
+shared class Component{
+    [NativeProp(uintptr_t)]
     private uint64 InstanceID;
-    [NativeFunction]
-    public bool IsActive(){}
+    [NativeFunction(bool)]
+    virtual bool IsActive(){}
 }

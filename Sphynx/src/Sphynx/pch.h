@@ -18,6 +18,7 @@
 #endif
 //Sphynx Libraries
 #include "Logger.h"
+#include "Core/Memory.h"
 #define BIT(i) (1 << i)
 #else
 #endif

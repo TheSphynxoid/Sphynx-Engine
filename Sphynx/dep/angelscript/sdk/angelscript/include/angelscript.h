@@ -355,7 +355,7 @@ enum asEFuncType
 // asWORD  = 16 bits
 // asDWORD = 32 bits
 // asQWORD = 64 bits
-// asPWORD = size of pointer
+// asPWORD = Size of pointer
 //
 typedef signed char    asINT8;
 typedef signed short   asINT16;
@@ -363,7 +363,7 @@ typedef unsigned char  asBYTE;
 typedef unsigned short asWORD;
 typedef unsigned int   asUINT;
 #if (defined(_MSC_VER) && _MSC_VER <= 1200) || defined(__S3E__) || (defined(_MSC_VER) && defined(__clang__))
-	// size_t is not really correct, since it only guaranteed to be large enough to hold the segment size.
+	// size_t is not really correct, since it only guaranteed to be large enough to hold the segment Size.
 	// For example, on 16bit systems the size_t may be 16bits only even if pointers are 32bit. But nobody
 	// is likely to use MSVC6 to compile for 16bit systems anymore, so this should be ok.
 	typedef size_t         asPWORD;
@@ -446,9 +446,9 @@ struct asSFuncPtr
 		flag = f;
 	}
 
-	void CopyMethodPtr(const void *mthdPtr, size_t size)
+	void CopyMethodPtr(const void *mthdPtr, size_t Size)
 	{
-		for( size_t n = 0; n < size; n++ )
+		for( size_t n = 0; n < Size; n++ )
 			ptr.dummy[n] = reinterpret_cast<const char *>(mthdPtr)[n];
 	}
 
@@ -569,7 +569,7 @@ extern "C"
 	// Memory management
 	AS_API int   asSetGlobalMemoryFunctions(asALLOCFUNC_t allocFunc, asFREEFUNC_t freeFunc);
 	AS_API int   asResetGlobalMemoryFunctions();
-	AS_API void *asAllocMem(size_t size);
+	AS_API void *asAllocMem(size_t Size);
 	AS_API void  asFreeMem(void *mem);
 
 	// Auxiliary
@@ -1165,8 +1165,8 @@ protected:
 class asIBinaryStream
 {
 public:
-	virtual int Read(void *ptr, asUINT size) = 0;
-	virtual int Write(const void *ptr, asUINT size) = 0;
+	virtual int Read(void *ptr, asUINT Size) = 0;
+	virtual int Write(const void *ptr, asUINT Size) = 0;
 
 public:
 	virtual ~asIBinaryStream() {}
@@ -1229,7 +1229,7 @@ inline asSFuncPtr asFunctionPtr<asGENFUNC_t>(asGENFUNC_t func)
 
 // Method pointers
 
-// Declare a dummy class so that we can determine the size of a simple method pointer
+// Declare a dummy class so that we can determine the Size of a simple method pointer
 class asCSimpleDummy {};
 typedef void (asCSimpleDummy::*asSIMPLEMETHOD_t)();
 const int SINGLE_PTR_SIZE = sizeof(asSIMPLEMETHOD_t);
@@ -1242,7 +1242,7 @@ struct asSMethodPtr
 	static asSFuncPtr Convert(M Mthd)
 	{
 		// This version of the function should never be executed, nor compiled,
-		// as it would mean that the size of the method pointer cannot be determined.
+		// as it would mean that the Size of the method pointer cannot be determined.
 
 		int ERROR_UnsupportedMethodPtr[N-100];
 

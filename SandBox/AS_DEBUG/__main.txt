@@ -1,105 +1,68 @@
 void main()
 
-Temps: 1, 11, 13, 23, 24, 30
+Temps: 1, 11, 13, 23, 24
 
 Variables: 
- 026: (heap) Sphynx::Scene ss
- 028: (heap) Sphynx::Scene@ s
- 030: (heap) Scene {noname}
  011: string {noname}
  023: string {noname}
 
 
 - 2,5 -
-    0  30 *    PGA      0x14f07300          (str:Hello From AngelScri...)
-    3  32 *    CALLSYS  67           (void Print(const string&in))
+    0  24 *    PGA      0x981faae0          (str:Hello From AngelScri...)
+    3  26 *    CALLSYS  67           (void Print(const string&in))
 - 3,5 -
-    5  30 *    PGA      0x14f07480          (str:Window Width:)
-    8  32 *    PSF      v11
-    9  34 *    CALLSYS  20           (string::string(const string&in))
+    5  24 *    PGA      0x981fbe60          (str:Window Width:)
+    8  26 *    PSF      v11
+    9  28 *    CALLSYS  20           (string::string(const string&in))
                ObjInfo  v11, 1
-   11  30 *    PshGPtr  0x25e129c77f0          (i:2603062425584, f:1.28608e-311)
-   14  32 *    CALLSYS  72           (int Window::GetWidth())
-   16  30 *    CpyRtoV4 v1
-   17  30 *    iTOi64   v13, v1
-   19  30 *    PshV8    v13
-   20  32 *    PSF      v23
-   21  34 *    PSF      v11
-   22  36 *    CALLSYS  42           (string string::opAdd(int64) const)
+   11  24 *    PshGPtr  0x1cb95bfda50          (i:1973902367312, f:9.75237e-312)
+   14  26 *    CALLSYS  75           (int Window::GetWidth())
+   16  24 *    CpyRtoV4 v1
+   17  24 *    iTOi64   v13, v1
+   19  24 *    PshV8    v13
+   20  26 *    PSF      v23
+   21  28 *    PSF      v11
+   22  30 *    CALLSYS  42           (string string::opAdd(int64) const)
                ObjInfo  v23, 1
-   24  30 *    PSF      v11
-   25  32 *    CALLSYS  21           (string::~string())
+   24  24 *    PSF      v11
+   25  26 *    CALLSYS  21           (string::~string())
                ObjInfo  v11, 0
-   27  30 *    PSF      v23
-   28  32 *    CALLSYS  67           (void Print(const string&in))
-   30  30 *    PSF      v23
-   31  32 *    CALLSYS  21           (string::~string())
+   27  24 *    PSF      v23
+   28  26 *    CALLSYS  67           (void Print(const string&in))
+   30  24 *    PSF      v23
+   31  26 *    CALLSYS  21           (string::~string())
 - 4,5 -
                ObjInfo  v23, 0
-   33  30 *    PGA      0x14f05680          (str:Window Height:)
-   36  32 *    PSF      v23
-   37  34 *    CALLSYS  20           (string::string(const string&in))
+   33  24 *    PGA      0x981fbce0          (str:Window Height:)
+   36  26 *    PSF      v23
+   37  28 *    CALLSYS  20           (string::string(const string&in))
                ObjInfo  v23, 1
-   39  30 *    PshGPtr  0x25e129c77f0          (i:2603062425584, f:1.28608e-311)
-   42  32 *    CALLSYS  73           (int Window::GetHeight())
-   44  30 *    CpyRtoV4 v1
-   45  30 *    iTOi64   v13, v1
-   47  30 *    PshV8    v13
-   48  32 *    PSF      v11
-   49  34 *    PSF      v23
-   50  36 *    CALLSYS  42           (string string::opAdd(int64) const)
+   39  24 *    PshGPtr  0x1cb95bfda50          (i:1973902367312, f:9.75237e-312)
+   42  26 *    CALLSYS  76           (int Window::GetHeight())
+   44  24 *    CpyRtoV4 v1
+   45  24 *    iTOi64   v13, v1
+   47  24 *    PshV8    v13
+   48  26 *    PSF      v11
+   49  28 *    PSF      v23
+   50  30 *    CALLSYS  42           (string string::opAdd(int64) const)
                ObjInfo  v11, 1
-   52  30 *    PSF      v23
-   53  32 *    CALLSYS  21           (string::~string())
+   52  24 *    PSF      v23
+   53  26 *    CALLSYS  21           (string::~string())
                ObjInfo  v23, 0
-   55  30 *    PSF      v11
-   56  32 *    CALLSYS  67           (void Print(const string&in))
-   58  30 *    PSF      v11
-   59  32 *    CALLSYS  21           (string::~string())
+   55  24 *    PSF      v11
+   56  26 *    CALLSYS  67           (void Print(const string&in))
+   58  24 *    PSF      v11
+   59  26 *    CALLSYS  21           (string::~string())
 - 5,5 -
                ObjInfo  v11, 0
-   61  30 *    PGA      0x14f08c90          (str:Nizar)
-   64  32 *    PshGPtr  0x25e129c77f0          (i:2603062425584, f:1.28608e-311)
-   67  34 *    CALLSYS  75           (void Window::SetTitle(const string&in))
+   61  24 *    PGA      0x981fdf70          (str:Nizar)
+   64  26 *    PshGPtr  0x1cb95bfda50          (i:1973902367312, f:9.75237e-312)
+   67  28 *    CALLSYS  78           (void Window::SetTitle(const string&in))
 - 6,5 -
-   69  30 *    PshC4    0xfa          (i:250, f:3.50325e-43)
-   71  31 *    PshC4    0xfa          (i:250, f:3.50325e-43)
-   73  32 *    PshGPtr  0x25e129c77f0          (i:2603062425584, f:1.28608e-311)
-   76  34 *    CALLSYS  77           (void Window::Resize(int, int))
-- 7,5 -
-               VarDecl  0
-   78  30 *    CALLSYS  78           (Sphynx::Scene@ Scene())
-   80  30 *    STOREOBJ v26
-- 8,5 -
-               VarDecl  1
-   81  30 *    CALLSYS  81           (Sphynx::Scene@ GetCurrentScene())
-   83  30 *    FREE     v28, 0xdd06310          (type:Scene)
-   86  30 *    STOREOBJ v28
-- 9,5 -
-   87  30 *    PGA      0x14f08190          (str:Cringe)
-   90  32 *    PshVPtr  v26
-   91  34 *    CALLSYS  80           (void Scene::SetName(const string&in))
-- 10,5 -
-   93  30 *    PshVPtr  v26
-   94  32 *    CALLSYS  79           (string& Scene::GetName())
-   96  30 *    PshRPtr
-   97  32 *    PSF      v11
-   98  34 *    CALLSYS  20           (string::string(const string&in))
-               ObjInfo  v11, 1
-  100  30 *    PSF      v11
-  101  32 *    CALLSYS  67           (void Print(const string&in))
-  103  30 *    PSF      v11
-  104  32 *    CALLSYS  21           (string::~string())
-- 11,5 -
-               ObjInfo  v11, 0
-  106  30 *    PshVPtr  v26
-  107  32 *    RefCpyV  v30, 0xdd06310          (type:Scene)
-  110  32 *    PopPtr
-  111  30 *    VAR      v30
-  112  32 *    GETOBJ   0
-  113  32 *    CALLSYS  82           (void AddScene(Sphynx::Scene@))
-- 12,2 -
-  115  30 *    FREE     v28, 0xdd06310          (type:Scene)
-  118  30 *    FREE     v26, 0xdd06310          (type:Scene)
+   69  24 *    PshC4    0xfa          (i:250, f:3.50325e-43)
+   71  25 *    PshC4    0xfa          (i:250, f:3.50325e-43)
+   73  26 *    PshGPtr  0x1cb95bfda50          (i:1973902367312, f:9.75237e-312)
+   76  28 *    CALLSYS  80           (void Window::Resize(int, int))
+- 9,2 -
             0:
-  121  30 *    RET      0
+   78  24 *    RET      0

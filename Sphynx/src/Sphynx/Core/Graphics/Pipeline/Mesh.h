@@ -110,7 +110,7 @@ namespace Sphynx::Core::Graphics {
 		};
 		unsigned int GetStride() { return Stride; };
 		std::vector<BufferElement>& GetElements() { return Elements; };
-		size_t GetElementCount()const noexcept { return Elements.size(); };
+		size_t GetElementCount()const noexcept { return Elements.Size(); };
 		std::vector<BufferElement>::iterator begin()noexcept { return Elements.begin(); };
 		std::vector<BufferElement>::iterator end()noexcept { return Elements.end(); };
 		std::vector<BufferElement>::const_iterator begin() const noexcept { return Elements.begin(); }
@@ -121,12 +121,12 @@ namespace Sphynx::Core::Graphics {
 		virtual ~VertexBuffer() = default;
 		virtual void Bind()const = 0;
 		virtual void Unbind()const = 0;
-		virtual void SetData(const void* data, size_t offset, size_t size) = 0;
+		virtual void SetData(const void* data, size_t offset, size_t Size) = 0;
 		virtual void SetDataLayout(BufferLayout layout) = 0;
 		virtual BufferLayout GetLayout()const = 0;
 		virtual size_t GetVertexBufferSize()const noexcept = 0;
-		static VertexBuffer* Create(float* vertices, size_t size);
-		static VertexBuffer* CreateEmpty(size_t size);
+		static VertexBuffer* Create(float* vertices, size_t Size);
+		static VertexBuffer* CreateEmpty(size_t Size);
 	};
 	struct IndexBuffer {
 		virtual ~IndexBuffer() = default;
@@ -134,7 +134,7 @@ namespace Sphynx::Core::Graphics {
 		virtual void Unbind()const = 0;
 		virtual void SetData(const unsigned int* data, uint64_t count) = 0;
 		virtual int GetCount()const noexcept = 0;
-		static IndexBuffer* Create(unsigned int* indices, size_t size);
+		static IndexBuffer* Create(unsigned int* indices, size_t Size);
 	};
 	class Mesh
 	{

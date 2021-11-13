@@ -8,7 +8,7 @@ using namespace Sphynx::Core::Graphics::GL;
 
 using namespace Sphynx::Core::Graphics;
 
-Sphynx::Core::Graphics::UniformBuffer* Sphynx::Core::Graphics::UniformBuffer::Create(size_t size)
+Sphynx::Core::Graphics::UniformBuffer* Sphynx::Core::Graphics::UniformBuffer::Create(size_t Size)
 {
 	switch (CurrentPlatform)
 	{
@@ -16,17 +16,17 @@ Sphynx::Core::Graphics::UniformBuffer* Sphynx::Core::Graphics::UniformBuffer::Cr
 #ifdef DX_IMPL
 		static_assert(true, "DirectX Not Implemented");
 #else
-		return new GLUniformBuffer(size);
+		return new GLUniformBuffer(Size);
 #endif
 	case Sphynx::Platform::Linux:
-		return new GLUniformBuffer(size);
+		return new GLUniformBuffer(Size);
 	default:
 		break;
 	}
 	return nullptr;
 }
 
-Sphynx::Core::Graphics::UniformBuffer* Sphynx::Core::Graphics::UniformBuffer::Create(void* Data, size_t size)
+Sphynx::Core::Graphics::UniformBuffer* Sphynx::Core::Graphics::UniformBuffer::Create(void* Data, size_t Size)
 {
 	switch (CurrentPlatform)
 	{
@@ -34,10 +34,10 @@ Sphynx::Core::Graphics::UniformBuffer* Sphynx::Core::Graphics::UniformBuffer::Cr
 #ifdef DX_IMPL
 		static_assert(true, "DirectX Not Implemented");
 #else
-		return new GLUniformBuffer(Data, size);
+		return new GLUniformBuffer(Data, Size);
 #endif
 	case Sphynx::Platform::Linux:
-		return new GLUniformBuffer(Data, size);
+		return new GLUniformBuffer(Data, Size);
 	default:
 		break;
 	}

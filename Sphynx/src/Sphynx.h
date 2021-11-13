@@ -7,10 +7,10 @@
 	/* Windows x64  */
 	#ifdef _WIN64
 		#define Platform_Windows
-		#define WIN32_LEAN_AND_MEAN
-		#include <Windows.h>
-		#include <d3d.h>
-		#include <d2d1.h>
+		//#define WIN32_LEAN_AND_MEAN
+		//#include <Windows.h>
+		//#include <d3d.h>
+		//#include <d2d1.h>
 	#else
 		/* Windows x86 */
 		#error "x86 Builds are not supported!"

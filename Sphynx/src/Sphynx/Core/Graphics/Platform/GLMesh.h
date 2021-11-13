@@ -9,8 +9,8 @@ namespace Sphynx::Core::Graphics::GL {
 		size_t Size = 0;
 		void Release();
 	public:
-		GLVertexBuffer(size_t size);
-		GLVertexBuffer(float* verts, size_t size);
+		GLVertexBuffer(size_t Size);
+		GLVertexBuffer(float* verts, size_t Size);
 		GLVertexBuffer(const GLVertexBuffer& vbuf) = delete;
 		GLVertexBuffer& operator=(const GLVertexBuffer& vbuf) = delete;
 		GLVertexBuffer(GLVertexBuffer&& vbuf)noexcept;
@@ -19,8 +19,8 @@ namespace Sphynx::Core::Graphics::GL {
 		virtual void Bind()const override;
 		virtual void Unbind()const override;
 		//Sets the Buffer's Data.
-		//In Case size is larger then the Original Size, a new Buffer Will allocated and Offset Will Be Ignored.
-		virtual void SetData(const void* data, size_t offset, size_t size)noexcept override;
+		//In Case Size is larger then the Original Size, a new Buffer Will allocated and Offset Will Be Ignored.
+		virtual void SetData(const void* data, size_t offset, size_t Size)noexcept override;
 		virtual void SetDataLayout(BufferLayout layout) override { Layout = layout; };
 		virtual size_t GetVertexBufferSize()const noexcept override { return Size; };
 		virtual BufferLayout GetLayout()const noexcept override{ return Layout; };

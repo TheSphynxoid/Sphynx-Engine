@@ -11,17 +11,17 @@ namespace Sphynx::Core::Graphics::GL {
 		void* MappedAddress = nullptr;
 		void Release();
 	public:
-		GLUniformBuffer(size_t size);
-		GLUniformBuffer(void* Data, size_t size);
+		GLUniformBuffer(size_t Size);
+		GLUniformBuffer(void* Data, size_t Size);
 		GLUniformBuffer(GLUniformBuffer&) = delete;
 		GLUniformBuffer& operator=(const GLUniformBuffer&) = delete;
 		GLUniformBuffer(GLUniformBuffer&& Ubuf)noexcept;
 		GLUniformBuffer& operator=(GLUniformBuffer&& Ubuf)noexcept;
 		virtual ~GLUniformBuffer() { Release(); };
-		virtual void SetData(void* data, size_t size);
-		virtual void SetData(void* data, size_t offset, size_t size);
+		virtual void SetData(void* data, size_t Size);
+		virtual void SetData(void* data, size_t offset, size_t Size);
 		virtual void Bind(unsigned int BindingPoint);
-		virtual void BindRange(unsigned int BindingPoint ,size_t start, size_t size);
+		virtual void BindRange(unsigned int BindingPoint ,size_t start, size_t Size);
 		virtual void* MapBuffer(BufferAccess access);
 		virtual void UnMapBuffer();
 		virtual void* GetMappedAddress() { return MappedAddress; };

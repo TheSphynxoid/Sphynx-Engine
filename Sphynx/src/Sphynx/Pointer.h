@@ -40,14 +40,14 @@ namespace Sphynx {
 	template<class T>
 	class ArrayDeallocator : public Deallocator_Base {
 		T* ptr;
-		size_t size;
+		size_t Size;
 		void I_Delete() {
 			delete[] ptr;
 		}
 	public:
 		ArrayDeallocator(T* _ptr) {
 			ptr = _ptr;
-			size = sizeof(ptr);
+			Size = sizeof(ptr);
 		}
 	};
 	class PointerBase {
@@ -224,7 +224,7 @@ namespace Sphynx {
 	template<class Obj, typename... Args>
 	[[nodiscard]] static std::enable_if_t<std::is_array_v<Obj>, Pointer<Obj>*> AllocatePointer(Args&&... args) {
 		//I think this shouldn't work.
-		const size_t size = std::index_sequence<sizeof...(args)>::size();
+		const size_t Size = std::index_sequence<sizeof...(args)>::Size();
 		Pointer<Obj>* ptr = new Pointer<Obj>(new std::remove_pointer_t<Obj>[std::extent_v<Obj>]());
 		ptr->SelfDestroy = true;
 		return ptr;

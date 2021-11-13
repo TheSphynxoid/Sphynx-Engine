@@ -195,6 +195,9 @@
     </ClInclude>
     <ClInclude Include="src\Sphynx\Scene.h" />
     <ClInclude Include="src\Sphynx\Core\SceneManager.h" />
+    <ClInclude Include="src\Sphynx\Core\Scripting\ScriptBehviour.h" />
+    <ClInclude Include="src\Sphynx\Core\Memory.h" />
+    <ClInclude Include="src\Sphynx\Core\LinkedPool.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Sphynx\Application.cpp">
@@ -308,6 +311,8 @@
     <ClCompile Include="src\Sphynx\Core\Graphics\Window.cpp" />
     <ClCompile Include="src\Sphynx\Scene.cpp" />
     <ClCompile Include="src\Sphynx\Core\SceneManager.cpp" />
+    <ClCompile Include="src\Sphynx\Core\Scripting\ScriptBehviour.cpp" />
+    <ClCompile Include="src\Sphynx\Core\LinkedPool.cpp" />
   </ItemGroup>
   <ItemGroup>
     <CopyFileToFolders Include="src\Sphynx\Scripts\Testing.as">

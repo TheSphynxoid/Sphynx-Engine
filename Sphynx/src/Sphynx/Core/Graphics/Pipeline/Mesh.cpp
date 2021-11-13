@@ -6,7 +6,7 @@
 using namespace Sphynx::Core::Graphics::GL;
 #endif
 using namespace Sphynx::Core::Graphics;
-VertexBuffer* Sphynx::Core::Graphics::VertexBuffer::Create(float* vertices, size_t size)
+VertexBuffer* Sphynx::Core::Graphics::VertexBuffer::Create(float* vertices, size_t Size)
 {
 	switch (CurrentPlatform)
 	{
@@ -14,17 +14,17 @@ VertexBuffer* Sphynx::Core::Graphics::VertexBuffer::Create(float* vertices, size
 #ifdef DX_IMPL
 		static_assert(true, "DirectX Not Implemented");
 #else
-		return new GLVertexBuffer(vertices, size);
+		return new GLVertexBuffer(vertices, Size);
 #endif
 	case Sphynx::Platform::Linux:
-		return new GLVertexBuffer(vertices, size);
+		return new GLVertexBuffer(vertices, Size);
 	default:
 		break;
 	}
     return nullptr;
 }
 
-VertexBuffer* Sphynx::Core::Graphics::VertexBuffer::CreateEmpty(size_t size)
+VertexBuffer* Sphynx::Core::Graphics::VertexBuffer::CreateEmpty(size_t Size)
 {
 	switch (CurrentPlatform)
 	{
@@ -32,17 +32,17 @@ VertexBuffer* Sphynx::Core::Graphics::VertexBuffer::CreateEmpty(size_t size)
 #ifdef DX_IMPL
 		static_assert(true, "DirectX Not Implemented");
 #else
-		return new GLVertexBuffer(size);
+		return new GLVertexBuffer(Size);
 #endif
 	case Sphynx::Platform::Linux:
-		return new GLVertexBuffer(size);
+		return new GLVertexBuffer(Size);
 	default:
 		break;
 	}
 	return nullptr;
 }
 
-IndexBuffer* Sphynx::Core::Graphics::IndexBuffer::Create(unsigned int* indices, size_t size)
+IndexBuffer* Sphynx::Core::Graphics::IndexBuffer::Create(unsigned int* indices, size_t Size)
 {
 	switch (CurrentPlatform)
 	{
@@ -50,10 +50,10 @@ IndexBuffer* Sphynx::Core::Graphics::IndexBuffer::Create(unsigned int* indices, 
 #ifdef DX_IMPL
 		static_assert(true, "DirectX Not Implemented");
 #else
-		return new GLIndexBuffer(indices, size);
+		return new GLIndexBuffer(indices, Size);
 #endif
 	case Sphynx::Platform::Linux:
-		return new GLIndexBuffer(indices, size);
+		return new GLIndexBuffer(indices, Size);
 	default:
 		break;
 	}

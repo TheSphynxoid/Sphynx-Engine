@@ -474,7 +474,7 @@ void ImGui_ImplGlfw_NewFrame()
     ImGuiIO& io = ImGui::GetIO();
     IM_ASSERT(io.Fonts->IsBuilt() && "Font atlas not built! It is generally built by the renderer backend. Missing call to renderer _NewFrame() function? e.g. ImGui_ImplOpenGL3_NewFrame().");
 
-    // Setup display size (every frame to accommodate for window resizing)
+    // Setup display Size (every frame to accommodate for window resizing)
     int w, h;
     int display_w, display_h;
     glfwGetWindowSize(g_Window, &w, &h);
@@ -521,7 +521,7 @@ static void ImGui_ImplGlfw_WindowCloseCallback(GLFWwindow* window)
         viewport->PlatformRequestClose = true;
 }
 
-// GLFW may dispatch window pos/size events after calling glfwSetWindowPos()/glfwSetWindowSize().
+// GLFW may dispatch window pos/Size events after calling glfwSetWindowPos()/glfwSetWindowSize().
 // However: depending on the platform the callback may be invoked at different time:
 // - on Windows it appears to be called within the glfwSetWindowPos()/glfwSetWindowSize() call
 // - on Linux it is queued and invoked during glfwPollEvents()
@@ -697,21 +697,21 @@ static ImVec2 ImGui_ImplGlfw_GetWindowSize(ImGuiViewport* viewport)
     return ImVec2((float)w, (float)h);
 }
 
-static void ImGui_ImplGlfw_SetWindowSize(ImGuiViewport* viewport, ImVec2 size)
+static void ImGui_ImplGlfw_SetWindowSize(ImGuiViewport* viewport, ImVec2 Size)
 {
     ImGuiViewportDataGlfw* data = (ImGuiViewportDataGlfw*)viewport->PlatformUserData;
 #if __APPLE__ && !GLFW_HAS_OSX_WINDOW_POS_FIX
     // Native OS windows are positioned from the bottom-left corner on macOS, whereas on other platforms they are
     // positioned from the upper-left corner. GLFW makes an effort to convert macOS style coordinates, however it
-    // doesn't handle it when changing size. We are manually moving the window in order for changes of size to be based
+    // doesn't handle it when changing Size. We are manually moving the window in order for changes of Size to be based
     // on the upper-left corner.
     int x, y, width, height;
     glfwGetWindowPos(data->Window, &x, &y);
     glfwGetWindowSize(data->Window, &width, &height);
-    glfwSetWindowPos(data->Window, x, y - height + size.y);
+    glfwSetWindowPos(data->Window, x, y - height + Size.y);
 #endif
     data->IgnoreWindowSizeEventFrame = ImGui::GetFrameCount();
-    glfwSetWindowSize(data->Window, (int)size.x, (int)size.y);
+    glfwSetWindowSize(data->Window, (int)Size.x, (int)Size.y);
 }
 
 static void ImGui_ImplGlfw_SetWindowTitle(ImGuiViewport* viewport, const char* title)

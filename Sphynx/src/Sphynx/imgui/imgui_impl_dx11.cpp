@@ -631,7 +631,7 @@ static void ImGui_ImplDX11_DestroyWindow(ImGuiViewport* viewport)
     viewport->RendererUserData = NULL;
 }
 
-static void ImGui_ImplDX11_SetWindowSize(ImGuiViewport* viewport, ImVec2 size)
+static void ImGui_ImplDX11_SetWindowSize(ImGuiViewport* viewport, ImVec2 Size)
 {
     ImGuiViewportDataDx11* data = (ImGuiViewportDataDx11*)viewport->RendererUserData;
     if (data->RTView)
@@ -642,7 +642,7 @@ static void ImGui_ImplDX11_SetWindowSize(ImGuiViewport* viewport, ImVec2 size)
     if (data->SwapChain)
     {
         ID3D11Texture2D* pBackBuffer = NULL;
-        data->SwapChain->ResizeBuffers(0, (UINT)size.x, (UINT)size.y, DXGI_FORMAT_UNKNOWN, 0);
+        data->SwapChain->ResizeBuffers(0, (UINT)Size.x, (UINT)Size.y, DXGI_FORMAT_UNKNOWN, 0);
         data->SwapChain->GetBuffer(0, IID_PPV_ARGS(&pBackBuffer));
         if (pBackBuffer == NULL) { fprintf(stderr, "ImGui_ImplDX11_SetWindowSize() failed creating buffers.\n"); return; }
         g_pd3dDevice->CreateRenderTargetView(pBackBuffer, NULL, &data->RTView);

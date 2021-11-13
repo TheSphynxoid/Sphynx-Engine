@@ -37,7 +37,7 @@ public:
 	{
 		// The script engine must release each string 
 		// constant that it has requested
-		assert(stringCache.size() == 0);
+		assert(stringCache.Size() == 0);
 	}
 
 	const void *GetStringConstant(const char *data, asUINT length)
@@ -106,7 +106,7 @@ static CStdStringFactory *stringFactory = 0;
 
 // TODO: Make this public so the application can also use the string 
 //       factory and share the string constants if so desired, or to
-//       monitor the size of the string factory cache.
+//       monitor the Size of the string factory cache.
 CStdStringFactory *GetStdStringFactorySingleton()
 {
 	if( stringFactory == 0 )
@@ -331,7 +331,7 @@ static string AddBoolString(bool b, const string &str)
 
 static char *StringCharAt(unsigned int i, string &str)
 {
-	if( i >= str.size() )
+	if( i >= str.Size() )
 	{
 		// Set a script exception
 		asIScriptContext *ctx = asGetActiveContext();
@@ -493,7 +493,7 @@ static string formatInt(asINT64 value, const string &options, asUINT width)
 	buf.resize(width+30);
 #if _MSC_VER >= 1400 && !defined(__S3E__)
 	// MSVC 8.0 / 2005 or newer
-	sprintf_s(&buf[0], buf.size(), fmt.c_str(), width, value);
+	sprintf_s(&buf[0], buf.Size(), fmt.c_str(), width, value);
 #else
 	sprintf(&buf[0], fmt.c_str(), width, value);
 #endif
@@ -537,7 +537,7 @@ static string formatUInt(asQWORD value, const string &options, asUINT width)
 	buf.resize(width+30);
 #if _MSC_VER >= 1400 && !defined(__S3E__)
 	// MSVC 8.0 / 2005 or newer
-	sprintf_s(&buf[0], buf.size(), fmt.c_str(), width, value);
+	sprintf_s(&buf[0], buf.Size(), fmt.c_str(), width, value);
 #else
 	sprintf(&buf[0], fmt.c_str(), width, value);
 #endif
@@ -573,7 +573,7 @@ static string formatFloat(double value, const string &options, asUINT width, asU
 	buf.resize(width+precision+50);
 #if _MSC_VER >= 1400 && !defined(__S3E__)
 	// MSVC 8.0 / 2005 or newer
-	sprintf_s(&buf[0], buf.size(), fmt.c_str(), width, precision, value);
+	sprintf_s(&buf[0], buf.Size(), fmt.c_str(), width, precision, value);
 #else
 	sprintf(&buf[0], fmt.c_str(), width, precision, value);
 #endif
@@ -768,13 +768,13 @@ void RegisterStdString_Native(asIScriptEngine *engine)
 	r = engine->RegisterObjectMethod("string", "string opAdd(const string &in) const", asFUNCTIONPR(operator +, (const string &, const string &), string), asCALL_CDECL_OBJFIRST); assert( r >= 0 );
 
 	// The string length can be accessed through methods or through virtual property
-	// TODO: Register as size() for consistency with other types
+	// TODO: Register as Size() for consistency with other types
 #if AS_USE_ACCESSORS != 1
 	r = engine->RegisterObjectMethod("string", "uint length() const", asFUNCTION(StringLength), asCALL_CDECL_OBJLAST); assert( r >= 0 );
 #endif
 	r = engine->RegisterObjectMethod("string", "void resize(uint)", asFUNCTION(StringResize), asCALL_CDECL_OBJLAST); assert( r >= 0 );
 #if AS_USE_STLNAMES != 1 && AS_USE_ACCESSORS == 1
-	// Don't register these if STL names is used, as they conflict with the method size()
+	// Don't register these if STL names is used, as they conflict with the method Size()
 	r = engine->RegisterObjectMethod("string", "uint get_length() const property", asFUNCTION(StringLength), asCALL_CDECL_OBJLAST); assert( r >= 0 );
 	r = engine->RegisterObjectMethod("string", "void set_length(uint) property", asFUNCTION(StringResize), asCALL_CDECL_OBJLAST); assert( r >= 0 );
 #endif
@@ -1044,7 +1044,7 @@ static void StringCharAtGeneric(asIScriptGeneric * gen)
 	unsigned int index = gen->GetArgDWord(0);
 	string * self = static_cast<string *>(gen->GetObject());
 
-	if (index >= self->size())
+	if (index >= self->Size())
 	{
 		// Set a script exception
 		asIScriptContext *ctx = asGetActiveContext();

@@ -11,6 +11,7 @@
 #include "Camera.h"
 #include "Core/MeshRenderer.h"
 #include "Core/Scripting/AsScript.h"
+#include "Core/LinkedPool.h"
 #undef GetApplication
 #undef GetMainWindow
 
@@ -71,6 +72,7 @@ class MovementComp : public Sphynx::Component {
 
 void Sphynx::Application::Run()
 {
+	
 	Camera::PrimaryCamera->AddComponent<Camera>();
 	Events::GlobalEventSystem::GetInstance()->DispatchImmediate<Events::OnApplicationStart>(Events::OnApplicationStart());
 	threadpool.Start(this);
@@ -81,6 +83,11 @@ void Sphynx::Application::Run()
 	Square.GetTransform()->Rotate(30, glm::vec3(0.0f, 1.0f, 0.0f));
 	Square.AddComponent<Sphynx::Core::Scripting::AsScript>("AsScript.as","TestModule");
 	Square.AddComponent<MovementComp>();
+	Sphynx::LinkedPool lp = Sphynx::LinkedPool<int>();
+	lp.push(5);
+	lp.push(12);
+	Core_Info(lp.Size());
+	lp.remove(2);
 	Input::Init();
 	Start();
 	Time::Start();

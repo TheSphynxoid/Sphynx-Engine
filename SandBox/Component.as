@@ -1,6 +1,11 @@
 [Native("Component.h")]
-abstract class Component{
+abstract shared class Component {
     private uint64 InstanceID;
-    [NativeFunction]
-    public bool IsActive();
+    virtual void Start() = 0;
+    bool IsActive(){
+        return IsNativeActive(this);
+    }
+    string GetName(){
+        return NativeGetName(this);
+    }
 }
