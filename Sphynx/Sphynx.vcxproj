@@ -98,11 +98,6 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\Sphynx\Core\LinkedPool.h" />
-    <ClInclude Include="src\Sphynx\Core\Memory.h" />
-    <ClInclude Include="src\Sphynx\Core\Scripting\ScriptBehviour.h" />
-    <ClInclude Include="src\Sphynx\Scene.h" />
-    <ClInclude Include="src\Sphynx\Core\SceneManager.h" />
     <ClInclude Include="src\Sphynx.h" />
     <ClInclude Include="src\Sphynx\Application.h" />
     <ClInclude Include="src\Sphynx\Camera.h" />
@@ -127,10 +122,14 @@
     <ClInclude Include="src\Sphynx\Core\Graphics\Platform\GLWindow.h" />
     <ClInclude Include="src\Sphynx\Core\Graphics\Window.h" />
     <ClInclude Include="src\Sphynx\Core\InternalUtility.h" />
+    <ClInclude Include="src\Sphynx\Pool.h" />
+    <ClInclude Include="src\Sphynx\Core\Memory.h" />
     <ClInclude Include="src\Sphynx\Core\MeshRenderer.h" />
     <ClInclude Include="src\Sphynx\Core\Module.h" />
+    <ClInclude Include="src\Sphynx\Core\SceneManager.h" />
     <ClInclude Include="src\Sphynx\Core\Scripting\AsScript.h" />
     <ClInclude Include="src\Sphynx\Core\Scripting\Script.h" />
+    <ClInclude Include="src\Sphynx\Core\Scripting\ScriptBehviour.h" />
     <ClInclude Include="src\Sphynx\Core\Scripting\ScriptingEngine.h" />
     <ClInclude Include="src\Sphynx\Core\System.h" />
     <ClInclude Include="src\Sphynx\Core\ThreadPool.h" />
@@ -149,20 +148,18 @@
     <ClInclude Include="src\Sphynx\Object.h" />
     <ClInclude Include="src\Sphynx\PlatformMacros.h" />
     <ClInclude Include="src\Sphynx\Pointer.h" />
+    <ClInclude Include="src\Sphynx\Scene.h" />
     <ClInclude Include="src\Sphynx\SpTime.h" />
     <ClInclude Include="src\Sphynx\Vector.h" />
     <ClInclude Include="src\Sphynx\imgui\imgui_impl_dx11.h" />
     <ClInclude Include="src\Sphynx\imgui\imgui_impl_dx12.h" />
     <ClInclude Include="src\Sphynx\imgui\imgui_impl_glfw.h" />
     <ClInclude Include="src\Sphynx\imgui\imgui_impl_opengl3.h" />
+    <ClInclude Include="src\Sphynx\imgui\imgui_impl_opengl3_loader.h" />
     <ClInclude Include="src\Sphynx\imgui\imgui_impl_win32.h" />
     <ClInclude Include="src\Sphynx\pch.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Sphynx\Core\LinkedPool.cpp" />
-    <ClCompile Include="src\Sphynx\Core\Scripting\ScriptBehviour.cpp" />
-    <ClCompile Include="src\Sphynx\Scene.cpp" />
-    <ClCompile Include="src\Sphynx\Core\SceneManager.cpp" />
     <ClCompile Include="src\Sphynx\Application.cpp" />
     <ClCompile Include="src\Sphynx\Camera.cpp" />
     <ClCompile Include="src\Sphynx\Component.cpp" />
@@ -183,8 +180,10 @@
     <ClCompile Include="src\Sphynx\Core\Graphics\Platform\GLWindow.cpp" />
     <ClCompile Include="src\Sphynx\Core\Graphics\Window.cpp" />
     <ClCompile Include="src\Sphynx\Core\MeshRenderer.cpp" />
+    <ClCompile Include="src\Sphynx\Core\SceneManager.cpp" />
     <ClCompile Include="src\Sphynx\Core\Scripting\AsScript.cpp" />
     <ClCompile Include="src\Sphynx\Core\Scripting\Script.cpp" />
+    <ClCompile Include="src\Sphynx\Core\Scripting\ScriptBehviour.cpp" />
     <ClCompile Include="src\Sphynx\Core\Scripting\ScriptingEngine.cpp" />
     <ClCompile Include="src\Sphynx\Core\ThreadPool.cpp" />
     <ClCompile Include="src\Sphynx\Core\Transform.cpp" />
@@ -193,6 +192,7 @@
     <ClCompile Include="src\Sphynx\Logger.cpp" />
     <ClCompile Include="src\Sphynx\Object.cpp" />
     <ClCompile Include="src\Sphynx\Pointer.cpp" />
+    <ClCompile Include="src\Sphynx\Scene.cpp" />
     <ClCompile Include="src\Sphynx\SpTime.cpp" />
     <ClCompile Include="src\Sphynx\imgui\imgui_impl_dx11.cpp" />
     <ClCompile Include="src\Sphynx\imgui\imgui_impl_dx12.cpp" />
@@ -204,9 +204,8 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <CopyFileToFolders Include="src\Sphynx\Scripts\Testing.as">
-      <FileType>Document</FileType>
-    </CopyFileToFolders>
+    <None Include="src\Sphynx\Scripts\Component.as" />
+    <None Include="src\Sphynx\Scripts\Testing.as" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="dep\GLFW.vcxproj">
@@ -221,9 +220,6 @@
     <ProjectReference Include="dep\angelscript\sdk\angelscript\projects\msvc2019\angelscript.vcxproj">
       <Project>{39E6AF97-6BA3-4A72-8C61-BCEBF214EBFD}</Project>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <AngelScriptRule Include="src\Sphynx\Scripts\Component.as" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

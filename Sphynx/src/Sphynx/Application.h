@@ -11,7 +11,7 @@
 #include <memory>
 #include <iostream>
 #include "Core/ThreadPool.h"
-
+#define Sphynx_Version "V0.3.4-Alpha"
 namespace Sphynx {
 	namespace Core {
 		class IWindow;

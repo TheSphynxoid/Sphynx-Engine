@@ -2,7 +2,6 @@
 #define Sphynx_GL_Renderer
 #include "Core/Graphics/Pipeline/Renderer.h"
 #include <map>
-#include <vector>
 #include "Events/WindowEvents.h"
 #include "GLShader.h"
 #include "GLMaterial.h"
