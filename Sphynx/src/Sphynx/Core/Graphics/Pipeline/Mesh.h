@@ -110,7 +110,7 @@ namespace Sphynx::Core::Graphics {
 		};
 		unsigned int GetStride() { return Stride; };
 		std::vector<BufferElement>& GetElements() { return Elements; };
-		size_t GetElementCount()const noexcept { return Elements.Size(); };
+		size_t GetElementCount()const noexcept { return Elements.size(); };
 		std::vector<BufferElement>::iterator begin()noexcept { return Elements.begin(); };
 		std::vector<BufferElement>::iterator end()noexcept { return Elements.end(); };
 		std::vector<BufferElement>::const_iterator begin() const noexcept { return Elements.begin(); }

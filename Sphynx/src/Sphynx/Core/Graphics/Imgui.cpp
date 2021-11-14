@@ -99,7 +99,7 @@ void Sphynx::Core::Imgui::RemoveOverlayWindow(IOverlayWindow* Window)
 
 int Sphynx::Core::Imgui::GetNumberOfWindows()
 {
-	return Overlays.Size();
+	return Overlays.size();
 }
 
 void Sphynx::Core::Imgui::Shutdown()
@@ -155,9 +155,9 @@ ImVec4 GetLevelColor(spdlog::level::level_enum& lvl)
 
 void Sphynx::Core::DebugWindow::OnEventLog(OnLog& e)
 {
-	int old_size = Buf.Size();
+	int old_size = Buf.size();
 	Buf.appendfv(e.msg.c_str(), NULL);
-	for (int new_size = Buf.Size(); old_size < new_size; old_size++) {
+	for (int new_size = Buf.size(); old_size < new_size; old_size++) {
 		if (Buf[old_size] == '\n') {
 			LineOffsets.push_back(old_size + 1);
 			Colors.push_back(GetLevelColor(e.level));
@@ -277,7 +277,7 @@ void Sphynx::Core::DebugWindow::Draw()
 					std::array<char, 5> index = std::array<char,5>();
 					auto [ptr, ec] = std::to_chars(index.data(), index.data() + 5, i);
 					char d[256];
-					memset(d, '\n', sizeof(char) * (strlen(name) + index.Size()));
+					memset(d, '\n', sizeof(char) * (strlen(name) + index.size()));
 					strcpy_s(d, name);
 					strcat_s(d, " ##");
 					strcat_s(d, index.data());

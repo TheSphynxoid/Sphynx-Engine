@@ -20,7 +20,14 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 		"glfw/src/input.c",
 		"glfw/src/monitor.c",
 		"glfw/src/vulkan.c",
-		"glfw/src/window.c"
+		"glfw/src/window.c",
+		"glfw/src/platform.c",
+		"glfw/src/null_platform.h",
+		"glfw/src/null_joystick.h",
+        "glfw/src/null_init.c",
+		"glfw/src/null_monitor.c",
+		"glfw/src/null_window.c",
+		"glfw/src/null_joystick.c"
 	}
     
 	filter "system:linux"
@@ -60,6 +67,7 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 			"glfw/src/win32_time.c",
 			"glfw/src/win32_thread.c",
 			"glfw/src/win32_window.c",
+			"glfw/src/win32_module.c",
 			"glfw/src/wgl_context.c",
 			"glfw/src/egl_context.c",
 			"glfw/src/osmesa_context.c"

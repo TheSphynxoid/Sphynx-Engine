@@ -1,7 +1,7 @@
 #pragma once
 #include <new>
-#include <vector>
-
+#include <memory>
+#include "LinkedPool.h"
 #define DetailBlockSize sizeof(BlockDetails) * PageCount * 15
 
 namespace Sphynx::Core {
@@ -47,7 +47,7 @@ namespace Sphynx::Core {
 					//There is Space.
 					//The block is Now Full.
 					block.isEmpty = false;
-					//The Block's Size will change.
+					//The Block's size will change.
 					auto leftout = block.Size - size;
 					//The Blocks is an Exact fit.
 					if (leftout == 0) {
@@ -65,6 +65,8 @@ namespace Sphynx::Core {
 					return block;
 				}
 			}
+			BlockDetails b = { (void*)0,0,nullptr,nullptr,nullptr,true };
+			return b;
 		}
 		static BlockDetails& GetBlockDetail(void* BlockPtr) {
 			return Blocks[0];
@@ -73,6 +75,7 @@ namespace Sphynx::Core {
 	public:
 		static void InitMemory() {
 			DetailList = (BlockDetails*)malloc(sizeof(BlockDetails) * PageCount * 15);
+			if (!DetailList)throw std::bad_alloc();
 			memset(DetailList, 0, DetailBlockSize);
 			for (int i = 0; i < PageCount; i++) {
 				Pages[i] = malloc(PageSize);
@@ -82,9 +85,9 @@ namespace Sphynx::Core {
 		static void SetPageSize(size_t Size) {
 			PageSize = Size;
 			for (int i = 0; i < PageCount; i++) {
-				//TODO: Write a Page struct that holds Pages Size.
+				//TODO: Write a Page struct that holds Pages size.
 				//Calling Realloc has a chance to invalidate all Object within the page.
-				//Pages[i] = realloc(Pages[i], Size);
+				//Pages[i] = realloc(Pages[i], size);
 			}
 		}
 		static void AllocatePages(size_t numPages) {
@@ -122,7 +125,7 @@ namespace Sphynx::Core {
 		}
 	};
 }
-
+#ifdef SPHMEM
 void* operator new(size_t size) {
 	return Sphynx::Core::Memory::Allocate(size);
 }
@@ -135,3 +138,4 @@ void operator delete(void* ptr) {
 void operator delete[](void* ptr) {
 	Sphynx::Core::Memory::Deallocate(ptr);
 }
+#endif

@@ -11,7 +11,7 @@ namespace Sphynx::Core::Graphics {
 	public:
 		virtual ~UniformBuffer() = default;
 		virtual void SetData(void* data, size_t Size) = 0;
-		//If The Size is larger than the preallocated buffer this will be ignored.
+		//If The size is larger than the preallocated buffer this will be ignored.
 		virtual void SetData(void* data, size_t offset, size_t Size) = 0;
 		virtual void Bind(unsigned int BindingPoint) = 0;
 		virtual void BindRange(unsigned int BindingPoint, size_t start, size_t end) = 0;

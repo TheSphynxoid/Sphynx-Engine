@@ -95,7 +95,7 @@ namespace Sphynx::Core::Graphics::GL {
                 i++;
             }
         };
-        virtual unsigned int GetTextureCount() { return textures.Size(); };
+        virtual unsigned int GetTextureCount() { return textures.size(); };
         virtual const unsigned int GetUniformLocation(const char* name);
         virtual void ReloadShaders(const ShaderPack& pack);
         virtual Shader* GetDefaultShader(ShaderType type);
