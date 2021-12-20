@@ -43,6 +43,7 @@ namespace Sphynx::Core {
 		//May be removed as all this does is Queue OnWindowUpdate.
 		void Update()
 		{
+			
 			OnUpdate();
 			OwnerEvent.QueueEvent<Events::OnWindowUpdate>(Events::OnWindowUpdate(this));
 		};

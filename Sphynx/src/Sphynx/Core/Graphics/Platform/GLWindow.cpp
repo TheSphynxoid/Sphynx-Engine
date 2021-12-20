@@ -207,7 +207,8 @@ void Sphynx::Core::GLWindow::OnUpdate()
 
 void Sphynx::Core::GLWindow::OnResize(Events::OnWindowResize& e)
 {
-	glfwSetWindowSize(window, e.Width, e.Height);
+	glfwSetWindowSize(((GLFWwindow*)e.GetWindow()->GetNativePointer()), e.Width, e.Height);
+	//glViewport(0, 0, e.Width, e.Height);
 }
 
 void* Sphynx::Core::GLWindow::GetNativePointer()
