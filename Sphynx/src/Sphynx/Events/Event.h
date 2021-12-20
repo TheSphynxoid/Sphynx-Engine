@@ -105,7 +105,6 @@ namespace Sphynx::Events {
         void Subscribe(T* instance, void (T::* memberFunction)(EventType&))
         {
             Handlers* handlers = subscribers[std::type_index(typeid(EventType))];
-
             //First time initialization
             if (handlers == nullptr) {
                 handlers = new Handlers();

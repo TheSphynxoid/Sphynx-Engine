@@ -10,14 +10,14 @@
 std::shared_ptr<spdlog::logger> Sphynx::Logger::InternalLogger;
 std::shared_ptr<spdlog::logger> Sphynx::Logger::ClientLogger;
 
+
+
 void Sphynx::Logger::Init()
 {
-	auto sink = std::make_shared<LoggerSink>();
-	InternalLogger = std::make_shared<spdlog::logger>("Sphynx", sink);
+	InternalLogger = std::make_shared<spdlog::logger>("Sphynx", std::make_shared<LoggerSink>());
 	InternalLogger->set_pattern("%^[%n::%l](%!thread id:%t)%v%$");
 	InternalLogger->set_level(spdlog::level::trace);
-	sink = std::make_shared<LoggerSink>();
-	ClientLogger = std::make_shared<spdlog::logger>("Application", sink);
+	ClientLogger = std::make_shared<spdlog::logger>("Application", std::make_shared<LoggerSink>());
 	ClientLogger->set_pattern("%^[%n::%l](%!thread id:%t)%v%$");
 	ClientLogger->set_level(spdlog::level::trace);
 }

@@ -6,6 +6,7 @@
 //#include "Core/Graphics/Pipeline/Renderer.h"
 #include "Core.h"
 #include "Input.h"
+#include "glm/vec4.hpp"
 
 namespace Sphynx::Core {
 	namespace Graphics {
@@ -71,6 +72,7 @@ namespace Sphynx::Core {
 		virtual Bounds GetBounds() = 0;
 		virtual int GetHeight() = 0;
 		virtual int GetWidth() = 0;
+		virtual void SetClearColor(glm::vec4 color) = 0;
 		const char* GetTitle() {
 			return Title.c_str();
 		};

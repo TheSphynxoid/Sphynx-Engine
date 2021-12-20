@@ -26,9 +26,8 @@ namespace Sphynx::Core::Graphics::GL {
 		virtual void Render() override;
 		//Clears The Screen with color specified with SetClearColor(Vec4 color).
 		virtual void Clear() override;
+		virtual void SetDepthTesting(bool value) override;
 		//Submits Object for rendering.
-		//Sets the screen clear color.
-		void SetClearColor(Vec4 color);
 	};
 }
 #else

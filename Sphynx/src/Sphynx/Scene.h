@@ -1,5 +1,6 @@
 #pragma once
 #include "GameObject.h"
+#include "Camera.h"
 
 namespace Sphynx::Core {
 	class Scene
@@ -11,6 +12,10 @@ namespace Sphynx::Core {
 		std::string SceneName = "Scene";
 		bool IsCurrent = false;
 		Scene* NextScene;
+		GameObject PrimaryCameraObject;
+		Camera* PrimaryCamera;
+
+		void OnFrameBufferResize(Events::OnWindowResize& e);
 	public:
 		Scene();
 		~Scene();
@@ -18,14 +23,19 @@ namespace Sphynx::Core {
 			return SceneName; 
 		};
 		void SetName(const std::string& name) { 
-			SceneName = name; 
+			SceneName = name;
 		};
 		void AddGameObject(GameObject* obj);
 		void RemoveGameObject(GameObject* obj);
 		GameObjects GetGameObjects();
 		void Start();
 		void Update();
-
+		Camera* GetPrimaryCamera() { 
+			return PrimaryCamera;
+		};
+		GameObject& GetPrimaryCameraObject() {
+			return PrimaryCameraObject;
+		}
 		friend class SceneManager;
 	};
 }

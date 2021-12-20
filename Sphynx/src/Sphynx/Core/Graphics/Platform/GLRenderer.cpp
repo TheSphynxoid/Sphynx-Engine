@@ -42,7 +42,6 @@ void Sphynx::Core::Graphics::GL::GLRenderer::Render()
 	//packed.
 	for (auto& pair : RenderQueue) {
 		pair.second->front().mat->Bind();
-		glUseProgram(pair.first);
 		for (auto rend : *pair.second) {
 			rend.mesh->Bind();
 			//This is Probably the reason The Cubes Renderer on the same place.
@@ -58,17 +57,24 @@ void Sphynx::Core::Graphics::GL::GLRenderer::Render()
 			}
 			rend.mesh->UnBind();
 		}
-		//Clearing Queue for new loop.
-		pair.second->clear();
 	}
-	//RenderQueue.clear();
+	RenderQueue.clear();
 }
 
 void Sphynx::Core::Graphics::GL::GLRenderer::Clear()
 {
 	//TODO:using Nvidia Nsight makes it seem like glClear is Returning GL_Invalid_Operation, there is an error
 	//occuring, Fix it.
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+	/*RenderQueue.clear();*/
+}
+
+void Sphynx::Core::Graphics::GL::GLRenderer::SetDepthTesting(bool value)
+{
+	if (value)
+		glDisable(GL_DEPTH_TEST);
+	else
+		glEnable(GL_DEPTH_TEST);
 }
 
 void Sphynx::Core::Graphics::GL::GLRenderer::OnSubmit(RenderObject rend)
@@ -86,9 +92,4 @@ void Sphynx::Core::Graphics::GL::GLRenderer::OnSubmit(RenderObject rend)
 		RenderQueue[((GLMaterial*)rend.mat)->ProgramId] = l;
 	}
 	l->push_back(rend);
-}
-
-void Sphynx::Core::Graphics::GL::GLRenderer::SetClearColor(Vec4 color)
-{
-	glClearColor(color.r, color.g, color.b, color.a);
 }

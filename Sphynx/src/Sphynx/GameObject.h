@@ -25,10 +25,18 @@ namespace Sphynx {
 		GameObject();
 		GameObject(const GameObject& obj)noexcept;
 		GameObject(GameObject&& obj)noexcept;
+		~GameObject();
 		GameObject& operator=(GameObject&& obj)noexcept;
 		GameObject& operator=(const GameObject& obj)noexcept;
 		void Destroy() { IsAlive = false; };
 		bool IsActive() { return IsAlive; };
+		void Start() {
+			if (IsAlive) {
+				for (auto comp : Components) {
+					comp->Start();
+				}
+			}
+		}
 		void Update() {
 			if (IsAlive) {
 				for (auto comp : Components) {

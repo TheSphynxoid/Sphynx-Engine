@@ -49,7 +49,7 @@ namespace Sphynx::Core {
 		void ImGuiOnWindowShutdown(Events::OnWindowClose& e);
 	public:
 		void Start(Application* app)override;
-		void OnOverlayUpdate(Events::OnOverlayUpdate& e);
+		void OnOverlayUpdate();
 		void Update()override;
 		void Shutdown()override;
 		//We Can Also Use the event System. Instead of holding window we just dispatch an event.
@@ -71,7 +71,6 @@ namespace Sphynx::Core {
 		Events::EventSystem* eventsystem;
 		Scripting::ScriptingEngine scripts;
 		Core::IWindow* window;
-		Core::IWindow* extra;
 		char TitleBuffer[128];
 		//Put the in the cpp. I Couldn't include imgui.h because of SandBox.
 		//std::vector<char> Buf;
