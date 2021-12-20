@@ -31,8 +31,10 @@ namespace Sphynx {
 #endif
 	public:
 		Application();
-		static Application* GetApplication();
+		Application(Application&) = delete;
+		Application(Application&&) = default;
 		virtual ~Application();
+		static Application* GetApplication();
 		virtual void Update() = 0;
 		virtual void Start() = 0;
 		void Run();

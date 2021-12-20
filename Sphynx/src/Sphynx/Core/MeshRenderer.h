@@ -15,7 +15,7 @@ namespace Sphynx {
 		glm::mat4 halfEquation = glm::mat4(0.0f);
 		glm::mat4 FullEquation = glm::mat4(0.0f);
 		Sphynx::Core::Graphics::Uniform* MVPUni = nullptr;
-		virtual void OnComponentAttach(GameObject* parent) override;
+		virtual void OnComponentAttach(GameObject* Parent) override;
 		virtual void OnComponentDetach() override;
 	public:
 		MeshRenderer(Core::Graphics::Mesh* _mesh, Core::Graphics::Material* mat);
@@ -23,6 +23,7 @@ namespace Sphynx {
 		Core::Graphics::Material* GetMaterial() { return Mat; };
 		void SetMesh(Sphynx::Core::Graphics::Mesh* _mesh);
 		Core::Graphics::Mesh* GetMesh() { return mesh; };
+		virtual void Start() override;
 		virtual void Update() override;
 	};
 }

@@ -18,20 +18,48 @@ inline GLenum GetGLTextureType(Sphynx::Core::Graphics::TextureType type) {
 		return 0;
 	}
 }
+
 inline int GetNBitsFromGLFormat(Sphynx::Core::Graphics::TextureFormat format) {
 	switch (format)
 	{
 		//TODO: Complete to GL Internal Formats
-	case TextureFormat::DepthComponent:	return 1;
-	case TextureFormat::DepthStencil:	return 2;
-	case TextureFormat::Red:			return 1;
-	case TextureFormat::RG:				return 2;
-	case TextureFormat::RGB:			return 3;
-	case TextureFormat::BGR:			return 3;
-	case TextureFormat::BGRA:			return 4;
-	case TextureFormat::RGBA:			return 4;
+	case TextureFormat::Depth24_Stencil8:	return 2;
+	case TextureFormat::Red:				return 1;
+	case TextureFormat::RG:					return 2;
+	case TextureFormat::RGB:				return 3;
+	case TextureFormat::BGR:				return 3;
+	case TextureFormat::BGRA:				return 4;
+	case TextureFormat::RGBA:				return 4;
 	default:
 		return 4;
+	}
+}
+
+inline GLenum GetGLDataType(Sphynx::Core::Graphics::TextureDataFormat dformat) {
+	switch (dformat)
+	{
+	case TextureDataFormat::UByte: 					return GL_UNSIGNED_BYTE;
+	case TextureDataFormat::Byte:					return GL_BYTE;
+	case TextureDataFormat::UShort: 				return GL_UNSIGNED_INT;
+	case TextureDataFormat::Short: 					return GL_SHORT;
+	case TextureDataFormat::UInt: 					return GL_UNSIGNED_INT;
+	case TextureDataFormat::Int: 					return GL_INT;
+	case TextureDataFormat::HalfFloat:				return GL_HALF_FLOAT;
+	case TextureDataFormat::Float: 					return GL_FLOAT;
+	case TextureDataFormat::UByte_3_3_2:			return GL_UNSIGNED_BYTE_3_3_2;
+	case TextureDataFormat::UByte_2_3_3_REV: 		return GL_UNSIGNED_BYTE_2_3_3_REV;
+	case TextureDataFormat::UShort_5_6_5: 			return GL_UNSIGNED_SHORT_5_6_5;
+	case TextureDataFormat::UShort_5_6_5_REV:		return GL_UNSIGNED_SHORT_5_6_5_REV;
+	case TextureDataFormat::UShort_4_4_4_4:			return GL_UNSIGNED_SHORT_4_4_4_4;
+	case TextureDataFormat::UShort_4_4_4_4_REV: 	return GL_UNSIGNED_SHORT_4_4_4_4_REV;
+	case TextureDataFormat::UShort_5_5_5_1: 		return GL_UNSIGNED_SHORT_5_5_5_1;
+	case TextureDataFormat::UShort_1_5_5_5_REV: 	return GL_UNSIGNED_SHORT_1_5_5_5_REV;
+	case TextureDataFormat::UInt_8_8_8_8: 			return GL_UNSIGNED_INT_8_8_8_8;
+	case TextureDataFormat::UInt_8_8_8_8_REV: 		return GL_UNSIGNED_INT_8_8_8_8_REV;
+	case TextureDataFormat::UInt_10_10_10_2: 		return GL_UNSIGNED_INT_10_10_10_2;
+	case TextureDataFormat::UInt_2_10_10_10_REV: 	return GL_UNSIGNED_INT_2_10_10_10_REV;
+	case TextureDataFormat::UInt_24_8:				return GL_UNSIGNED_INT_24_8;
+	default:										return GL_UNSIGNED_BYTE;
 	}
 }
 
@@ -39,8 +67,7 @@ inline GLenum GetGLInternalFormat(Sphynx::Core::Graphics::TextureFormat format) 
 	//Ehhhhh...
 	switch (format)
 	{
-	case TextureFormat::DepthComponent:				return GL_DEPTH_COMPONENT;
-	case TextureFormat::DepthStencil:				return GL_DEPTH_STENCIL;
+	case TextureFormat::Depth24_Stencil8:			return GL_DEPTH24_STENCIL8;
 	case TextureFormat::Red:						return GL_RED;
 	case TextureFormat::Red8:						return GL_R8;
 	case TextureFormat::Red8SNorm:					return GL_R8_SNORM;
@@ -129,8 +156,7 @@ GLenum GetGLFormat(Sphynx::Core::Graphics::TextureFormat format) {
 	//Yeah...
 	switch (format)
 	{
-	case TextureFormat::DepthComponent:					return GL_DEPTH_COMPONENT;
-	case TextureFormat::DepthStencil:					return GL_DEPTH_STENCIL;
+	case TextureFormat::Depth24_Stencil8:				return GL_DEPTH_STENCIL;
 	case TextureFormat::Red:							return GL_RED;
 	case TextureFormat::Red8:							return GL_RED;
 	case TextureFormat::Red8SNorm:						return GL_RED;
@@ -215,36 +241,79 @@ GLenum GetGLFormat(Sphynx::Core::Graphics::TextureFormat format) {
 	}
 }
 
+GLenum GetGLFilter(Sphynx::Core::Graphics::TextureFilterMode filter) {
+	switch (filter)
+	{
+	case Sphynx::Core::Graphics::TextureFilterMode::Nearest:	return GL_NEAREST;
+	case Sphynx::Core::Graphics::TextureFilterMode::Linear:		return GL_LINEAR;
+	}
+	return 0;
+}
+
 void Sphynx::Core::Graphics::GL::GLTexture::Release()
 {
 	glDeleteTextures(1, &TextureID);
 	TextureID = 0;
 }
 
-Sphynx::Core::Graphics::GL::GLTexture::GLTexture(const char* path, TextureType Type, int MipmapLevel, TextureFormat format, TextureWrappingMode warp, TextureFilterMode filter, TextureMipmapMode MipmapMode)
+Sphynx::Core::Graphics::GL::GLTexture::GLTexture(const char* path, TextureType Type, int MipmapLevel, TextureFormat format, TextureDataFormat datatype, TextureWrappingMode warp, TextureFilterMode filter, TextureMipmapMode MipmapMode)
 {
 	GLTextureType = GetGLTextureType(Type);
-	int height, width, bits = 0;
-	//TODO: Implement Image Loading.
-	auto img = stbi_load(path, &width, &height, &bits, 0);
+	Format = format;
+	DataFormat = datatype;
 	//TODO: Use the bits variable to determine the Texture Format.
 	//TODO: OpenGL is returning an error somewhere before this.
 	glCreateTextures(GLTextureType, 1, &TextureID);
 	glBindTexture(GLTextureType, TextureID);
+	//TODO: Implement Image Loading.
+	void* img = NULL;
+	if(path)
+		img = stbi_load(path, &Width, &Height, &Bits, 0);
 	if (Type == TextureType::Texture2D) {
-		glTexImage2D(GL_TEXTURE_2D, MipmapLevel, GetGLInternalFormat(format), width, height, 0, GetGLFormat(format), GL_UNSIGNED_BYTE, img);
+		glTexImage2D(GL_TEXTURE_2D, MipmapLevel, GetGLInternalFormat(format), Width, Height, 0,
+			GetGLFormat(format), GetGLDataType(datatype), img);
+	}
+	else if (Type == TextureType::Texture3D) {
+	}
+	else if (Type == TextureType::Rectangle) {
+		glTexImage2D(GL_TEXTURE_RECTANGLE, MipmapLevel, GetGLInternalFormat(format), Width, Height, 0,
+			GetGLFormat(format), GetGLDataType(datatype), img);
+	}//CubeMap
+	else {
+	}
+	glGenerateMipmap(GLTextureType);
+	glTexParameteri(GLTextureType, GL_TEXTURE_MAG_FILTER, GetGLFilter(filter));
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GetGLFilter(filter));
+	stbi_image_free(img);
+}
+
+Sphynx::Core::Graphics::GL::GLTexture::GLTexture(TextureType Type, int width, int height, int MipmapLevel, 
+	TextureFormat format, TextureDataFormat datatype, TextureWrappingMode warp, TextureFilterMode filter, TextureMipmapMode MipmapMode)
+{
+	GLTextureType = GetGLTextureType(Type);
+	Format = format;
+	Width = width;
+	Height = height;
+	Bits = GetNBitsFromGLFormat(Format);
+	DataFormat = datatype;
+	//TODO: Use the bits variable to determine the Texture Format.
+	//TODO: OpenGL is returning an error somewhere before this.
+	glCreateTextures(GLTextureType, 1, &TextureID);
+	glBindTexture(GLTextureType, TextureID);
+	//TODO: Implement Image Loading.
+	if (Type == TextureType::Texture2D) {
+		glTexImage2D(GL_TEXTURE_2D, MipmapLevel, GetGLInternalFormat(format), width, height, 0, GetGLFormat(format), GetGLDataType(datatype), 0);
 	}
 	else if (Type == TextureType::Texture3D) {
 	}
 	else if (Type == TextureType::Rectangle) {
 		glTexImage2D(GL_TEXTURE_RECTANGLE, MipmapLevel, GetGLInternalFormat(format), width, height, 0,
-			GetGLFormat(format), GetGLTextureType(Type), img);
+			GetGLFormat(format), GetGLDataType(datatype), 0);
 	}//CubeMap
 	else {
 	}
-	glGenerateMipmap(GLTextureType);
-	stbi_image_free(img);
-	//OpenTextures.insert({ path,this });
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 }
 
 Sphynx::Core::Graphics::GL::GLTexture::~GLTexture()
@@ -257,15 +326,22 @@ Sphynx::Core::Graphics::GL::GLTexture::GLTexture(GLTexture&& tex)noexcept
 	std::swap(GLTextureType, tex.GLTextureType);
 	std::swap(TextureID, tex.TextureID);
 	std::swap(DeleteFlag, tex.DeleteFlag);
+	std::swap(Format, tex.Format);
+	std::swap(Width, tex.Width);
+	std::swap(Height, tex.Height);
 	std::swap(Refs, tex.Refs);
 }
 
-Sphynx::Core::Graphics::GL::GLTexture& Sphynx::Core::Graphics::GL::GLTexture::operator=(GLTexture&& tex)
+Sphynx::Core::Graphics::GL::GLTexture& Sphynx::Core::Graphics::GL::GLTexture::operator=(GLTexture&& tex)noexcept
 {
 	if (this != &tex) {
 		Release();
+		std::swap(GLTextureType, tex.GLTextureType);
 		std::swap(TextureID, tex.TextureID);
 		std::swap(DeleteFlag, tex.DeleteFlag);
+		std::swap(Format, tex.Format);
+		std::swap(Width, tex.Width);
+		std::swap(Height, tex.Height);
 		std::swap(Refs, tex.Refs);
 	}
 	return *this;
@@ -283,4 +359,16 @@ void Sphynx::Core::Graphics::GL::GLTexture::Bind()
 void Sphynx::Core::Graphics::GL::GLTexture::Unbind()
 {
 	glBindTexture(GLTextureType, 0);
+}
+
+void* Sphynx::Core::Graphics::GL::GLTexture::ReadAllPixels(TextureDataFormat data)
+{
+	//glBindTexture(GL_PIXEL_PACK_BUFFER, TextureID);
+	Bind();
+	Core_Warn("Texture::ReadAllPixels Is Incomplete : Must Get the number of bits per pixel to allocate buffer");
+	void* buf = malloc(sizeof(int) * Width * Height * Bits);
+	memset(buf, 0, sizeof(int) * Width * Height * Bits);
+	//TODO: Implement this for other texture formats.
+	glReadPixels(0, 0, Width, Height, GetGLFormat(Format), GetGLDataType(data), buf);
+	return buf;
 }

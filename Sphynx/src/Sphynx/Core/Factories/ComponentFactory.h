@@ -8,7 +8,7 @@
 namespace Sphynx::Core::Internal {
 	class ComponentFactory final
 	{
-		inline static std::unordered_map<GameObject*,std::unordered_set<std::type_index>> RegisteredTypeIDs;
+		inline static std::unordered_map<GameObject*,std::unordered_set<std::type_index>> RegisteredTypes;
 	public:
 		template<typename component, typename ...Args>
 		static component* CreateComponent(GameObject* object, Args&& ...args) {
@@ -18,7 +18,7 @@ namespace Sphynx::Core::Internal {
 			comp->_transform = object->GetTransform();
 			((Component*)comp)->OnComponentAttach(object);
 			//TypeIndex List
-			auto til = RegisteredTypeIDs[object];
+			auto til = RegisteredTypes[object];
 			til.insert(std::type_index(typeid(component)));
 			return comp;
 		}
@@ -34,7 +34,7 @@ namespace Sphynx::Core::Internal {
 			}
 			template<class comp>
 			static bool IsComponentInGameObject(GameObject* obj) {
-				return RegisteredTypeIDs[obj].find(std::type_index(typeid(comp))) != RegisteredTypeIDs[obj].end();
+				return RegisteredTypes[obj].find(std::type_index(typeid(comp))) != RegisteredTypes[obj].end();
 			}
 		}ComponentHelper;
 	};

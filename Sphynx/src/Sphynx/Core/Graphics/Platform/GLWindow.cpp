@@ -23,6 +23,7 @@ void Sphynx::Core::GLWindow::mid::Resize(GLFWwindow* win, int width, int height)
 	GLWindow& inst = GetFromGLFW(win);
 	inst.Width = width;
 	inst.Height = height;
+	inst.Resize(width, height);
 	//inst.GetEventSystem()->QueueEvent<OnWindowResize>(OnWindowResize(&inst, width, height));
 }
 
@@ -76,6 +77,11 @@ void Sphynx::Core::GLWindow::mid::Maximize(GLFWwindow* win, int value)
 	}
 }
 
+void Sphynx::Core::GLWindow::mid::FrameBufferResize(GLFWwindow* win, int width, int height)
+{
+	glViewport(0, 0, width, height);
+}
+
 bool Sphynx::Core::GLWindow::IsAlive()
 {
 	return !glfwWindowShouldClose(window);
@@ -125,6 +131,7 @@ Sphynx::Core::GLWindow::GLWindow(Application* App, Bounds WinBounds, std::string
 	glfwSetWindowFocusCallback(window, &mid::Focus);
 	glfwSetWindowIconifyCallback(window, &mid::Iconify);
 	glfwSetWindowMaximizeCallback(window, &mid::Maximize);
+	glfwSetFramebufferSizeCallback(window, &mid::FrameBufferResize);
 	//End of callbacks.
 
 	glfwFocusWindow(window);
@@ -171,9 +178,11 @@ Sphynx::Core::GLWindow::GLWindow(Application* App, Bounds WinBounds, std::string
 	glfwSetWindowFocusCallback(window, &mid::Focus);
 	glfwSetWindowIconifyCallback(window, &mid::Iconify);
 	glfwSetWindowMaximizeCallback(window, &mid::Maximize);
+	glfwSetFramebufferSizeCallback(window, &mid::FrameBufferResize);
 	//End of callbacks.
 	Renderer = new Core::Graphics::GL::GLRenderer();
 	Renderer->Start(this);
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 }
 
 void Sphynx::Core::GLWindow::OnClose()
@@ -187,9 +196,6 @@ void Sphynx::Core::GLWindow::OnClose()
 void Sphynx::Core::GLWindow::OnUpdate()
 {
 	if (IsAlive()) {
-		Renderer->Clear();
-		Renderer->Render();
-		GetEventSystem()->DispatchImmediate<OnOverlayUpdate>(OnOverlayUpdate(this));
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}
@@ -197,7 +203,7 @@ void Sphynx::Core::GLWindow::OnUpdate()
 
 void Sphynx::Core::GLWindow::OnResize(Events::OnWindowResize& e)
 {
-	glfwSetWindowSize(((GLFWwindow*)e.GetWindow()->GetNativePointer()), e.Width, e.Height);
+	Core_Info("Resized");
 	//glViewport(0, 0, e.Width, e.Height);
 }
 
@@ -215,6 +221,11 @@ void Sphynx::Core::GLWindow::SetVsync(bool vsync)
 void Sphynx::Core::GLWindow::Internal_ChangeTitle(const char* title)
 {
 	glfwSetWindowTitle(window, title);
+}
+
+void Sphynx::Core::GLWindow::SetClearColor(glm::vec4 color)
+{
+	glClearColor(color.r, color.g, color.b, color.a);
 }
 
 Core::Graphics::IRenderer* Sphynx::Core::GLWindow::GetRenderer()

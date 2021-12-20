@@ -28,6 +28,7 @@ namespace Sphynx::Core {
 			static void Focus(GLFWwindow* win, int value);
 			static void Iconify(GLFWwindow* win, int value);
 			static void Maximize(GLFWwindow* win, int value);
+			static void FrameBufferResize(GLFWwindow* win, int width, int height);
 		};
 	public:
 		bool IsAlive()override;
@@ -35,18 +36,19 @@ namespace Sphynx::Core {
 		GLWindow(Application* App, Bounds WinBounds, std::string title, bool fullscreen);
 		//We Expect that window has already been open. 
 		GLWindow(Application* App, Bounds WinBounds, std::string title, bool fullscreen, GLWindow* share);
-		~GLWindow()override;
-		void OnClose()override;
-		void OnUpdate()override;
-		void OnResize(Events::OnWindowResize& e)override;
-		void* GetNativePointer()override;
-		Bounds GetBounds()override;
-		int GetHeight()override;
-		int GetWidth()override;
-		inline bool IsVsyncEnabled()override { return Vsync; };
-		void SetVsync(bool vsync)override;
-		void Internal_ChangeTitle(const char* title)override;
-		Core::Graphics::IRenderer* GetRenderer()override;
+		virtual ~GLWindow()override;
+		virtual void OnClose()override;
+		virtual void OnUpdate()override;
+		virtual void OnResize(Events::OnWindowResize& e)override;
+		virtual void* GetNativePointer()override;
+		virtual Bounds GetBounds()override;
+		virtual int GetHeight()override;
+		virtual int GetWidth()override;
+		virtual inline bool IsVsyncEnabled()override { return Vsync; };
+		virtual void SetVsync(bool vsync)override;
+		virtual void Internal_ChangeTitle(const char* title)override;
+		virtual void SetClearColor(glm::vec4 color);
+		virtual Core::Graphics::IRenderer* GetRenderer()override;
 		///////GLWindow Function/////////
 
 		static void TerminateGLFW();

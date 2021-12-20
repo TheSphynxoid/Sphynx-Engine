@@ -11,7 +11,11 @@
 #include "Camera.h"
 #include "Core/MeshRenderer.h"
 #include "Core/Scripting/AsScript.h"
-#include "Pool.h"
+#include "Core/SceneManager.h"
+#include "Core/Graphics/Pipeline/FrameBuffer.h"
+#define STB_IMAGE_WRITE_IMPLEMENTATION
+#include"stb_image_write.h"
+#include <filesystem>
 #undef GetApplication
 #undef GetMainWindow
 
@@ -69,23 +73,58 @@ class MovementComp : public Sphynx::Component {
 			GetTransform()->Rotate(-60 * Time::GetDeltaTime(), glm::vec3(0.0f, 1.0f, 0.0f));
 	}
 };
+class ScreenShot : public Component {
+private:
+	Camera* cam;
+	size_t Count;
+	// Inherited via Component
+	virtual void OnComponentAttach(GameObject* parent) override
+	{
+		cam = GetGameObject()->GetComponent<Camera>();
+		stbi_flip_vertically_on_write(true);
+	}
+	virtual void OnComponentDetach()override {
+		for (int i = 0; i < Count; ++i) {
+			std::string name = "Tex";
+			name += std::to_string(Count) + ".bmp";
+			std::remove(name.c_str());
+		}
+	}
+
+public:
+	virtual void Update()override {
+		if (Input::IsKeyPressed(Keys::Enter)) {
+			cam->GetFrameBuffer()->Bind();
+			auto tex = cam->GetFrameBuffer()->GetAttachment(1);
+			auto buf = tex->ReadAllPixels(TextureDataFormat::UInt_8_8_8_8_REV);
+			cam->GetFrameBuffer()->Unbind();
+			std::string name = "Tex";
+			name += std::to_string(Count) + ".bmp";
+			stbi_write_bmp(name.c_str(), tex->GetWidth(), tex->GetHeight(), 4, buf);
+			++Count;
+		}
+	}
+};
 
 void Sphynx::Application::Run()
 {
-	
-	Camera::PrimaryCamera->AddComponent<Camera>();
 	Events::GlobalEventSystem::GetInstance()->DispatchImmediate<Events::OnApplicationStart>(Events::OnApplicationStart());
 	threadpool.Start(this);
-	Camera::PrimaryCamera->GetTransform()->Translate(glm::vec3(0.0f, 0.0f, -3.0f));
-	auto Square = GameObject::CreatePrimitive(Primitives::Cube);
-	auto Square2 = GameObject::CreatePrimitive(Primitives::Plane);
-	Square2.GetTransform()->Translate(glm::vec3(3.0f, 0.0f, 0.0f));
-	Square.GetTransform()->Rotate(30, glm::vec3(0.0f, 1.0f, 0.0f));
-	Square.AddComponent<Sphynx::Core::Scripting::AsScript>("AsScript.as","TestModule");
-	Square.AddComponent<MovementComp>();
 	Input::Init();
 	Start();
+	SceneManager::Start();
+	auto Square = GameObject::CreatePrimitive(Primitives::Cube);
+	auto Square2 = GameObject::CreatePrimitive(Primitives::Plane);
+	Square2.GetTransform()->Translate(glm::vec3(3.0f, 0.0f, -3.0f));
+	Square.GetTransform()->Translate(glm::vec3(0.0f, 0.0f, -3.0f));
+	Square.GetTransform()->Rotate(30, glm::vec3(0.0f, 1.0f, 0.0f));
+	Square.AddComponent<Sphynx::Core::Scripting::AsScript>("AsScript.as", "TestModule");
+	Square.AddComponent<MovementComp>();
+	SceneManager::GetScene().GetPrimaryCameraObject().AddComponent<ScreenShot>();
+	SceneManager::GetScene().AddGameObject(&Square);
+	SceneManager::GetScene().AddGameObject(&Square2);
 	Time::Start();
+	int i = 0;
 	while (AppAlive) {
 		Update();
 		Events::GlobalEventSystem::GetInstance()->DispatchImmediate<Events::OnApplicationUpdate>(Events::OnApplicationUpdate());
@@ -95,10 +134,22 @@ void Sphynx::Application::Run()
 		for (auto& es : EventSystemArray) {
 			es->Dispatch();
 		}
-		Square.Update();
-		Square2.Update();
-		Camera::PrimaryCamera->Update();
 		if (MainWindow->IsAlive()) {
+			SceneManager::Update();
+			//FrameBuffer Render (Works)
+			SceneManager::GetScene().GetPrimaryCamera()->GetFrameBuffer()->Bind();
+			MainWindow->GetRenderer()->Clear();
+			MainWindow->GetRenderer()->Render();
+			SceneManager::GetScene().GetPrimaryCamera()->GetFrameBuffer()->Unbind();
+			//Main Window Render
+			SceneManager::UpdateCamera();
+			MainWindow->GetRenderer()->SetDepthTesting(false);
+			MainWindow->GetRenderer()->Clear();
+			MainWindow->GetRenderer()->Render();
+			//Imgui.
+			imgui.OnOverlayUpdate();
+			MainWindow->GetRenderer()->SetDepthTesting(true);
+			//Buffer Swap
 			MainWindow->Update();
 		}
 		Time::Update();

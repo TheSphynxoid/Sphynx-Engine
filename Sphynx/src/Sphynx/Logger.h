@@ -4,6 +4,9 @@
 #include "spdlog/spdlog.h"
 #include "spdlog/sinks/base_sink.h"
 #include <memory>
+#include <iostream>
+#include <sstream>
+#include <string>
 
 namespace Sphynx {
 	struct OnLog : public Events::Event {
@@ -15,17 +18,17 @@ namespace Sphynx {
 		OnLogFlush() {};
 	};
 	//SPD uses malloc for strings, this will continue allocation after window closing 
-	class Logger final{
+	class Logger final {
 	public:
 		//Custom Sink That uses events to dispatch logs.(Should it Be Private?) 
 		//TODO : Variants of this Where it logs in a file or something and dispatching events(?)
-		class LoggerSink final : public spdlog::sinks::base_sink<std::mutex>{
+		class LoggerSink final : public spdlog::sinks::base_sink<std::mutex> {
 		private:
 			Events::EventSystem eventsystem = *Events::GlobalEventSystem::GetInstance();
 		public:
-			LoggerSink() {};
-			//If desiring a specific EventsSystem. Inaccesible.
-			LoggerSink(Events::EventSystem evs) { eventsystem = evs; };
+			LoggerSink() {
+				OutputDebugStringA(static_cast<std::ostringstream&>(std::ostringstream().flush() << std::hex << this).str().c_str());
+			};
 			//We Can send the entire log_msg wrapped. but we are only sending the formatted message.
 			virtual void sink_it_(const spdlog::details::log_msg& msg) override;
 			virtual void flush_() override;
@@ -37,10 +40,7 @@ namespace Sphynx {
 	public:
 		static void Init();
 		inline static std::shared_ptr<spdlog::logger> GetInternalLogger() { return InternalLogger; };
-		inline static std::shared_ptr<spdlog::logger> GetClientLogger() { return ClientLogger;};
-
-		//inline static LoggerSinkPtr GetInternalLoggerSink() { return std::make_shared<LoggerSink>(InternalLogger->sinks()[0].get()); };
-		//inline static LoggerSinkPtr GetClientLoggerSink() { return std::make_shared<LoggerSink>(ClientLogger->sinks()[0].get()); };
+		inline static std::shared_ptr<spdlog::logger> GetClientLogger() { return ClientLogger; };
 	};
 }
 #ifdef DEBUG

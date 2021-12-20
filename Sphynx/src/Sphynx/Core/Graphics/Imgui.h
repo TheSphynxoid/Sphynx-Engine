@@ -49,7 +49,7 @@ namespace Sphynx::Core {
 		void ImGuiOnWindowShutdown(Events::OnWindowClose& e);
 	public:
 		void Start(Application* app)override;
-		void OnOverlayUpdate(Events::OnOverlayUpdate& e);
+		void OnOverlayUpdate();
 		void Update()override;
 		void Shutdown()override;
 		//We Can Also Use the event System. Instead of holding window we just dispatch an event.

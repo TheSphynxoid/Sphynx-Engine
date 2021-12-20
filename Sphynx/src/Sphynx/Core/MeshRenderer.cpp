@@ -4,6 +4,7 @@
 #include "GameObject.h"
 #include "Application.h"
 #include "Core/Graphics/Window.h"
+#include "SceneManager.h"
 
 using namespace Sphynx;
 using namespace Sphynx::Core;
@@ -12,17 +13,21 @@ using namespace Sphynx::Core::Graphics;
 Sphynx::Camera* Cam;
 IRenderer* Rend;
 
-void Sphynx::MeshRenderer::OnComponentAttach(GameObject* Parent)
+void Sphynx::MeshRenderer::Start()
 {
-	Cam = Camera::GetPrimaryCamera()->GetComponent<Camera>();
+	Cam = SceneManager::GetScene().GetPrimaryCamera();
 	halfEquation = Cam->GetProjectionMatrix() * Cam->GetViewMatrix();
 	FullEquation = halfEquation * GetTransform()->GetModelMatrix();
-	//TODO: Stupid Inclusion of Window.h
+	//TODO: Remove Stupid Inclusion of Window.h
 	Rend = GetMainWindow()->GetRenderer();
 	MVPUni = Uniform::Create(&FullEquation[0], ShaderDataType::Mat4x4);
 	Mat->SetUniform(MVPUni, "MVP");
 	RO.mat = Mat;
 	RO.mesh = mesh;
+}
+
+void Sphynx::MeshRenderer::OnComponentAttach(GameObject* Parent)
+{
 }
 
 void Sphynx::MeshRenderer::OnComponentDetach()

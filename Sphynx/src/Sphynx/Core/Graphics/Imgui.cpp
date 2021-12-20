@@ -40,7 +40,6 @@ void Sphynx::Core::Imgui::Start(Application* app)
 {
 	App = app;
 	window = app->GetMainWindow();
-	window->GetEventSystem()->Subscribe<Imgui, Events::OnOverlayUpdate>(this, &Imgui::OnOverlayUpdate);
 	window->GetEventSystem()->Subscribe<Imgui, Events::OnWindowClose>(this, &Imgui::ImGuiOnWindowShutdown);
 #ifdef IMGUI_DX11
 	Imgui_ImplDX11_Init();
@@ -56,7 +55,7 @@ void Sphynx::Core::Imgui::Start(Application* app)
 #endif
 }
 
-void Sphynx::Core::Imgui::OnOverlayUpdate(Events::OnOverlayUpdate& e)
+void Sphynx::Core::Imgui::OnOverlayUpdate()
 {
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplGlfw_NewFrame();
@@ -71,6 +70,7 @@ void Sphynx::Core::Imgui::OnOverlayUpdate(Events::OnOverlayUpdate& e)
 	ImGui::EndFrame();
 	ImGui::UpdatePlatformWindows();
 	ImGui::Render();
+	ImGui::GetDrawData();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }
 
@@ -113,10 +113,6 @@ void Sphynx::Core::Imgui::Shutdown()
 	}
 	ImGui_ImplGlfw_Shutdown();
 	ImGui_ImplOpenGL3_Shutdown();	
-#ifdef DEBUG
-	//a "hack" to avoid a bug where imgui has shutdown and still Recives this event for some reason.
-	window->GetEventSystem()->UnSubscribe<Imgui, Events::OnOverlayUpdate>(this, &Imgui::OnOverlayUpdate);
-#endif
 }
 
 void Sphynx::Core::DemoWindow::Draw()

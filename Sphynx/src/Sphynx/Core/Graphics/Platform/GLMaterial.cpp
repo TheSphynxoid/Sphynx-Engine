@@ -180,7 +180,7 @@ void GLMaterial::Bind()
     for (auto& tex : textures) {
         glActiveTexture(GL_TEXTURE0 + i);
         tex->Bind();
-        i++;
+        ++i;
     }
     Bound = this;
 }

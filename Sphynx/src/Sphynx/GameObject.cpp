@@ -30,6 +30,14 @@ Sphynx::GameObject::GameObject(GameObject&& obj)noexcept
     //
 }
 
+Sphynx::GameObject::~GameObject()
+{
+    for (auto& comp : Components) {
+        comp->OnComponentDetach();
+        Components.remove(comp);
+    }
+}
+
 Sphynx::GameObject& Sphynx::GameObject::operator=(GameObject&& obj)noexcept
 {
     if (this != &obj) {

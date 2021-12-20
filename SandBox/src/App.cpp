@@ -16,8 +16,8 @@ private:
 	Camera* CamComp = nullptr;
 public:
 	SandBox() {
-		Sphynx::Core::Bounds b = { 1024, 768 };
-		//TODO: Remove The code that allows this.
+		Sphynx::Core::Bounds b = { 512, 384 };
+		this->GetMainWindow()->SetClearColor({ 0,1,0,1 });
 		this->GetMainWindow()->Resize(b.Width, b.Height);
 	}
 	void Start() {

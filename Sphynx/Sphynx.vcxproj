@@ -46,6 +46,8 @@
     <IntDir>..\build\int\Debug-windows-x86_64\Sphynx\</IntDir>
     <TargetName>Sphynx</TargetName>
     <TargetExt>.lib</TargetExt>
+    <EnableClangTidyCodeAnalysis>false</EnableClangTidyCodeAnalysis>
+    <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>..\build\bin\Release-windows-x86_64\Sphynx\</OutDir>
@@ -98,6 +100,8 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Sphynx\UI\RectRenderer.h" />
+    <ClInclude Include="src\Sphynx\Core\Graphics\Platform\GLFrameBuffer.h" />
     <ClInclude Include="src\Sphynx.h" />
     <ClInclude Include="src\Sphynx\Application.h" />
     <ClInclude Include="src\Sphynx\Camera.h" />
@@ -160,6 +164,8 @@
     <ClInclude Include="src\Sphynx\pch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Sphynx\UI\RectRenderer.cpp" />
+    <ClCompile Include="src\Sphynx\Core\Graphics\Platform\GLFrameBuffer.cpp" />
     <ClCompile Include="src\Sphynx\Application.cpp" />
     <ClCompile Include="src\Sphynx\Camera.cpp" />
     <ClCompile Include="src\Sphynx\Component.cpp" />
