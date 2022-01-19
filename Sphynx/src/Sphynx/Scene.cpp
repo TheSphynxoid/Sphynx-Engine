@@ -7,12 +7,12 @@
 
 Sphynx::Core::Scene::Scene()
 {
-	Events::GlobalEventSystem::GetInstance()->Subscribe<Scene, Events::OnWindowResize>(this, &Scene::OnFrameBufferResize);
+	//Events::GlobalEventSystem::GetInstance()->Subscribe<Scene, Events::OnWindowResize>(this, &Scene::OnFrameBufferResize);
 }
 
 void Sphynx::Core::Scene::OnFrameBufferResize(Events::OnWindowResize& e)
 {
-	PrimaryCameraObject.GetComponent<UI::RectRenderer>()->GetMaterial()->SetTexture(PrimaryCamera->GetFrameBuffer()->GetAttachment(1), 0);
+	//PrimaryCameraObject.GetComponent<UI::RectRenderer>()->GetMaterial()->SetTexture(PrimaryCamera->GetFrameBuffer()->GetColorAttachment(1), 0);
 }
 
 Sphynx::Core::Scene::~Scene()
@@ -22,7 +22,7 @@ Sphynx::Core::Scene::~Scene()
 
 void Sphynx::Core::Scene::AddGameObject(GameObject* obj)
 {
-	GObjs.push_back(obj);
+	GObjs.push_front(obj);
 	obj->Start();
 }
 
@@ -39,12 +39,10 @@ Sphynx::Core::Scene::GameObjects Sphynx::Core::Scene::GetGameObjects()
 
 void Sphynx::Core::Scene::Start()
 {
-	PrimaryCameraObject = GameObject();
+	PrimaryCameraObject = GameObject("Camera");
 	PrimaryCameraObject.AddComponent<Camera>();
 	PrimaryCamera = PrimaryCameraObject.GetComponent<Camera>();
-	PrimaryCameraObject.AddComponent<UI::RectRenderer>(glm::vec2(1, 1),
-		PrimaryCamera->GetFrameBuffer()->GetAttachment(1));
-	//AddGameObject(&PrimaryCameraObject);
+	GObjs.push_back(&PrimaryCameraObject);
 	for (auto& go : GObjs) {
 		go->Start();
 	}

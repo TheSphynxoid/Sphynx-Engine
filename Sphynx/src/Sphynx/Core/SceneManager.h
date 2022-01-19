@@ -20,6 +20,5 @@ namespace Sphynx::Core {
 		static void GoNextScene();
 		static void Start();
 		static void Update();
-		static void UpdateCamera();
 	};
 }

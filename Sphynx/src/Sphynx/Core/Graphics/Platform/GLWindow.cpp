@@ -18,15 +18,6 @@ bool GLWindow::GLFWInit = false;
 
 #define GetFromGLFW(win) *(::Sphynx::Core::GLWindow*)glfwGetWindowUserPointer(win)
 
-void Sphynx::Core::GLWindow::mid::Resize(GLFWwindow* win, int width, int height)
-{
-	GLWindow& inst = GetFromGLFW(win);
-	inst.Width = width;
-	inst.Height = height;
-	inst.UserResize(width, height);
-	//inst.GetEventSystem()->QueueEvent<OnWindowResize>(OnWindowResize(&inst, width, height));
-}
-
 void Sphynx::Core::GLWindow::mid::Close(GLFWwindow* win)
 {
 	GLWindow& inst = GetFromGLFW(win);
@@ -80,10 +71,10 @@ void Sphynx::Core::GLWindow::mid::Maximize(GLFWwindow* win, int value)
 void Sphynx::Core::GLWindow::mid::FrameBufferResize(GLFWwindow* win, int width, int height)
 {
 	glViewport(0, 0, width, height);
-}
-
-void Sphynx::Core::GLWindow::UserResize(int Width, int Height)
-{
+	auto& inst = GetFromGLFW(win);
+	inst.Height = height;
+	inst.Width = width;
+	GlobalEventSystem::GetInstance()->QueueEvent<OnWindowResize>(OnWindowResize(&inst, width, height));
 }
 
 bool Sphynx::Core::GLWindow::IsAlive()
@@ -97,7 +88,8 @@ Sphynx::Core::GLWindow::~GLWindow()
 	Close();
 }
 
-Sphynx::Core::GLWindow::GLWindow(Application* App, Bounds WinBounds, std::string title, bool fullscreen)
+Sphynx::Core::GLWindow::GLWindow(Application* App, Bounds WinBounds, std::string title, bool fullscreen):
+	Height(WinBounds.Height), Width(WinBounds.Width)
 {
 	//Init base class.
 	Init(App, WinBounds, title, fullscreen);
@@ -130,7 +122,6 @@ Sphynx::Core::GLWindow::GLWindow(Application* App, Bounds WinBounds, std::string
 	//Setting the glfwWindow to hold the IWindow instance
 	glfwSetWindowUserPointer(window, (void*)this);
 	//Setting Callbacks using a middle-man struct.
-	glfwSetWindowSizeCallback(window, &mid::Resize);
 	glfwSetWindowCloseCallback(window, &mid::Close);
 	glfwSetWindowFocusCallback(window, &mid::Focus);
 	glfwSetWindowIconifyCallback(window, &mid::Iconify);
@@ -146,7 +137,8 @@ Sphynx::Core::GLWindow::GLWindow(Application* App, Bounds WinBounds, std::string
 	Core_Warn("TODO:FullScreen not Implemented.");
 }
 
-Sphynx::Core::GLWindow::GLWindow(Application* App, Bounds WinBounds, std::string title, bool fullscreen, GLWindow* share)
+Sphynx::Core::GLWindow::GLWindow(Application* App, Bounds WinBounds, std::string title, bool fullscreen, GLWindow* share) :
+	Height(WinBounds.Height), Width(WinBounds.Width)
 {
 	if (WinBounds.Height == 0 || WinBounds.Width == 0) {
 		WinBounds = DefBounds;
@@ -177,7 +169,6 @@ Sphynx::Core::GLWindow::GLWindow(Application* App, Bounds WinBounds, std::string
 	//Setting the glfwWindow to hold the IWindow instance
 	glfwSetWindowUserPointer(window, (void*)this);
 	//Setting Callbacks using a middle-man struct.
-	glfwSetWindowSizeCallback(window, &mid::Resize);
 	glfwSetWindowCloseCallback(window, &mid::Close);
 	glfwSetWindowFocusCallback(window, &mid::Focus);
 	glfwSetWindowIconifyCallback(window, &mid::Iconify);
@@ -208,6 +199,7 @@ void Sphynx::Core::GLWindow::OnUpdate()
 void Sphynx::Core::GLWindow::OnResize(Events::OnWindowResize& e)
 {
 	glfwSetWindowSize(((GLFWwindow*)e.GetWindow()->GetNativePointer()), e.Width, e.Height);
+	mid::FrameBufferResize(((GLFWwindow*)e.GetWindow()->GetNativePointer()), e.Width, e.Height);
 	//glViewport(0, 0, e.Width, e.Height);
 }
 

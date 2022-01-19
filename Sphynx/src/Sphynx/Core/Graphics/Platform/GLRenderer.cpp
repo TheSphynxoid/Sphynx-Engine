@@ -35,6 +35,7 @@ void Sphynx::Core::Graphics::GL::GLRenderer::Start(IWindow* app)
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_SCISSOR_TEST);
 }
 
 void Sphynx::Core::Graphics::GL::GLRenderer::Render()
@@ -58,7 +59,6 @@ void Sphynx::Core::Graphics::GL::GLRenderer::Render()
 			rend.mesh->UnBind();
 		}
 	}
-	RenderQueue.clear();
 }
 
 void Sphynx::Core::Graphics::GL::GLRenderer::Clear()
@@ -66,7 +66,7 @@ void Sphynx::Core::Graphics::GL::GLRenderer::Clear()
 	//TODO:using Nvidia Nsight makes it seem like glClear is Returning GL_Invalid_Operation, there is an error
 	//occuring, Fix it.
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-	/*RenderQueue.clear();*/
+	RenderQueue.clear();
 }
 
 void Sphynx::Core::Graphics::GL::GLRenderer::SetDepthTesting(bool value)
@@ -75,6 +75,12 @@ void Sphynx::Core::Graphics::GL::GLRenderer::SetDepthTesting(bool value)
 		glDisable(GL_DEPTH_TEST);
 	else
 		glEnable(GL_DEPTH_TEST);
+}
+
+void Sphynx::Core::Graphics::GL::GLRenderer::SetViewPort(Sphynx::Core::Graphics::Viewport view)
+{
+	glViewport(view.PosX, view.PosY, view.Width, view.Height);
+	CurrViewPort = view;
 }
 
 void Sphynx::Core::Graphics::GL::GLRenderer::OnSubmit(RenderObject rend)

@@ -100,6 +100,12 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Sphynx\Editor\Console.h" />
+    <ClInclude Include="src\Sphynx\Editor\GameObjectView.h" />
+    <ClInclude Include="src\Sphynx\Editor\EditorViewport.h" />
+    <ClInclude Include="src\Sphynx\Editor\Editor.h" />
+    <ClInclude Include="src\Sphynx\Editor\SceneManagerView.h" />
+    <ClInclude Include="src\Sphynx\Events\SceneEvents.h" />
     <ClInclude Include="src\Sphynx\UI\RectRenderer.h" />
     <ClInclude Include="src\Sphynx\Core\Graphics\Platform\GLFrameBuffer.h" />
     <ClInclude Include="src\Sphynx.h" />
@@ -162,8 +168,14 @@
     <ClInclude Include="src\Sphynx\imgui\imgui_impl_opengl3_loader.h" />
     <ClInclude Include="src\Sphynx\imgui\imgui_impl_win32.h" />
     <ClInclude Include="src\Sphynx\pch.h" />
+    <ClInclude Include="src\Sphynx\Core\Graphics\Pipeline\Viewport.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Sphynx\Editor\Console.cpp" />
+    <ClCompile Include="src\Sphynx\Editor\GameObjectView.cpp" />
+    <ClCompile Include="src\Sphynx\Editor\EditorViewport.cpp" />
+    <ClCompile Include="src\Sphynx\Editor\Editor.cpp" />
+    <ClCompile Include="src\Sphynx\Editor\SceneManagerView.cpp" />
     <ClCompile Include="src\Sphynx\UI\RectRenderer.cpp" />
     <ClCompile Include="src\Sphynx\Core\Graphics\Platform\GLFrameBuffer.cpp" />
     <ClCompile Include="src\Sphynx\Application.cpp" />
@@ -208,6 +220,7 @@
     <ClCompile Include="src\Sphynx\pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="src\Sphynx\Core\Graphics\Pipeline\Viewport.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Sphynx\Scripts\Component.as" />

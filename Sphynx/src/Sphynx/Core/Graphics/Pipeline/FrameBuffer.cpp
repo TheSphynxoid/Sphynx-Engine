@@ -2,6 +2,23 @@
 #include "FrameBuffer.h"
 #include "../Platform/GLFrameBuffer.h"
 
+void Sphynx::Core::Graphics::FrameBuffer::BindDefault()
+{
+	switch (CurrentPlatform)
+	{
+	case Sphynx::Platform::Windows:
+#ifdef DX_IMPL
+		static_assert(true, "DirectX Not Implemented");
+#else
+		[[fallthrough]];
+#endif
+	case Sphynx::Platform::Linux:
+		GL::GLFrameBuffer::GetDefaultFramebuffer()->Bind();
+	default:
+		break;
+	}
+}
+
 Sphynx::Core::Graphics::FrameBuffer* Sphynx::Core::Graphics::FrameBuffer::Create(int width, int height, std::initializer_list<Texture*> tex)
 {
 	switch (CurrentPlatform)
@@ -18,5 +35,4 @@ Sphynx::Core::Graphics::FrameBuffer* Sphynx::Core::Graphics::FrameBuffer::Create
 		break;
 	}
 	return nullptr;
-    return nullptr;
 }

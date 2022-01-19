@@ -10,6 +10,7 @@ namespace Sphynx::Core::Graphics::GL {
 		int Bits = 4;
 		TextureFormat Format;
 		TextureDataFormat DataFormat;
+		TextureType Type;
 		void Release();
 	public:
 		GLTexture(const char* path, TextureType Type, int MipmapLevel, TextureFormat format, TextureDataFormat datatype, TextureWrappingMode warp,
@@ -31,10 +32,14 @@ namespace Sphynx::Core::Graphics::GL {
 		virtual const TextureDataFormat& GetDataFormat() override {
 			return DataFormat;
 		}
+		virtual const TextureType& GetTextureType() override {
+			return Type;
+		}
 		virtual int GetWidth() override { return Width; }
 		virtual int GetHeight() override { return Height; }
 		virtual int GetBitsPerPixel() override { return Bits; };
 		virtual void* ReadAllPixels(TextureDataFormat data) override;
+		virtual void* GetNativeID() override { return (void*)TextureID; };
 		friend class GLFrameBuffer;
 	};
 }

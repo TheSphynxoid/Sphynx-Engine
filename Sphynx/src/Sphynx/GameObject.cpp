@@ -5,9 +5,9 @@
 
 using namespace Sphynx::Core::Graphics;
 
-const Sphynx::GameObject Sphynx::GameObject::PlaceHolder;
+const Sphynx::GameObject Sphynx::GameObject::PlaceHolder = Sphynx::GameObject("PlaceHolder");
 
-Sphynx::GameObject::GameObject() : IsAlive(true) , InstanceID((size_t)this)
+Sphynx::GameObject::GameObject(char* name) : IsAlive(true), InstanceID((size_t)this), Name(name)
 {
     //((Component*)&transform)->Parent = this;
     //((Component*)&transform)->_transform = transform;
@@ -18,16 +18,19 @@ Sphynx::GameObject::GameObject(const GameObject& obj)noexcept
     this->Components = obj.Components;
     this->transform = obj.transform;
     this->IsAlive = obj.IsAlive;
-    this->InstanceID = obj.InstanceID;
+    InstanceID = (size_t)this;
+    this->Name = obj.Name;
+    Core::Internal::ComponentFactory::CompCopy(const_cast<GameObject*>(&obj), this);
 }
-
+//Move Constructor.
 Sphynx::GameObject::GameObject(GameObject&& obj)noexcept
 {
     std::swap(this->Components, obj.Components);
     std::swap(this->transform, obj.transform);
     std::swap(this->IsAlive, obj.IsAlive);
-    InstanceID = (size_t)this;
-    //
+    std::swap(this->Name, obj.Name);
+    this->InstanceID = obj.InstanceID;
+    Core::Internal::ComponentFactory::CompMove(&obj, this);
 }
 
 Sphynx::GameObject::~GameObject()
@@ -44,6 +47,7 @@ Sphynx::GameObject& Sphynx::GameObject::operator=(GameObject&& obj)noexcept
         std::swap(this->Components, obj.Components);
         std::swap(this->IsAlive, obj.IsAlive);
         std::swap(this->transform, obj.transform);
+        std::swap(this->Name, obj.Name);
     }
     return *this;
 }
@@ -57,9 +61,9 @@ Sphynx::GameObject& Sphynx::GameObject::operator=(const GameObject& obj)noexcept
     return *this;
 }
 
-Sphynx::GameObject Sphynx::GameObject::CreatePrimitive(Primitives primitive)
+Sphynx::GameObject Sphynx::GameObject::CreatePrimitive(Primitives primitive, char* name)
 {
-    auto rt = GameObject();
+    auto rt = GameObject(name);
     VertexBuffer* vb = nullptr;
     IndexBuffer* ib = nullptr;
     switch (primitive)

@@ -7,15 +7,9 @@
 #include "Core/Graphics/Window.h"
 #include "Core/Graphics/Pipeline/Renderer.h"
 #include "glm/gtx/quaternion.hpp"
-#include "GameObject.h"
-#include "Camera.h"
-#include "Core/MeshRenderer.h"
-#include "Core/Scripting/AsScript.h"
+#include "Scene.h"
 #include "Core/SceneManager.h"
 #include "Core/Graphics/Pipeline/FrameBuffer.h"
-#define STB_IMAGE_WRITE_IMPLEMENTATION
-#include"stb_image_write.h"
-#include <filesystem>
 #undef GetApplication
 #undef GetMainWindow
 
@@ -30,7 +24,7 @@ Application* MainApplication;
 //	e.GetWindow()->Close();
 //}
 
-Sphynx::Application::Application() : imgui(Imgui())
+Sphynx::Application::Application()
 {
 	eventSystem = Events::EventSystem();
 	//eventSystem.Subscribe<Application, Events::OnWindowClose>(this, &Application::HandleWindowClose);
@@ -52,60 +46,6 @@ Sphynx::Application::~Application()
 	this->eventSystem.QueueEvent<Events::OnApplicationClose>(Events::OnApplicationClose());
 }
 
-class MovementComp : public Sphynx::Component {
-	// Inherited via Component
-	virtual void OnComponentAttach(GameObject* parent) override
-	{
-		Core_Info("MovementComp Attached to {0}", parent->GetID());
-	}
-	virtual void OnComponentDetach() override
-	{
-	}
-	virtual void Update() override
-	{
-		if (Input::IsKeyPressed(Keys::Up))
-			GetTransform()->Translate(glm::vec3(0.0f, 0.5f * Time::GetDeltaTime(), 0.0f));
-		if (Input::IsKeyPressed(Keys::Down))
-			GetTransform()->Translate(glm::vec3(0.0f, -0.5f * Time::GetDeltaTime(), 0.0f));
-		if (Input::IsKeyPressed(Keys::Left))
-			GetTransform()->Rotate(60 * Time::GetDeltaTime(), glm::vec3(0.0f, 1.0f, 0.0f));
-		if (Input::IsKeyPressed(Keys::Right))
-			GetTransform()->Rotate(-60 * Time::GetDeltaTime(), glm::vec3(0.0f, 1.0f, 0.0f));
-	}
-};
-class ScreenShot : public Component {
-private:
-	Camera* cam;
-	size_t Count;
-	// Inherited via Component
-	virtual void OnComponentAttach(GameObject* parent) override
-	{
-		cam = GetGameObject()->GetComponent<Camera>();
-		stbi_flip_vertically_on_write(true);
-	}
-	virtual void OnComponentDetach()override {
-		for (int i = 0; i < Count; ++i) {
-			std::string name = "Tex";
-			name += std::to_string(Count) + ".bmp";
-			std::remove(name.c_str());
-		}
-	}
-
-public:
-	virtual void Update()override {
-		if (Input::IsKeyPressed(Keys::Enter)) {
-			cam->GetFrameBuffer()->Bind();
-			auto tex = cam->GetFrameBuffer()->GetAttachment(1);
-			auto buf = tex->ReadAllPixels(TextureDataFormat::UInt_8_8_8_8_REV);
-			cam->GetFrameBuffer()->Unbind();
-			std::string name = "Tex";
-			name += std::to_string(Count) + ".bmp";
-			stbi_write_bmp(name.c_str(), tex->GetWidth(), tex->GetHeight(), 4, buf);
-			++Count;
-		}
-	}
-};
-
 void Sphynx::Application::Run()
 {
 	Events::GlobalEventSystem::GetInstance()->DispatchImmediate<Events::OnApplicationStart>(Events::OnApplicationStart());
@@ -113,16 +53,9 @@ void Sphynx::Application::Run()
 	Input::Init();
 	Start();
 	SceneManager::Start();
-	auto Square = GameObject::CreatePrimitive(Primitives::Cube);
-	auto Square2 = GameObject::CreatePrimitive(Primitives::Plane);
-	Square2.GetTransform()->Translate(glm::vec3(3.0f, 0.0f, -3.0f));
-	Square.GetTransform()->Translate(glm::vec3(0.0f, 0.0f, -3.0f));
-	Square.GetTransform()->Rotate(30, glm::vec3(0.0f, 1.0f, 0.0f));
-	Square.AddComponent<Sphynx::Core::Scripting::AsScript>("AsScript.as", "TestModule");
-	Square.AddComponent<MovementComp>();
-	SceneManager::GetScene().GetPrimaryCameraObject().AddComponent<ScreenShot>();
-	SceneManager::GetScene().AddGameObject(&Square);
-	SceneManager::GetScene().AddGameObject(&Square2);
+	GameObject sq = GameObject::CreatePrimitive(Primitives::Cube, "Cube");
+	sq.GetTransform()->Translate({ 0,0,-3 });
+	SceneManager::GetScene().AddGameObject(&sq);
 	Time::Start();
 	int i = 0;
 	while (AppAlive) {
@@ -135,26 +68,16 @@ void Sphynx::Application::Run()
 			es->Dispatch();
 		}
 		if (MainWindow->IsAlive()) {
+			MainWindow->GetRenderer()->Clear();
 			SceneManager::Update();
-			//FrameBuffer Render (Works)
-			SceneManager::GetScene().GetPrimaryCamera()->GetFrameBuffer()->Bind();
-			MainWindow->GetRenderer()->Clear();
-			MainWindow->GetRenderer()->Render();
-			SceneManager::GetScene().GetPrimaryCamera()->GetFrameBuffer()->Unbind();
-			//Main Window Render
-			SceneManager::UpdateCamera();
-			MainWindow->GetRenderer()->SetDepthTesting(false);
-			MainWindow->GetRenderer()->Clear();
-			MainWindow->GetRenderer()->Render();
 			//Imgui.
-			imgui.OnOverlayUpdate();
-			MainWindow->GetRenderer()->SetDepthTesting(true);
+			Imgui::OnOverlayUpdate();
 			//Buffer Swap
 			MainWindow->Update();
 		}
 		Time::Update();
 	}
-	imgui.Shutdown();
+	Imgui::Shutdown();
 	threadpool.Stop();
 }
 
@@ -181,8 +104,8 @@ Sphynx::Core::IWindow* Sphynx::Application::CreateMainWindow(Core::IWindow* wind
 {
 	if (!MainWindow) {
 		MainWindow = window;
-		imgui.Start(this);
-		imgui.AddOverlayWindow(new DebugWindow(this));
+		Imgui::Start();
+		//Imgui::AddOverlayWindow(new DebugWindow());
 		MainWindow->Start();
 	}
 	else {

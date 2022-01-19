@@ -11,7 +11,7 @@
 #include <memory>
 #include <iostream>
 #include "Core/ThreadPool.h"
-#define Sphynx_Version "V0.3.4-Alpha"
+#define Sphynx_Version "V0.5.0-PreAlpha"
 namespace Sphynx {
 	namespace Core {
 		class IWindow;
@@ -19,7 +19,6 @@ namespace Sphynx {
 	class Application
 	{
 	private:
-		Core::Imgui imgui;
 		//TODO:Finish the class.
 		Core::ThreadPool threadpool = Core::ThreadPool();
 		Events::EventSystem eventSystem;

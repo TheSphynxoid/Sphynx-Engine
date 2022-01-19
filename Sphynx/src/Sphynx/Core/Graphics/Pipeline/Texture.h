@@ -56,11 +56,13 @@ namespace Sphynx::Core::Graphics {
 		virtual void Unbind() = 0;
 		virtual const TextureFormat& GetFormat() = 0;
 		virtual const TextureDataFormat& GetDataFormat() = 0;
+		virtual const TextureType& GetTextureType() = 0;
 		void MarkForCleanup() { DeleteFlag = true; };
 		virtual int GetWidth() = 0;
 		virtual int GetHeight() = 0;
 		virtual int GetBitsPerPixel() = 0;
 		virtual void* ReadAllPixels(TextureDataFormat data) = 0;
+		virtual void* GetNativeID() = 0;
 		friend class IRenderer;
 	};
 }

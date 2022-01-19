@@ -14,6 +14,7 @@ namespace Sphynx::Core::Graphics::GL {
 		typedef std::vector<RenderObject> RenderObjectList;
 		//Object To Be rendered are stored using the ProgramID as an index.
 		std::map<unsigned int,std::vector<RenderObject>*> RenderQueue;
+		Viewport CurrViewPort;
 		//calls glViewport.
 		void RendererResizeEvent(Events::OnWindowResize& e);
 		//Default.
@@ -27,6 +28,10 @@ namespace Sphynx::Core::Graphics::GL {
 		//Clears The Screen with color specified with SetClearColor(Vec4 color).
 		virtual void Clear() override;
 		virtual void SetDepthTesting(bool value) override;
+		virtual void SetViewPort(Viewport view) override;
+		virtual const Viewport& GetViewport() override {
+			return CurrViewPort;
+		};
 		//Submits Object for rendering.
 	};
 }

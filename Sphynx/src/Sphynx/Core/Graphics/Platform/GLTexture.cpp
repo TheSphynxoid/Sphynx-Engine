@@ -256,9 +256,10 @@ void Sphynx::Core::Graphics::GL::GLTexture::Release()
 	TextureID = 0;
 }
 
-Sphynx::Core::Graphics::GL::GLTexture::GLTexture(const char* path, TextureType Type, int MipmapLevel, TextureFormat format, TextureDataFormat datatype, TextureWrappingMode warp, TextureFilterMode filter, TextureMipmapMode MipmapMode)
+Sphynx::Core::Graphics::GL::GLTexture::GLTexture(const char* path, TextureType type, int MipmapLevel, TextureFormat format, TextureDataFormat datatype, TextureWrappingMode warp, TextureFilterMode filter, TextureMipmapMode MipmapMode)
 {
 	GLTextureType = GetGLTextureType(Type);
+	Type = type;
 	Format = format;
 	DataFormat = datatype;
 	//TODO: Use the bits variable to determine the Texture Format.
@@ -287,10 +288,11 @@ Sphynx::Core::Graphics::GL::GLTexture::GLTexture(const char* path, TextureType T
 	stbi_image_free(img);
 }
 
-Sphynx::Core::Graphics::GL::GLTexture::GLTexture(TextureType Type, int width, int height, int MipmapLevel, 
+Sphynx::Core::Graphics::GL::GLTexture::GLTexture(TextureType type, int width, int height, int MipmapLevel, 
 	TextureFormat format, TextureDataFormat datatype, TextureWrappingMode warp, TextureFilterMode filter, TextureMipmapMode MipmapMode)
 {
-	GLTextureType = GetGLTextureType(Type);
+	GLTextureType = GetGLTextureType(type);
+	Type = type;
 	Format = format;
 	Width = width;
 	Height = height;
@@ -327,9 +329,11 @@ Sphynx::Core::Graphics::GL::GLTexture::GLTexture(GLTexture&& tex)noexcept
 	std::swap(TextureID, tex.TextureID);
 	std::swap(DeleteFlag, tex.DeleteFlag);
 	std::swap(Format, tex.Format);
+	std::swap(Type, tex.Type);
 	std::swap(Width, tex.Width);
 	std::swap(Height, tex.Height);
 	std::swap(Refs, tex.Refs);
+	std::swap(DataFormat, tex.DataFormat);
 }
 
 Sphynx::Core::Graphics::GL::GLTexture& Sphynx::Core::Graphics::GL::GLTexture::operator=(GLTexture&& tex)noexcept
@@ -340,6 +344,7 @@ Sphynx::Core::Graphics::GL::GLTexture& Sphynx::Core::Graphics::GL::GLTexture::op
 		std::swap(TextureID, tex.TextureID);
 		std::swap(DeleteFlag, tex.DeleteFlag);
 		std::swap(Format, tex.Format);
+		std::swap(Type, tex.Type);
 		std::swap(Width, tex.Width);
 		std::swap(Height, tex.Height);
 		std::swap(Refs, tex.Refs);

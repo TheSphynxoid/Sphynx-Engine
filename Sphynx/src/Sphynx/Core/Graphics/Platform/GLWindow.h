@@ -21,16 +21,16 @@ namespace Sphynx::Core {
 		static bool GLFWInit;
 		bool Vsync;
 		bool Sharing = false;
+		int Height, Width;
+		int SHeight, SWidth;
 		//middle-man between GLFW and the engine.
 		struct mid{
-			static void Resize(GLFWwindow* win, int width, int height);
 			static void Close(GLFWwindow* win);
 			static void Focus(GLFWwindow* win, int value);
 			static void Iconify(GLFWwindow* win, int value);
 			static void Maximize(GLFWwindow* win, int value);
 			static void FrameBufferResize(GLFWwindow* win, int width, int height);
 		};
-		void UserResize(int Width, int Height);
 	public:
 		bool IsAlive()override;
 		inline bool IsSharingResources() { return Sharing; };

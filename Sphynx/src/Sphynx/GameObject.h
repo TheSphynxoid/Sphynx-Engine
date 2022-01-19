@@ -18,11 +18,12 @@ namespace Sphynx {
 		std::list<Component*> Components = std::list<Component*>();
 		size_t InstanceID = 0;
 		bool IsAlive = false;
+		std::string Name = "GameObject";
 	protected:
 		Transform* transform = new Transform();
 	public:
 		static const GameObject PlaceHolder;
-		GameObject();
+		GameObject(char* name = "GameObject");
 		GameObject(const GameObject& obj)noexcept;
 		GameObject(GameObject&& obj)noexcept;
 		~GameObject();
@@ -78,11 +79,14 @@ namespace Sphynx {
 				}
 			}
 		}
-		static GameObject CreatePrimitive(Primitives primitive);
+		static GameObject CreatePrimitive(Primitives primitive , char* name = "GameObject");
 		Transform* GetTransform() { 
 			return transform;
 		};
-		uintptr_t GetID() { return InstanceID; };
+		const char* GetName() { return Name.c_str(); };
+		void SetName(const std::string& n) { Name = n; };
+		std::list<Component*> GetComponents() { return Components; };
+		size_t GetID() { return InstanceID; };
 		bool operator==(const GameObject& other) {
 			if (IsAlive == false && other.IsAlive == IsAlive)return true;
 			return InstanceID == other.InstanceID && Components == other.Components;

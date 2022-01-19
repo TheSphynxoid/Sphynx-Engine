@@ -23,9 +23,13 @@ namespace Sphynx {
 		virtual void Update() {};
 		virtual ~Component() = default;
 		GameObject* GetGameObject() { return Parent; };
+		size_t GetID() { return InstanceID; };
 		Transform* GetTransform() {
 			return _transform; 
 		};
+		bool operator==(Component* comp) {
+			return InstanceID == comp->InstanceID;
+		}
 		friend Core::Internal::ComponentFactory;
 		friend GameObject;
 	};

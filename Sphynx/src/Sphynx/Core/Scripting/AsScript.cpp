@@ -5,6 +5,8 @@
 #include "Core/Graphics/Window.h"
 #include "Scene.h"
 #include "Core/SceneManager.h"
+#include "Core/Graphics/Pipeline/Texture.h"
+#include "Core/Graphics/Pipeline/FrameBuffer.h"
 #include <scriptstdstring/scriptstdstring.h>
 //Oh No...
 #include <scriptstdstring/scriptstdstring.cpp>
@@ -104,6 +106,14 @@ public:
 
 void CreateWindowAS(Application* app, std::string title, Bounds b, bool fullscreen) {
 	app->CreateMainWindow(IWindow::Create(app, b, title, fullscreen));
+}
+
+Bounds GetTextureBounds(Texture* tex) {
+	return { tex->GetWidth(), tex->GetHeight() };
+}
+
+Camera* GetCamera() {
+	return SceneManager::GetScene().GetPrimaryCamera();
 }
 
 int IncludeCallBack(const char* include, const char* from, CScriptBuilder* builder, void* UserParam) {

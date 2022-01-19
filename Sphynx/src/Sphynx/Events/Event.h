@@ -5,7 +5,7 @@
 #include <list>
 #include <typeindex>
 #include <stack>
-#include <forward_list>
+#include <deque>
 #include <variant>
 //Observer pattern Event System
 //Header-Only EventSystem
@@ -81,7 +81,7 @@ namespace Sphynx::Events {
         typedef std::list <BaseDelegate*> Handlers;
 #endif // !Sphynx_Delegate
         std::map<std::type_index, Handlers*> subscribers;
-        std::forward_list<std::pair<std::type_index, Event*>> Queue;
+        std::deque<std::pair<std::type_index, Event*>> Queue;
         bool PropagateEvent = true;
         void SkipCurrentEvent() {
             PropagateEvent = false;
@@ -235,7 +235,7 @@ namespace Sphynx::Events {
             //Extending Lifetime. Being In list doesn't count as referance thus causes the object to be collected.
             EventType* ptr = new EventType(e);
             auto g = std::pair<std::type_index, EventType*>(std::type_index(typeid(EventType)), ptr);
-            Queue.push_front(g);
+            Queue.push_back(g);
         };
         //This Should not be overused. A blocking function that dispatch the event on call.
         template<class EventType>

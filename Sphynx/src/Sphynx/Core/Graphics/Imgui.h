@@ -7,9 +7,6 @@
 #include <typeinfo>
 #include <vector>
 
-namespace Sphynx {
-	struct OnLog;
-}
 namespace Sphynx::Core {
 	class IWindow;
 	class Imgui;
@@ -17,17 +14,17 @@ namespace Sphynx::Core {
 	class IOverlayWindow {
 	private:
 		Imgui* imgui;
-		void InternalSetup(Imgui* instance);
 	protected:
 		bool IsOpen = true;
 	public:
-		virtual ~IOverlayWindow(){};
+		virtual ~IOverlayWindow() = default;
 		virtual void Draw() = 0;
+		void Open() { IsOpen = true; };
+		void Close() { IsOpen = false; };
 		//This Works because we expect the window to be instanced with new.
 		//TODO: Change the Imgui Implementation to not need an instance of IOverlayWindow but to make it itself
-		void Close() { delete this; };
-		//Never Call this in the constructor as it's still null And will probably have no use of it.
-		Imgui* GetImGui() { return imgui; };
+		void Delete() { delete this; };
+
 		friend class Imgui;
 	};
 	class DemoWindow final : public IOverlayWindow {
@@ -39,29 +36,37 @@ namespace Sphynx::Core {
 	};
 	//TODO: Change the Imgui Implementation to not need an instance of IOverlayWindow but to make it itself
 	//as this can lead to the user providing the address of a local object(example : imgui.AddOverlayWindow(&AboutWindow())).
-	class Imgui final : public Module {
+	class Imgui final {
 	private:
-		Application* App;
-		IWindow* window = NULL;
-		std::list<IOverlayWindow*> Overlays;
+		static inline Application* App;
+		static inline IWindow* window = NULL;
+		static inline std::list<IOverlayWindow*> Overlays;
 		//Storing Names of the window classes for The Debug Window.
-		std::list<const char*> Names;
-		void ImGuiOnWindowShutdown(Events::OnWindowClose& e);
+		static inline std::list<const char*> Names;
+		static void ImGuiOnWindowShutdown(Events::OnWindowClose& e);
 	public:
-		void Start(Application* app)override;
-		void OnOverlayUpdate();
-		void Update()override;
-		void Shutdown()override;
-		//We Can Also Use the event System. Instead of holding window we just dispatch an event.
-
+		static void Start();
+		static void OnOverlayUpdate();
+		static void Shutdown();
 		//Return The Number of Windows
-		int GetNumberOfWindows();
+		static int GetNumberOfWindows();
 		//Get A list of type_info.
-		std::list<const char*> GetTypeInfoList();
+		static std::list<const char*> GetTypeInfoList();
 		//Adds a window to the draw list.WIP
-		void AddOverlayWindow(IOverlayWindow* Window);
+		//TODO: Change this so that it Creates the object instead of getting it.
+		static void AddOverlayWindow(IOverlayWindow* Window);
 		//Remove the window from the list.
-		void RemoveOverlayWindow(IOverlayWindow* Window);
+		static void RemoveOverlayWindow(IOverlayWindow* Window);
+		//Gets the Specified OverlayWindow (WIP)
+		template<typename T>
+		static T* GetOverlayWindow() {
+			auto tid = typeid(T).name();
+			for (auto w : Overlays) {
+				if (typeid(*w).name() == tid) {
+					return (T*)w;
+				}
+			}
+		}
 	};
 	//Main Application Debug Window
 	//For Some Reason the first log is always ignored(fixed)
@@ -72,14 +77,8 @@ namespace Sphynx::Core {
 		Scripting::ScriptingEngine scripts;
 		Core::IWindow* window;
 		char TitleBuffer[128];
-		//Put the in the cpp. I Couldn't include imgui.h because of SandBox.
-		//std::vector<char> Buf;
-		//std::vector<int> LineOffsets;
-
-		void OnEventLog(OnLog& e);
 	public:
-		DebugWindow(Application* app);
+		DebugWindow();
 		void Draw()override;
-
 	};
 }

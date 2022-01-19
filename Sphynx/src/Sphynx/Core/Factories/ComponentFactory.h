@@ -8,10 +8,11 @@
 namespace Sphynx::Core::Internal {
 	class ComponentFactory final
 	{
-		inline static std::unordered_map<GameObject*,std::unordered_set<std::type_index>> RegisteredTypes;
+		inline static std::unordered_map<GameObject*, std::unordered_set<size_t>> RegisteredTypes;
+		inline static std::unordered_map<GameObject*, std::unordered_set<std::type_index>> RegisteredTypesIndex;
 	public:
 		template<typename component, typename ...Args>
-		static component* CreateComponent(GameObject* object, Args&& ...args) {
+		static component* CreateComponent(Sphynx::GameObject* object, Args&& ...args) {
 			//We Don't Check Because GameObject Does That.
 			auto comp = new component(std::forward<Args>(args)...);
 			comp->Parent = object;
@@ -19,9 +20,25 @@ namespace Sphynx::Core::Internal {
 			((Component*)comp)->OnComponentAttach(object);
 			//TypeIndex List
 			auto til = RegisteredTypes[object];
-			til.insert(std::type_index(typeid(component)));
+			til.insert(comp->GetID());
+			auto goIdx = RegisteredTypesIndex[object];
+			goIdx.insert(std::type_index(typeid(component)));
 			return comp;
 		}
+
+		static void CompMove(GameObject* old, GameObject* newobj) {
+			auto a = RegisteredTypes[old];
+			RegisteredTypes[newobj] = RegisteredTypes[old];
+			RegisteredTypes.erase(old);
+			RegisteredTypesIndex[newobj] = RegisteredTypesIndex[old];
+			RegisteredTypesIndex.erase(old);
+		}
+
+		static void CompCopy(GameObject* ori, GameObject* cpy) {
+			RegisteredTypes[cpy] = RegisteredTypes[ori];
+			RegisteredTypesIndex[cpy] = RegisteredTypesIndex[ori];
+		}
+
 		//Utility
 		typedef struct ComponentHelper {
 			template<class comp>
@@ -33,8 +50,15 @@ namespace Sphynx::Core::Internal {
 				return (typeid(comp) == typeid(*c));
 			}
 			template<class comp>
-			static bool IsComponentInGameObject(GameObject* obj) {
-				return RegisteredTypes[obj].find(std::type_index(typeid(comp))) != RegisteredTypes[obj].end();
+			static bool IsComponentInGameObject(Sphynx::GameObject* obj) {
+				return RegisteredTypesIndex[obj].find(std::type_index(typeid(comp))) != RegisteredTypesIndex[obj].end();
+			}
+			static bool IsComponentInGameObject(Sphynx::GameObject* obj, Component* comp) {
+				return RegisteredTypes[obj].find(comp->GetID()) != RegisteredTypes[obj].end();
+			}
+			template<class comp>
+			static bool IsComponentOfType(Component* component) {
+				return typeid(comp) == typeid(*component);
 			}
 		}ComponentHelper;
 	};
