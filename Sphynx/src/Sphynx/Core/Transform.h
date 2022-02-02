@@ -21,6 +21,7 @@ namespace Sphynx {
 		void Rotate(float Angle, glm::vec3 axis);
 		void Scale(glm::vec3 scale);
 		void SetPosition(glm::vec3 to);
+		void SetRotation(glm::vec3 rot);
 		glm::vec3 GetPosition();
 		virtual ~Transform();
 		virtual void Update() override;

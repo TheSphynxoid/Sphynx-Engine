@@ -220,6 +220,7 @@
     <ClInclude Include="src\Sphynx\Editor\Console.h" />
     <ClInclude Include="src\Sphynx\Events\SceneEvents.h" />
     <ClInclude Include="src\Sphynx\Core\Graphics\Pipeline\Viewport.h" />
+    <ClInclude Include="src\Sphynx\Core\Factories\ComponentRegistry.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Sphynx\Application.cpp">
@@ -350,6 +351,7 @@
     <ClCompile Include="src\Sphynx\Editor\GameObjectView.cpp" />
     <ClCompile Include="src\Sphynx\Editor\Console.cpp" />
     <ClCompile Include="src\Sphynx\Core\Graphics\Pipeline\Viewport.cpp" />
+    <ClCompile Include="src\Sphynx\Core\Factories\ComponentRegistry.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Sphynx\Scripts\Component.as">

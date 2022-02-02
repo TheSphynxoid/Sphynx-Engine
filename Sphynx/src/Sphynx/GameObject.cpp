@@ -18,9 +18,10 @@ Sphynx::GameObject::GameObject(const GameObject& obj)noexcept
     this->Components = obj.Components;
     this->transform = obj.transform;
     this->IsAlive = obj.IsAlive;
-    InstanceID = (size_t)this;
+    //InstanceID = (size_t)this;
+    this->InstanceID = obj.InstanceID;
     this->Name = obj.Name;
-    Core::Internal::ComponentFactory::CompCopy(const_cast<GameObject*>(&obj), this);
+    //Core::Internal::ComponentFactory::CompCopy(const_cast<GameObject*>(&obj), this);
 }
 //Move Constructor.
 Sphynx::GameObject::GameObject(GameObject&& obj)noexcept
@@ -30,7 +31,6 @@ Sphynx::GameObject::GameObject(GameObject&& obj)noexcept
     std::swap(this->IsAlive, obj.IsAlive);
     std::swap(this->Name, obj.Name);
     this->InstanceID = obj.InstanceID;
-    Core::Internal::ComponentFactory::CompMove(&obj, this);
 }
 
 Sphynx::GameObject::~GameObject()

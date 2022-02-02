@@ -29,6 +29,7 @@ namespace Sphynx {
 		~GameObject();
 		GameObject& operator=(GameObject&& obj)noexcept;
 		GameObject& operator=(const GameObject& obj)noexcept;
+		//TODO: Callback to Scene to handle object delete.
 		void Destroy() { IsAlive = false; };
 		bool IsActive() { return IsAlive; };
 		void Start() {
@@ -73,6 +74,7 @@ namespace Sphynx {
 			else {
 				for (auto comp : Components) {
 					if (Core::Internal::ComponentFactory::ComponentHelper::CompareTypeToComponant_typeid<component>(comp)) {
+						Core::Internal::ComponentFactory::RemoveComponent(this, comp);
 						Components.remove(comp);
 						return;
 					}

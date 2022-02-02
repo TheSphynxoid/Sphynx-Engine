@@ -83,15 +83,7 @@ void Sphynx::Core::Graphics::GL::GLFrameBuffer::Invalidate()
 	Bind();
 	ColorAttachmentsCount = 0;
 	for (auto& tex : ColorAttachments) {
-		auto err = glGetError();
-		while (err != GL_NO_ERROR) {
-			err = glGetError();
-		}
 		auto _t = Texture::Create(TextureType::Texture2D, Width, Height, tex->GetFormat(), tex->GetDataFormat());
-		err = glGetError();
-		while (err != GL_NO_ERROR) {
-			err = glGetError();
-		}
 		(*((GLTexture*)tex)) = (GLTexture&&)*(GLTexture*)_t;
 		if (tex->GetFormat() == TextureFormat::Depth24_Stencil8) {
 			glNamedFramebufferTexture(ID, GL_DEPTH_STENCIL_ATTACHMENT, ((GLTexture*)tex)->TextureID, 0);

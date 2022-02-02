@@ -43,7 +43,7 @@ void Sphynx::Editor::GameObjectView::Draw()
 				//CurrentGO->GetTransform()->Set({ TransformV[0],TransformV[1],TransformV[2] });
 			}
 			if (ImGui::DragFloat3("Scale", TransformS, std::abs(ImGui::GetMouseDragDelta().x) / 10000)) {
-				//CurrentGO->GetTransform()->Set({ TransformV[0],TransformV[1],TransformV[2] });
+				CurrentGO->GetTransform()->Scale({ TransformV[0],TransformV[1],TransformV[2] });
 			}
 			ImGui::Separator();
 			if (Core::Internal::ComponentFactory::ComponentHelper::IsComponentInGameObject<Camera>(CurrentGO)) {
@@ -63,4 +63,7 @@ void Sphynx::Editor::GameObjectView::SetGameObjectView(Sphynx::GameObject* go)
 	TransformV[0] = pos[0];
 	TransformV[1] = pos[1];
 	TransformV[2] = pos[2];
+	TransformS[0] = 1;
+	TransformS[1] = 1;
+	TransformS[2] = 1;
 }

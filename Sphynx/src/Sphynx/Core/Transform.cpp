@@ -37,6 +37,10 @@ void Sphynx::Transform::SetPosition(glm::vec3 to)
 	Position = to;
 }
 
+void Sphynx::Transform::SetRotation(glm::vec3 rot)
+{
+}
+
 glm::vec3 Sphynx::Transform::GetPosition()
 {
 	return Position;

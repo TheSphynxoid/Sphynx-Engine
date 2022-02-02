@@ -24,6 +24,8 @@
 #include "Scene.h"
 #include "Core/Graphics/Pipeline/FrameBuffer.h"
 #include "Core/Graphics/Pipeline/Texture.h"
+#define STB_IMAGE_WRITE_IMPLEMENTATION
+#include <stb_image_write.h>
 
 using namespace Sphynx::Events;
 
@@ -219,6 +221,13 @@ void Sphynx::Core::DebugWindow::Draw()
 			auto fb = Sphynx::Core::SceneManager::GetScene().GetPrimaryCamera()->GetFrameBuffer();
 			ImGui::Text("Camera FrameBuffer Width:%i", fb->GetColorAttachment(0)->GetWidth());
 			ImGui::Text("Camera FrameBuffer Height:%i", fb->GetColorAttachment(0)->GetHeight());
+			if (ImGui::Button("Save Framebuffer")) {
+				stbi_flip_vertically_on_write(true);
+				fb->Bind();
+				stbi_write_bmp("ScreenShot.bmp", fb->GetColorAttachment(0)->GetWidth(), fb->GetColorAttachment(0)->GetHeight(),
+					4, fb->GetColorAttachment(0)->ReadAllPixels(Sphynx::Core::Graphics::TextureDataFormat::UInt_8_8_8_8_REV));
+				fb->Unbind();
+			}
 			bool vs = window->IsVsyncEnabled();
 			if (ImGui::Checkbox("Vsync", &vs)) {
 				window->SetVsync(vs);

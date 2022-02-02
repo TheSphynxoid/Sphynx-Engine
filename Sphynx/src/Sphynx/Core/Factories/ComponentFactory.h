@@ -5,11 +5,10 @@
 #include <typeindex>
 #include <unordered_map>
 #include <unordered_set>
+#include "ComponentRegistry.h"
 namespace Sphynx::Core::Internal {
 	class ComponentFactory final
 	{
-		inline static std::unordered_map<GameObject*, std::unordered_set<size_t>> RegisteredTypes;
-		inline static std::unordered_map<GameObject*, std::unordered_set<std::type_index>> RegisteredTypesIndex;
 	public:
 		template<typename component, typename ...Args>
 		static component* CreateComponent(Sphynx::GameObject* object, Args&& ...args) {
@@ -19,24 +18,16 @@ namespace Sphynx::Core::Internal {
 			comp->_transform = object->GetTransform();
 			((Component*)comp)->OnComponentAttach(object);
 			//TypeIndex List
-			auto til = RegisteredTypes[object];
-			til.insert(comp->GetID());
-			auto goIdx = RegisteredTypesIndex[object];
-			goIdx.insert(std::type_index(typeid(component)));
+			ComponentRegistry::RegisterComp(object, comp);
 			return comp;
 		}
-
-		static void CompMove(GameObject* old, GameObject* newobj) {
-			auto a = RegisteredTypes[old];
-			RegisteredTypes[newobj] = RegisteredTypes[old];
-			RegisteredTypes.erase(old);
-			RegisteredTypesIndex[newobj] = RegisteredTypesIndex[old];
-			RegisteredTypesIndex.erase(old);
+		static void RemoveComponent(Sphynx::GameObject* go, Component* comp) {
+			ComponentRegistry::RemoveComp(go, comp);
+			comp->OnComponentDetach();
+			delete comp;
 		}
-
 		static void CompCopy(GameObject* ori, GameObject* cpy) {
-			RegisteredTypes[cpy] = RegisteredTypes[ori];
-			RegisteredTypesIndex[cpy] = RegisteredTypesIndex[ori];
+			ComponentRegistry::CopyGameObject(ori, cpy);
 		}
 
 		//Utility
@@ -51,10 +42,10 @@ namespace Sphynx::Core::Internal {
 			}
 			template<class comp>
 			static bool IsComponentInGameObject(Sphynx::GameObject* obj) {
-				return RegisteredTypesIndex[obj].find(std::type_index(typeid(comp))) != RegisteredTypesIndex[obj].end();
+				return ComponentRegistry::IsCompInGO(obj, std::type_index(typeid(comp)));
 			}
 			static bool IsComponentInGameObject(Sphynx::GameObject* obj, Component* comp) {
-				return RegisteredTypes[obj].find(comp->GetID()) != RegisteredTypes[obj].end();
+				return ComponentRegistry::IsCompInGO(obj, comp);
 			}
 			template<class comp>
 			static bool IsComponentOfType(Component* component) {

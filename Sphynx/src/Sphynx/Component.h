@@ -30,6 +30,9 @@ namespace Sphynx {
 		bool operator==(Component* comp) {
 			return InstanceID == comp->InstanceID;
 		}
+		bool operator!=(Component* comp) {
+			return (this->InstanceID != comp->InstanceID);
+		}
 		friend Core::Internal::ComponentFactory;
 		friend GameObject;
 	};

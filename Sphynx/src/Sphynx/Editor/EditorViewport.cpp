@@ -48,7 +48,6 @@ void Sphynx::Editor::EditorViewport::Draw()
 			{ (float)SceneManager::GetScene().GetPrimaryCamera()->GetFrameBuffer()->GetWidth(), 
 				(float)SceneManager::GetScene().GetPrimaryCamera()->GetFrameBuffer()->GetHeight() });
         static int corner = 1;
-        ImGuiIO& io = ImGui::GetIO();
         ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav;
         if (corner != -1)
         {

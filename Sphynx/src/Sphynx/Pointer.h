@@ -16,6 +16,22 @@ namespace Sphynx {
 		Invalid_Type(const char* e) : std::exception(e) {};
 	};
 
+	struct Dtor {
+	private:
+		void(*_dtor)(void*);
+		void* obj;
+	public:
+		template<class T>
+		Dtor(T* t) {
+			obj = t;
+			//Since we can't have a pointer to the destructor.
+			_dtor = [](void* o) ->void {((T*)o)->~T(); };
+		}
+		void Destroy() {
+			_dtor(obj);
+		}
+	};
+
 	class Deallocator_Base {
 	protected:
 		virtual void I_Delete() = 0;
