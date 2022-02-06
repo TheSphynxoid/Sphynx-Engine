@@ -10,8 +10,7 @@
 #include <utility>
 #include <memory>
 #include <iostream>
-#include "Core/ThreadPool.h"
-#define Sphynx_Version "V0.5.0-PreAlpha"
+#define Sphynx_Version "V0.5.5-PreAlpha-ml"
 namespace Sphynx {
 	namespace Core {
 		class IWindow;
@@ -20,7 +19,6 @@ namespace Sphynx {
 	{
 	private:
 		//TODO:Finish the class.
-		Core::ThreadPool threadpool = Core::ThreadPool();
 		Events::EventSystem eventSystem;
 		std::list<Pointer<Events::EventSystem>> EventSystemArray;
 		Core::IWindow* MainWindow = nullptr;

@@ -5,6 +5,8 @@
 #include "Core/Graphics/Window.h"
 #include "Scene.h"
 #include "Core/SceneManager.h"
+#include "Core/Threadpool.h"
+#include "Input.h"
 #include "Core/Graphics/Pipeline/Texture.h"
 #include "Core/Graphics/Pipeline/FrameBuffer.h"
 #include <scriptstdstring/scriptstdstring.h>
@@ -90,18 +92,25 @@ template<class T>
 class ScriptObjectWrapper {
 private:
 	int Refs = 0;
-	T* Obj;
+	T Obj;
 public:
 	ScriptObjectWrapper() {
-		Obj = new T();
+		Obj = T();
 	}
 	template<typename ...Args>
 	ScriptObjectWrapper(Args&& ...args) {
-		Obj = new T(std::forward<Args>(args...));
+		Obj = T(std::forward<Args>(args...));
 	}
-
+	~ScriptObjectWrapper() {
+		if (!--Refs) {
+			Obj.~T();
+		}
+	}
+	operator T () {
+		return Obj;
+	}
 	void AddRef() { Refs++; };
-	void Release() { Refs--; };
+	void Release() { --Refs; };
 };
 
 void CreateWindowAS(Application* app, std::string title, Bounds b, bool fullscreen) {
@@ -117,7 +126,152 @@ Camera* GetCamera() {
 }
 
 int IncludeCallBack(const char* include, const char* from, CScriptBuilder* builder, void* UserParam) {
+	if (strcmp(include, from) == 0) {
+		Core_Error("{0} Script Includes itself", from);
+		return asERetCodes::asERROR;
+	}
 	return builder->AddSectionFromFile(include);
+}
+
+bool IsKeyPressed(int _key) {
+	return Input::IsKeyPressed((Keys)_key);
+}
+
+void RegisterInput(asIScriptEngine* engine) {
+	engine->SetDefaultNamespace("Sphynx");
+#pragma region Keys Enum
+	engine->RegisterEnum("Keys");
+	SpRegisterEnumValue(engine, Keys, Up);
+	SpRegisterEnumValue(engine, Keys, Down);
+	SpRegisterEnumValue(engine, Keys, Left);
+	SpRegisterEnumValue(engine, Keys, Right);
+	SpRegisterEnumValue(engine, Keys, A);
+	SpRegisterEnumValue(engine, Keys, B);
+	SpRegisterEnumValue(engine, Keys, C);
+	SpRegisterEnumValue(engine, Keys, D);
+	SpRegisterEnumValue(engine, Keys, Space);
+	SpRegisterEnumValue(engine, Keys, Apostrophe);
+	SpRegisterEnumValue(engine, Keys, Comma);
+	SpRegisterEnumValue(engine, Keys, Minus);
+	SpRegisterEnumValue(engine, Keys, Period);
+	SpRegisterEnumValue(engine, Keys, Slash);
+	SpRegisterEnumValue(engine, Keys, Num0);
+	SpRegisterEnumValue(engine, Keys, Num1);
+	SpRegisterEnumValue(engine, Keys, Num2);
+	SpRegisterEnumValue(engine, Keys, Num3);
+	SpRegisterEnumValue(engine, Keys, Num4);
+	SpRegisterEnumValue(engine, Keys, Num5);
+	SpRegisterEnumValue(engine, Keys, Num6);
+	SpRegisterEnumValue(engine, Keys, Num7);
+	SpRegisterEnumValue(engine, Keys, Num8);
+	SpRegisterEnumValue(engine, Keys, Num9);
+	SpRegisterEnumValue(engine, Keys, SemiColon);
+	SpRegisterEnumValue(engine, Keys, Equal);
+	SpRegisterEnumValue(engine, Keys, A);
+	SpRegisterEnumValue(engine, Keys, B);
+	SpRegisterEnumValue(engine, Keys, C);
+	SpRegisterEnumValue(engine, Keys, D);
+	SpRegisterEnumValue(engine, Keys, E);
+	SpRegisterEnumValue(engine, Keys, F);
+	SpRegisterEnumValue(engine, Keys, G);
+	SpRegisterEnumValue(engine, Keys, H);
+	SpRegisterEnumValue(engine, Keys, I);
+	SpRegisterEnumValue(engine, Keys, J);
+	SpRegisterEnumValue(engine, Keys, K);
+	SpRegisterEnumValue(engine, Keys, L);
+	SpRegisterEnumValue(engine, Keys, M);
+	SpRegisterEnumValue(engine, Keys, N);
+	SpRegisterEnumValue(engine, Keys, O);
+	SpRegisterEnumValue(engine, Keys, P);
+	SpRegisterEnumValue(engine, Keys, Q);
+	SpRegisterEnumValue(engine, Keys, R);
+	SpRegisterEnumValue(engine, Keys, S);
+	SpRegisterEnumValue(engine, Keys, T);
+	SpRegisterEnumValue(engine, Keys, U);
+	SpRegisterEnumValue(engine, Keys, V);
+	SpRegisterEnumValue(engine, Keys, W);
+	SpRegisterEnumValue(engine, Keys, X);
+	SpRegisterEnumValue(engine, Keys, Y);
+	SpRegisterEnumValue(engine, Keys, Z);
+	SpRegisterEnumValue(engine, Keys, LeftBracket);
+	SpRegisterEnumValue(engine, Keys, BackSlash);
+	SpRegisterEnumValue(engine, Keys, RightBracket);
+	SpRegisterEnumValue(engine, Keys, GraveAccent);
+	SpRegisterEnumValue(engine, Keys, World1);
+	SpRegisterEnumValue(engine, Keys, World2);
+	SpRegisterEnumValue(engine, Keys, Escape);
+	SpRegisterEnumValue(engine, Keys, Enter);
+	SpRegisterEnumValue(engine, Keys, Tab);
+	SpRegisterEnumValue(engine, Keys, BackSpace);
+	SpRegisterEnumValue(engine, Keys, Insert);
+	SpRegisterEnumValue(engine, Keys, Delete);
+	SpRegisterEnumValue(engine, Keys, Right);
+	SpRegisterEnumValue(engine, Keys, Left);
+	SpRegisterEnumValue(engine, Keys, Down);
+	SpRegisterEnumValue(engine, Keys, Up);
+	SpRegisterEnumValue(engine, Keys, PageUp);
+	SpRegisterEnumValue(engine, Keys, PageDown);
+	SpRegisterEnumValue(engine, Keys, Home);
+	SpRegisterEnumValue(engine, Keys, End);
+	SpRegisterEnumValue(engine, Keys, CapsLock);
+	SpRegisterEnumValue(engine, Keys, ScrollLock);
+	SpRegisterEnumValue(engine, Keys, NumLock);
+	SpRegisterEnumValue(engine, Keys, PrintScreen);
+	SpRegisterEnumValue(engine, Keys, Pause);
+	SpRegisterEnumValue(engine, Keys, F1);
+	SpRegisterEnumValue(engine, Keys, F2);
+	SpRegisterEnumValue(engine, Keys, F3);
+	SpRegisterEnumValue(engine, Keys, F4);
+	SpRegisterEnumValue(engine, Keys, F5);
+	SpRegisterEnumValue(engine, Keys, F6);
+	SpRegisterEnumValue(engine, Keys, F7);
+	SpRegisterEnumValue(engine, Keys, F8);
+	SpRegisterEnumValue(engine, Keys, F9);
+	SpRegisterEnumValue(engine, Keys, F10);
+	SpRegisterEnumValue(engine, Keys, F11);
+	SpRegisterEnumValue(engine, Keys, F12);
+	SpRegisterEnumValue(engine, Keys, F13);
+	SpRegisterEnumValue(engine, Keys, F14);
+	SpRegisterEnumValue(engine, Keys, F15);
+	SpRegisterEnumValue(engine, Keys, F16);
+	SpRegisterEnumValue(engine, Keys, F17);
+	SpRegisterEnumValue(engine, Keys, F18);
+	SpRegisterEnumValue(engine, Keys, F19);
+	SpRegisterEnumValue(engine, Keys, F20);
+	SpRegisterEnumValue(engine, Keys, F21);
+	SpRegisterEnumValue(engine, Keys, F22);
+	SpRegisterEnumValue(engine, Keys, F23);
+	SpRegisterEnumValue(engine, Keys, F24);
+	SpRegisterEnumValue(engine, Keys, F25);
+	SpRegisterEnumValue(engine, Keys, Kp0);
+	SpRegisterEnumValue(engine, Keys, Kp1);
+	SpRegisterEnumValue(engine, Keys, Kp2);
+	SpRegisterEnumValue(engine, Keys, Kp3);
+	SpRegisterEnumValue(engine, Keys, Kp4);
+	SpRegisterEnumValue(engine, Keys, Kp5);
+	SpRegisterEnumValue(engine, Keys, Kp6);
+	SpRegisterEnumValue(engine, Keys, Kp7);
+	SpRegisterEnumValue(engine, Keys, Kp8);
+	SpRegisterEnumValue(engine, Keys, Kp9);
+	SpRegisterEnumValue(engine, Keys, KpDecimal);
+	SpRegisterEnumValue(engine, Keys, KpDivide);
+	SpRegisterEnumValue(engine, Keys, KpMultiply);
+	SpRegisterEnumValue(engine, Keys, KpSubtract);
+	SpRegisterEnumValue(engine, Keys, KpAdd);
+	SpRegisterEnumValue(engine, Keys, KpEnter);
+	SpRegisterEnumValue(engine, Keys, KpEqual);
+	SpRegisterEnumValue(engine, Keys, LeftShift);
+	SpRegisterEnumValue(engine, Keys, LeftControl);
+	SpRegisterEnumValue(engine, Keys, LeftAlt);
+	SpRegisterEnumValue(engine, Keys, LeftSuper);
+	SpRegisterEnumValue(engine, Keys, RightShift);
+	SpRegisterEnumValue(engine, Keys, RightControl);
+	SpRegisterEnumValue(engine, Keys, RightAlt);
+	SpRegisterEnumValue(engine, Keys, RightSuper);
+	SpRegisterEnumValue(engine, Keys, Menu);
+#pragma endregion
+	engine->SetDefaultNamespace("Sphynx::Input");
+	int r = engine->RegisterGlobalFunction("bool IsKeyPressed(Sphynx::Keys)", asFUNCTION(IsKeyPressed), asCALL_CDECL);
 }
 
 Sphynx::Core::Scripting::AngelScript::AngelScript()
@@ -197,9 +351,9 @@ Sphynx::Core::Scripting::AngelScript::AngelScript()
 	Engine->SetDefaultNamespace("Sphynx::SceneManager");
 	Engine->RegisterGlobalFunction("Scene@ GetCurrentScene()", asFUNCTION(SceneManager::GetScene), asCALL_CDECL);
 	r = Engine->RegisterGlobalFunction("void AddScene(Scene@ s)", asFUNCTION(SceneManager::AddScene), asCALL_CDECL); assert(r >= 0);
+	RegisterInput(Engine);
 	Engine->SetDefaultNamespace("");
 	builder.SetIncludeCallback(IncludeCallBack, NULL);
-
 }
 
 Sphynx::Core::Scripting::AngelScript::~AngelScript()
@@ -260,17 +414,21 @@ void Sphynx::Core::Scripting::AsScript::OnComponentDetach()
 
 void Sphynx::Core::Scripting::AsScript::Update()
 {
-	auto r = Context->Execute();
-	if (r != asEXECUTION_FINISHED)
-	{
-		// The execution didn't complete as expected. Determine what happened.
-		if (r == asEXECUTION_EXCEPTION)
-		{
-			// An exception occurred, let the script writer know what happened so it can be corrected.
-			Core_Error("An exception '{0}' occurred. Please correct the code and try again.\n", Context->GetExceptionString());
+	ThreadPool::Submit([this]() {
+		if (Context != nullptr) {
+			auto r = Context->Execute();
+			if (r != asEXECUTION_FINISHED)
+			{
+				// The execution didn't complete as expected. Determine what happened.
+				if (r == asEXECUTION_EXCEPTION)
+				{
+					// An exception occurred, let the script writer know what happened so it can be corrected.
+					Core_Error("An exception '{0}' occurred. Please correct the code and try again.\n", Context->GetExceptionString());
+				}
+			}
+			Context->Prepare(UpdateFunc);
 		}
-	}
-	Context->Prepare(UpdateFunc);
+		});
 }
 
 Sphynx::Core::Scripting::AsScript::AsScript(const char* path, const char* ModuleName)

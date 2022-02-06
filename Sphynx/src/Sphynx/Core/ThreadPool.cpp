@@ -2,32 +2,18 @@
 #include "ThreadPool.h"
 #include "Application.h"
 
-Sphynx::Core::ThreadPool::ThreadPool(int num_threads)
+void Sphynx::Core::ThreadPool::Start(int numthreads)
 {
-    if (!num_threads) {
-        //Without the thread pool nothing will work.
-        throw std::invalid_argument("Thread Number must be non-zero");
-    }
-    MaxThreads = num_threads;
-}
-
-Sphynx::Core::ThreadPool::~ThreadPool()
-{
-    if (!stopped) {
-        Abort();
-    }
-}
-
-void Sphynx::Core::ThreadPool::Start(Application* app)
-{
+    MaxThreads = numthreads;
     for (int i = 0; i < MaxThreads; i++) {
-        threads.push_back(std::thread(&ThreadPool::Loop, this));
+        threads.push_back(std::thread(&ThreadPool::Loop));
     }
+    IsRunning.store(true);
 }
 
 void Sphynx::Core::ThreadPool::Submit(std::function<void()> new_job)
 {
-    this->funcQueue.push_back(new_job);
+    funcQueue.push_back(new_job);
     condition.notify_one();
 }
 
@@ -50,6 +36,9 @@ void Sphynx::Core::ThreadPool::Loop()
 
 void Sphynx::Core::ThreadPool::JoinAll()
 {
+    for (auto& thread : threads) {
+        thread.join();
+    }
 }
 
 void Sphynx::Core::ThreadPool::Stop()
@@ -60,18 +49,21 @@ void Sphynx::Core::ThreadPool::Stop()
 
 void Sphynx::Core::ThreadPool::Abort()
 {
-    {
-        std::unique_lock<std::mutex> lock(ThreadPoolMutex);
-        IsRunning.store(false); // use this flag in condition.wait
-    }
-    condition.notify_all(); // wake up all threads.
+    if (stopped) {
 
-    // Join all threads.
-    for (std::thread& every_thread : threads)
-    {
-        every_thread.join();
-    }
+        {
+            std::unique_lock<std::mutex> lock(ThreadPoolMutex);
+            IsRunning.store(false); // use this flag in condition.wait
+        }
+        condition.notify_all(); // wake up all threads.
 
-    threads.clear();
-    stopped = true; // use this flag in destructor, if not set, call shutdown() 
+        // Join all threads.
+        for (std::thread& every_thread : threads)
+        {
+            every_thread.join();
+        }
+
+        threads.clear();
+        stopped = true; // use this flag in destructor, if not set, call shutdown() 
+    }
 }

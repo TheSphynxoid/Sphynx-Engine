@@ -7,7 +7,7 @@ using namespace Sphynx::Core::Graphics;
 
 const Sphynx::GameObject Sphynx::GameObject::PlaceHolder = Sphynx::GameObject("PlaceHolder");
 
-Sphynx::GameObject::GameObject(char* name) : IsAlive(true), InstanceID((size_t)this), Name(name)
+Sphynx::GameObject::GameObject(const char* name) : IsAlive(true), InstanceID((size_t)this), Name(name)
 {
     //((Component*)&transform)->Parent = this;
     //((Component*)&transform)->_transform = transform;
@@ -61,7 +61,7 @@ Sphynx::GameObject& Sphynx::GameObject::operator=(const GameObject& obj)noexcept
     return *this;
 }
 
-Sphynx::GameObject Sphynx::GameObject::CreatePrimitive(Primitives primitive, char* name)
+Sphynx::GameObject Sphynx::GameObject::CreatePrimitive(Primitives primitive, const char* name)
 {
     auto rt = GameObject(name);
     VertexBuffer* vb = nullptr;

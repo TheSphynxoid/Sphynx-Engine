@@ -1,9 +1,11 @@
 #pragma once
-#ifndef Sphynx_LinkedPool
-#define Sphynx_LinkedPool
+#ifndef Sphynx_Pool
+#define Sphynx_Pool
 #include <memory>
 #include <queue>
+#ifndef Def_Start_Size
 #define Def_Start_Size 10
+#endif
 
 namespace Sphynx {
 	//Pool is a container that does not ensure element position,what this means is that a new elements is not guaranteed to be "size-1"
@@ -51,7 +53,7 @@ namespace Sphynx {
 		void push(T& elem) noexcept{
 			if (FreeIndexes.empty()) {
 				if (Count == currCount) {
-					auto newalloc = (T*)realloc(container, sizeof(T) * (Count + Def_Start_Size));
+					auto newalloc = (T*)realloc(container, sizeof(T) * (Count + Def_Start_Size) * 2);
 					if (newalloc) {
 						container = newalloc;
 						Count += Def_Start_Size;
@@ -91,6 +93,12 @@ namespace Sphynx {
 					container[i].~T();
 					return;
 				}
+			}
+		}
+		template<typename Pred>
+		void for_each(Pred _pred) {
+			for (int i = 0; i < currCount; i++) {
+				_pred(container[i]);
 			}
 		}
 		const size_t capacity()const noexcept{ return Count; };

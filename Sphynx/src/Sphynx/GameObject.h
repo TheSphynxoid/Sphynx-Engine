@@ -23,7 +23,7 @@ namespace Sphynx {
 		Transform* transform = new Transform();
 	public:
 		static const GameObject PlaceHolder;
-		GameObject(char* name = "GameObject");
+		GameObject(const char* name = "GameObject");
 		GameObject(const GameObject& obj)noexcept;
 		GameObject(GameObject&& obj)noexcept;
 		~GameObject();
@@ -81,7 +81,7 @@ namespace Sphynx {
 				}
 			}
 		}
-		static GameObject CreatePrimitive(Primitives primitive , char* name = "GameObject");
+		static GameObject CreatePrimitive(Primitives primitive , const char* name = "GameObject");
 		Transform* GetTransform() { 
 			return transform;
 		};

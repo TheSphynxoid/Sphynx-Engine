@@ -22,13 +22,13 @@
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -46,8 +46,6 @@
     <IntDir>..\build\int\Debug-windows-x86_64\Sphynx\</IntDir>
     <TargetName>Sphynx</TargetName>
     <TargetExt>.lib</TargetExt>
-    <EnableClangTidyCodeAnalysis>false</EnableClangTidyCodeAnalysis>
-    <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>..\build\bin\Release-windows-x86_64\Sphynx\</OutDir>
@@ -100,15 +98,6 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\Sphynx\Core\Factories\ComponentRegistry.h" />
-    <ClInclude Include="src\Sphynx\Editor\Console.h" />
-    <ClInclude Include="src\Sphynx\Editor\GameObjectView.h" />
-    <ClInclude Include="src\Sphynx\Editor\EditorViewport.h" />
-    <ClInclude Include="src\Sphynx\Editor\Editor.h" />
-    <ClInclude Include="src\Sphynx\Editor\SceneManagerView.h" />
-    <ClInclude Include="src\Sphynx\Events\SceneEvents.h" />
-    <ClInclude Include="src\Sphynx\UI\RectRenderer.h" />
-    <ClInclude Include="src\Sphynx\Core\Graphics\Platform\GLFrameBuffer.h" />
     <ClInclude Include="src\Sphynx.h" />
     <ClInclude Include="src\Sphynx\Application.h" />
     <ClInclude Include="src\Sphynx\Camera.h" />
@@ -116,6 +105,7 @@
     <ClInclude Include="src\Sphynx\Core.h" />
     <ClInclude Include="src\Sphynx\Core\Exceptions.h" />
     <ClInclude Include="src\Sphynx\Core\Factories\ComponentFactory.h" />
+    <ClInclude Include="src\Sphynx\Core\Factories\ComponentRegistry.h" />
     <ClInclude Include="src\Sphynx\Core\Graphics\Imgui.h" />
     <ClInclude Include="src\Sphynx\Core\Graphics\Pipeline\FrameBuffer.h" />
     <ClInclude Include="src\Sphynx\Core\Graphics\Pipeline\Material.h" />
@@ -124,6 +114,8 @@
     <ClInclude Include="src\Sphynx\Core\Graphics\Pipeline\Shader.h" />
     <ClInclude Include="src\Sphynx\Core\Graphics\Pipeline\Texture.h" />
     <ClInclude Include="src\Sphynx\Core\Graphics\Pipeline\UniformBuffer.h" />
+    <ClInclude Include="src\Sphynx\Core\Graphics\Pipeline\Viewport.h" />
+    <ClInclude Include="src\Sphynx\Core\Graphics\Platform\GLFrameBuffer.h" />
     <ClInclude Include="src\Sphynx\Core\Graphics\Platform\GLMaterial.h" />
     <ClInclude Include="src\Sphynx\Core\Graphics\Platform\GLMesh.h" />
     <ClInclude Include="src\Sphynx\Core\Graphics\Platform\GLRenderer.h" />
@@ -133,7 +125,6 @@
     <ClInclude Include="src\Sphynx\Core\Graphics\Platform\GLWindow.h" />
     <ClInclude Include="src\Sphynx\Core\Graphics\Window.h" />
     <ClInclude Include="src\Sphynx\Core\InternalUtility.h" />
-    <ClInclude Include="src\Sphynx\Pool.h" />
     <ClInclude Include="src\Sphynx\Core\Memory.h" />
     <ClInclude Include="src\Sphynx\Core\MeshRenderer.h" />
     <ClInclude Include="src\Sphynx\Core\Module.h" />
@@ -143,14 +134,21 @@
     <ClInclude Include="src\Sphynx\Core\Scripting\ScriptBehviour.h" />
     <ClInclude Include="src\Sphynx\Core\Scripting\ScriptingEngine.h" />
     <ClInclude Include="src\Sphynx\Core\System.h" />
+    <ClInclude Include="src\Sphynx\Core\Thread.h" />
     <ClInclude Include="src\Sphynx\Core\ThreadPool.h" />
     <ClInclude Include="src\Sphynx\Core\Transform.h" />
     <ClInclude Include="src\Sphynx\Delegate.h" />
+    <ClInclude Include="src\Sphynx\Editor\Console.h" />
+    <ClInclude Include="src\Sphynx\Editor\Editor.h" />
+    <ClInclude Include="src\Sphynx\Editor\EditorViewport.h" />
+    <ClInclude Include="src\Sphynx\Editor\GameObjectView.h" />
+    <ClInclude Include="src\Sphynx\Editor\SceneManagerView.h" />
     <ClInclude Include="src\Sphynx\EntryPoint.h" />
     <ClInclude Include="src\Sphynx\Events\ApplicationEvents.h" />
     <ClInclude Include="src\Sphynx\Events\Event.h" />
     <ClInclude Include="src\Sphynx\Events\ImGuiEvents.h" />
     <ClInclude Include="src\Sphynx\Events\InputEvents.h" />
+    <ClInclude Include="src\Sphynx\Events\SceneEvents.h" />
     <ClInclude Include="src\Sphynx\Events\WindowEvents.h" />
     <ClInclude Include="src\Sphynx\GameObject.h" />
     <ClInclude Include="src\Sphynx\Input.h" />
@@ -159,8 +157,10 @@
     <ClInclude Include="src\Sphynx\Object.h" />
     <ClInclude Include="src\Sphynx\PlatformMacros.h" />
     <ClInclude Include="src\Sphynx\Pointer.h" />
+    <ClInclude Include="src\Sphynx\Pool.h" />
     <ClInclude Include="src\Sphynx\Scene.h" />
     <ClInclude Include="src\Sphynx\SpTime.h" />
+    <ClInclude Include="src\Sphynx\UI\RectRenderer.h" />
     <ClInclude Include="src\Sphynx\Vector.h" />
     <ClInclude Include="src\Sphynx\imgui\imgui_impl_dx11.h" />
     <ClInclude Include="src\Sphynx\imgui\imgui_impl_dx12.h" />
@@ -169,21 +169,13 @@
     <ClInclude Include="src\Sphynx\imgui\imgui_impl_opengl3_loader.h" />
     <ClInclude Include="src\Sphynx\imgui\imgui_impl_win32.h" />
     <ClInclude Include="src\Sphynx\pch.h" />
-    <ClInclude Include="src\Sphynx\Core\Graphics\Pipeline\Viewport.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Sphynx\Core\Factories\ComponentRegistry.cpp" />
-    <ClCompile Include="src\Sphynx\Editor\Console.cpp" />
-    <ClCompile Include="src\Sphynx\Editor\GameObjectView.cpp" />
-    <ClCompile Include="src\Sphynx\Editor\EditorViewport.cpp" />
-    <ClCompile Include="src\Sphynx\Editor\Editor.cpp" />
-    <ClCompile Include="src\Sphynx\Editor\SceneManagerView.cpp" />
-    <ClCompile Include="src\Sphynx\UI\RectRenderer.cpp" />
-    <ClCompile Include="src\Sphynx\Core\Graphics\Platform\GLFrameBuffer.cpp" />
     <ClCompile Include="src\Sphynx\Application.cpp" />
     <ClCompile Include="src\Sphynx\Camera.cpp" />
     <ClCompile Include="src\Sphynx\Component.cpp" />
     <ClCompile Include="src\Sphynx\Core\Factories\ComponentFactory.cpp" />
+    <ClCompile Include="src\Sphynx\Core\Factories\ComponentRegistry.cpp" />
     <ClCompile Include="src\Sphynx\Core\Graphics\Imgui.cpp" />
     <ClCompile Include="src\Sphynx\Core\Graphics\Pipeline\FrameBuffer.cpp" />
     <ClCompile Include="src\Sphynx\Core\Graphics\Pipeline\Material.cpp" />
@@ -191,6 +183,8 @@
     <ClCompile Include="src\Sphynx\Core\Graphics\Pipeline\Shader.cpp" />
     <ClCompile Include="src\Sphynx\Core\Graphics\Pipeline\Texture.cpp" />
     <ClCompile Include="src\Sphynx\Core\Graphics\Pipeline\UniformBuffer.cpp" />
+    <ClCompile Include="src\Sphynx\Core\Graphics\Pipeline\Viewport.cpp" />
+    <ClCompile Include="src\Sphynx\Core\Graphics\Platform\GLFrameBuffer.cpp" />
     <ClCompile Include="src\Sphynx\Core\Graphics\Platform\GLMaterial.cpp" />
     <ClCompile Include="src\Sphynx\Core\Graphics\Platform\GLMesh.cpp" />
     <ClCompile Include="src\Sphynx\Core\Graphics\Platform\GLRenderer.cpp" />
@@ -205,8 +199,14 @@
     <ClCompile Include="src\Sphynx\Core\Scripting\Script.cpp" />
     <ClCompile Include="src\Sphynx\Core\Scripting\ScriptBehviour.cpp" />
     <ClCompile Include="src\Sphynx\Core\Scripting\ScriptingEngine.cpp" />
+    <ClCompile Include="src\Sphynx\Core\Thread.cpp" />
     <ClCompile Include="src\Sphynx\Core\ThreadPool.cpp" />
     <ClCompile Include="src\Sphynx\Core\Transform.cpp" />
+    <ClCompile Include="src\Sphynx\Editor\Console.cpp" />
+    <ClCompile Include="src\Sphynx\Editor\Editor.cpp" />
+    <ClCompile Include="src\Sphynx\Editor\EditorViewport.cpp" />
+    <ClCompile Include="src\Sphynx\Editor\GameObjectView.cpp" />
+    <ClCompile Include="src\Sphynx\Editor\SceneManagerView.cpp" />
     <ClCompile Include="src\Sphynx\GameObject.cpp" />
     <ClCompile Include="src\Sphynx\Input.cpp" />
     <ClCompile Include="src\Sphynx\Logger.cpp" />
@@ -214,6 +214,7 @@
     <ClCompile Include="src\Sphynx\Pointer.cpp" />
     <ClCompile Include="src\Sphynx\Scene.cpp" />
     <ClCompile Include="src\Sphynx\SpTime.cpp" />
+    <ClCompile Include="src\Sphynx\UI\RectRenderer.cpp" />
     <ClCompile Include="src\Sphynx\imgui\imgui_impl_dx11.cpp" />
     <ClCompile Include="src\Sphynx\imgui\imgui_impl_dx12.cpp" />
     <ClCompile Include="src\Sphynx\imgui\imgui_impl_glfw.cpp" />
@@ -222,7 +223,6 @@
     <ClCompile Include="src\Sphynx\pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="src\Sphynx\Core\Graphics\Pipeline\Viewport.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Sphynx\Scripts\Component.as" />

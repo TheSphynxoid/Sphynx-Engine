@@ -5,9 +5,8 @@
 #include <string>
 #include "Core/Factories/ComponentFactory.h"
 #include "Camera.h"
-//#include "Camera.h"
-//#include "Core/Graphics/Pipeline/FrameBuffer.h"
-//#include "Core/Graphics/Pipeline/Texture.h"
+#include "Core/Graphics/Pipeline/FrameBuffer.h"
+#include "Core/MeshRenderer.h"
 
 ImGuiID DockID = 0;
 std::string Title;
@@ -47,7 +46,17 @@ void Sphynx::Editor::GameObjectView::Draw()
 			}
 			ImGui::Separator();
 			if (Core::Internal::ComponentFactory::ComponentHelper::IsComponentInGameObject<Camera>(CurrentGO)) {
-				
+				ImGui::Text("Camera");
+				ImGui::Separator();
+			}
+			if (Core::Internal::ComponentFactory::ComponentHelper::IsComponentInGameObject<MeshRenderer>(CurrentGO)) {
+				ImGui::Text("Mesh Renderer");
+				if (ImGui::TreeNode("Mesh")) {
+					ImGui::TreePop();
+				}
+				if (ImGui::TreeNode("Material")) {
+					ImGui::TreePop();
+				}
 				ImGui::Separator();
 			}
 		}

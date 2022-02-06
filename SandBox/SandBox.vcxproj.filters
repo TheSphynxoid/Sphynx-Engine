@@ -137,8 +137,4 @@
   <ItemGroup>
     <ClCompile Include="src\App.cpp" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="src\Test.lua" />
-    <None Include="Test.lua" />
-  </ItemGroup>
 </Project>

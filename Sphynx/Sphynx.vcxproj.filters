@@ -22,11 +22,17 @@
     <Filter Include="Sphynx\Core\Scripting">
       <UniqueIdentifier>{A99DEA9F-150A-A69A-DEFD-3DF84A29C802}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Sphynx\Editor">
+      <UniqueIdentifier>{85147340-F1D4-EE76-BA0F-38F4268F3353}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Sphynx\Events">
       <UniqueIdentifier>{3383B641-9F43-3278-687E-7BF5D4FD7654}</UniqueIdentifier>
     </Filter>
     <Filter Include="Sphynx\Scripts">
       <UniqueIdentifier>{66A8CC82-5276-C088-3B0A-31AF27779CED}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sphynx\UI">
+      <UniqueIdentifier>{FC5A347B-68C5-E8F1-B103-9A971DADC646}</UniqueIdentifier>
     </Filter>
     <Filter Include="Sphynx\imgui">
       <UniqueIdentifier>{D9B61752-C519-A7F6-6E9F-DFAC5AE17279}</UniqueIdentifier>
@@ -50,6 +56,9 @@
       <Filter>Sphynx\Core</Filter>
     </ClInclude>
     <ClInclude Include="src\Sphynx\Core\Factories\ComponentFactory.h">
+      <Filter>Sphynx\Core\Factories</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Sphynx\Core\Factories\ComponentRegistry.h">
       <Filter>Sphynx\Core\Factories</Filter>
     </ClInclude>
     <ClInclude Include="src\Sphynx\Core\Graphics\Imgui.h">
@@ -76,6 +85,12 @@
     <ClInclude Include="src\Sphynx\Core\Graphics\Pipeline\UniformBuffer.h">
       <Filter>Sphynx\Core\Graphics\Pipeline</Filter>
     </ClInclude>
+    <ClInclude Include="src\Sphynx\Core\Graphics\Pipeline\Viewport.h">
+      <Filter>Sphynx\Core\Graphics\Pipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Sphynx\Core\Graphics\Platform\GLFrameBuffer.h">
+      <Filter>Sphynx\Core\Graphics\Platform</Filter>
+    </ClInclude>
     <ClInclude Include="src\Sphynx\Core\Graphics\Platform\GLMaterial.h">
       <Filter>Sphynx\Core\Graphics\Platform</Filter>
     </ClInclude>
@@ -101,9 +116,6 @@
       <Filter>Sphynx\Core\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="src\Sphynx\Core\InternalUtility.h">
-      <Filter>Sphynx\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Sphynx\Pool.h">
       <Filter>Sphynx\Core</Filter>
     </ClInclude>
     <ClInclude Include="src\Sphynx\Core\Memory.h">
@@ -133,6 +145,9 @@
     <ClInclude Include="src\Sphynx\Core\System.h">
       <Filter>Sphynx\Core</Filter>
     </ClInclude>
+    <ClInclude Include="src\Sphynx\Core\Thread.h">
+      <Filter>Sphynx\Core</Filter>
+    </ClInclude>
     <ClInclude Include="src\Sphynx\Core\ThreadPool.h">
       <Filter>Sphynx\Core</Filter>
     </ClInclude>
@@ -141,6 +156,21 @@
     </ClInclude>
     <ClInclude Include="src\Sphynx\Delegate.h">
       <Filter>Sphynx</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Sphynx\Editor\Console.h">
+      <Filter>Sphynx\Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Sphynx\Editor\Editor.h">
+      <Filter>Sphynx\Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Sphynx\Editor\EditorViewport.h">
+      <Filter>Sphynx\Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Sphynx\Editor\GameObjectView.h">
+      <Filter>Sphynx\Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Sphynx\Editor\SceneManagerView.h">
+      <Filter>Sphynx\Editor</Filter>
     </ClInclude>
     <ClInclude Include="src\Sphynx\EntryPoint.h">
       <Filter>Sphynx</Filter>
@@ -155,6 +185,9 @@
       <Filter>Sphynx\Events</Filter>
     </ClInclude>
     <ClInclude Include="src\Sphynx\Events\InputEvents.h">
+      <Filter>Sphynx\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Sphynx\Events\SceneEvents.h">
       <Filter>Sphynx\Events</Filter>
     </ClInclude>
     <ClInclude Include="src\Sphynx\Events\WindowEvents.h">
@@ -181,11 +214,17 @@
     <ClInclude Include="src\Sphynx\Pointer.h">
       <Filter>Sphynx</Filter>
     </ClInclude>
+    <ClInclude Include="src\Sphynx\Pool.h">
+      <Filter>Sphynx</Filter>
+    </ClInclude>
     <ClInclude Include="src\Sphynx\Scene.h">
       <Filter>Sphynx</Filter>
     </ClInclude>
     <ClInclude Include="src\Sphynx\SpTime.h">
       <Filter>Sphynx</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Sphynx\UI\RectRenderer.h">
+      <Filter>Sphynx\UI</Filter>
     </ClInclude>
     <ClInclude Include="src\Sphynx\Vector.h">
       <Filter>Sphynx</Filter>
@@ -211,16 +250,6 @@
     <ClInclude Include="src\Sphynx\pch.h">
       <Filter>Sphynx</Filter>
     </ClInclude>
-    <ClInclude Include="src\Sphynx\Core\Graphics\Platform\GLFrameBuffer.h" />
-    <ClInclude Include="src\Sphynx\UI\RectRenderer.h" />
-    <ClInclude Include="src\Sphynx\Editor\SceneManagerView.h" />
-    <ClInclude Include="src\Sphynx\Editor\Editor.h" />
-    <ClInclude Include="src\Sphynx\Editor\EditorViewport.h" />
-    <ClInclude Include="src\Sphynx\Editor\GameObjectView.h" />
-    <ClInclude Include="src\Sphynx\Editor\Console.h" />
-    <ClInclude Include="src\Sphynx\Events\SceneEvents.h" />
-    <ClInclude Include="src\Sphynx\Core\Graphics\Pipeline\Viewport.h" />
-    <ClInclude Include="src\Sphynx\Core\Factories\ComponentRegistry.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Sphynx\Application.cpp">
@@ -233,6 +262,9 @@
       <Filter>Sphynx</Filter>
     </ClCompile>
     <ClCompile Include="src\Sphynx\Core\Factories\ComponentFactory.cpp">
+      <Filter>Sphynx\Core\Factories</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Sphynx\Core\Factories\ComponentRegistry.cpp">
       <Filter>Sphynx\Core\Factories</Filter>
     </ClCompile>
     <ClCompile Include="src\Sphynx\Core\Graphics\Imgui.cpp">
@@ -255,6 +287,12 @@
     </ClCompile>
     <ClCompile Include="src\Sphynx\Core\Graphics\Pipeline\UniformBuffer.cpp">
       <Filter>Sphynx\Core\Graphics\Pipeline</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Sphynx\Core\Graphics\Pipeline\Viewport.cpp">
+      <Filter>Sphynx\Core\Graphics\Pipeline</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Sphynx\Core\Graphics\Platform\GLFrameBuffer.cpp">
+      <Filter>Sphynx\Core\Graphics\Platform</Filter>
     </ClCompile>
     <ClCompile Include="src\Sphynx\Core\Graphics\Platform\GLMaterial.cpp">
       <Filter>Sphynx\Core\Graphics\Platform</Filter>
@@ -298,11 +336,29 @@
     <ClCompile Include="src\Sphynx\Core\Scripting\ScriptingEngine.cpp">
       <Filter>Sphynx\Core\Scripting</Filter>
     </ClCompile>
+    <ClCompile Include="src\Sphynx\Core\Thread.cpp">
+      <Filter>Sphynx\Core</Filter>
+    </ClCompile>
     <ClCompile Include="src\Sphynx\Core\ThreadPool.cpp">
       <Filter>Sphynx\Core</Filter>
     </ClCompile>
     <ClCompile Include="src\Sphynx\Core\Transform.cpp">
       <Filter>Sphynx\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Sphynx\Editor\Console.cpp">
+      <Filter>Sphynx\Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Sphynx\Editor\Editor.cpp">
+      <Filter>Sphynx\Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Sphynx\Editor\EditorViewport.cpp">
+      <Filter>Sphynx\Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Sphynx\Editor\GameObjectView.cpp">
+      <Filter>Sphynx\Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Sphynx\Editor\SceneManagerView.cpp">
+      <Filter>Sphynx\Editor</Filter>
     </ClCompile>
     <ClCompile Include="src\Sphynx\GameObject.cpp">
       <Filter>Sphynx</Filter>
@@ -325,6 +381,9 @@
     <ClCompile Include="src\Sphynx\SpTime.cpp">
       <Filter>Sphynx</Filter>
     </ClCompile>
+    <ClCompile Include="src\Sphynx\UI\RectRenderer.cpp">
+      <Filter>Sphynx\UI</Filter>
+    </ClCompile>
     <ClCompile Include="src\Sphynx\imgui\imgui_impl_dx11.cpp">
       <Filter>Sphynx\imgui</Filter>
     </ClCompile>
@@ -343,15 +402,6 @@
     <ClCompile Include="src\Sphynx\pch.cpp">
       <Filter>Sphynx</Filter>
     </ClCompile>
-    <ClCompile Include="src\Sphynx\Core\Graphics\Platform\GLFrameBuffer.cpp" />
-    <ClCompile Include="src\Sphynx\UI\RectRenderer.cpp" />
-    <ClCompile Include="src\Sphynx\Editor\SceneManagerView.cpp" />
-    <ClCompile Include="src\Sphynx\Editor\Editor.cpp" />
-    <ClCompile Include="src\Sphynx\Editor\EditorViewport.cpp" />
-    <ClCompile Include="src\Sphynx\Editor\GameObjectView.cpp" />
-    <ClCompile Include="src\Sphynx\Editor\Console.cpp" />
-    <ClCompile Include="src\Sphynx\Core\Graphics\Pipeline\Viewport.cpp" />
-    <ClCompile Include="src\Sphynx\Core\Factories\ComponentRegistry.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Sphynx\Scripts\Component.as">

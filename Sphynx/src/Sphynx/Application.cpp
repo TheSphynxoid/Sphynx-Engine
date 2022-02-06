@@ -9,7 +9,8 @@
 #include "glm/gtx/quaternion.hpp"
 #include "Scene.h"
 #include "Core/SceneManager.h"
-#include "Core/Graphics/Pipeline/FrameBuffer.h"
+#include "Core/Threadpool.h"
+#include "Core/Scripting/AsScript.h"
 #undef GetApplication
 #undef GetMainWindow
 
@@ -26,6 +27,7 @@ Application* MainApplication;
 
 Sphynx::Application::Application()
 {
+	ThreadPool::Start();
 	eventSystem = Events::EventSystem();
 	//eventSystem.Subscribe<Application, Events::OnWindowClose>(this, &Application::HandleWindowClose);
 #if defined(DEBUG)
@@ -49,12 +51,13 @@ Sphynx::Application::~Application()
 void Sphynx::Application::Run()
 {
 	Events::GlobalEventSystem::GetInstance()->DispatchImmediate<Events::OnApplicationStart>(Events::OnApplicationStart());
-	threadpool.Start(this);
 	Input::Init();
 	Start();
 	SceneManager::Start();
 	GameObject sq = GameObject::CreatePrimitive(Primitives::Cube, "Cube");
 	sq.GetTransform()->Translate({ 0,0,-3 });
+	sq.AddComponent<Scripting::AsScript>("AsScript.as", "Module1");
+	SceneManager::GetScene().GetPrimaryCameraObject().AddComponent<Scripting::AsScript>("CameraScript.as", "CameraModule");
 	SceneManager::GetScene().AddGameObject(&sq);
 	Time::Start();
 	int i = 0;
@@ -78,7 +81,7 @@ void Sphynx::Application::Run()
 		Time::Update();
 	}
 	Imgui::Shutdown();
-	threadpool.Stop();
+	ThreadPool::Stop();
 }
 
 Events::EventSystem Sphynx::Application::RequestNewEventSystem()
@@ -105,7 +108,6 @@ Sphynx::Core::IWindow* Sphynx::Application::CreateMainWindow(Core::IWindow* wind
 	if (!MainWindow) {
 		MainWindow = window;
 		Imgui::Start();
-		//Imgui::AddOverlayWindow(new DebugWindow());
 		MainWindow->Start();
 	}
 	else {
