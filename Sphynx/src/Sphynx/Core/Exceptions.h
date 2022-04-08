@@ -11,6 +11,14 @@ namespace Sphynx::Exception {
 		}
 	};
 #endif
+	class NotImplemented : public std::exception {
+	public:
+		NotImplemented(const char* msg) : std::exception(msg) {
+#ifdef Platform_Windows
+			DebugBreakProcess(GetCurrentProcess());
+#endif
+		}
+	};
 #ifdef App_Excep
 	//Aborts the application when the .ctor gets called.
 	class Brick : std::exception {

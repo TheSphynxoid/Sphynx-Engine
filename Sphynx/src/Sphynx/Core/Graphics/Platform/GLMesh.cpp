@@ -254,6 +254,7 @@ Sphynx::Core::Graphics::GL::GLVertexBuffer::GLVertexBuffer(size_t Size) : Size(S
 
 Sphynx::Core::Graphics::GL::GLVertexBuffer::GLVertexBuffer(float* verts, size_t Size) : Size(Size)
 {
+	Data = verts;
 	glCreateBuffers(1, &BufferID);
 	glBindBuffer(GL_ARRAY_BUFFER, BufferID);
 	glBufferData(GL_ARRAY_BUFFER, Size, verts, GL_STATIC_DRAW);
@@ -265,6 +266,7 @@ Sphynx::Core::Graphics::GL::GLVertexBuffer::GLVertexBuffer(GLVertexBuffer&& vbuf
 	std::swap(this->BufferID, vbuf.BufferID);
 	std::swap(this->Layout, vbuf.Layout);
 	std::swap(this->Size, vbuf.Size);
+	std::swap(this->Data, vbuf.Data);
 }
 
 Sphynx::Core::Graphics::GL::GLVertexBuffer& Sphynx::Core::Graphics::GL::GLVertexBuffer::operator=(GLVertexBuffer&& vbuf) noexcept
@@ -274,6 +276,7 @@ Sphynx::Core::Graphics::GL::GLVertexBuffer& Sphynx::Core::Graphics::GL::GLVertex
 		std::swap(this->BufferID, vbuf.BufferID);
 		std::swap(this->Layout, vbuf.Layout);
 		std::swap(this->Size, vbuf.Size);
+		std::swap(this->Data, vbuf.Data);
 	}
 	return *this;
 }
@@ -290,6 +293,7 @@ void Sphynx::Core::Graphics::GL::GLVertexBuffer::Unbind()const
 
 void Sphynx::Core::Graphics::GL::GLVertexBuffer::SetData(const void* data, size_t offset, size_t Size)noexcept
 {
+	Data = data;
 	if (Size <= this->Size) {
 		GLenum err = 0;
 		glBindBuffer(GL_ARRAY_BUFFER, BufferID);
@@ -301,6 +305,33 @@ void Sphynx::Core::Graphics::GL::GLVertexBuffer::SetData(const void* data, size_
 		glBufferData(GL_ARRAY_BUFFER, Size, data, GL_DYNAMIC_DRAW);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		this->Size = Size;
+	}
+}
+
+GLenum MapAccessToGLenum(const Sphynx::Core::Graphics::MapAccess& _access) {
+	switch (_access)
+	{
+	case Sphynx::Core::Graphics::MapAccess::Read:
+		return GL_READ_ONLY;
+	case Sphynx::Core::Graphics::MapAccess::Write:
+		return GL_WRITE_ONLY;
+	case Sphynx::Core::Graphics::MapAccess::ReadWrite:
+		return GL_READ_WRITE;
+	}
+}
+
+void* Sphynx::Core::Graphics::GL::GLVertexBuffer::Map(const Sphynx::Core::Graphics::MapAccess& access)
+{
+	Mapped = true;
+	return glMapNamedBuffer(BufferID, MapAccessToGLenum(access));
+}
+
+void Sphynx::Core::Graphics::GL::GLVertexBuffer::Unmap()
+{
+	Mapped = false;
+	if (glUnmapNamedBuffer(BufferID) == GL_FALSE) {
+		Core_Error("GL Buffer Map Corruption!");
+		throw;
 	}
 }
 
@@ -322,6 +353,7 @@ Sphynx::Core::Graphics::GL::GLIndexBuffer::GLIndexBuffer(uint32_t count)noexcept
 
 Sphynx::Core::Graphics::GL::GLIndexBuffer::GLIndexBuffer(unsigned int* indices, size_t count)noexcept : Count(count)
 {
+	Data = (void*)indices;
 	glCreateBuffers(1, &BufferID);
 	// GL_ELEMENT_ARRAY_BUFFER need a bound VAO to be valid.
 	// Binding with GL_ARRAY_BUFFER allows the data to be loaded regardless of VAO state. 
@@ -333,6 +365,8 @@ Sphynx::Core::Graphics::GL::GLIndexBuffer::GLIndexBuffer(unsigned int* indices, 
 Sphynx::Core::Graphics::GL::GLIndexBuffer::GLIndexBuffer(GLIndexBuffer&& ibuf) noexcept
 {
 	std::swap(this->BufferID, ibuf.BufferID);
+	std::swap(this->Count, ibuf.Count);
+	std::swap(this->Data, ibuf.Data);
 }
 
 Sphynx::Core::Graphics::GL::GLIndexBuffer& Sphynx::Core::Graphics::GL::GLIndexBuffer::operator=(GLIndexBuffer&& ibuf) noexcept
@@ -340,6 +374,8 @@ Sphynx::Core::Graphics::GL::GLIndexBuffer& Sphynx::Core::Graphics::GL::GLIndexBu
 	if (this != &ibuf) {
 		Release();
 		std::swap(this->BufferID, ibuf.BufferID);
+		std::swap(this->Count, ibuf.Count);
+		std::swap(this->Data, ibuf.Data);
 	}
 	return *this;
 }
@@ -362,6 +398,25 @@ void Sphynx::Core::Graphics::GL::GLIndexBuffer::Unbind() const
 void Sphynx::Core::Graphics::GL::GLIndexBuffer::SetData(const unsigned int* data, uint64_t count)
 {
 	Bind();
+	Data = data;
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(unsigned int), data, GL_DYNAMIC_DRAW);
 	Unbind();
+}
+
+const void* Sphynx::Core::Graphics::GL::GLIndexBuffer::GetData()
+{
+	return Data;
+}
+
+void* Sphynx::Core::Graphics::GL::GLIndexBuffer::Map(const MapAccess& access)
+{
+	return glMapNamedBuffer(BufferID, MapAccessToGLenum(access));
+}
+
+void Sphynx::Core::Graphics::GL::GLIndexBuffer::Unmap()
+{
+	if (glUnmapNamedBuffer(BufferID) == GL_FALSE) {
+		Core_Error("GL Buffer Map Corruption!");
+		throw;
+	}
 }

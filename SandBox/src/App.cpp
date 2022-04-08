@@ -13,9 +13,6 @@ using namespace Sphynx;
 class SandBox : public Sphynx::Application
 {
 private:
-	GameObject* Cam = nullptr;
-	Transform* TransCam = nullptr;
-	Camera* CamComp = nullptr;
 public:
 	SandBox() {
 		//Sphynx::Core::Bounds b = { 512, 384 };

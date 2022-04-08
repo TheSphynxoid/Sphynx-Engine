@@ -31,14 +31,16 @@ void Sphynx::Camera::OnComponentDetach()
 {
 }
 
-Sphynx::Camera::Camera() : IsOrtho(false), FOV(60.0f), NearClip(0.1f), FarClip(100.0f)
+Sphynx::Camera::Camera() : IsOrtho(false), FOV(60.0f), NearClip(0.1f), FarClip(100.0f), 
+	AspectRatio((float)GetMainWindow()->GetWidth() / (float)GetMainWindow()->GetHeight())
 {
 	CamViewport.Width = GetMainWindow()->GetWidth();
 	CamViewport.Height = GetMainWindow()->GetHeight();
-	ProjectionMatrix = glm::perspective(glm::radians(60.0f), (float)GetMainWindow()->GetWidth() / (float)GetMainWindow()->GetHeight(), 0.1f, 100.0f);
+	ProjectionMatrix = glm::perspective(glm::radians(60.0f), AspectRatio, 0.1f, 100.0f);
 }
 
-Sphynx::Camera::Camera(float fov, float aspectRatio, float nearClip, float farClip) : IsOrtho(false), FOV(fov), NearClip(nearClip), FarClip(farClip)
+Sphynx::Camera::Camera(float fov, float aspectRatio, float nearClip, float farClip) : IsOrtho(false), FOV(fov), NearClip(nearClip), FarClip(farClip),
+	AspectRatio(aspectRatio)
 {
 	ProjectionMatrix = glm::perspective(glm::radians(FOV), aspectRatio, NearClip, FarClip);
 }

@@ -7,6 +7,7 @@
 #include "Camera.h"
 #include "Core/Graphics/Pipeline/FrameBuffer.h"
 #include "Core/MeshRenderer.h"
+#include "Core/Scripting/AsScript.h"
 
 ImGuiID DockID = 0;
 std::string Title;
@@ -20,6 +21,16 @@ Sphynx::Editor::GameObjectView::GameObjectView()
 {
 }
 
+void UpdateCoords(Sphynx::GameObject* go) {
+	auto pos = go->GetTransform()->GetPosition();
+	TransformV[0] = pos[0];
+	TransformV[1] = pos[1];
+	TransformV[2] = pos[2];
+	TransformS[0] = 1;
+	TransformS[1] = 1;
+	TransformS[2] = 1;
+}
+
 void Sphynx::Editor::GameObjectView::Draw()
 {
 	if (DockID == 0) {
@@ -28,6 +39,7 @@ void Sphynx::Editor::GameObjectView::Draw()
 	ImGui::SetNextWindowDockID(DockID, ImGuiCond_FirstUseEver);
 	if (ImGui::Begin("GameObjectView", &IsOpen)) {
 		if (CurrentGO) {
+			UpdateCoords(CurrentGO);
 			ImGui::Text("Name:");
 			ImGui::SameLine();
 			if (ImGui::InputText("##Name", name, sizeof(name))) {
@@ -59,6 +71,14 @@ void Sphynx::Editor::GameObjectView::Draw()
 				}
 				ImGui::Separator();
 			}
+			if (Core::Internal::ComponentFactory::ComponentHelper::IsComponentInGameObject<Core::Scripting::AsScript>(CurrentGO)) {
+				auto s = CurrentGO->GetComponent<Core::Scripting::AsScript>();
+				ImGui::Text(s->GetScriptBehaviour().GetTypeInfo()->GetName());
+				if (ImGui::Button("Reload")) {
+					Core::Scripting::ScriptingEngine::GetAngelScript().ReloadScript(s);
+				}
+				ImGui::Separator();
+			}
 		}
 	}
 	ImGui::End();
@@ -68,11 +88,5 @@ void Sphynx::Editor::GameObjectView::SetGameObjectView(Sphynx::GameObject* go)
 {
 	CurrentGO = go;
 	strcpy(name, CurrentGO->GetName());
-	auto pos = go->GetTransform()->GetPosition();
-	TransformV[0] = pos[0];
-	TransformV[1] = pos[1];
-	TransformV[2] = pos[2];
-	TransformS[0] = 1;
-	TransformS[1] = 1;
-	TransformS[2] = 1;
+	UpdateCoords(go);
 }

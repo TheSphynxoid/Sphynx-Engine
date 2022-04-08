@@ -6,7 +6,9 @@ namespace Sphynx::Core::Graphics::GL {
 	private:
 		unsigned int BufferID = 0;
 		BufferLayout Layout = BufferLayout();
+		const void* Data = nullptr;
 		size_t Size = 0;
+		bool Mapped = false;
 		void Release();
 	public:
 		GLVertexBuffer(size_t Size);
@@ -24,12 +26,19 @@ namespace Sphynx::Core::Graphics::GL {
 		virtual void SetDataLayout(BufferLayout layout) override { Layout = layout; };
 		virtual size_t GetVertexBufferSize()const noexcept override { return Size; };
 		virtual BufferLayout GetLayout()const noexcept override{ return Layout; };
+		virtual const void* GetData() const override { return Data; };
+
+		//Buffer
+
+		virtual void* Map(const MapAccess& access) override;
+		virtual void Unmap() override;
 		friend class GLMesh;
 	};
 	class GLIndexBuffer final : public IndexBuffer {
 	private:
 		unsigned int BufferID = 0;
 		uint32_t Count = 0;
+		const void* Data;
 		void Release();
 	public:
 		GLIndexBuffer(uint32_t count)noexcept;
@@ -42,8 +51,10 @@ namespace Sphynx::Core::Graphics::GL {
 		virtual void Bind()const override;
 		virtual void Unbind()const override;
 		virtual void SetData(const unsigned int* data, uint64_t count)override;
+		virtual const void* GetData() override;
 		virtual int GetCount()const noexcept override { return Count; };
-
+		virtual void* Map(const MapAccess& access) override;
+		virtual void Unmap() override;
 		friend class GLMesh;
 	};
 	class GLMesh final : public Mesh
@@ -65,7 +76,7 @@ namespace Sphynx::Core::Graphics::GL {
 		virtual void AddVertexBuffers(std::vector<VertexBuffer*> _VBuffers)override;
 		virtual void SetIndexBuffer(IndexBuffer* ibuf)override;
 		virtual IndexBuffer* GetIndexBuffer()const noexcept override { return IBuffer; };
-		virtual size_t GetIndexBufferSize()const noexcept override { return IBuffer->Count * sizeof(uint64_t); };
+		virtual size_t GetIndexBufferSize()const noexcept override { return IBuffer->Count * sizeof(unsigned int); };
 		virtual std::vector<VertexBuffer*> GetVertexBuffer()const noexcept override { return VBuffers; };
 		inline bool HasIndexArray()const noexcept{ return hasIndexArray; };
 	private:

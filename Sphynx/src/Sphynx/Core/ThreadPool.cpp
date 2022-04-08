@@ -13,24 +13,24 @@ void Sphynx::Core::ThreadPool::Start(int numthreads)
 
 void Sphynx::Core::ThreadPool::Submit(std::function<void()> new_job)
 {
-    funcQueue.push_back(new_job);
+    {
+        std::unique_lock<std::mutex> ul(ThreadPoolMutex);
+        funcQueue.push_back(new_job);
+    }
     condition.notify_one();
 }
 
 void Sphynx::Core::ThreadPool::Loop()
 {
-    std::unique_lock<std::mutex> ul(ThreadPoolMutex);
-    while (IsRunning || (!FinishedWork && !funcQueue.empty())) {
-        if (!funcQueue.empty()) {
-            std::function<void()> job(std::move(funcQueue.front()));
+    while (IsRunning) {
+        std::function<void()> job;
+        {
+            std::unique_lock<std::mutex> ul(ThreadPoolMutex);
+            condition.wait(ul, [&]() {return !funcQueue.empty(); });
+            job = funcQueue.front();
             funcQueue.pop_front();
-            ul.unlock();
-            job();
-            ul.lock();
         }
-        else {
-            condition.wait(ul);
-        }
+        job();
     }
 }
 

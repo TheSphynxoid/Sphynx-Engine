@@ -1,18 +1,15 @@
 class Camera : Sphynx::Component{
-    Camera(){
-
-    }
-    void Start()
-    {
-        Print("Hello From Camera");
+    float FOV{
+            get{
+                return GetFOV();
+            }
+            set{
+                SetFOV(value);
+            }
     }
     void Update()
     {
-        if(Sphynx::Input::IsKeyPressed(Sphynx::Keys::Up)){
-            Print("Up");
-        }
     }
     void OnDetach(){
-
     }
 }

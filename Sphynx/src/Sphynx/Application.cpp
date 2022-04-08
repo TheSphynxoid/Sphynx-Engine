@@ -11,6 +11,7 @@
 #include "Core/SceneManager.h"
 #include "Core/Threadpool.h"
 #include "Core/Scripting/AsScript.h"
+#include "Core/Scenic/Scenic.h"
 #undef GetApplication
 #undef GetMainWindow
 
@@ -59,6 +60,7 @@ void Sphynx::Application::Run()
 	sq.AddComponent<Scripting::AsScript>("AsScript.as", "Module1");
 	SceneManager::GetScene().GetPrimaryCameraObject().AddComponent<Scripting::AsScript>("CameraScript.as", "CameraModule");
 	SceneManager::GetScene().AddGameObject(&sq);
+	Scenic::Scenic::WriteScene(&SceneManager::GetScene(), std::fstream("NewScene.sphs", std::ios_base::out));
 	Time::Start();
 	int i = 0;
 	while (AppAlive) {

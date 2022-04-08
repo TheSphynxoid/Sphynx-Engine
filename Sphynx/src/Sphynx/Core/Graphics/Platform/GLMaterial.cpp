@@ -9,7 +9,7 @@ using namespace Sphynx::Core::Graphics::GL;
 GLMaterial* GLMaterial::Bound = nullptr;
 GLMaterial GLMaterial::DefaultMaterial;
 
-Sphynx::Core::Graphics::GL::GLMaterial::GLMaterial(const ShaderPack& shaders)
+Sphynx::Core::Graphics::GL::GLMaterial::GLMaterial(const ShaderPack& shaders) : Shaders(shaders)
 {
     ProgramId = glCreateProgram();
     glUseProgram(ProgramId);
@@ -32,8 +32,8 @@ Sphynx::Core::Graphics::GL::GLMaterial::GLMaterial(const ShaderPack& shaders)
     }
 }
 
-Sphynx::Core::Graphics::GL::GLMaterial::GLMaterial(const Sphynx::Core::Graphics::ShaderPack& shaders,Sphynx::Core::Graphics::Texture* _tex) 
-    : textures()
+Sphynx::Core::Graphics::GL::GLMaterial::GLMaterial(const Sphynx::Core::Graphics::ShaderPack& shaders, Sphynx::Core::Graphics::Texture* _tex)
+    : textures(), Shaders(shaders)
 {
     textures.push_back(_tex);
     ProgramId = glCreateProgram();
@@ -56,7 +56,7 @@ Sphynx::Core::Graphics::GL::GLMaterial::GLMaterial(const Sphynx::Core::Graphics:
     }
 }
 
-Sphynx::Core::Graphics::GL::GLMaterial::GLMaterial(const ShaderPack& shaders, std::initializer_list<Texture*> _tex) : textures(_tex)
+Sphynx::Core::Graphics::GL::GLMaterial::GLMaterial(const ShaderPack& shaders, std::initializer_list<Texture*> _tex) : textures(_tex), Shaders(shaders)
 {
     
     ProgramId = glCreateProgram();

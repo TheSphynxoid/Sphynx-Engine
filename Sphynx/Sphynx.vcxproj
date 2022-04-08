@@ -98,6 +98,10 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Sphynx\Asset.h" />
+    <ClInclude Include="src\Sphynx\AssetManager.h" />
+    <ClInclude Include="src\Sphynx\Core\IO\TypeSize.h" />
+    <ClInclude Include="src\Sphynx\Core\Scenic\Scenic.h" />
     <ClInclude Include="src\Sphynx.h" />
     <ClInclude Include="src\Sphynx\Application.h" />
     <ClInclude Include="src\Sphynx\Camera.h" />
@@ -125,11 +129,13 @@
     <ClInclude Include="src\Sphynx\Core\Graphics\Platform\GLWindow.h" />
     <ClInclude Include="src\Sphynx\Core\Graphics\Window.h" />
     <ClInclude Include="src\Sphynx\Core\InternalUtility.h" />
-    <ClInclude Include="src\Sphynx\Core\Memory.h" />
+    <ClInclude Include="src\Sphynx\Core\IO\File.h" />
+    <ClInclude Include="src\Sphynx\Core\OldMemory.h" />
     <ClInclude Include="src\Sphynx\Core\MeshRenderer.h" />
     <ClInclude Include="src\Sphynx\Core\Module.h" />
     <ClInclude Include="src\Sphynx\Core\SceneManager.h" />
     <ClInclude Include="src\Sphynx\Core\Scripting\AsScript.h" />
+    <ClInclude Include="src\Sphynx\Core\Scripting\BaseLib\AsBaseLib.h" />
     <ClInclude Include="src\Sphynx\Core\Scripting\Script.h" />
     <ClInclude Include="src\Sphynx\Core\Scripting\ScriptBehviour.h" />
     <ClInclude Include="src\Sphynx\Core\Scripting\ScriptingEngine.h" />
@@ -171,6 +177,9 @@
     <ClInclude Include="src\Sphynx\pch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Sphynx\Asset.cpp" />
+    <ClCompile Include="src\Sphynx\AssetManager.cpp" />
+    <ClCompile Include="src\Sphynx\Core\Scenic\Scenic.cpp" />
     <ClCompile Include="src\Sphynx\Application.cpp" />
     <ClCompile Include="src\Sphynx\Camera.cpp" />
     <ClCompile Include="src\Sphynx\Component.cpp" />
@@ -222,6 +231,7 @@
     <ClCompile Include="src\Sphynx\imgui\imgui_impl_win32.cpp" />
     <ClCompile Include="src\Sphynx\pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

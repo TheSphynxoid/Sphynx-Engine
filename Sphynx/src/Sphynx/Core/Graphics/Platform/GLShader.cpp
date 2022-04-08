@@ -72,6 +72,7 @@ Sphynx::Core::Graphics::GL::GLShader::GLShader(std::string path, ShaderType Type
 {
 	int Flag = GetShaderTypeFromEnum(Type);
 	Create(path, Flag);
+	Path = path;
 }
 
 void Sphynx::Core::Graphics::GL::GLShader::Release()noexcept

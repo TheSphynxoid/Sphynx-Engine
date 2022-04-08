@@ -1,11 +1,25 @@
-[Native("Component.h")]
-abstract shared class Component {
-    private uint64 InstanceID;
-    virtual void Start() = 0;
-    bool IsActive(){
-        return IsNativeActive(this);
-    }
-    string GetName(){
-        return NativeGetName(this);
+namespace Sphynx{
+    //Mixin ?
+    [Header("Component.h")]
+    shared abstract class Component : Sphynx::Core::IComponent {
+        [NativeProperty(0,"GameObject")]
+        private GameObject@ GO;
+        [NativeProperty(1,"size_t")]
+        private uint64 _ID;
+        GameObject@ gameObject{
+            get{
+                return GO;
+            }
+        }
+        const uint64 InstanceID{
+            get{
+                return _ID;
+            }
+        }
+        Transform@ transform{
+            get{
+                return GO.transform;
+            }
+        }
     }
 }

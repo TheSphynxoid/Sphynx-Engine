@@ -117,22 +117,35 @@ namespace Sphynx::Core::Graphics {
 		std::vector<BufferElement>::const_iterator end() const noexcept { return Elements.end(); }
 		BufferElement& operator[](size_t pos)noexcept { return Elements[pos]; };
 	};
-	struct VertexBuffer {
+
+	enum class MapAccess {
+		Read, Write, ReadWrite
+	};
+
+	struct Buffer {
+	public:
+		virtual void* Map(const MapAccess& access) = 0;
+		virtual void Unmap() = 0;
+	};
+
+	struct VertexBuffer : public Buffer {
 		virtual ~VertexBuffer() = default;
 		virtual void Bind()const = 0;
 		virtual void Unbind()const = 0;
 		virtual void SetData(const void* data, size_t offset, size_t Size) = 0;
 		virtual void SetDataLayout(BufferLayout layout) = 0;
 		virtual BufferLayout GetLayout()const = 0;
+		virtual const void* GetData() const = 0;
 		virtual size_t GetVertexBufferSize()const noexcept = 0;
 		static VertexBuffer* Create(float* vertices, size_t Size);
 		static VertexBuffer* CreateEmpty(size_t Size);
 	};
-	struct IndexBuffer {
+	struct IndexBuffer : public Buffer {
 		virtual ~IndexBuffer() = default;
 		virtual void Bind()const = 0;
 		virtual void Unbind()const = 0;
 		virtual void SetData(const unsigned int* data, uint64_t count) = 0;
+		virtual const void* GetData() = 0;
 		virtual int GetCount()const noexcept = 0;
 		static IndexBuffer* Create(unsigned int* indices, size_t Size);
 	};

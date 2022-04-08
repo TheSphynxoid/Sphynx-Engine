@@ -1,16 +1,21 @@
-class Movement : Sphynx::Component{
-    Movement(){
+#include "System"
 
-    }
+class Movement : Sphynx::Component{
     void Start()
     {
         Print("Hello From AngelScript");
-        Print("Window Width:" + MainWindow.GetWidth());
-        Print("Window Height:" + MainWindow.GetHeight());
+        Print("ID: " + InstanceID);
     }
     void Update()
     {
-      Print("AsScript");  
+        Sphynx::Vector3 v = Sphynx::Vector3(transform.Position.x, 
+            transform.Position.y, transform.Position.z);
+        if(Sphynx::Input::IsKeyPressed(Sphynx::Keys::Up)){
+            v.y -=0.01f;
+        }if(Sphynx::Input::IsKeyPressed(Sphynx::Keys::Down)){
+            v.y+=0.01f;
+        }
+        transform.MoveTo(v);
     }
     void OnDetach(){
 

@@ -8,6 +8,7 @@ namespace Sphynx::Core::Graphics::GL {
 		unsigned int id = 0;
 		inline static GLShader* DefaultVertexShader = nullptr;
 		inline static GLShader* DefaultFragmentShader = nullptr;
+		std::string Path;
 		std::string ReadFile(std::string path);
 		//Handles OpenGl Shader Creation, Compiles The Code from the given file and 
 		//creates the shader object of which the id is stored
@@ -31,6 +32,7 @@ namespace Sphynx::Core::Graphics::GL {
 		GLShader(GLShader&& shader)noexcept;
 		GLShader& operator=(GLShader&& shader)noexcept;
 		virtual bool IsValid() noexcept override { return id; };
+		virtual const char* GetShaderPath() override { return Path.c_str(); };
 		//Destructor
 		~GLShader();
 		friend class GLMaterial;

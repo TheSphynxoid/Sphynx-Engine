@@ -20,9 +20,9 @@ namespace Sphynx {
 	private:
 		glm::mat4 ProjectionMatrix;
 		bool IsOrtho;
-		float NearClip, FarClip;
+		float NearClip, FarClip, AspectRatio;
 		float FOV;
-		float Zoom;
+		float Zoom = 0;
 		Core::Graphics::Viewport CamViewport = Core::Graphics::Viewport();
 		Core::Graphics::FrameBuffer* RenderTarget = nullptr;
 		Core::Graphics::Texture *ColorTex, *DepthTex = nullptr;
@@ -47,6 +47,10 @@ namespace Sphynx {
 		void SetViewport(Sphynx::Core::Graphics::Viewport v);
 		float GetZoom() { return Zoom; };
 		float SetZoom(float zoom) { Zoom = zoom; };
+		float GetFOV() { return FOV; };
+		float GetNearClip() { return NearClip; };
+		float GetFarClip() { return FarClip; };
+		float GetAspectRatio() { return AspectRatio; };
 		//Will Return Null if the Camera has no RenderTarget(FrameBuffer).
 		Core::Graphics::FrameBuffer* GetFrameBuffer() { return RenderTarget; };
 		Core::Graphics::Viewport& GetViewport() {

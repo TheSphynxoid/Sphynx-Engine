@@ -1,7 +1,8 @@
 #include "pch.h"
 #include "ScriptBehviour.h"
+#include "angelscript.h"
 
-Sphynx::Core::Scripting::ScriptBehviour::ScriptBehviour(const char* name, GameObject* holder, void* scriptObject, asITypeInfo* typeinfo)
-	: Name(name), Holder(holder), ScriptObject(scriptObject), TypeInfo(typeinfo)
+Sphynx::Core::Scripting::ScriptBehaviour::ScriptBehaviour(GameObject* holder, asIScriptObject* scriptObject, asITypeInfo* typeinfo)
+	: Name(typeinfo->GetName()), Holder(holder), ScriptObject(scriptObject), TypeInfo(typeinfo)
 {
 }

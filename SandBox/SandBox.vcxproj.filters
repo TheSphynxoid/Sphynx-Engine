@@ -137,4 +137,9 @@
   <ItemGroup>
     <ClCompile Include="src\App.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <CopyFileToFolders Include="Component.as" />
+    <CopyFileToFolders Include="CameraScript.as" />
+    <CopyFileToFolders Include="AsScript.as" />
+  </ItemGroup>
 </Project>
