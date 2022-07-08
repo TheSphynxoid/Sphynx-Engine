@@ -15,6 +15,8 @@ namespace Sphynx::Core::Graphics::GL {
 		std::vector<Texture*> ColorAttachments;
 		int ColorAttachmentsCount = 0;
 		void Release();
+		//Used to Create the Default framebuffer
+		GLFrameBuffer(unsigned int id, int width, int height, std::initializer_list<Texture*> attachments = {});
 	public:
 		GLFrameBuffer() = delete;
 		GLFrameBuffer& operator=(const GLFrameBuffer&) = delete;

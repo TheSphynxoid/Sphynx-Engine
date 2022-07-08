@@ -16,5 +16,6 @@ namespace Sphynx::Editor {
 		Editor();
 		virtual void Draw() override;
 		unsigned int GetDockID() { return DockID; };
+		//void AddToMainMenu()
 	};
 }

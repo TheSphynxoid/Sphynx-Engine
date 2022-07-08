@@ -19,6 +19,11 @@
 #endif
 //Sphynx Libraries
 #include "Logger.h"
+#include "Core/IO/Serializer.h"
 #define BIT(i) (1 << i)
+struct Buffer {
+	void* Data;
+	size_t Size;
+};
 #else
 #endif

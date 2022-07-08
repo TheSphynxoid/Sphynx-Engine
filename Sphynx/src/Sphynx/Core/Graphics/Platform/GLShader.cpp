@@ -42,39 +42,6 @@ std::string Sphynx::Core::Graphics::GL::GLShader::ReadFile(std::string path)
 	return glsl;
 }
 
-void Sphynx::Core::Graphics::GL::GLShader::Create(std::string path, int SHADER_TYPE)
-{
-	std::string glsl = ReadFile(path);
-	const char* c = glsl.c_str();
-	//Creating Shader
-	if (!(id = glCreateShader(SHADER_TYPE))) {
-		Core_Error("Unable to create shader object (GL)");
-	}
-	//Setting the source.
-	glShaderSource(id, 1, &c, NULL);
-	//Cleaning.
-	glsl.clear();
-	c = NULL;
-	//Compiling Shader.
-	glCompileShader(id);
-
-	//Error Checking
-	GLint compile_status;
-	glGetShaderiv(id, GL_COMPILE_STATUS, &compile_status);
-	if (compile_status != GL_TRUE) {
-		GLsizei log_length = 0;
-		GLchar message[1024];
-		glGetShaderInfoLog(id, 1024, &log_length, message);
-		Core_Error(message);
-	}
-}
-Sphynx::Core::Graphics::GL::GLShader::GLShader(std::string path, ShaderType Type)
-{
-	int Flag = GetShaderTypeFromEnum(Type);
-	Create(path, Flag);
-	Path = path;
-}
-
 void Sphynx::Core::Graphics::GL::GLShader::Release()noexcept
 {
 	glDeleteShader(id);

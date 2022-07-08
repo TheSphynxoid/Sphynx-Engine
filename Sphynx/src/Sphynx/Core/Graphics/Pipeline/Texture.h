@@ -47,11 +47,12 @@ namespace Sphynx::Core::Graphics {
 		static void SetDefaultFilterMode(TextureFilterMode filter);
 		static void SetDefaultMipmapMode(TextureMipmapMode mipmapMode);
 		//\Mipmap level 0
-		static Texture* Create(const char* path, TextureType Type, TextureDataFormat datatype);
+		static Texture* Create(void* data, TextureType Type, TextureDataFormat datatype);
+		static Texture* Create(void* data, TextureType Type, TextureFormat format, TextureDataFormat datatype);
 		static Texture* Create(TextureType Type, int Width, int Height, TextureFormat format, TextureDataFormat datatype);
-		static Texture* Create(const char* path, TextureType Type, int MipmapLevel, TextureFormat format , TextureDataFormat datatype
+		static Texture* Create(void* data, TextureType Type, int MipmapLevel, TextureFormat format , TextureDataFormat datatype
 			, TextureWrappingMode warp, TextureFilterMode filter, TextureMipmapMode MipmapMode);
-		virtual void SetData(const unsigned char* data) = 0;
+		virtual void SetData(void* data) = 0;
 		virtual void Bind() = 0;
 		virtual void Unbind() = 0;
 		virtual const TextureFormat& GetFormat() = 0;
@@ -63,6 +64,9 @@ namespace Sphynx::Core::Graphics {
 		virtual int GetBitsPerPixel() = 0;
 		virtual void* ReadAllPixels(TextureDataFormat data) = 0;
 		virtual void* GetNativeID() = 0;
+		virtual void GenerateMipmaps() = 0;
+		virtual Buffer GetCompressed() = 0;
+		virtual Texture* Compress() = 0;
 		friend class IRenderer;
 	};
 }

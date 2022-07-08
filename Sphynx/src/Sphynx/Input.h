@@ -3,6 +3,7 @@
 #include "Events/InputEvents.h"
 #include "Events/WindowEvents.h"
 #include "Vector.h"
+#include "glm/glm.hpp"
 
 struct GLFWwindow;
 
@@ -17,8 +18,7 @@ namespace Sphynx {
 			return IsPressed;
 		}
 	}KeyState, MouseButtonState;
-	//Per-Window.
-	//TODO: Make it static.
+
 	class Input {
 	private:
 		inline static KeyState keyStates[Last_Key];
@@ -32,8 +32,23 @@ namespace Sphynx {
 		static void HandleWindowClose(Events::OnWindowClose& e);
 	public:
 		static void Init();
-		static KeyState IsKeyPressed(Keys key);
-		static MouseButtonState IsMouseButtonPressed(MouseButton button);
-		static Sphynx::Vector2<double> GetMousePosition();
+		static bool IsKeyPressed(Keys key);
+		//Returns a pointer to a key state.
+		static KeyState GetKeyState(Keys key)
+		{
+			return keyStates[(int)key];
+		}
+		static bool IsMouseButtonPressed(MouseButton button);
+		static MouseButtonState GetMouseButtonState(MouseButton button) {
+			return MouseStates[(int)button];
+		}
+		static Mods GetMods(Keys key)
+		{
+			return keyStates[(int)key].mods;
+		}
+		static Mods GetMods(MouseButton button) {
+			return MouseStates[(int)button].mods;
+		}
+		static glm::vec2 GetMousePosition();
 	};
 }

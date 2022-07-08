@@ -25,12 +25,18 @@ void Sphynx::Editor::SceneManagerView::Draw()
 	}
 	ImGui::SetNextWindowDockID(dockid, ImGuiCond_FirstUseEver);
 	ImGui::SetNextWindowSize(ImVec2(150, GetMainWindow()->GetHeight() - 15), ImGuiCond_FirstUseEver);
-	if (ImGui::Begin("Scene Manager", &IsOpen, ImGuiWindowFlags_NoCollapse)) {
+	if (ImGui::Begin("Scene Manager", &IsOpen, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_MenuBar)) {
+		if (ImGui::BeginMenuBar()) {
+			if (ImGui::Button("Create Object", ImVec2(ImGui::GetWindowWidth(), ImGui::GetWindowHeight() - 35))) {
+				Core::SceneManager::GetScene().AddGameObject(&GameObject::CreatePrimitive(Primitives::Cube));
+			}
+			ImGui::EndMenuBar();
+		}
 		if (ImGui::BeginListBox("##GameObject", ImVec2(ImGui::GetWindowWidth(), ImGui::GetWindowHeight() - 35))) {
 			static int selected = -1;
 			int i = 0;
 			for (auto& go : Sphynx::Core::SceneManager::GetScene().GetGameObjects()) {
-				if (ImGui::Selectable(go->GetName(), selected == i)) {
+				if (ImGui::Selectable(go->GetName(), selected == i , go->IsActive() ? ImGuiSelectableFlags_None : ImGuiSelectableFlags_Disabled)) {
 					selected = i;
 					goView->SetGameObjectView(go);
 				}

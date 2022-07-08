@@ -1,8 +1,8 @@
 #include "pch.h"
 #include "GLTexture.h"
 #include "glad/glad.h"
-#define STB_IMAGE_IMPLEMENTATION
-#include "stb_image.h"
+//#define STB_IMAGE_IMPLEMENTATION
+//#include "stb_image.h"
 
 using namespace Sphynx::Core::Graphics;
 
@@ -256,20 +256,17 @@ void Sphynx::Core::Graphics::GL::GLTexture::Release()
 	TextureID = 0;
 }
 
-Sphynx::Core::Graphics::GL::GLTexture::GLTexture(const char* path, TextureType type, int MipmapLevel, TextureFormat format, TextureDataFormat datatype, TextureWrappingMode warp, TextureFilterMode filter, TextureMipmapMode MipmapMode)
+Sphynx::Core::Graphics::GL::GLTexture::GLTexture(void* img, TextureType type, int MipmapLevel, TextureFormat format, TextureDataFormat datatype, TextureWrappingMode warp, TextureFilterMode filter, TextureMipmapMode MipmapMode)
 {
-	GLTextureType = GetGLTextureType(Type);
 	Type = type;
+	GLTextureType = GetGLTextureType(Type);
 	Format = format;
 	DataFormat = datatype;
+	MipMapLevel = MipmapLevel;
 	//TODO: Use the bits variable to determine the Texture Format.
 	//TODO: OpenGL is returning an error somewhere before this.
 	glCreateTextures(GLTextureType, 1, &TextureID);
 	glBindTexture(GLTextureType, TextureID);
-	//TODO: Implement Image Loading.
-	void* img = NULL;
-	if(path)
-		img = stbi_load(path, &Width, &Height, &Bits, 0);
 	if (Type == TextureType::Texture2D) {
 		glTexImage2D(GL_TEXTURE_2D, MipmapLevel, GetGLInternalFormat(format), Width, Height, 0,
 			GetGLFormat(format), GetGLDataType(datatype), img);
@@ -282,10 +279,8 @@ Sphynx::Core::Graphics::GL::GLTexture::GLTexture(const char* path, TextureType t
 	}//CubeMap
 	else {
 	}
-	glGenerateMipmap(GLTextureType);
 	glTexParameteri(GLTextureType, GL_TEXTURE_MAG_FILTER, GetGLFilter(filter));
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GetGLFilter(filter));
-	stbi_image_free(img);
 }
 
 Sphynx::Core::Graphics::GL::GLTexture::GLTexture(TextureType type, int width, int height, int MipmapLevel, 
@@ -298,6 +293,7 @@ Sphynx::Core::Graphics::GL::GLTexture::GLTexture(TextureType type, int width, in
 	Height = height;
 	Bits = GetNBitsFromGLFormat(Format);
 	DataFormat = datatype;
+	MipMapLevel = MipmapLevel;
 	//TODO: Use the bits variable to determine the Texture Format.
 	//TODO: OpenGL is returning an error somewhere before this.
 	glCreateTextures(GLTextureType, 1, &TextureID);
@@ -352,7 +348,7 @@ Sphynx::Core::Graphics::GL::GLTexture& Sphynx::Core::Graphics::GL::GLTexture::op
 	return *this;
 }
 
-void Sphynx::Core::Graphics::GL::GLTexture::SetData(const unsigned char* data)
+void Sphynx::Core::Graphics::GL::GLTexture::SetData(void* data)
 {
 }
 
@@ -376,4 +372,28 @@ void* Sphynx::Core::Graphics::GL::GLTexture::ReadAllPixels(TextureDataFormat dat
 	//TODO: Implement this for other texture formats.
 	glReadPixels(0, 0, Width, Height, GetGLFormat(Format), GetGLDataType(data), buf);
 	return buf;
+}
+
+void Sphynx::Core::Graphics::GL::GLTexture::GenerateMipmaps()
+{
+	glGenerateTextureMipmap(this->TextureID);
+}
+
+Buffer Sphynx::Core::Graphics::GL::GLTexture::GetCompressed()
+{
+	//Check whether the texture is compressed or not.
+	int Val;
+	glGetTextureLevelParameteriv(this->TextureID, MipMapLevel, GL_TEXTURE_COMPRESSED, &Val);
+	if (Val) {
+		glGetTextureLevelParameteriv(TextureID, MipMapLevel, GL_TEXTURE_COMPRESSED_IMAGE_SIZE, &Val);
+		Buffer buf = { 0,Val };
+		glGetCompressedTextureImage(TextureID, MipMapLevel, buf.Size, &buf.Data);
+		return buf;
+	}
+	return { nullptr,0 };
+}
+
+Texture* Sphynx::Core::Graphics::GL::GLTexture::Compress()
+{
+	return nullptr;
 }

@@ -8,12 +8,13 @@ namespace Sphynx::Core::Graphics::GL {
 		unsigned int GLTextureType;
 		int Width, Height;
 		int Bits = 4;
+		int MipMapLevel = 0;
 		TextureFormat Format;
 		TextureDataFormat DataFormat;
 		TextureType Type;
 		void Release();
 	public:
-		GLTexture(const char* path, TextureType Type, int MipmapLevel, TextureFormat format, TextureDataFormat datatype, TextureWrappingMode warp,
+		GLTexture(void* data, TextureType Type, int MipmapLevel, TextureFormat format, TextureDataFormat datatype, TextureWrappingMode warp,
 			TextureFilterMode filter, TextureMipmapMode MipmapMode);
 		GLTexture(TextureType Type, int width, int height, int MipmapLevel, TextureFormat format, TextureDataFormat datatype, TextureWrappingMode warp,
 			TextureFilterMode filter, TextureMipmapMode MipmapMode);
@@ -23,7 +24,7 @@ namespace Sphynx::Core::Graphics::GL {
 		GLTexture(GLTexture&& tex)noexcept;
 		GLTexture& operator=(GLTexture&& tex)noexcept;
 
-		virtual void SetData(const unsigned char* data) override;
+		virtual void SetData(void* data) override;
 		virtual void Bind() override;
 		virtual void Unbind() override;
 		virtual const TextureFormat& GetFormat() override {
@@ -40,6 +41,9 @@ namespace Sphynx::Core::Graphics::GL {
 		virtual int GetBitsPerPixel() override { return Bits; };
 		virtual void* ReadAllPixels(TextureDataFormat data) override;
 		virtual void* GetNativeID() override { return (void*)TextureID; };
+		virtual void GenerateMipmaps();
+		virtual Buffer GetCompressed();
+		virtual Texture* Compress();
 		friend class GLFrameBuffer;
 	};
 }

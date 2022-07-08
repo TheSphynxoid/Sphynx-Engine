@@ -11,5 +11,7 @@ namespace Sphynx::Core::Scripting {
 	public:
 		static void InitScripting();
 		static AngelScript& GetAngelScript() { return As; };
+		//static Script* CreateScript(const char* ScriptPath) { return nullptr; };
+		//static Script* CreateScript(const char* Code) { return nullptr; };
 	};
 }

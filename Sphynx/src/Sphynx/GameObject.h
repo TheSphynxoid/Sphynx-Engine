@@ -4,6 +4,7 @@
 #include "Core/Factories/ComponentFactory.h"
 #include "Pointer.h"
 #include "Core/Transform.h"
+#include "Core/IO/Serializer.h"
 
 namespace Sphynx {
 	class Transform;
@@ -11,7 +12,7 @@ namespace Sphynx {
 		Sphere, Capsule, Cube, Plane, Triangle
 	};
 	//Native GameObject
-	class GameObject :
+	class GameObject final :
 		public Object
 	{
 	private:
@@ -29,8 +30,7 @@ namespace Sphynx {
 		~GameObject();
 		GameObject& operator=(GameObject&& obj)noexcept;
 		GameObject& operator=(const GameObject& obj)noexcept;
-		//TODO: Callback to Scene to handle object delete.
-		void Destroy() { IsAlive = false; };
+		void Destroy();
 		bool IsActive() { return IsAlive; };
 		void Start() {
 			if (IsAlive) {
@@ -96,5 +96,17 @@ namespace Sphynx {
 		bool operator!=(const GameObject& other) {
 			return !(*this == other);
 		}
+	};
+
+	template<>
+	class Serializer<GameObject> {
+	public:
+		static std::vector<IOBuffer>& Serialize(GameObject* obj) {
+
+		};
+		static GameObject* Deserialize(std::vector<IOBuffer> data) {
+
+		}
+		static bool IsComposite() { return true; }
 	};
 }

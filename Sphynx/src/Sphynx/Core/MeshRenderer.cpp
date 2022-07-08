@@ -38,6 +38,13 @@ Sphynx::MeshRenderer::MeshRenderer(Sphynx::Core::Graphics::Mesh* _mesh, Sphynx::
 {
 }
 
+Sphynx::MeshRenderer::~MeshRenderer()
+{
+	delete mesh;
+	delete Mat;
+	delete MVPUni;
+}
+
 void Sphynx::MeshRenderer::SetMaterial(Material* mat)
 {
 	Mat = mat;

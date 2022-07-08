@@ -36,3 +36,21 @@ Sphynx::Core::Graphics::FrameBuffer* Sphynx::Core::Graphics::FrameBuffer::Create
 	}
 	return nullptr;
 }
+
+Sphynx::Core::Graphics::FrameBuffer* Sphynx::Core::Graphics::FrameBuffer::GetDefaultFrameBuffer()
+{
+	switch (CurrentPlatform)
+	{
+	case Sphynx::Platform::Windows:
+#ifdef DX_IMPL
+		static_assert(true, "DirectX Not Implemented");
+#else
+		[[fallthrough]];
+#endif
+	case Sphynx::Platform::Linux:
+		return GL::GLFrameBuffer::GetDefaultFramebuffer();
+	default:
+		break;
+	}
+	return nullptr;
+}

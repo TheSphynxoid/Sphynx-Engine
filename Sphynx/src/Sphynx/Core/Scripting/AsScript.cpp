@@ -8,7 +8,6 @@
 #include "Core/Threadpool.h"
 #include "Input.h"
 #include "BaseLib/AsBaseLib.h"
-#include "AssetManager.h"
 #include "Core/Graphics/Pipeline/Texture.h"
 #include "Core/Graphics/Pipeline/FrameBuffer.h"
 #include <scriptstdstring/scriptstdstring.h>
@@ -35,9 +34,14 @@ using namespace Sphynx;
 using namespace Sphynx::Core;
 using namespace Sphynx::Core::Graphics;
 
-struct {
-	Sphynx::Core::IWindow* IWin;
-}Window;
+glm::vec3 up = { 0,1,0 };
+glm::vec3 down = { 0,-1,0 };
+glm::vec3 forward = { 0,0,1 };
+glm::vec3 backward = { 0,0,-1 };
+glm::vec3 right = { 0,-1,0 };
+glm::vec3 left = { 0,1,0 };
+
+typedef Sphynx::Core::IWindow* Window;
 
 void MessageCallback(const asSMessageInfo* msg, void* param)
 {
@@ -262,11 +266,80 @@ void RegisterInput(asIScriptEngine* engine) {
 	SpRegisterEnumValue(engine, Keys, Menu);
 #pragma endregion
 	engine->SetDefaultNamespace("Sphynx::Input");
-	int r = engine->RegisterGlobalFunction("bool IsKeyPressed(Sphynx::Keys)", asFUNCTION(IsKeyPressed), asCALL_CDECL);
+	int r = engine->RegisterGlobalFunction("bool KeyPressed(Sphynx::Keys)", asFUNCTION(IsKeyPressed), asCALL_CDECL);
 }
 
 std::string GetGOName(GameObject* go) {
 	return std::string(go->GetName());
+}
+
+void RegisterVectors(asIScriptEngine* Engine) {
+	//VECTOR2 REGISTRATION
+	Engine->RegisterObjectType("Vector2", sizeof(glm::vec2),
+		asOBJ_VALUE | asOBJ_APP_CLASS_MORE_CONSTRUCTORS | asOBJ_POD | asGetTypeTraits<glm::vec2>());
+	Engine->RegisterObjectBehaviour("Vector2", asBEHAVE_CONSTRUCT, "void v2()", asFUNCTION(ConstructBasic<glm::vec2>), asCALL_CDECL_OBJFIRST);
+	Engine->RegisterObjectBehaviour("Vector2", asBEHAVE_CONSTRUCT, "void v2(float x,float y)",
+		asFunctionPtr(ConstructArgs<glm::vec2, float, float>), asCALL_CDECL_OBJFIRST);
+	Engine->RegisterObjectBehaviour("Vector2", asBEHAVE_DESTRUCT, "void v2()", asFUNCTION(Destruct<glm::vec2>), asCALL_CDECL_OBJFIRST);
+	Engine->RegisterObjectProperty("Vector2", "float x", asOFFSET(glm::vec2, x));
+	Engine->RegisterObjectProperty("Vector2", "float y", asOFFSET(glm::vec2, y));
+	//Engine->RegisterObjectMethod("Vector2", "Vector2 opAdd(const Vector2&)",
+	//	asFUNCTIONPR(glm::operator+, (const glm::vec2&, const glm::vec2&), glm::vec2), asCALL_CDECL_OBJFIRST);
+	//Engine->RegisterObjectMethod("Vector2", "Vector2 opAdd_r(const Vector2&)",
+	//	asFUNCTIONPR(glm::operator+, (const glm::vec2&, const glm::vec2&), glm::vec2), asCALL_CDECL_OBJLAST);
+	//Engine->RegisterObjectMethod("Vector2", "Vector2 opSub(const Vector2&)",
+	//	asFUNCTIONPR(glm::operator-, (const glm::vec2&, const glm::vec2&), glm::vec2), asCALL_CDECL_OBJFIRST);
+	//Engine->RegisterObjectMethod("Vector2", "Vector2 opSub_r(const Vector2&)",
+	//	asFUNCTIONPR(glm::operator-, (const glm::vec2&, const glm::vec2&), glm::vec2), asCALL_CDECL_OBJLAST);
+	//Engine->RegisterObjectMethod("Vector2", "Vector2 opMul(const Vector2&)",
+	//	asFUNCTIONPR(glm::operator*, (const glm::vec2&, const glm::vec2&), glm::vec2), asCALL_CDECL_OBJFIRST);
+	//Engine->RegisterObjectMethod("Vector2", "Vector2 opMul_r(const Vector2&)",
+	//	asFUNCTIONPR(glm::operator*, (const glm::vec2&, const glm::vec2&), glm::vec2), asCALL_CDECL_OBJLAST);
+	//Engine->RegisterObjectMethod("Vector2", "Vector2 opDiv(const Vector2&)",
+	//	asFUNCTIONPR(glm::operator/, (const glm::vec2&, const glm::vec2&), glm::vec2), asCALL_CDECL_OBJFIRST);
+	//Engine->RegisterObjectMethod("Vector2", "Vector2 opDiv_r(const Vector2&)",
+	//	asFUNCTIONPR(glm::operator/, (const glm::vec2&, const glm::vec2&), glm::vec2), asCALL_CDECL_OBJLAST);
+	//Engine->RegisterObjectMethod("Vector2", "Vector2 opSub(float)",
+	//	asFUNCTIONPR(glm::operator-, (const glm::vec2&, float), glm::vec2), asCALL_CDECL_OBJFIRST);
+	//Engine->RegisterObjectMethod("Vector2", "Vector2 opMul(float)",
+	//	asFUNCTIONPR(glm::operator*, (const glm::vec2&, float), glm::vec2), asCALL_CDECL_OBJFIRST);
+	//Engine->RegisterObjectMethod("Vector2", "Vector2 opAdd(float)",
+	//	asFUNCTIONPR(glm::operator+, (const glm::vec2&, float), glm::vec2), asCALL_CDECL_OBJFIRST);
+
+	5.0f * glm::vec2(5);
+	Engine->RegisterGlobalProperty("const Vector2 Vec2Up", &(glm::vec2)up);
+	Engine->RegisterGlobalProperty("const Vector2 Vec2Down", &(glm::vec2)down);
+	Engine->RegisterGlobalProperty("const Vector2 Vec2Left", &(glm::vec2)::left);
+	Engine->RegisterGlobalProperty("const Vector2 Vec2Right", &(glm::vec2)::right);
+	//VECTOR3 REGISTRATION
+	Engine->RegisterObjectType("Vector3", sizeof(glm::vec3),
+		asOBJ_VALUE | asOBJ_APP_CLASS_MORE_CONSTRUCTORS | asOBJ_POD | asGetTypeTraits<glm::vec3>());
+	Engine->RegisterObjectBehaviour("Vector3", asBEHAVE_CONSTRUCT, "void v2()", asFUNCTION(ConstructBasic<glm::vec3>), asCALL_CDECL_OBJFIRST);
+	Engine->RegisterObjectBehaviour("Vector3", asBEHAVE_CONSTRUCT, "void v2(float x,float y,float z)",
+		asFunctionPtr(ConstructArgs<glm::vec3, float, float, float>), asCALL_CDECL_OBJFIRST);
+	Engine->RegisterObjectBehaviour("Vector3", asBEHAVE_CONSTRUCT, "void v2(float scalar)",
+		asFunctionPtr(ConstructArgs<glm::vec3, float>), asCALL_CDECL_OBJFIRST);
+	Engine->RegisterObjectBehaviour("Vector3", asBEHAVE_DESTRUCT, "void v2()", asFUNCTION(Destruct<glm::vec3>), asCALL_CDECL_OBJFIRST);
+	Engine->RegisterObjectProperty("Vector3", "float x", asOFFSET(glm::vec3, x));
+	Engine->RegisterObjectProperty("Vector3", "float y", asOFFSET(glm::vec3, y));
+	Engine->RegisterObjectProperty("Vector3", "float z", asOFFSET(glm::vec3, z));
+	Engine->RegisterGlobalProperty("const Vector3 Vec3Up", &up);
+	Engine->RegisterGlobalProperty("const Vector3 Vec3Down", &down);
+	Engine->RegisterGlobalProperty("const Vector3 Vec3Forward", &::forward);
+	Engine->RegisterGlobalProperty("const Vector3 Vec3Backward", &backward);
+	Engine->RegisterGlobalProperty("const Vector3 Vec3Left", &::left);
+	Engine->RegisterGlobalProperty("const Vector3 Vec3Right", &::right);
+	//VECTOR4 REGISTRATION
+	Engine->RegisterObjectType("Vector4", sizeof(glm::vec4),
+		asOBJ_VALUE | asOBJ_APP_CLASS_MORE_CONSTRUCTORS | asOBJ_POD | asGetTypeTraits<glm::vec4>());
+	Engine->RegisterObjectBehaviour("Vector4", asBEHAVE_CONSTRUCT, "void v2()", asFUNCTION(ConstructBasic<glm::vec4>), asCALL_CDECL_OBJFIRST);
+	Engine->RegisterObjectBehaviour("Vector4", asBEHAVE_CONSTRUCT, "void v2(float x,float y,float z,float w)",
+		asFunctionPtr(ConstructArgs<glm::vec4, float, float, float, float>), asCALL_CDECL_OBJFIRST);
+	Engine->RegisterObjectBehaviour("Vector4", asBEHAVE_DESTRUCT, "void v2()", asFUNCTION(Destruct<glm::vec4>), asCALL_CDECL_OBJFIRST);
+	Engine->RegisterObjectProperty("Vector4", "float x", asOFFSET(glm::vec4, x));
+	Engine->RegisterObjectProperty("Vector4", "float y", asOFFSET(glm::vec4, y));
+	Engine->RegisterObjectProperty("Vector4", "float z", asOFFSET(glm::vec4, z));
+	Engine->RegisterObjectProperty("Vector4", "float w", asOFFSET(glm::vec4, w));
 }
 
 Sphynx::Core::Scripting::AngelScript::AngelScript()
@@ -300,38 +373,8 @@ Sphynx::Core::Scripting::AngelScript::AngelScript()
 	Engine->RegisterObjectBehaviour("Bounds", asBEHAVE_CONSTRUCT, "void bounds()", asFUNCTION(ConstructBasic<Bounds>), asCALL_CDECL_OBJFIRST);
 	Engine->RegisterObjectBehaviour("Bounds", asBEHAVE_CONSTRUCT, "void bounds(int h,int w)", asFUNCTION(ConstructBounds), asCALL_CDECL_OBJFIRST);
 	Engine->RegisterObjectBehaviour("Bounds", asBEHAVE_DESTRUCT, "void bounds()", asFUNCTION(Destruct<Bounds>), asCALL_CDECL_OBJFIRST);
-	//VECTOR2 REGISTRATION
-	Engine->RegisterObjectType("Vector2", sizeof(glm::vec2),
-		asOBJ_VALUE | asOBJ_APP_CLASS_MORE_CONSTRUCTORS | asOBJ_POD | asGetTypeTraits<glm::vec2>());
-	Engine->RegisterObjectBehaviour("Vector2", asBEHAVE_CONSTRUCT, "void v2()", asFUNCTION(ConstructBasic<glm::vec2>), asCALL_CDECL_OBJFIRST);
-	Engine->RegisterObjectBehaviour("Vector2", asBEHAVE_CONSTRUCT, "void v2(float x,float y)",
-		asFunctionPtr(ConstructArgs<glm::vec2, float, float>), asCALL_CDECL_OBJFIRST);
-	Engine->RegisterObjectBehaviour("Vector2", asBEHAVE_DESTRUCT, "void v2()", asFUNCTION(Destruct<glm::vec2>), asCALL_CDECL_OBJFIRST);
-	Engine->RegisterObjectProperty("Vector2", "float x", asOFFSET(glm::vec2, x));
-	Engine->RegisterObjectProperty("Vector2", "float y", asOFFSET(glm::vec2, y));
-	//VECTOR3 REGISTRATION
-	Engine->RegisterObjectType("Vector3", sizeof(glm::vec3),
-		asOBJ_VALUE | asOBJ_APP_CLASS_MORE_CONSTRUCTORS | asOBJ_POD | asGetTypeTraits<glm::vec3>());
-	Engine->RegisterObjectBehaviour("Vector3", asBEHAVE_CONSTRUCT, "void v2()", asFUNCTION(ConstructBasic<glm::vec3>), asCALL_CDECL_OBJFIRST);
-	Engine->RegisterObjectBehaviour("Vector3", asBEHAVE_CONSTRUCT, "void v2(float x,float y,float z)",
-		asFunctionPtr(ConstructArgs<glm::vec3, float, float, float>), asCALL_CDECL_OBJFIRST);
-	Engine->RegisterObjectBehaviour("Vector3", asBEHAVE_CONSTRUCT, "void v2(float scalar)", 
-		asFunctionPtr(ConstructArgs<glm::vec3, float>), asCALL_CDECL_OBJFIRST);
-	Engine->RegisterObjectBehaviour("Vector3", asBEHAVE_DESTRUCT, "void v2()", asFUNCTION(Destruct<glm::vec3>), asCALL_CDECL_OBJFIRST);
-	Engine->RegisterObjectProperty("Vector3", "float x", asOFFSET(glm::vec3, x));
-	Engine->RegisterObjectProperty("Vector3", "float y", asOFFSET(glm::vec3, y));
-	Engine->RegisterObjectProperty("Vector3", "float z", asOFFSET(glm::vec3, z));
-	//VECTOR4 REGISTRATION
-	Engine->RegisterObjectType("Vector4", sizeof(glm::vec4),
-		asOBJ_VALUE | asOBJ_APP_CLASS_MORE_CONSTRUCTORS | asOBJ_POD | asGetTypeTraits<glm::vec4>());
-	Engine->RegisterObjectBehaviour("Vector4", asBEHAVE_CONSTRUCT, "void v2()", asFUNCTION(ConstructBasic<glm::vec4>), asCALL_CDECL_OBJFIRST);
-	Engine->RegisterObjectBehaviour("Vector4", asBEHAVE_CONSTRUCT, "void v2(float x,float y,float z,float w)",
-		asFunctionPtr(ConstructArgs<glm::vec4, float, float, float, float>), asCALL_CDECL_OBJFIRST);
-	Engine->RegisterObjectBehaviour("Vector4", asBEHAVE_DESTRUCT, "void v2()", asFUNCTION(Destruct<glm::vec4>), asCALL_CDECL_OBJFIRST);
-	Engine->RegisterObjectProperty("Vector4", "float x", asOFFSET(glm::vec4, x));
-	Engine->RegisterObjectProperty("Vector4", "float y", asOFFSET(glm::vec4, y));
-	Engine->RegisterObjectProperty("Vector4", "float z", asOFFSET(glm::vec4, z));
-	Engine->RegisterObjectProperty("Vector4", "float w", asOFFSET(glm::vec4, w));
+	//Register Vector structs
+	RegisterVectors(Engine);
 	//WINDOW REGISTRATION
 	Engine->RegisterObjectType("Window", 0, asOBJ_REF | asOBJ_NOHANDLE);
 	Engine->RegisterObjectMethod("Window", "int get_Width() property", asFUNCTION(getWindowWidth), asCALL_CDECL_OBJLAST);
@@ -359,6 +402,7 @@ Sphynx::Core::Scripting::AngelScript::AngelScript()
 	Engine->RegisterObjectMethod("GameObject", "Transform@ get_transform() property", asMETHOD(GameObject, GetTransform), asCALL_THISCALL);
 	Engine->RegisterObjectMethod("Transform", "void Translate(Vector3)", asMETHOD(Transform, Translate), asCALL_THISCALL);
 	Engine->RegisterObjectMethod("Transform", "void MoveTo(Vector3)", asMETHOD(Transform, SetPosition), asCALL_THISCALL);
+	Engine->RegisterObjectMethod("Transform", "void Rotate(float angle,Vector3 axis)", asMETHOD(Transform, Rotate), asCALL_THISCALL);
 	Engine->RegisterObjectMethod("Transform", "Vector3& get_Position() property", asMETHOD(Transform, GetPosition), asCALL_THISCALL);
 	Engine->RegisterObjectMethod("Transform", "GameObject@ get_gameObject() property", asMETHOD(Transform, GetGameObject), asCALL_THISCALL);
 	//SCENE REGISTRATION
@@ -397,7 +441,7 @@ void Sphynx::Core::Scripting::AngelScript::CreateScript(AsScript* script, std::s
 	r = builder.AddSectionFromMemory(sectionName, Code.c_str(), Code.size(), 0);
 	if (r < 0)
 	{
-		Core_Error("Section was already included, Please correct the errors in the script and try again.");
+		Core_Error("{0} Section was already included, Please correct the errors in the script and try again.", sectionName);
 		return;
 	}
 	r = builder.BuildModule();
@@ -405,7 +449,7 @@ void Sphynx::Core::Scripting::AngelScript::CreateScript(AsScript* script, std::s
 	{
 		// An error occurred. Instruct the script writer to fix the 
 		// compilation errors that were listed in the output stream.
-		Core_Error("Could Not Build Module, Please correct the errors in the script and try again.");
+		Core_Error("Could Not Build {0}, Please correct the errors in the script and try again.", ModuleName);
 		return;
 	}
 	script->SectionName = sectionName;
@@ -434,7 +478,7 @@ void Sphynx::Core::Scripting::AngelScript::CreateScript(AsScript* script, const 
 	if (r < 0)
 	{
 		// The builder wasn't able to load the file.
-		Core_Error("File Wasn't Loaded, Please correct the errors in the script and try again.");
+		Core_Error("({0})File Wasn't Loaded, Please correct the errors in the script and try again.", path);
 		return;
 	}
 	r = builder.BuildModule();
@@ -442,7 +486,7 @@ void Sphynx::Core::Scripting::AngelScript::CreateScript(AsScript* script, const 
 	{
 		// An error occurred. Instruct the script writer to fix the 
 		// compilation errors that were listed in the output stream.
-		Core_Error("Could Not Build Module, Please correct the errors in the script and try again.");
+		Core_Error("Could Not Build {0}, Please correct the errors in the script and try again.", ModuleName);
 		return;
 	}
 	script->SectionName = path;
@@ -521,6 +565,8 @@ Sphynx::Core::Scripting::AsScript::AsScript(const char* path, const char* module
 Sphynx::Core::Scripting::AsScript::~AsScript()
 {
 	GetEngine()->ReturnContext(Context);
+	Context = nullptr;
+	std::atomic<asIScriptContext*>c;
 	Module->Discard();
 	GetEngine()->ReleaseScriptObject(scriptBehaviour.ScriptObject, scriptBehaviour.TypeInfo);
 }

@@ -21,7 +21,6 @@ namespace Sphynx::Core::Graphics {
 		ShaderType Type;
 	public:
 		//Create The Shader With the given File.
-		static Shader* Create(std::string path, ShaderType type);
 		static Shader* Create(const char* code, ShaderType type);
 		ShaderType GetShaderType() { return Type; };
 		virtual const char* GetShaderPath() = 0;

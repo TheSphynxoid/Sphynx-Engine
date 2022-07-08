@@ -246,12 +246,12 @@ namespace Sphynx::Events {
             for (auto& handle : *handlers) {
                 if (handle != nullptr) {
                     handle->Invoke(e);
-                    if (!PropagateEvent)return;
+                    if (!PropagateEvent)/*PropagateEvent = true; */return;
                 }
             }
         }
         //Event Bus.
-        void Dispatch() {
+        virtual void Dispatch() {
             //C++17
             for (auto& pair : Queue) {
                 Handlers* handlers = subscribers[pair.first];
@@ -260,7 +260,7 @@ namespace Sphynx::Events {
                         handle->Invoke(*pair.second);
                         //if Event is Handled it won't propagate.
                         //if ((*pair.second).isHandled == true)break;
-                        if (!PropagateEvent)return;
+                        if (!PropagateEvent)/*PropagateEvent = true; */return;
                     }
                 }
                 //Delete the temporary object.

@@ -21,5 +21,7 @@ namespace Sphynx{
                 return GO.transform;
             }
         }
+
+        // void ToString(){};
     }
 }

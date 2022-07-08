@@ -33,6 +33,7 @@ Sphynx::Application::Application()
 	//eventSystem.Subscribe<Application, Events::OnWindowClose>(this, &Application::HandleWindowClose);
 #if defined(DEBUG)
 	Events::GlobalEventSystem::GetInstance()->Subscribe<Application, OnLog>(this, &Application::StdLog);
+	Events::GlobalEventSystem::GetInstance()->Subscribe<Application, OnLogFlush>(this, &Application::StdFlush);
 #endif
 	MainApplication = this;
 	this->CreateMainWindow(IWindow::Create(this));
@@ -49,21 +50,18 @@ Sphynx::Application::~Application()
 	this->eventSystem.QueueEvent<Events::OnApplicationClose>(Events::OnApplicationClose());
 }
 
-void Sphynx::Application::Run()
+void Sphynx::Application::Run(int argc, char** argv)
 {
+	this->argc = argc;
+	this->argv = argv;
 	Events::GlobalEventSystem::GetInstance()->DispatchImmediate<Events::OnApplicationStart>(Events::OnApplicationStart());
 	Input::Init();
-	Start();
 	SceneManager::Start();
-	GameObject sq = GameObject::CreatePrimitive(Primitives::Cube, "Cube");
-	sq.GetTransform()->Translate({ 0,0,-3 });
-	sq.AddComponent<Scripting::AsScript>("AsScript.as", "Module1");
-	SceneManager::GetScene().GetPrimaryCameraObject().AddComponent<Scripting::AsScript>("CameraScript.as", "CameraModule");
-	SceneManager::GetScene().AddGameObject(&sq);
 	Scenic::Scenic::WriteScene(&SceneManager::GetScene(), std::fstream("NewScene.sphs", std::ios_base::out));
+	Start();
 	Time::Start();
 	int i = 0;
-	while (AppAlive) {
+	while (MainWindow->IsAlive()) {
 		Update();
 		Events::GlobalEventSystem::GetInstance()->DispatchImmediate<Events::OnApplicationUpdate>(Events::OnApplicationUpdate());
 		//Events
@@ -72,17 +70,19 @@ void Sphynx::Application::Run()
 		for (auto& es : EventSystemArray) {
 			es->Dispatch();
 		}
-		if (MainWindow->IsAlive()) {
-			MainWindow->GetRenderer()->Clear();
-			SceneManager::Update();
-			//Imgui.
-			Imgui::OnOverlayUpdate();
-			//Buffer Swap
-			MainWindow->Update();
-		}
+		//Physics
+		// Later
+		//Render
+		MainWindow->GetRenderer()->Clear();
+		SceneManager::Update();
+		//Imgui.
+		Imgui::OnOverlayUpdate();
+		//Buffer Swap
+		MainWindow->Update();
+
 		Time::Update();
 	}
-	Imgui::Shutdown();
+	//SceneManager::End();
 	ThreadPool::Stop();
 }
 

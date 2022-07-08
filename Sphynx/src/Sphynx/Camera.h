@@ -19,6 +19,7 @@ namespace Sphynx {
 	{
 	private:
 		glm::mat4 ProjectionMatrix;
+		glm::mat4 ViewMatrix;
 		bool IsOrtho;
 		float NearClip, FarClip, AspectRatio;
 		float FOV;
@@ -38,7 +39,7 @@ namespace Sphynx {
 		//Camera(float nearClip, float farClip, float width, float height);
 		virtual void Update();
 		glm::mat4& GetProjectionMatrix() { return ProjectionMatrix; };
-		glm::mat4& GetViewMatrix() { return GetGameObject()->GetTransform()->GetModelMatrix(); };
+		glm::mat4& GetViewMatrix() { return ViewMatrix; };
 		bool IsOrthographic() { return IsOrtho; };
 		//void SetOrthographic();
 		//void SetPerspective();
@@ -57,5 +58,21 @@ namespace Sphynx {
 			return CamViewport;
 		}
 		friend Application;
+	};
+	struct OnFrameResize : public Events::Event {
+		glm::vec2 OldDimensions;
+		glm::vec2 NewDimensions;
+		Camera* Cam;
+		Core::Graphics::FrameBuffer* Frame;
+
+		OnFrameResize(glm::vec2 old, glm::vec2 curr, Camera* cam, Core::Graphics::FrameBuffer* frame) 
+			: OldDimensions(old), NewDimensions(curr), Cam(cam), Frame(frame) {};
+	};
+	struct OnFrameChange : public Events::Event {
+
+		Camera* Cam;
+		Core::Graphics::FrameBuffer* Frame;
+
+		OnFrameChange(Camera* cam, Core::Graphics::FrameBuffer* frame) : Cam(cam), Frame(frame) {};
 	};
 }

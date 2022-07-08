@@ -61,6 +61,14 @@ Sphynx::GameObject& Sphynx::GameObject::operator=(const GameObject& obj)noexcept
     return *this;
 }
 
+void Sphynx::GameObject::Destroy()
+{
+    IsAlive = false;
+    for (auto comp : Components) {
+        Core::Internal::ComponentFactory::RemoveComponent(this, comp);
+    }
+}
+
 Sphynx::GameObject Sphynx::GameObject::CreatePrimitive(Primitives primitive, const char* name)
 {
     auto rt = GameObject(name);

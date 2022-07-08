@@ -98,12 +98,14 @@ Sphynx::Core::GLWindow::GLWindow(Application* App, Bounds WinBounds, std::string
 
 	glfwInitHint(GLFW_VERSION_MAJOR, 4);
 	glfwInitHint(GLFW_VERSION_MINOR, 6);
+	
 	//Init GLFW
 	GLFWInit = glfwInit();
 	if (!GLFWInit) {
 		Core_Error("Glfw couldn't initialize.");
 		return;
 	}
+
 	GLFWmonitor* monitor = 0;
 	if (fullscreen) {
 		monitor = glfwGetPrimaryMonitor();

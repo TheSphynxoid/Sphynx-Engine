@@ -16,6 +16,7 @@ namespace Sphynx {
 		inline static thread_local time DeltaTime;
 	public:
 		static double GetDeltaTime();
+		static unsigned __int64 GetDeltaTicks();
 		static unsigned __int64 GetTicks();
 		// Inherited via Module
 		static void Start();

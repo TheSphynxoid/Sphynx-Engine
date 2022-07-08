@@ -3,14 +3,16 @@
 #define SphynxApplication
 #include "Core.h"
 #include "Events/Event.h"
+#include "Events/ApplicationEvents.h"
 #include "SpTime.h"
 #include "Core/Graphics/Imgui.h"
 #include "Pointer.h"
+#include "Logger.h"
 #include <type_traits>
 #include <utility>
 #include <memory>
 #include <iostream>
-#define Sphynx_Version "V0.5.5-PreAlpha-ml"
+#define Sphynx_Version "V0.5.11-PreAlpha"
 namespace Sphynx {
 	namespace Core {
 		class IWindow;
@@ -18,13 +20,20 @@ namespace Sphynx {
 	class Application
 	{
 	private:
+		int argc;
+		char** argv;
 		//TODO:Finish the class.
 		Events::EventSystem eventSystem;
 		std::list<Pointer<Events::EventSystem>> EventSystemArray;
 		Core::IWindow* MainWindow = nullptr;
 		bool AppAlive = true;
 #if defined(DEBUG)
-		inline void StdLog(OnLog& e) { std::cout << e.msg; };
+		inline void StdLog(Sphynx::OnLog& e) { 
+			std::cout << e.msg;
+		};
+		inline void StdFlush(Sphynx::OnLogFlush& e) {
+			std::cout.flush();
+		}
 #endif
 	public:
 		Application();
@@ -34,7 +43,7 @@ namespace Sphynx {
 		static Application* GetApplication();
 		virtual void Update() = 0;
 		virtual void Start() = 0;
-		void Run();
+		void Run(int argc = 0, char** argv = nullptr);
 		bool HasWindow()const noexcept{ return static_cast<bool>(MainWindow); };
 		inline void CloseApplication() noexcept { AppAlive = false; };
 		//Should the app be aware of the eventsystems or not ?(Currently it is)
@@ -54,6 +63,8 @@ namespace Sphynx {
 
 		inline Events::EventSystem* GetAppEventSystem()noexcept { return &eventSystem; };
 		inline Core::IWindow* GetMainWindow()noexcept { return MainWindow; };
+		//Returns both argv and argc
+		char** Getargsv(int* Argc) { Argc = &argc; return argv; };
 		//////////////Window Handling///////////////
 
 		//Create the Main Window using a premade IWindow Pointer to allow Backend Choice(GL or DX)

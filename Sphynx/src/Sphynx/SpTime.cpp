@@ -11,9 +11,14 @@ double Sphynx::Time::GetDeltaTime()
 	return DeltaTime.count();
 }
 
-unsigned __int64 Sphynx::Time::GetTicks()
+unsigned __int64 Sphynx::Time::GetDeltaTicks()
 {
 	return diff_tick;
+}
+
+unsigned __int64 Sphynx::Time::GetTicks()
+{
+	return __rdtsc();
 }
 
 void Sphynx::Time::Start()

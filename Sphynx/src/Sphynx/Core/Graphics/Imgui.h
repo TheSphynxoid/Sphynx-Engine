@@ -6,6 +6,9 @@
 #include <list>
 #include <typeinfo>
 #include <vector>
+#ifdef EXPOSE_IMGUI_H
+#include "../dep/imgui/imgui.h"
+#endif // EXPOSE_IMGUI_H
 
 namespace Sphynx::Core {
 	class IWindow;

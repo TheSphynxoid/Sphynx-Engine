@@ -253,9 +253,10 @@
     <ClInclude Include="src\Sphynx\Core\IO\File.h" />
     <ClInclude Include="src\Sphynx\Core\Scenic\Scenic.h" />
     <ClInclude Include="src\Sphynx\Core\Scripting\BaseLib\AsBaseLib.h" />
-    <ClInclude Include="src\Sphynx\AssetManager.h" />
-    <ClInclude Include="src\Sphynx\Asset.h" />
     <ClInclude Include="src\Sphynx\Core\IO\TypeSize.h" />
+    <ClInclude Include="src\Sphynx\Core\IO\Serializer.h" />
+    <ClInclude Include="src\Sphynx\Core\SpriteRenderer.h" />
+    <ClInclude Include="src\Sphynx\ResourceManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Sphynx\Application.cpp">
@@ -409,8 +410,8 @@
       <Filter>Sphynx</Filter>
     </ClCompile>
     <ClCompile Include="src\Sphynx\Core\Scenic\Scenic.cpp" />
-    <ClCompile Include="src\Sphynx\AssetManager.cpp" />
-    <ClCompile Include="src\Sphynx\Asset.cpp" />
+    <ClCompile Include="src\Sphynx\Core\SpriteRenderer.cpp" />
+    <ClCompile Include="src\Sphynx\ResourceManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Sphynx\Scripts\Component.as">

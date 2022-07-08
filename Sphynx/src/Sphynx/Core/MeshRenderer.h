@@ -19,6 +19,7 @@ namespace Sphynx {
 		virtual void OnComponentDetach() override;
 	public:
 		MeshRenderer(Core::Graphics::Mesh* _mesh, Core::Graphics::Material* mat);
+		~MeshRenderer();
 		void SetMaterial(Core::Graphics::Material* mat);
 		Core::Graphics::Material* GetMaterial() { return Mat; };
 		void SetMesh(Sphynx::Core::Graphics::Mesh* _mesh);

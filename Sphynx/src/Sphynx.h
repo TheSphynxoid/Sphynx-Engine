@@ -20,7 +20,6 @@
 #else
 	#error "No plans to support other platform (MacOS,IOS will never be supported by me as i can't be bothered to learn metal or Apple bullshit)"
 #endif
-
 //For Application Use only
 #include "Sphynx/Application.h"
 #include "Sphynx/Core/Graphics/Window.h"
@@ -48,6 +47,9 @@
 //-------------------------------------------------------------
 #include "GameObject.h"
 #include "Component.h"
+#include "Camera.h"
+#include "Core/Transform.h"
+#include "Core/MeshRenderer.h"
 #define Time_Header "SpTime.h"
 #include Time_Header
 #include "Delegate.h"

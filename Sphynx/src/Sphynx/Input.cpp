@@ -65,17 +65,17 @@ void Sphynx::Input::Init()
 	}
 }
 
-Sphynx::KeyState Sphynx::Input::IsKeyPressed(Keys key)
+bool Sphynx::Input::IsKeyPressed(Keys key)
 {
-	return keyStates[(int)key];
+	return keyStates[(int)key].IsPressed;
 }
 
-Sphynx::MouseButtonState Sphynx::Input::IsMouseButtonPressed(MouseButton button)
+bool Sphynx::Input::IsMouseButtonPressed(MouseButton button)
 {
-	return MouseStates[(int)button];
+	return MouseStates[(int)button].IsPressed;
 }
 
-Sphynx::Vector2<double> Sphynx::Input::GetMousePosition()
+glm::vec2 Sphynx::Input::GetMousePosition()
 {
 #ifdef DX_IMPL && Platform_Windows
 #else

@@ -24,7 +24,7 @@ void Sphynx::Editor::EditorViewport::OnResize(Events::OnWindowResize& e)
 Sphynx::Editor::EditorViewport::EditorViewport() : viewport()
 {
 	Events::GlobalEventSystem::GetInstance()->Subscribe<EditorViewport, Events::OnWindowResize>(this, &EditorViewport::OnResize);
-	//TODO: This Wrong. Find a way to add multi camera support and handle scene changes in the future.
+	//TODO: This is Wrong. Find a way to add multi camera support and handle scene changes in the future.
 }
 
 void Sphynx::Editor::EditorViewport::Draw()
@@ -39,27 +39,26 @@ void Sphynx::Editor::EditorViewport::Draw()
 		//SceneManager::GetScene().GetPrimaryCamera()->GetFrameBuffer()->SetClearColor({ 1,1,1,1 });
 	}
 	ImGui::SetNextWindowDockID(ViewDockID, ImGuiCond_FirstUseEver);
-	if (ImGui::Begin("Viewport", &IsOpen, ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoScrollbar)) {
+	if (ImGui::Begin("Viewport", &IsOpen, ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoScrollbar
+		| ImGuiWindowFlags_NoScrollWithMouse)) {
 		if (ResizeFlag) {
 			ResizeFlag = false;
-			Sphynx::Core::SceneManager::GetScene().GetPrimaryCamera()->SetViewport({ 0,0,(int)ImGui::GetWindowWidth(),(int)ImGui::GetWindowHeight() });
+			Sphynx::Core::SceneManager::GetScene().GetPrimaryCamera()->SetViewport(
+				{ 0,0,(int)ImGui::GetWindowWidth() - 10,(int)ImGui::GetWindowHeight() - 10 });
 		}
 		ImGui::Image(SceneManager::GetScene().GetPrimaryCamera()->GetFrameBuffer()->GetColorAttachment(0)->GetNativeID(),
-			{ (float)SceneManager::GetScene().GetPrimaryCamera()->GetFrameBuffer()->GetWidth(), 
-				(float)SceneManager::GetScene().GetPrimaryCamera()->GetFrameBuffer()->GetHeight() });
-        static int corner = 1;
-        ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav;
-        if (corner != -1)
-        {
-			ImVec2 work_pos = ImGui::GetWindowPos(); // Use work area to avoid menu-bar/task-bar, if any!
-            ImVec2 work_size = ImGui::GetWindowSize();
-            ImVec2 window_pos, window_pos_pivot;
-            window_pos.x = (work_pos.x + work_size.x - 10.0f);
-            window_pos.y = (work_pos.y + 25.0f);
-            window_pos_pivot.x = 1.0f;
-            window_pos_pivot.y = 0.0f;
-            ImGui::SetNextWindowPos(window_pos, ImGuiCond_Always, window_pos_pivot);
-        }
+			{ (float)SceneManager::GetScene().GetPrimaryCamera()->GetFrameBuffer()->GetWidth(),
+				(float)SceneManager::GetScene().GetPrimaryCamera()->GetFrameBuffer()->GetHeight() }, { 0,1 }, { 1,0 });
+        //Render info widget
+		ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav;
+		ImVec2 work_pos = ImGui::GetWindowPos(); // Use work area to avoid menu-bar/task-bar, if any!
+		ImVec2 work_size = ImGui::GetWindowSize();
+		ImVec2 window_pos, window_pos_pivot;
+		window_pos.x = (work_pos.x + work_size.x - 10.0f);
+		window_pos.y = (work_pos.y + 25.0f);
+		window_pos_pivot.x = 1.0f;
+		window_pos_pivot.y = 0.0f;
+		ImGui::SetNextWindowPos(window_pos, ImGuiCond_Always, window_pos_pivot);
         ImGui::SetNextWindowBgAlpha(0.35f); // Transparent background
         if (ImGui::Begin("Viewport Details", &IsOpen, window_flags))
         {
@@ -68,6 +67,7 @@ void Sphynx::Editor::EditorViewport::Draw()
 			ImGui::Text("Viewport Size:%i,%i", (int)ImGui::GetWindowWidth(), (int)ImGui::GetWindowHeight());
 			ImGui::Text("FPS:%i", (int)(1 / Time::GetDeltaTime()));
         }
+		//End Render info widget 
         ImGui::End();
 	}
 	ImGui::End();

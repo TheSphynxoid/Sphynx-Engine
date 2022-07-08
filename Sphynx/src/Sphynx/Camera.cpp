@@ -14,6 +14,8 @@ void Sphynx::Camera::ResizeWindow(Events::OnWindowResize& e)
 {
 	if (RenderTarget == nullptr || RenderTarget->IsDefaultFrameBuffer()) {
 		RenderTarget->Resize(e.Width, e.Height);
+		Events::GlobalEventSystem::GetInstance()->QueueEvent<OnFrameResize>
+			(OnFrameResize({ CamViewport.Width, CamViewport.Height }, { e.Width, e.Height }, this, RenderTarget));
 		CamViewport.Width = e.Width;
 		CamViewport.Height = e.Height;
 		if (IsOrtho)
@@ -32,7 +34,7 @@ void Sphynx::Camera::OnComponentDetach()
 }
 
 Sphynx::Camera::Camera() : IsOrtho(false), FOV(60.0f), NearClip(0.1f), FarClip(100.0f), 
-	AspectRatio((float)GetMainWindow()->GetWidth() / (float)GetMainWindow()->GetHeight())
+	AspectRatio((float)GetMainWindow()->GetWidth() / (float)GetMainWindow()->GetHeight()),RenderTarget(Core::Graphics::FrameBuffer::GetDefaultFrameBuffer())
 {
 	CamViewport.Width = GetMainWindow()->GetWidth();
 	CamViewport.Height = GetMainWindow()->GetHeight();
@@ -40,7 +42,7 @@ Sphynx::Camera::Camera() : IsOrtho(false), FOV(60.0f), NearClip(0.1f), FarClip(1
 }
 
 Sphynx::Camera::Camera(float fov, float aspectRatio, float nearClip, float farClip) : IsOrtho(false), FOV(fov), NearClip(nearClip), FarClip(farClip),
-	AspectRatio(aspectRatio)
+	AspectRatio(aspectRatio), RenderTarget(Core::Graphics::FrameBuffer::GetDefaultFrameBuffer())
 {
 	ProjectionMatrix = glm::perspective(glm::radians(FOV), aspectRatio, NearClip, FarClip);
 }
@@ -53,26 +55,31 @@ Sphynx::Camera::Camera(float fov, float aspectRatio, float nearClip, float farCl
 
 void Sphynx::Camera::Update()
 {
-	//ViewMatrix = glm::lookAt()
-	if (RenderTarget) {
-		RenderTarget->Bind();
-		RenderTarget->Clear();
-		GetMainWindow()->GetRenderer()->SetViewPort(CamViewport);
-		GetMainWindow()->GetRenderer()->Render();
-		GetMainWindow()->GetRenderer()->SetViewPort({ 0, 0, GetMainWindow()->GetWidth(), GetMainWindow()->GetHeight() });
-		RenderTarget->Unbind();
+	if (GetTransform()->Changed) {
+		ViewMatrix = glm::lookAt(GetTransform()->GetPosition(), GetTransform()->GetPosition() + glm::vec3(0, 0, -1),
+			glm::rotate(GetTransform()->GetRotation(), glm::vec3(0,1,0)));
+		
 	}
+	RenderTarget->Bind();
+	RenderTarget->Clear();
+	GetMainWindow()->GetRenderer()->SetViewPort(CamViewport);
+	GetMainWindow()->GetRenderer()->Render();
+	GetMainWindow()->GetRenderer()->SetViewPort({ 0, 0, GetMainWindow()->GetWidth(), GetMainWindow()->GetHeight() });
+	RenderTarget->Unbind();
 }
 
 void Sphynx::Camera::SetFrameBuffer(Sphynx::Core::Graphics::FrameBuffer* fb)
 {
 	RenderTarget = fb;
+	Events::GlobalEventSystem::GetInstance()->QueueEvent<OnFrameChange>(OnFrameChange(this, RenderTarget));
 }
 
 void Sphynx::Camera::SetViewport(Sphynx::Core::Graphics::Viewport v)
 {
-	CamViewport = v;
 	if (RenderTarget) {
 		RenderTarget->Resize(v.Width, v.Height);
+		Events::GlobalEventSystem::GetInstance()->QueueEvent<OnFrameResize>
+			(OnFrameResize({ CamViewport.Width, CamViewport.Height }, { v.Width, v.Height }, this, RenderTarget));
 	}
+	CamViewport = v;
 }

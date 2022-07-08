@@ -16,7 +16,6 @@ namespace Sphynx::Core::Graphics::GL {
 		//Inherited From Shader, Gets Called To Create Shader.
 		void Release()noexcept;
 	public:
-		GLShader(std::string path, ShaderType type);
 		GLShader(const char* code, ShaderType Type);
 		//Spec:
 		//location 0 :Will always be for Vertex Position,

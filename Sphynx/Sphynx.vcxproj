@@ -98,8 +98,9 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\Sphynx\Asset.h" />
-    <ClInclude Include="src\Sphynx\AssetManager.h" />
+    <ClInclude Include="src\Sphynx\ResourceManager.h" />
+    <ClInclude Include="src\Sphynx\Core\SpriteRenderer.h" />
+    <ClInclude Include="src\Sphynx\Core\IO\Serializer.h" />
     <ClInclude Include="src\Sphynx\Core\IO\TypeSize.h" />
     <ClInclude Include="src\Sphynx\Core\Scenic\Scenic.h" />
     <ClInclude Include="src\Sphynx.h" />
@@ -177,8 +178,8 @@
     <ClInclude Include="src\Sphynx\pch.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Sphynx\Asset.cpp" />
-    <ClCompile Include="src\Sphynx\AssetManager.cpp" />
+    <ClCompile Include="src\Sphynx\ResourceManager.cpp" />
+    <ClCompile Include="src\Sphynx\Core\SpriteRenderer.cpp" />
     <ClCompile Include="src\Sphynx\Core\Scenic\Scenic.cpp" />
     <ClCompile Include="src\Sphynx\Application.cpp" />
     <ClCompile Include="src\Sphynx\Camera.cpp" />

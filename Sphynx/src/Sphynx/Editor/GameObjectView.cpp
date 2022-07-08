@@ -23,12 +23,12 @@ Sphynx::Editor::GameObjectView::GameObjectView()
 
 void UpdateCoords(Sphynx::GameObject* go) {
 	auto pos = go->GetTransform()->GetPosition();
-	TransformV[0] = pos[0];
-	TransformV[1] = pos[1];
-	TransformV[2] = pos[2];
-	TransformS[0] = 1;
-	TransformS[1] = 1;
-	TransformS[2] = 1;
+	auto scale = go->GetTransform()->GetScale();
+	auto rot = glm::degrees(glm::eulerAngles(go->GetTransform()->GetRotation()));
+	
+	memcpy_s(TransformV, sizeof(TransformV), &pos[0], sizeof(pos));
+	memcpy_s(TransformS, sizeof(TransformS), &scale[0], sizeof(scale));
+	memcpy_s(TransformR, sizeof(TransformR), &rot[0], sizeof(rot));
 }
 
 void Sphynx::Editor::GameObjectView::Draw()
@@ -51,10 +51,10 @@ void Sphynx::Editor::GameObjectView::Draw()
 				CurrentGO->GetTransform()->SetPosition({ TransformV[0],TransformV[1],TransformV[2] });
 			}
 			if (ImGui::DragFloat3("Rotation", TransformR, std::abs(ImGui::GetMouseDragDelta().x) / 10000)) {
-				//CurrentGO->GetTransform()->Set({ TransformV[0],TransformV[1],TransformV[2] });
+				CurrentGO->GetTransform()->SetRotation({ TransformR[0],TransformR[1],TransformR[2] });
 			}
 			if (ImGui::DragFloat3("Scale", TransformS, std::abs(ImGui::GetMouseDragDelta().x) / 10000)) {
-				CurrentGO->GetTransform()->Scale({ TransformV[0],TransformV[1],TransformV[2] });
+				CurrentGO->GetTransform()->SetScale({ TransformS[0],TransformS[1],TransformS[2] });
 			}
 			ImGui::Separator();
 			if (Core::Internal::ComponentFactory::ComponentHelper::IsComponentInGameObject<Camera>(CurrentGO)) {

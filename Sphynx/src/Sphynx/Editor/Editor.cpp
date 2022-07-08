@@ -29,8 +29,11 @@ void Sphynx::Editor::Editor::Draw()
 	if (ImGui::BeginMenu("Edit")) {
 		ImGui::EndMenu();
 	}
-	if (ImGui::Selectable("Debug Window", false, ImGuiSelectableFlags_None, ImGui::CalcTextSize("Debug Window"))) {
-		Sphynx::Core::Imgui::AddOverlayWindow(new Core::DebugWindow());
+	if (ImGui::BeginMenu("Debug")) {
+		if (ImGui::MenuItem("Debug Window")) {
+			Sphynx::Core::Imgui::AddOverlayWindow(new Core::DebugWindow());
+		}
+		ImGui::EndMenu();
 	}
 	if (ImGui::BeginMenu("About")) {
 		if (ImGui::MenuItem("About Sphynx Engine")) {}

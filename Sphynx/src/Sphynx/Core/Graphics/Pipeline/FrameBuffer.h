@@ -55,5 +55,6 @@ namespace Sphynx::Core::Graphics {
 		//Creates a Framebuffer.
 		static void BindDefault();
 		static FrameBuffer* Create(int width, int height, std::initializer_list<Texture*> tex = {});
+		static FrameBuffer* GetDefaultFrameBuffer();
 	};
 }

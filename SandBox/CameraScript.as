@@ -1,4 +1,5 @@
 class Camera : Sphynx::Component{
+    Sphynx::Internal::Camera@ NativeCamera;
     float FOV{
             get{
                 return GetFOV();
