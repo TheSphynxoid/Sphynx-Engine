@@ -55,9 +55,9 @@ void Sphynx::Application::Run(int argc, char** argv)
 	this->argc = argc;
 	this->argv = argv;
 	Events::GlobalEventSystem::GetInstance()->DispatchImmediate<Events::OnApplicationStart>(Events::OnApplicationStart());
+	//Scenic::WriteScene(&SceneManager::GetScene())
 	Input::Init();
 	SceneManager::Start();
-	Scenic::Scenic::WriteScene(&SceneManager::GetScene(), std::fstream("NewScene.sphs", std::ios_base::out));
 	Start();
 	Time::Start();
 	int i = 0;
@@ -67,9 +67,6 @@ void Sphynx::Application::Run(int argc, char** argv)
 		//Events
 		Events::GlobalEventSystem::GetInstance()->Dispatch();
 		eventSystem.Dispatch();
-		for (auto& es : EventSystemArray) {
-			es->Dispatch();
-		}
 		//Physics
 		// Later
 		//Render
@@ -84,25 +81,6 @@ void Sphynx::Application::Run(int argc, char** argv)
 	}
 	//SceneManager::End();
 	ThreadPool::Stop();
-}
-
-Events::EventSystem Sphynx::Application::RequestNewEventSystem()
-{
-	Pointer<Events::EventSystem>* e = AllocatePointer<Events::EventSystem>();
-	EventSystemArray.push_back(*e);
-	e->SetDestroyCallBack<Application>(Delegate<void, Application, Events::EventSystem&>(this, &Application::DeleteEventSystem));
-	return *e->GetRaw();
-}
-
-void Sphynx::Application::DeleteEventSystem(Events::EventSystem& e)
-{
-	for (auto& ptr : EventSystemArray) {
-		if (ptr.GetRaw() == &e) {
-			EventSystemArray.remove_if([&, ptr](Pointer<Events::EventSystem>& p)->bool {return ptr.GetRaw() == p.GetRaw(); });
-			ptr.Release();
-			delete& ptr;
-		}
-	}
 }
 
 Sphynx::Core::IWindow* Sphynx::Application::CreateMainWindow(Core::IWindow* window)

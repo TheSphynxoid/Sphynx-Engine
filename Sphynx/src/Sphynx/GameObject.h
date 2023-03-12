@@ -4,7 +4,6 @@
 #include "Core/Factories/ComponentFactory.h"
 #include "Pointer.h"
 #include "Core/Transform.h"
-#include "Core/IO/Serializer.h"
 
 namespace Sphynx {
 	class Transform;
@@ -96,17 +95,5 @@ namespace Sphynx {
 		bool operator!=(const GameObject& other) {
 			return !(*this == other);
 		}
-	};
-
-	template<>
-	class Serializer<GameObject> {
-	public:
-		static std::vector<IOBuffer>& Serialize(GameObject* obj) {
-
-		};
-		static GameObject* Deserialize(std::vector<IOBuffer> data) {
-
-		}
-		static bool IsComposite() { return true; }
 	};
 }

@@ -14,7 +14,7 @@ class Movement : Sphynx::Component{
         Sphynx::Vector3 v = Sphynx::Vector3(transform.Position.x, 
             transform.Position.y, transform.Position.z);
         if(Sphynx::Input::KeyPressed(Sphynx::Keys::Up)){
-            v.y +=0.01f;
+            v.y +=0.01f * Sphynx::deltaTime;
         }if(Sphynx::Input::KeyPressed(Sphynx::Keys::Down)){
             v.y -=0.01f;
         }

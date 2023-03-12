@@ -2,6 +2,7 @@
 #include <thread>
 #include <atomic>
 #include <mutex>
+#include <functional>
 
 namespace Sphynx {
 	class Thread

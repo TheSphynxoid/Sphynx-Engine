@@ -27,8 +27,8 @@
 #include <scriptany/scriptany.cpp>
 #include <scriptfile/scriptfile.cpp>
 #include <scriptfile/scriptfilesystem.cpp>
-
 #undef Path
+#define SpRegisterEnumValue(Engine,Enum,EnumValue) Engine->RegisterEnumValue(#Enum,#EnumValue,(int)Enum::EnumValue)
 
 using namespace Sphynx;
 using namespace Sphynx::Core;
@@ -107,8 +107,6 @@ void ChangeTitle(IWindow* win, std::string& title) {
 	win->ChangeTitle(title.c_str());
 }
 
-#define SpRegisterEnumValue(Engine,Enum,EnumValue) Engine->RegisterEnumValue(#Enum,#EnumValue,(int)Enum::EnumValue)
-
 void CreateWindowAS(Application* app, std::string title, Bounds b, bool fullscreen) {
 	app->CreateMainWindow(IWindow::Create(app, b, title, fullscreen));
 }
@@ -137,9 +135,11 @@ int IncludeCallBack(const char* include, const char* from, CScriptBuilder* build
 bool IsKeyPressed(int _key) {
 	return Input::IsKeyPressed((Keys)_key);
 }
+
 bool IsMouseButtonPressed(int _button) {
 	return Input::IsMouseButtonPressed((MouseButton)_button);
 }
+
 void RegisterInput(asIScriptEngine* engine) {
 	engine->SetDefaultNamespace("Sphynx");
 #pragma region Keys Enum
@@ -306,7 +306,6 @@ void RegisterVectors(asIScriptEngine* Engine) {
 	//Engine->RegisterObjectMethod("Vector2", "Vector2 opAdd(float)",
 	//	asFUNCTIONPR(glm::operator+, (const glm::vec2&, float), glm::vec2), asCALL_CDECL_OBJFIRST);
 
-	5.0f * glm::vec2(5);
 	Engine->RegisterGlobalProperty("const Vector2 Vec2Up", &(glm::vec2)up);
 	Engine->RegisterGlobalProperty("const Vector2 Vec2Down", &(glm::vec2)down);
 	Engine->RegisterGlobalProperty("const Vector2 Vec2Left", &(glm::vec2)::left);
@@ -566,7 +565,6 @@ Sphynx::Core::Scripting::AsScript::~AsScript()
 {
 	GetEngine()->ReturnContext(Context);
 	Context = nullptr;
-	std::atomic<asIScriptContext*>c;
 	Module->Discard();
 	GetEngine()->ReleaseScriptObject(scriptBehaviour.ScriptObject, scriptBehaviour.TypeInfo);
 }

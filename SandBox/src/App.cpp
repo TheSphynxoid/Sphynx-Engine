@@ -8,6 +8,7 @@
 #include <Sphynx/Core/SceneManager.h>
 #include <Sphynx/Core/Graphics/Pipeline/Texture.h>
 #include <Sphynx/ResourceManager.h>
+#include <Editor/TextureDebugger.h>
 
 using namespace Sphynx;
 using namespace Sphynx::Core;
@@ -32,16 +33,21 @@ public:
 #endif
 	}
 	void Start() {
-		Card = GameObject("Card");
-		//auto CardBackTex = Graphics::Texture::Create("assets/Cardback.jpg", 
-		//	Graphics::TextureType::Texture2D, Graphics::TextureFormat::RGBA, Graphics::TextureDataFormat::UByte);
-		auto CardBackTex = ResourceManager::LoadTexture("assets/Cardback.jpg", Graphics::TextureType::Texture2D, true);
-		Card.AddComponent<Sphynx::Core::SpriteRenderer>(CardBackTex, glm::vec2(CardBackTex->GetWidth(), CardBackTex->GetHeight()));
+		Card = GameObject::CreatePrimitive(Primitives::Cube, "Cube");
+		Card.GetComponent<MeshRenderer>()->GetMaterial()->AddTexture(ResourceManager::LoadTexture("wall.jpg",
+			Sphynx::Core::Graphics::TextureType::Texture2D, true));
+		//auto font = ResourceManager::LoadFont("fonts/atwriter.ttf");
 		Sphynx::Core::SceneManager::GetScene().AddGameObject(&Card);
 	}
-	void Update() {
+	void Update() {	
 		if (Input::IsKeyPressed(Keys::Up)) {
+			Card.GetTransform()->Translate(glm::vec3(0, 1, 0));
+		}
+		if (Input::IsKeyPressed(Keys::Down)) {
 			Card.GetTransform()->Translate(glm::vec3(0, -1, 0));
+		}
+		if (Input::IsKeyPressed(Keys::Enter)) {
+			Card.GetTransform()->SetPosition(glm::vec3(GetMainWindow()->GetWidth() / 2, GetMainWindow()->GetHeight() / 2, 0));
 		}
 	}
 	~SandBox() {
@@ -52,6 +58,6 @@ public:
 //The Main Entry Point for clients
 Sphynx::Application* Sphynx::CreateApplication() {
 	auto sandbox = new SandBox();
-	sandbox->GetMainWindow()->ChangeTitle("Card Game");
+	sandbox->GetMainWindow()->ChangeTitle("\"Home\"");
 	return sandbox;
 }

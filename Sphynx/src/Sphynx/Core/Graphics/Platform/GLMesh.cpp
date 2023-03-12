@@ -10,7 +10,7 @@ void SetVertexAttribs(Sphynx::Core::Graphics::VertexBuffer* buffs, unsigned int&
 		switch (e.GetDataType())
 		{
 		case Sphynx::Core::Graphics::ShaderDataType::None:
-			Core_Error("Woah there, No Type ? We ain't Python here ! Attribute/Element Ignored.");
+			Core_Error("Attribute/Element Ignored.");
 			//IDK, Error Handling ?
 			Index--;
 			break;

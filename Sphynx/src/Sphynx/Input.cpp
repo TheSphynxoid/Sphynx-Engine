@@ -11,27 +11,38 @@ GLFWkeyfun ImguiKeyFunc;
 GLFWmousebuttonfun ImGuiMouseFunc;
 
 void Sphynx::Input::GLKeyHandler(GLFWwindow* window, int code, int scan, int action, int mods) {
-	keyStates[code] = { ((action == GLFW_PRESS || action == GLFW_REPEAT) ? true : false),(Mods)mods };
 	ImguiKeyFunc(window, code, scan, action, mods);
+	keyStates[code] = { ((action == GLFW_PRESS || action == GLFW_REPEAT) ? true : false),(Mods)mods };
+	switch (action)
+	{
+	case GLFW_RELEASE:
+		GlobalEventSystem::GetInstance()->QueueEvent<OnKeyRelease>(OnKeyRelease((Keys)code));
+		break;
+	case GLFW_PRESS:
+		GlobalEventSystem::GetInstance()->QueueEvent<OnKeyPress>(OnKeyPress((Keys)code, (Mods)mods));
+		break;
+	case GLFW_REPEAT:
+		GlobalEventSystem::GetInstance()->QueueEvent<OnKeyRepeat>(OnKeyRepeat((Keys)code, (Mods)mods));
+		break;
+	default:
+		Core_Warn("Unvalid action value, Key action unhandled");
+		break;
+	}
 }
+
 void Sphynx::Input::GLMouseHandler(GLFWwindow* window, int button, int action, int mods)
 {
 	MouseStates[button] = { (action == GLFW_PRESS ? true : false),(Mods)mods };
 	ImGuiMouseFunc(window, button, action, mods);
 }
-void Sphynx::Input::GLHandleNewWindow(Events::OnWindowOpen& e)
-{
-	GLFWwindow* win = reinterpret_cast<GLFWwindow*>(e.GetWindow()->GetNativePointer());
-	glfwSetKeyCallback(win, &Input::GLKeyHandler);
-	glfwSetMouseButtonCallback(win, &Input::GLMouseHandler);
-	window = e.GetWindow();
-}
+
 void Sphynx::Input::HandleWindowClose(Events::OnWindowClose& e)
 {
 	window = nullptr;
 	memset(keyStates, false, sizeof(keyStates));
 	memset(MouseStates, false, sizeof(MouseStates));
 }
+
 void Sphynx::Input::Init()
 {
 	memset(keyStates, false, sizeof(keyStates));
@@ -52,7 +63,6 @@ void Sphynx::Input::Init()
 	case Platform::Android:
 		[[fallthrough]];
 	case Platform::Linux:
-		GetApplication()->GetAppEventSystem()->Subscribe<OnWindowOpen>(&Input::GLHandleNewWindow);
 		if (GetApplication()->HasWindow()) {
 			GLFWwindow* win = reinterpret_cast<GLFWwindow*>(window->GetNativePointer());
 			ImguiKeyFunc = glfwSetKeyCallback(win, &Input::GLKeyHandler);

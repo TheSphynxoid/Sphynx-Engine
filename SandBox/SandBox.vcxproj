@@ -100,19 +100,6 @@
       <Project>{39E6AF97-6BA3-4A72-8C61-BCEBF214EBFD}</Project>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <CopyFileToFolders Include="Component.as">
-      <FileType>Document</FileType>
-    </CopyFileToFolders>
-  </ItemGroup>
-  <ItemGroup>
-    <CopyFileToFolders Include="AsScript.as">
-      <FileType>Document</FileType>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include="CameraScript.as">
-      <FileType>Document</FileType>
-    </CopyFileToFolders>
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

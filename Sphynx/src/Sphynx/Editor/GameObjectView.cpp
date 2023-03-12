@@ -15,6 +15,7 @@ static char name[124];
 float TransformV[3];
 float TransformR[3];
 float TransformS[3];
+Sphynx::MeshRenderer* mr = nullptr;
 
 
 Sphynx::Editor::GameObjectView::GameObjectView()
@@ -67,6 +68,8 @@ void Sphynx::Editor::GameObjectView::Draw()
 					ImGui::TreePop();
 				}
 				if (ImGui::TreeNode("Material")) {
+					if (ImGui::TreeNode("Textures {0}", std::to_string(mr->GetMaterial()->GetTextureCount()).c_str())) {
+					}
 					ImGui::TreePop();
 				}
 				ImGui::Separator();
@@ -87,6 +90,7 @@ void Sphynx::Editor::GameObjectView::Draw()
 void Sphynx::Editor::GameObjectView::SetGameObjectView(Sphynx::GameObject* go)
 {
 	CurrentGO = go;
+	mr = go->GetComponent<MeshRenderer>();
 	strcpy(name, CurrentGO->GetName());
 	UpdateCoords(go);
 }

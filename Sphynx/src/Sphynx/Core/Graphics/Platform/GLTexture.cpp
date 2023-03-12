@@ -256,13 +256,15 @@ void Sphynx::Core::Graphics::GL::GLTexture::Release()
 	TextureID = 0;
 }
 
-Sphynx::Core::Graphics::GL::GLTexture::GLTexture(void* img, TextureType type, int MipmapLevel, TextureFormat format, TextureDataFormat datatype, TextureWrappingMode warp, TextureFilterMode filter, TextureMipmapMode MipmapMode)
+Sphynx::Core::Graphics::GL::GLTexture::GLTexture(void* img, int width, int height, TextureType type, int MipmapLevel, TextureFormat format, TextureDataFormat datatype, TextureWrappingMode warp, TextureFilterMode filter, TextureMipmapMode MipmapMode)
 {
 	Type = type;
 	GLTextureType = GetGLTextureType(Type);
 	Format = format;
 	DataFormat = datatype;
 	MipMapLevel = MipmapLevel;
+	Width = width;
+	Height = height;
 	//TODO: Use the bits variable to determine the Texture Format.
 	//TODO: OpenGL is returning an error somewhere before this.
 	glCreateTextures(GLTextureType, 1, &TextureID);

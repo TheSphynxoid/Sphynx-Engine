@@ -89,6 +89,12 @@ Sphynx::Core::SpriteRenderer::SpriteRenderer(Sphynx::Core::Graphics::Texture* te
     Sphynx::Events::GlobalEventSystem::GetInstance()->Subscribe<Sphynx::OnFrameResize>(FrameResize);
 }
 
+void Sphynx::Core::SpriteRenderer::SetCenter(glm::vec2 Center)
+{
+    CenterOffset = -Center;
+    this->GetTransform()->Translate(GetTransform()->GetPosition() + glm::vec3(CenterOffset, 0));
+}
+
 void Sphynx::Core::SpriteRenderer::OnComponentAttach(GameObject* parent)
 {
     if (!HasInit) {

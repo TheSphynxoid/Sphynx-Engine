@@ -2,8 +2,11 @@
 #include "Editor.h"
 #include "imgui.h"
 #include "Core/SceneManager.h"
+#include "TextureDebugger.h"
 
 Sphynx::Core::AboutWindow* About = new Sphynx::Core::AboutWindow();
+
+
 
 Sphynx::Editor::Editor::Editor()
 {
@@ -32,6 +35,9 @@ void Sphynx::Editor::Editor::Draw()
 	if (ImGui::BeginMenu("Debug")) {
 		if (ImGui::MenuItem("Debug Window")) {
 			Sphynx::Core::Imgui::AddOverlayWindow(new Core::DebugWindow());
+		}
+		if (ImGui::MenuItem("Loaded Textures")) {
+			Sphynx::Core::Imgui::AddOverlayWindow(new Core::TextureDebugger());
 		}
 		ImGui::EndMenu();
 	}
