@@ -1,6 +1,9 @@
 version = 1
 
-exclude_patterns = ["Sphynx/dep/**"]
+exclude_patterns = [
+  "Sphynx/dep/**",
+  "Sphynx/dep/angelscript/**"
+]
 
 [[analyzers]]
 name = "cxx"
