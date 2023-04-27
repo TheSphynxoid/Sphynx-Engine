@@ -1,4 +1,5 @@
 #pragma once
 
-namespace Sphynx::Engine {
+namespace Sphynx::Literals {
+
 }

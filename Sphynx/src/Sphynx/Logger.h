@@ -1,5 +1,6 @@
 #pragma once
 #include "Core.h"
+#define SPDLOG_WCHAR_TO_UTF8_SUPPORT
 #include "Events/Event.h"
 #include "spdlog/spdlog.h"
 #include "spdlog/sinks/base_sink.h"

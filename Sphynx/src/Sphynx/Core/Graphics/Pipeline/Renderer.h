@@ -4,10 +4,6 @@
 #include "glm/glm.hpp"
 #include "glm/gtx/quaternion.hpp"
 #include "Viewport.h"
-#ifdef GCC || CLANG
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-#endif
 namespace Sphynx::Core::Graphics {
 	class Mesh;
 	class Material;
@@ -43,6 +39,3 @@ namespace Sphynx::Core::Graphics {
 
 	};
 }
-#ifdef GCC
-#pragma GCC diagnostic pop
-#endif // GCC

@@ -30,8 +30,8 @@ Sphynx::Core::Graphics::Shader* Sphynx::ResourceManager::LoadShader(const char* 
 Sphynx::Core::Graphics::Texture* Sphynx::ResourceManager::LoadTexture(const char* path, Core::Graphics::TextureType type, bool Compress)
 {
 	//Check Loaded textures.
-	if (OpenTex[path]._tex) {
-		return OpenTex[path]._tex;
+	if (OpenTex[path]) {
+		return OpenTex[path];
 	}
 	void* data;
 	int x, y, bits;
@@ -84,7 +84,7 @@ Sphynx::Core::Graphics::Texture* Sphynx::ResourceManager::LoadTexture(const char
 	}
 	auto Tex = Sphynx::Core::Graphics::Texture::Create(data, x, y, type, format, Sphynx::Core::Graphics::TextureDataFormat::UByte);
 	//Add to the map.
-	OpenTex[path] = { Tex,Compress };
+	OpenTex[path] = Tex;
 	return Tex;
 }
 
@@ -95,7 +95,7 @@ Sphynx::Core::Font* Sphynx::ResourceManager::LoadFont(const char* path, int Font
 		return LoadedFonts[path];
 	}
 
-	std::fstream file(path, std::fstream::binary |std::ios::ate);
+	std::fstream file = std::fstream(path, std::fstream::in | std::fstream::binary |std::ios::ate);
 	std::streamsize size = file.tellg();
 	file.seekg(0, std::ios::beg);
 
@@ -104,12 +104,33 @@ Sphynx::Core::Font* Sphynx::ResourceManager::LoadFont(const char* path, int Font
 	file.read((char*)buffer, size);
 
 	file.close();
-	
-	Core::Font* f = new Core::Font(buffer, FontHeight);
+	std::string name = std::string(path);
+	size_t end;
+	if ((end = name.find_last_of('.')) != name.npos) {
+
+		name = name.substr(0, end);
+	}
+	size_t start;
+	if ((start = name.find_last_of('/')) != name.npos || (start = name.find_last_of('\\')) != name.npos) {
+		name = name.substr(start + 1);
+	}
+	Core::Font* f = new Core::Font(name, buffer, FontHeight);
 
 	LoadedFonts[path] = f;
 
 	return f;
+}
+
+void Sphynx::ResourceManager::Release(Core::Font* font)
+{
+}
+
+void Sphynx::ResourceManager::Release(Core::Graphics::Texture* texture)
+{
+}
+
+void Sphynx::ResourceManager::Release(Core::Graphics::Shader* shader)
+{
 }
 
 void Sphynx::ResourceManager::ReleaseResources()

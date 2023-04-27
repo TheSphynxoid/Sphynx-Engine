@@ -1,6 +1,18 @@
 #pragma once
 #include "Core/Graphics/Pipeline/Texture.h"
 namespace Sphynx::Core::Graphics::GL {
+	struct GLTextureBuffer : public TextureBuffer {
+		unsigned int _Ownerid = 0;
+		GLTextureBuffer() = default;
+		GLTextureBuffer(unsigned int id) : _Ownerid(id) {};
+		~GLTextureBuffer() {
+			if (isMapped)Unmap();
+		}
+		virtual void* Map(const MapAccess& access);
+		virtual void Unmap() noexcept;
+	private:
+		bool isMapped = false;
+	};
 	class GLTexture : public Texture
 	{
 	private:
@@ -12,6 +24,7 @@ namespace Sphynx::Core::Graphics::GL {
 		TextureFormat Format;
 		TextureDataFormat DataFormat;
 		TextureType Type;
+		GLTextureBuffer TexBuffer;
 		void Release();
 	public:
 		GLTexture(void* data, int width, int height, TextureType Type, int MipmapLevel, TextureFormat format, TextureDataFormat datatype, TextureWrappingMode warp,
@@ -41,9 +54,10 @@ namespace Sphynx::Core::Graphics::GL {
 		virtual int GetBitsPerPixel() override { return Bits; };
 		virtual void* ReadAllPixels(TextureDataFormat data) override;
 		virtual void* GetNativeID() override { return (void*)TextureID; };
-		virtual void GenerateMipmaps();
-		virtual Buffer GetCompressed();
-		virtual Texture* Compress();
+		virtual void GenerateMipmaps() override;
+		virtual DataBuffer GetCompressed() override;
+		virtual Texture* Compress() override;
+		virtual TextureBuffer* GetTextureBuffer() override;
 		friend class GLFrameBuffer;
 	};
 }

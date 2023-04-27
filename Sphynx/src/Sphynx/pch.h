@@ -20,14 +20,17 @@
 //Sphynx Libraries
 #include "Logger.h"
 #include "Core/IO/Serializer.h"
+#include "BitBool.h"
 #define BIT(i) (1 << i)
-struct Buffer {
+struct DataBuffer {
 	void* Data;
 	size_t Size;
 };
+#define SPH_Move(...)	static_cast<std::remove_reference_t<decltype(__VA_ARGS__)>&&>(__VA_ARGS__)
+#define SPH_Forward(...) static_cast<decltype(__VA_ARGS__)&&>(__VA_ARGS__)
 template<class ...Args>
 bool RuntimeInit(void(*f)(Args... a), Args&&... args) {
-	f(std::forward<Args>(args)...);
+	f(SPH_Forward(args)...);
 	return true;
 }
 #else

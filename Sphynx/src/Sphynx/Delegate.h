@@ -19,8 +19,8 @@ namespace Sphynx {
         BaseDelegate(BaseDelegate<rt, args...>& bd) {}
         virtual ~BaseDelegate() = default;
         //What is this function ?
-        Return Invoke(Args... args) { Invokation(std::forward<Args>(args)...); };
-        Return operator()(Args&... args) { Invoke(std::forward<Args&>(args)...); };
+        Return Invoke(Args... args) { Invokation(SPH_Forward(args)...); };
+        Return operator()(Args&... args) { Invoke(SPH_Forward(args)...); };
     };
 
     template<typename Return>
@@ -54,7 +54,7 @@ namespace Sphynx {
             Function(Instance* i, InstFunc cb) : func(cb), inst(i) {};
             Return operator()(Args...args) {
                 if (inst == nullptr) { Core_Error("Instance is null, cannot call function."); return; }
-                return (inst->*func)(std::forward<Args>(args)...);
+                return (inst->*func)(SPH_Forward(args)...);
             }
         };
         //Free/Static Function Wrapper.
@@ -64,7 +64,7 @@ namespace Sphynx {
             FreeFunc func;
             Function(FreeFunc cb) :func(cb) {};
             Return operator()(Args...args) {
-                return func(std::forward<Args>(args)...);
+                return func(SPH_Forward(args)...);
             }
         };
         typedef Function<std::is_class_v<Instance>> I_Function;
@@ -90,7 +90,7 @@ namespace Sphynx {
         Delegate& operator=(I_Function f) {
             std::swap(callback, f);
         }
-        Return Invokation(Args... args) override { return callback(std::forward<Args>(args)...); };
+        Return Invokation(Args... args) override { return callback(SPH_Forward(args)...); };
     };
     template<class Instance, typename ...Args>
     class Delegate<void, Instance, Args...> final : public BaseDelegate<void, Args...> {
@@ -108,7 +108,7 @@ namespace Sphynx {
             Function(Instance* i, InstFunc cb) : func(cb), inst(i) {};
             void operator()(Args...args) {
                 if (inst == nullptr) { Core_Error("Instance is null, cannot call function."); return; }
-                (inst->*func)(std::forward<Args>(args)...);
+                (inst->*func)(SPH_Forward(args)...);
             }
         };
         //Free/Static Function Wrapper.
@@ -118,7 +118,7 @@ namespace Sphynx {
             FreeFunc func;
             Function(FreeFunc cb) :func(cb) {};
             void operator()(Args...args) {
-                func(std::forward<Args>(args)...);
+                func(SPH_Forward(args)...);
             }
         };
         typedef Function<std::is_class_v<Instance>> I_Function;
@@ -143,7 +143,7 @@ namespace Sphynx {
         Delegate& operator=(I_Function f) {
             std::swap(callback, f);
         }
-        void Invokation(Args... args) override { /*return*/ callback(std::forward<Args>(args)...); };
+        void Invokation(Args... args) override { /*return*/ callback(SPH_Forward(args)...); };
     };
     template<class Instance>
     class Delegate<void, Instance, void> final : public BaseDelegate<void, void> {
@@ -206,7 +206,7 @@ namespace Sphynx {
             FreeFunc func;
             Function(FreeFunc cb) :func(cb) {};
             Return operator()(Args...args) {
-                return func(std::forward<Args>(args)...);
+                return func(SPH_Forward(args)...);
             }
         };
     private:
@@ -229,7 +229,7 @@ namespace Sphynx {
         Delegate& operator=(Function f) {
             std::swap(callback, f);
         }
-        Return Invokation(Args... args) override { return callback(std::forward<Args>(args)...); };
+        Return Invokation(Args... args) override { return callback(SPH_Forward(args)...); };
     };
     template<typename ...Args>
     class Delegate<void, void, Args...> final : public BaseDelegate<void, Args...> {
@@ -240,7 +240,7 @@ namespace Sphynx {
             Function() :func(nullptr) {};
             Function(FreeFunc cb) :func(cb) {};
             void operator()(Args...args) {
-                func(std::forward<Args>(args)...);
+                func(SPH_Forward(args)...);
             }
         };
     private:
@@ -263,7 +263,7 @@ namespace Sphynx {
         Delegate& operator=(Function f) {
             std::swap(callback, f);
         }
-        void Invokation(Args... args) override { callback(std::forward<Args>(args)...); };
+        void Invokation(Args... args) override { callback(SPH_Forward(args)...); };
     };
 }
 #else

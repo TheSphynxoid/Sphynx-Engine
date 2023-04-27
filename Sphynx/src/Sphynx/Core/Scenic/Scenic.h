@@ -17,7 +17,7 @@ namespace Sphynx {
 			const char Magic[4] = { 'S','P','H','S' };
 			const int SceanicVer = 0001;
 			const int SceanicParserVer = 0001;
-		}static header;
+		}static const header;
 	public:
 		static Core::Scene ReadScene(const char* path) {
 

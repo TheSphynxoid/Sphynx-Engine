@@ -52,9 +52,11 @@ namespace Sphynx::Core::Graphics {
 		virtual void Clear(ClearBuffer b) = 0;
 		//Clears all buffers
 		virtual void Clear() = 0;
-		//Creates a Framebuffer.
+		//Clears the Framebuffer binding
 		static void BindDefault();
+		//Creates a Framebuffer.
 		static FrameBuffer* Create(int width, int height, std::initializer_list<Texture*> tex = {});
+		//Returns the default framebuffer
 		static FrameBuffer* GetDefaultFrameBuffer();
 	};
 }

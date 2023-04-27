@@ -100,6 +100,7 @@
   <ItemGroup>
     <ClInclude Include="src\Sphynx.h" />
     <ClInclude Include="src\Sphynx\Application.h" />
+    <ClInclude Include="src\Sphynx\BitBool.h" />
     <ClInclude Include="src\Sphynx\Camera.h" />
     <ClInclude Include="src\Sphynx\Component.h" />
     <ClInclude Include="src\Sphynx\Core.h" />
@@ -107,7 +108,9 @@
     <ClInclude Include="src\Sphynx\Core\Factories\ComponentFactory.h" />
     <ClInclude Include="src\Sphynx\Core\Factories\ComponentRegistry.h" />
     <ClInclude Include="src\Sphynx\Core\Font.h" />
+    <ClInclude Include="src\Sphynx\Core\FontAtlas.h" />
     <ClInclude Include="src\Sphynx\Core\Graphics\Imgui.h" />
+    <ClInclude Include="src\Sphynx\Core\Graphics\Pipeline\Buffer.h" />
     <ClInclude Include="src\Sphynx\Core\Graphics\Pipeline\FrameBuffer.h" />
     <ClInclude Include="src\Sphynx\Core\Graphics\Pipeline\Material.h" />
     <ClInclude Include="src\Sphynx\Core\Graphics\Pipeline\Mesh.h" />
@@ -180,6 +183,7 @@
     <ClInclude Include="src\Sphynx\imgui\imgui_impl_opengl3_loader.h" />
     <ClInclude Include="src\Sphynx\imgui\imgui_impl_win32.h" />
     <ClInclude Include="src\Sphynx\pch.h" />
+    <ClInclude Include="src\Sphynx\Core\Graphics\Platform\VkRenderer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Sphynx\Application.cpp" />
@@ -188,6 +192,7 @@
     <ClCompile Include="src\Sphynx\Core\Factories\ComponentFactory.cpp" />
     <ClCompile Include="src\Sphynx\Core\Factories\ComponentRegistry.cpp" />
     <ClCompile Include="src\Sphynx\Core\Font.cpp" />
+    <ClCompile Include="src\Sphynx\Core\FontAtlas.cpp" />
     <ClCompile Include="src\Sphynx\Core\Graphics\Imgui.cpp" />
     <ClCompile Include="src\Sphynx\Core\Graphics\Pipeline\FrameBuffer.cpp" />
     <ClCompile Include="src\Sphynx\Core\Graphics\Pipeline\Material.cpp" />
@@ -242,6 +247,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="src\Sphynx\Core\Graphics\Platform\VkRenderer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Sphynx\Scripts\Component.as" />

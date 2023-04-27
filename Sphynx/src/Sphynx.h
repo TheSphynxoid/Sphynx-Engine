@@ -18,8 +18,15 @@
 #elif defined(__linux__)
 	#define Platform_Linux
 #else
-	#error "No plans to support other platform (MacOS,IOS will never be supported by me as i can't be bothered to learn metal or Apple bullshit)"
+	#error "No plans to support other platform (MacOS,IOS will never be supported by me as i can't be bothered to learn metal)"
 #endif
+//--------------------Globals-----------------------------------
+//Redefining Move and Forward for User.
+#define SPH_Move(...)	static_cast<std::remove_reference_t<decltype(__VA_ARGS__)>&&>(__VA_ARGS__)
+#define SPH_Forward(...) static_cast<decltype(__VA_ARGS__)&&>(__VA_ARGS__)
+namespace Sphynx {
+	extern struct DataBuffer;
+}
 //For Application Use only
 #include "Sphynx/Application.h"
 #include "Sphynx/Core/Graphics/Window.h"
@@ -32,10 +39,7 @@
 #endif // EXPOSE_IMGUI_H
 //Exposing Imgui Implementation Headers.
 #ifdef EXPOSE_IMGUI_IMPL
-#ifdef IMGUI_GLFW
-#include "Sphynx/imgui/imgui_impl_opengl3.h"
-#include "Sphynx/imgui/imgui_impl_glfw.h"
-#elif defined(IMGUI_DX11) && !defined(IMGUI_GLFW)
+#if defined(IMGUI_DX11) && !defined(IMGUI_GLFW)
 #include "Sphynx/imgui/imgui_impl_win32.h"
 #include "Sphynx/imgui/imgui_impl_dx11.h"
 #else
@@ -55,6 +59,5 @@
 #include "Delegate.h"
 #include "Input.h"
 #include "Events/InputEvents.h"
-//--------------------Globals-----------------------------------
 //--------------------EntryPoint Header-------------------------
 #include "Sphynx/EntryPoint.h"

@@ -47,13 +47,16 @@ namespace Sphynx {
 		}
 		//No Double
 		template<class component, class ...Args>
-		void AddComponent(Args&& ...args) {
+		component* AddComponent(Args&& ...args) {
 			//C++17
 			if (std::is_base_of_v<Component, component>) {
 				if (!Core::Internal::ComponentFactory::ComponentHelper::IsComponentInGameObject<component>(this)) {
-					Components.push_back(Core::Internal::ComponentFactory::CreateComponent<component>(this, std::forward<Args>(args)...));
+					auto rtval = Core::Internal::ComponentFactory::CreateComponent<component>(this, SPH_Forward(args)...);
+					Components.push_back(rtval);
+					return rtval;
 				}
 			}
+			return nullptr;
 		}
 		template<class component>
 		component* GetComponent() {

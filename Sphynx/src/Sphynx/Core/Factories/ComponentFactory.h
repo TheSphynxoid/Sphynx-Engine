@@ -13,7 +13,7 @@ namespace Sphynx::Core::Internal {
 		template<typename component, typename ...Args>
 		static component* CreateComponent(Sphynx::GameObject* object, Args&& ...args) {
 			//We Don't Check Because GameObject Does That.
-			auto comp = new component(std::forward<Args>(args)...);
+			auto comp = new component(SPH_Forward(args)...);
 			comp->Parent = object;
 			comp->_transform = object->GetTransform();
 			((Component*)comp)->OnComponentAttach(object);

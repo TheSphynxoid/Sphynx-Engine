@@ -308,7 +308,7 @@ void Sphynx::Core::Graphics::GL::GLVertexBuffer::SetData(const void* data, size_
 	}
 }
 
-GLenum MapAccessToGLenum(const Sphynx::Core::Graphics::MapAccess& _access) {
+static inline GLenum MapAccessToGLenum(const Sphynx::Core::Graphics::MapAccess& _access) {
 	switch (_access)
 	{
 	case Sphynx::Core::Graphics::MapAccess::Read:
@@ -326,7 +326,7 @@ void* Sphynx::Core::Graphics::GL::GLVertexBuffer::Map(const Sphynx::Core::Graphi
 	return glMapNamedBuffer(BufferID, MapAccessToGLenum(access));
 }
 
-void Sphynx::Core::Graphics::GL::GLVertexBuffer::Unmap()
+void Sphynx::Core::Graphics::GL::GLVertexBuffer::Unmap()noexcept
 {
 	Mapped = false;
 	if (glUnmapNamedBuffer(BufferID) == GL_FALSE) {
@@ -413,7 +413,7 @@ void* Sphynx::Core::Graphics::GL::GLIndexBuffer::Map(const MapAccess& access)
 	return glMapNamedBuffer(BufferID, MapAccessToGLenum(access));
 }
 
-void Sphynx::Core::Graphics::GL::GLIndexBuffer::Unmap()
+void Sphynx::Core::Graphics::GL::GLIndexBuffer::Unmap()noexcept
 {
 	if (glUnmapNamedBuffer(BufferID) == GL_FALSE) {
 		Core_Error("GL Buffer Map Corruption!");

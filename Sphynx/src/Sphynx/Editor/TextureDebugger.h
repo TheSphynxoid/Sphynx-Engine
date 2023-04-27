@@ -8,7 +8,7 @@ namespace Sphynx::Core {
 	class TextureDebugger : public Sphynx::Core::IOverlayWindow
 	{
 	private:
-		std::map<const char*, ResourceManager::TexResource> loadedTex;
+		std::map<const char*, Graphics::Texture*> loadedTex;
 		static inline std::vector<Graphics::Texture*> SpecialTex;
 	public:
 		TextureDebugger() {

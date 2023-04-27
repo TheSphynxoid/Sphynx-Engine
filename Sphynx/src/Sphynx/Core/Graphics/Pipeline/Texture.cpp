@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Texture.h"
 #include "Core/Graphics/Platform/GLTexture.h"
+#include "ResourceManager.h"
 
 using namespace Sphynx::Core::Graphics;
 
@@ -8,6 +9,11 @@ static TextureFormat DefFormat = TextureFormat::RGB;
 static TextureWrappingMode DefWrap = TextureWrappingMode::ClampToBorder;
 static TextureFilterMode DefFilter = TextureFilterMode::Linear;
 static TextureMipmapMode DefMipmap = TextureMipmapMode::LinearMipmapLinear;
+
+Sphynx::Core::Graphics::Texture::Texture()
+{
+	Refs++;
+}
 
 void Sphynx::Core::Graphics::Texture::SetDefaultFormat(TextureFormat format)
 {

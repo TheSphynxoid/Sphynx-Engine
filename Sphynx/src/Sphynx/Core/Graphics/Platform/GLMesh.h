@@ -31,7 +31,7 @@ namespace Sphynx::Core::Graphics::GL {
 		//Buffer
 
 		virtual void* Map(const MapAccess& access) override;
-		virtual void Unmap() override;
+		virtual void Unmap()noexcept override;
 		friend class GLMesh;
 	};
 	class GLIndexBuffer final : public IndexBuffer {
@@ -54,7 +54,7 @@ namespace Sphynx::Core::Graphics::GL {
 		virtual const void* GetData() override;
 		virtual int GetCount()const noexcept override { return Count; };
 		virtual void* Map(const MapAccess& access) override;
-		virtual void Unmap() override;
+		virtual void Unmap()noexcept override;
 		friend class GLMesh;
 	};
 	class GLMesh final : public Mesh

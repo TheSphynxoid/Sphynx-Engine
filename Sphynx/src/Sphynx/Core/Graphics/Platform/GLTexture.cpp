@@ -5,6 +5,18 @@
 //#include "stb_image.h"
 
 using namespace Sphynx::Core::Graphics;
+//Redefined. Does the compiler optimize this ?
+static inline GLenum MapAccessToGLenum(const Sphynx::Core::Graphics::MapAccess& _access) {
+	switch (_access)
+	{
+	case Sphynx::Core::Graphics::MapAccess::Read:
+		return GL_READ_ONLY;
+	case Sphynx::Core::Graphics::MapAccess::Write:
+		return GL_WRITE_ONLY;
+	case Sphynx::Core::Graphics::MapAccess::ReadWrite:
+		return GL_READ_WRITE;
+	}
+}
 
 inline GLenum GetGLTextureType(Sphynx::Core::Graphics::TextureType type) {
 	switch (type)
@@ -266,12 +278,15 @@ Sphynx::Core::Graphics::GL::GLTexture::GLTexture(void* img, int width, int heigh
 	Width = width;
 	Height = height;
 	//TODO: Use the bits variable to determine the Texture Format.
-	//TODO: OpenGL is returning an error somewhere before this.
 	glCreateTextures(GLTextureType, 1, &TextureID);
 	glBindTexture(GLTextureType, TextureID);
 	if (Type == TextureType::Texture2D) {
+		/*if (datatype == TextureDataFormat::Byte || datatype == TextureDataFormat::UByte) {
+			glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+		}*/
 		glTexImage2D(GL_TEXTURE_2D, MipmapLevel, GetGLInternalFormat(format), Width, Height, 0,
 			GetGLFormat(format), GetGLDataType(datatype), img);
+		//glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
 	}
 	else if (Type == TextureType::Texture3D) {
 	}
@@ -325,7 +340,6 @@ Sphynx::Core::Graphics::GL::GLTexture::GLTexture(GLTexture&& tex)noexcept
 {
 	std::swap(GLTextureType, tex.GLTextureType);
 	std::swap(TextureID, tex.TextureID);
-	std::swap(DeleteFlag, tex.DeleteFlag);
 	std::swap(Format, tex.Format);
 	std::swap(Type, tex.Type);
 	std::swap(Width, tex.Width);
@@ -340,7 +354,6 @@ Sphynx::Core::Graphics::GL::GLTexture& Sphynx::Core::Graphics::GL::GLTexture::op
 		Release();
 		std::swap(GLTextureType, tex.GLTextureType);
 		std::swap(TextureID, tex.TextureID);
-		std::swap(DeleteFlag, tex.DeleteFlag);
 		std::swap(Format, tex.Format);
 		std::swap(Type, tex.Type);
 		std::swap(Width, tex.Width);
@@ -371,6 +384,7 @@ void* Sphynx::Core::Graphics::GL::GLTexture::ReadAllPixels(TextureDataFormat dat
 	Core_Warn("Texture::ReadAllPixels Is Incomplete : Must Get the number of bits per pixel to allocate buffer");
 	void* buf = malloc(sizeof(int) * Width * Height * Bits);
 	memset(buf, 0, sizeof(int) * Width * Height * Bits);
+	if (!buf)throw std::bad_alloc();
 	//TODO: Implement this for other texture formats.
 	glReadPixels(0, 0, Width, Height, GetGLFormat(Format), GetGLDataType(data), buf);
 	return buf;
@@ -381,14 +395,14 @@ void Sphynx::Core::Graphics::GL::GLTexture::GenerateMipmaps()
 	glGenerateTextureMipmap(this->TextureID);
 }
 
-Buffer Sphynx::Core::Graphics::GL::GLTexture::GetCompressed()
+DataBuffer Sphynx::Core::Graphics::GL::GLTexture::GetCompressed()
 {
 	//Check whether the texture is compressed or not.
 	int Val;
 	glGetTextureLevelParameteriv(this->TextureID, MipMapLevel, GL_TEXTURE_COMPRESSED, &Val);
 	if (Val) {
 		glGetTextureLevelParameteriv(TextureID, MipMapLevel, GL_TEXTURE_COMPRESSED_IMAGE_SIZE, &Val);
-		Buffer buf = { 0,Val };
+		DataBuffer buf = { 0,Val };
 		glGetCompressedTextureImage(TextureID, MipMapLevel, buf.Size, &buf.Data);
 		return buf;
 	}
@@ -398,4 +412,19 @@ Buffer Sphynx::Core::Graphics::GL::GLTexture::GetCompressed()
 Texture* Sphynx::Core::Graphics::GL::GLTexture::Compress()
 {
 	return nullptr;
+}
+
+TextureBuffer* Sphynx::Core::Graphics::GL::GLTexture::GetTextureBuffer()
+{
+	return nullptr;
+}
+
+void* Sphynx::Core::Graphics::GL::GLTextureBuffer::Map(const MapAccess& access)
+{
+	return glMapNamedBuffer(_Ownerid, MapAccessToGLenum(access));
+}
+
+void Sphynx::Core::Graphics::GL::GLTextureBuffer::Unmap() noexcept
+{
+	glUnmapNamedBuffer(_Ownerid);
 }

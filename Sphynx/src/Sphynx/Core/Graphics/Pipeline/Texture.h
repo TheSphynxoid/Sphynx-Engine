@@ -1,4 +1,5 @@
 #pragma once
+#include "Buffer.h"
 
 namespace Sphynx::Core::Graphics {
 #pragma region Enums
@@ -32,41 +33,62 @@ namespace Sphynx::Core::Graphics {
 		Texture2D, Texture3D, CubeMap, Rectangle
 	};
 #pragma endregion
-	//TODO: After implementing this, implement compression. 
-	//ref: glCompressedTexImage2D (https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glCompressedTexImage2D.xhtml)
+	class TextureBuffer : public Buffer {};
+	//Represents a Texture in gpu memory.
 	class Texture
 	{
 	protected:
-		//inline static std::map<std::string, Texture*> OpenTextures;
-		bool DeleteFlag = false;
 		int Refs = 0;
+		Texture();
 	public:
-		virtual ~Texture() { Refs--; };
+		virtual ~Texture() 
+		{ 
+			Refs--;
+			if (!Refs)MarkForCleanup(this);
+		};
+		//Sets the default format used when creating texture with unspecified format.
 		static void SetDefaultFormat(TextureFormat format);
+		//Sets the default Wrapping mode used when creating texture with unspecified Wrapping mode.
 		static void SetDefaultWrappingMode(TextureWrappingMode wrapmode);
+		//Sets the default Filtering used when creating texture with unspecified Filtering.
 		static void SetDefaultFilterMode(TextureFilterMode filter);
+		//Sets the default Mipmap mode used when creating texture with unspecified Mipmap mode.
 		static void SetDefaultMipmapMode(TextureMipmapMode mipmapMode);
 		//\Mipmap level 0
+		//Creates a Texture interface object with the specified pixel data and dimensions.
 		static Texture* Create(void* data, int width, int height, TextureType Type, TextureDataFormat datatype);
+		//Creates a Texture interface object with the specified pixel data, dimensions and texture format (red,rb,rgb,etc.).
 		static Texture* Create(void* data, int width, int height, TextureType Type, TextureFormat format, TextureDataFormat datatype);
+		//Intializes a Texture interface with empty data (in opengl it doesn't create the texture buffer) and a specified format.
 		static Texture* Create(TextureType Type, int Width, int Height, TextureFormat format, TextureDataFormat datatype);
+		//Creates a Texture interface object with more control.
 		static Texture* Create(void* data, int width, int height, TextureType Type, int MipmapLevel, TextureFormat format , TextureDataFormat datatype
 			, TextureWrappingMode warp, TextureFilterMode filter, TextureMipmapMode MipmapMode);
+		//Sets the Texture Data and sends it to the gpu (if texture resides in the gpu)
+		//GL: calling this on an empty texture allocates the memory for the texture store
 		virtual void SetData(void* data) = 0;
+		//Binds the texture for usage (For gl interop)
 		virtual void Bind() = 0;
+		//Unbinds the texture (for opengl it binds the textureid = 0, an empty texture not for use).
 		virtual void Unbind() = 0;
 		virtual const TextureFormat& GetFormat() = 0;
 		virtual const TextureDataFormat& GetDataFormat() = 0;
 		virtual const TextureType& GetTextureType() = 0;
-		void MarkForCleanup() { DeleteFlag = true; };
+		//Still unused (Intended for Garbage collection).
+		static void MarkForCleanup(Texture* tex) { /*tex->DeleteFlag = true;*/ };
 		virtual int GetWidth() = 0;
 		virtual int GetHeight() = 0;
 		virtual int GetBitsPerPixel() = 0;
 		virtual void* ReadAllPixels(TextureDataFormat data) = 0;
+		//Gets the native handle (uint for opengl).
 		virtual void* GetNativeID() = 0;
+		//Generates Mipmaps for the texture.
 		virtual void GenerateMipmaps() = 0;
-		virtual Buffer GetCompressed() = 0;
+		//Gets the compressed texture data.
+		virtual DataBuffer GetCompressed() = 0;
+		//Compresses the texture into a new texture object (if possible)
 		virtual Texture* Compress() = 0;
+		virtual TextureBuffer* GetTextureBuffer() = 0;
 		friend class IRenderer;
 	};
 }

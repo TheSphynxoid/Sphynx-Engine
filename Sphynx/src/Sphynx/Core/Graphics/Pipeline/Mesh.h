@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include "Shader.h"
+#include "Buffer.h"
 
 namespace Sphynx::Core::Graphics {
 	enum class MeshType {
@@ -53,13 +54,13 @@ namespace Sphynx::Core::Graphics {
 		size_t Offset = 0;
 		bool Normalized = false;
 	public:
-		BufferElement()noexcept {};
-		BufferElement(ShaderDataType type, bool normalized) : Type(type), Size(GetShaderDataTypeSize(type)), Offset(0), Normalized(normalized) {}
-		size_t GetOffset()const noexcept { return Offset; };
-		size_t GetSize()const noexcept { return Size; };
-		bool IsNormalized()const noexcept { return Normalized; };
-		ShaderDataType GetDataType()const noexcept { return Type; };
-		unsigned int GetComponentCount()const noexcept {
+		BufferElement() noexcept {};
+		BufferElement(ShaderDataType type, bool normalized) noexcept : Type(type), Size(GetShaderDataTypeSize(type)), Offset(0), Normalized(normalized) {}
+		inline size_t GetOffset()const noexcept { return Offset; };
+		inline size_t GetSize()const noexcept { return Size; };
+		inline bool IsNormalized()const noexcept { return Normalized; };
+		inline ShaderDataType GetDataType()const noexcept { return Type; };
+		inline unsigned int GetComponentCount()const noexcept {
 			switch (Type)
 			{
 			case ShaderDataType::None:		return 0;
@@ -98,7 +99,7 @@ namespace Sphynx::Core::Graphics {
 		std::vector<BufferElement> Elements = std::vector<BufferElement>();
 		unsigned int Stride = 0;
 	public:
-		BufferLayout() {};
+		BufferLayout() noexcept {};
 		BufferLayout(std::initializer_list<BufferElement>&& elements) : Elements(elements) {
 			size_t offset = 0;
 			for (auto& element : Elements)
@@ -108,24 +109,14 @@ namespace Sphynx::Core::Graphics {
 				Stride += element.Size;
 			}
 		};
-		unsigned int GetStride() { return Stride; };
-		std::vector<BufferElement>& GetElements() { return Elements; };
-		size_t GetElementCount()const noexcept { return Elements.size(); };
-		std::vector<BufferElement>::iterator begin()noexcept { return Elements.begin(); };
-		std::vector<BufferElement>::iterator end()noexcept { return Elements.end(); };
-		std::vector<BufferElement>::const_iterator begin() const noexcept { return Elements.begin(); }
-		std::vector<BufferElement>::const_iterator end() const noexcept { return Elements.end(); }
-		BufferElement& operator[](size_t pos)noexcept { return Elements[pos]; };
-	};
-
-	enum class MapAccess {
-		Read, Write, ReadWrite
-	};
-
-	struct Buffer {
-	public:
-		virtual void* Map(const MapAccess& access) = 0;
-		virtual void Unmap() = 0;
+		inline unsigned int GetStride()noexcept { return Stride; };
+		inline std::vector<BufferElement>& GetElements()noexcept { return Elements; };
+		inline size_t GetElementCount()const noexcept { return Elements.size(); };
+		inline std::vector<BufferElement>::iterator begin()noexcept { return Elements.begin(); };
+		inline std::vector<BufferElement>::iterator end()noexcept { return Elements.end(); };
+		inline std::vector<BufferElement>::const_iterator begin() const noexcept { return Elements.begin(); }
+		inline std::vector<BufferElement>::const_iterator end() const noexcept { return Elements.end(); }
+		inline BufferElement& operator[](size_t pos)noexcept { return Elements[pos]; };
 	};
 
 	struct VertexBuffer : public Buffer {

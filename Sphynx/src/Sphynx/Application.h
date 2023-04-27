@@ -12,11 +12,12 @@
 #include <utility>
 #include <memory>
 #include <iostream>
-#define Sphynx_Version "V0.5.11-PreAlpha"
+#define Sphynx_Version "V0.6-PreAlpha(TxtRend)"
 namespace Sphynx {
 	namespace Core {
 		class IWindow;
 	}
+	/*With the current design of the engine modules and structure the first run of the game will be very slow as it'll bake ,textures, font atlases,Scripts*/
 	class Application
 	{
 	private:

@@ -107,6 +107,7 @@ namespace Sphynx {
 		bool SelfDestroy = false;
 		//Constructor
 	public:
+		Pointer() {}
 		Pointer(T* ptr) :Object(ptr) {
 			if (std::is_array<T>::value == true) {
 				array_info.IsArray = true;
@@ -138,13 +139,7 @@ namespace Sphynx {
 			std::swap(this->SelfDestroy, ptr.SelfDestroy);
 		}
 		//Copy
-		Pointer(const Pointer& ptr) noexcept {
-			this->dealloc = ptr.dealloc;
-			this->Object = ptr.Object;
-			this->SetRefCount(ptr.GetRefCount());
-			this->SelfDestroy = ptr.SelfDestroy;
-			AddRef();
-		}
+		Pointer(const Pointer& ptr) = delete;
 		//Destructor
 		~Pointer() {
 			RemoveRef();
@@ -245,4 +240,15 @@ namespace Sphynx {
 		ptr->SelfDestroy = true;
 		return ptr;
 	}
+
+	//Pointer Registry
+	//Manages all pointers and ensures proper deletion of unrefrenced object
+	class PointerRegistry {
+	private:
+		inline static std::map<size_t, PointerBase*> PtrReg;
+	public:
+		static PointerBase* GetPointer(size_t address) {
+			return PtrReg[address];
+		}
+	};
 }

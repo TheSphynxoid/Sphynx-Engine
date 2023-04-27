@@ -292,6 +292,10 @@
     <ClInclude Include="src\Sphynx\pch.h">
       <Filter>Sphynx</Filter>
     </ClInclude>
+    <ClInclude Include="src\Sphynx\Core\Graphics\Platform\VkRenderer.h" />
+    <ClInclude Include="src\Sphynx\Core\FontAtlas.h" />
+    <ClInclude Include="src\Sphynx\Core\Graphics\Pipeline\Buffer.h" />
+    <ClInclude Include="src\Sphynx\BitBool.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Sphynx\Application.cpp">
@@ -465,6 +469,8 @@
     <ClCompile Include="src\Sphynx\pch.cpp">
       <Filter>Sphynx</Filter>
     </ClCompile>
+    <ClCompile Include="src\Sphynx\Core\Graphics\Platform\VkRenderer.cpp" />
+    <ClCompile Include="src\Sphynx\Core\FontAtlas.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Sphynx\Scripts\Component.as">
