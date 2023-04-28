@@ -5,7 +5,7 @@ project "GLFW"
 
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
-	targetdir ("%{wks.location}/build/bin/" .. outputdir .. "/%{prj.name}")
+	targetdir (outputdir .. "/%{prj.name}")
 	objdir ("%{wks.location}/build/int/" .. outputdir .. "/%{prj.name}")
 	
 	includedirs { "glfw/include/" }
