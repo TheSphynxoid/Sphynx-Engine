@@ -110,8 +110,10 @@ void Sphynx::Core::Graphics::GL::GLFrameBuffer::Invalidate()
 	glCreateFramebuffers(1, &ID);
 	Bind();
 	ColorAttachmentsCount = 0;
-	for (auto& tex : ColorAttachments) {
-		auto _t = Texture::Create(TextureType::Texture2D, Width, Height, tex->GetFormat(), tex->GetDataFormat());
+	for (auto tex : ColorAttachments) {
+		auto _t = Texture::Create(TextureType::Texture2D, Width, Height, 0, tex->GetFormat(), tex->GetDataFormat());
+		//Weird ass Casts. First We cast into a GLTexture Pointer then we dereferance it then we move it to
+		//tex after casting tex To GLTexture* from Texture* then we dereferance. It's looks distrubing.
 		(*((GLTexture*)tex)) = (GLTexture&&)*(GLTexture*)_t;
 		if (tex->GetFormat() == TextureFormat::Depth24_Stencil8) {
 			glNamedFramebufferTexture(ID, GL_DEPTH_STENCIL_ATTACHMENT, ((GLTexture*)tex)->TextureID, 0);
@@ -188,11 +190,16 @@ void Sphynx::Core::Graphics::GL::GLFrameBuffer::Clear()
 FrameBuffer* Sphynx::Core::Graphics::GL::GLFrameBuffer::GetDefaultFramebuffer()
 {
 	static GLFrameBuffer def = GLFrameBuffer(0, 0, 0);
-	def.ID = 0;
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	GLint dims[4] = { 0 };
-	glGetIntegerv(GL_VIEWPORT, dims);
-	def.Width = dims[2];
-	def.Height = dims[3];
+	static bool LazyInit = false;
+	if(!LazyInit){
+		def.ID = 0;
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		GLint dims[4] = { 0 };
+		glGetIntegerv(GL_VIEWPORT, dims);
+		def.Width = dims[2];
+		def.Height = dims[3];
+
+		LazyInit = true;
+	}
 	return &def;
 }

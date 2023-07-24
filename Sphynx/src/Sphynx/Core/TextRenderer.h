@@ -13,11 +13,13 @@ namespace Sphynx::Core {
 		FontAtlas Atlas;
 		std::thread TRenderThread;
 		std::string String = "";
+		std::vector<Quad> Quads;
 #ifdef DEBUG
 		bool BasicMode;
 #endif // DEBUG
 		virtual void OnComponentAttach(GameObject* parent) override;
 		void RenderLoop();
+		void GenQuads();
 	public:
 		TextRenderer(Font* font, std::string st);
 		~TextRenderer();
@@ -30,6 +32,7 @@ namespace Sphynx::Core {
 		};
 		void SetString(std::string& str) {
 			String = str;
+			GenQuads();
 		}
 		std::string& GetString() {
 			return String;

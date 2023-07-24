@@ -82,7 +82,7 @@ Sphynx::Core::Graphics::Texture* Sphynx::ResourceManager::LoadTexture(const char
 		}
 		break;
 	}
-	auto Tex = Sphynx::Core::Graphics::Texture::Create(data, x, y, type, format, Sphynx::Core::Graphics::TextureDataFormat::UByte);
+	auto Tex = Sphynx::Core::Graphics::Texture::Create(data, x, y, 0, type, format, Sphynx::Core::Graphics::TextureDataFormat::UByte);
 	//Add to the map.
 	OpenTex[path] = Tex;
 	return Tex;
@@ -139,6 +139,10 @@ void Sphynx::ResourceManager::ReleaseResources()
 
 void Sphynx::ResourceManager::ReleaseFonts()
 {
+	for (auto& f : LoadedFonts) {
+		delete f.second;
+	}
+	LoadedFonts.clear();
 }
 
 void Sphynx::ResourceManager::ReleaseTextures()

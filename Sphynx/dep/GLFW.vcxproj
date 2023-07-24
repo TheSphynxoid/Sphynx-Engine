@@ -41,13 +41,13 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <OutDir>..\..\build\bin\Debug-windows-x86_64\GLFW\</OutDir>
+    <OutDir>Debug-windows-x86_64\GLFW\</OutDir>
     <IntDir>..\..\build\int\Debug-windows-x86_64\GLFW\</IntDir>
     <TargetName>GLFW</TargetName>
     <TargetExt>.lib</TargetExt>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <OutDir>..\..\build\bin\Release-windows-x86_64\GLFW\</OutDir>
+    <OutDir>Release-windows-x86_64\GLFW\</OutDir>
     <IntDir>..\..\build\int\Release-windows-x86_64\GLFW\</IntDir>
     <TargetName>GLFW</TargetName>
     <TargetExt>.lib</TargetExt>

@@ -111,6 +111,7 @@ void Sphynx::Core::Imgui::Start()
 
 void Sphynx::Core::Imgui::OnOverlayUpdate()
 {
+	if (Overlays.empty())return;
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplGlfw_NewFrame();
 	ImGui::NewFrame();

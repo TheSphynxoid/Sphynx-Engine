@@ -83,7 +83,7 @@ namespace Sphynx {
 				}
 			}
 		}
-		static GameObject CreatePrimitive(Primitives primitive , const char* name = "GameObject");
+		static GameObject CreatePrimitive(Primitives primitive , std::string name = "GameObject");
 		Transform* GetTransform() { 
 			return transform;
 		};

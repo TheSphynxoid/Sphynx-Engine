@@ -1,6 +1,6 @@
-rule "AngelScriptRule"
-	display "AngelScriptRule"
-	fileextension ".as"
+-- rule "AngelScriptRule"
+-- 	display "AngelScriptRule"
+-- 	fileextension ".as"
 workspace "NewSphynx"
 	architecture "x86_64"
 	startproject "Sandbox"
@@ -24,8 +24,6 @@ project "Sphynx"
 	targetdir ("%{wks.location}/build/bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("%{wks.location}/build/int/" .. outputdir .. "/%{prj.name}")
 
-	rules{ "AngelScriptRule" }
-
 	files
 	{
 		"Sphynx/src/**.h",
@@ -42,7 +40,8 @@ project "Sphynx"
 		"%{prj.name}/dep/glm",
 		"%{prj.name}/dep/stb",
 		"%{prj.name}/dep/angelscript/sdk/angelscript/include",
-		"%{prj.name}/dep/angelscript/sdk/add_on"
+		"%{prj.name}/dep/angelscript/sdk/add_on",
+		"%{prj.name}/dep/mono/include"
 	}
 	links
 	{
@@ -51,6 +50,7 @@ project "Sphynx"
 		"imgui",
 		"opengl32.lib",
 		"angelscript",
+		"%{prj.name}/dep/mono/lib/libmono-static-sgen.lib"
 	}
 	defines{
 		-- "SPDLL"

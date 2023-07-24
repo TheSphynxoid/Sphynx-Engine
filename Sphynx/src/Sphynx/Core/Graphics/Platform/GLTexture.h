@@ -18,7 +18,7 @@ namespace Sphynx::Core::Graphics::GL {
 	private:
 		unsigned int TextureID = 0;
 		unsigned int GLTextureType;
-		int Width, Height;
+		int Width, Height, Depth;
 		int Bits = 4;
 		int MipMapLevel = 0;
 		TextureFormat Format;
@@ -27,9 +27,9 @@ namespace Sphynx::Core::Graphics::GL {
 		GLTextureBuffer TexBuffer;
 		void Release();
 	public:
-		GLTexture(void* data, int width, int height, TextureType Type, int MipmapLevel, TextureFormat format, TextureDataFormat datatype, TextureWrappingMode warp,
+		GLTexture(void* data, int width, int height, int depth, TextureType Type, int MipmapLevel, TextureFormat format, TextureDataFormat datatype, TextureWrappingMode warp,
 			TextureFilterMode filter, TextureMipmapMode MipmapMode);
-		GLTexture(TextureType Type, int width, int height, int MipmapLevel, TextureFormat format, TextureDataFormat datatype, TextureWrappingMode warp,
+		GLTexture(TextureType Type, int width, int height, int depth, int MipmapLevel, TextureFormat format, TextureDataFormat datatype, TextureWrappingMode warp,
 			TextureFilterMode filter, TextureMipmapMode MipmapMode);
 		GLTexture(const GLTexture&) = delete;
 		~GLTexture();
@@ -37,7 +37,13 @@ namespace Sphynx::Core::Graphics::GL {
 		GLTexture(GLTexture&& tex)noexcept;
 		GLTexture& operator=(GLTexture&& tex)noexcept;
 
-		virtual void SetData(void* data) override;
+		virtual void SetData(void* data, int Level = 0, int OffsetX = 0, int OffsetY = 0, int OffsetZ = 0, int Width = -1, int Height = -1, int Depth = 1) override;
+		virtual void Resize(int Width, int Height, int Depth, int Level = 0,
+			TextureFormat format = (TextureFormat)-1, TextureDataFormat dataformat = (TextureDataFormat)-1, const void* data = 0) override;
+		virtual void Clear(int level, int OffsetX, int OffsetY, int OffsetZ, int Depth, int Width, int Height,
+			TextureFormat format = (TextureFormat)-1, TextureDataFormat dataformat = (TextureDataFormat)-1, const void* data = 0) override;
+		virtual void Clear(int Level, TextureFormat format, TextureDataFormat dataformat, const void* data) override;
+		virtual void Clear(int Level) override;
 		virtual void Bind() override;
 		virtual void Unbind() override;
 		virtual const TextureFormat& GetFormat() override {
@@ -57,6 +63,8 @@ namespace Sphynx::Core::Graphics::GL {
 		virtual void GenerateMipmaps() override;
 		virtual DataBuffer GetCompressed() override;
 		virtual Texture* Compress() override;
+		virtual void CopyInto(Texture* Tex, int Height, int Width, int Depth = 0, int SrcMipLevel = 0, 
+			int SrcX = 0, int SrcY = 0, int SrcZ = 0, int DstMipLevel = 0, int DstX = 0, int DstY = 0, int DstZ = 0) override;
 		virtual TextureBuffer* GetTextureBuffer() override;
 		friend class GLFrameBuffer;
 	};

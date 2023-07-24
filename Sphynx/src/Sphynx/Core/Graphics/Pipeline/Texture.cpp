@@ -35,7 +35,7 @@ void Sphynx::Core::Graphics::Texture::SetDefaultMipmapMode(TextureMipmapMode mip
 	DefMipmap = mipmapMode;
 }
 
-Texture* Sphynx::Core::Graphics::Texture::Create(void* data, int width, int height, TextureType Type, TextureDataFormat datatype)
+Texture* Sphynx::Core::Graphics::Texture::Create(void* data, int width, int height, int depth, TextureType Type, TextureDataFormat datatype)
 {
 	switch (CurrentPlatform)
 	{
@@ -46,14 +46,14 @@ Texture* Sphynx::Core::Graphics::Texture::Create(void* data, int width, int heig
 		[[fallthrough]];
 #endif
 	case Sphynx::Platform::Linux:
-		return new GL::GLTexture(data, width, height, Type, 0, DefFormat, datatype, DefWrap, DefFilter, DefMipmap);
+		return new GL::GLTexture(data, width, height, depth, Type, 0, DefFormat, datatype, DefWrap, DefFilter, DefMipmap);
 	default:
 		break;
 	}
 	return nullptr;
 }
 
-Texture* Sphynx::Core::Graphics::Texture::Create(void* data, int width, int height, TextureType Type, TextureFormat format, TextureDataFormat datatype)
+Texture* Sphynx::Core::Graphics::Texture::Create(void* data, int width, int height, int depth, TextureType Type, TextureFormat format, TextureDataFormat datatype)
 {
 	switch (CurrentPlatform)
 	{
@@ -64,14 +64,14 @@ Texture* Sphynx::Core::Graphics::Texture::Create(void* data, int width, int heig
 		[[fallthrough]];
 #endif
 	case Sphynx::Platform::Linux:
-		return new GL::GLTexture(data, width, height, Type, 0, format, datatype, DefWrap, DefFilter, DefMipmap);
+		return new GL::GLTexture(data, width, height, depth, Type, 0, format, datatype, DefWrap, DefFilter, DefMipmap);
 	default:
 		break;
 	}
 	return nullptr;
 }
 
-Texture* Sphynx::Core::Graphics::Texture::Create(TextureType Type, int Width, int Height, TextureFormat format, TextureDataFormat datatype)
+Texture* Sphynx::Core::Graphics::Texture::Create(TextureType Type, int Width, int Height, int depth, TextureFormat format, TextureDataFormat datatype)
 {
 	switch (CurrentPlatform)
 	{
@@ -82,14 +82,14 @@ Texture* Sphynx::Core::Graphics::Texture::Create(TextureType Type, int Width, in
 		[[fallthrough]];
 #endif
 	case Sphynx::Platform::Linux:
-		return new GL::GLTexture(Type, Width, Height, 0, format, datatype, DefWrap, DefFilter, DefMipmap);
+		return new GL::GLTexture(Type, Width, Height, depth, 0, format, datatype, DefWrap, DefFilter, DefMipmap);
 	default:
 		break;
 	}
 	return nullptr;
 }
 
-Texture* Sphynx::Core::Graphics::Texture::Create(void* data, int width, int height, TextureType Type, int MipmapLevel, TextureFormat format, TextureDataFormat datatype, TextureWrappingMode warp, TextureFilterMode filter, TextureMipmapMode MipmapMode)
+Texture* Sphynx::Core::Graphics::Texture::Create(void* data, int width, int height, int depth, TextureType Type, int MipmapLevel, TextureFormat format, TextureDataFormat datatype, TextureWrappingMode warp, TextureFilterMode filter, TextureMipmapMode MipmapMode)
 {
 	//if (OpenTextures[path] != nullptr)return OpenTextures[path];
 	switch (CurrentPlatform)
@@ -101,7 +101,7 @@ Texture* Sphynx::Core::Graphics::Texture::Create(void* data, int width, int heig
 		[[fallthrough]];
 #endif
 	case Sphynx::Platform::Linux:
-		return new GL::GLTexture(data, width, height, Type, MipmapLevel, format, datatype, warp, filter, MipmapMode);
+		return new GL::GLTexture(data, width, height, depth, Type, MipmapLevel, format, datatype, warp, filter, MipmapMode);
 	default:
 		break;
 	}

@@ -23,23 +23,26 @@ public:
 		//Sphynx::Core::Bounds b = { 512, 384 };
 		//this->GetMainWindow()->Resize(b.Width, b.Height);
 #ifdef DEBUG
-		Sphynx::Core::Imgui::AddOverlayWindow(new Editor::Editor());
-		Sphynx::Core::Imgui::AddOverlayWindow(new Editor::SceneManagerView());
-		Sphynx::Core::Imgui::AddOverlayWindow(new Editor::EditorViewport());
-		Sphynx::Core::Imgui::AddOverlayWindow(new Editor::GameObjectView());
-		Sphynx::Core::Imgui::AddOverlayWindow(new Editor::Console());
+		//Sphynx::Core::Imgui::AddOverlayWindow(new Editor::Editor());
+		//Sphynx::Core::Imgui::AddOverlayWindow(new Editor::SceneManagerView());
+		//Sphynx::Core::Imgui::AddOverlayWindow(new Editor::EditorViewport());
+		//Sphynx::Core::Imgui::AddOverlayWindow(new Editor::GameObjectView());
+		//Sphynx::Core::Imgui::AddOverlayWindow(new Editor::Console());
 		//GetApplication()
 #elif RELEASE
 
 #endif
 	}
 	void Start() {
-		//auto font = ResourceManager::LoadFont("assets/fonts/atwriter.ttf",24);
-		//auto tr = TextTest.AddComponent<Sphynx::Core::TextRenderer>(font, "Cringe");
-		TextTest = GameObject::CreatePrimitive(Primitives::Cube, "Rayen");
+		TextTest = GameObject::CreatePrimitive(Primitives::Cube);
 		Sphynx::Core::SceneManager::GetScene().AddGameObject(&TextTest);
 	}
 	void Update() {	
+		if (Sphynx::Input::GetKeyState(Sphynx::Keys::Up)) {
+			TextTest.GetTransform()->Translate(glm::vec3(0, 1, 0) * (float)Time::GetDeltaTime());
+		}if (Sphynx::Input::GetKeyState(Sphynx::Keys::RightShift)) {
+			TextTest.GetTransform()->Translate(glm::vec3(0, 0, -1) * (float)Time::GetDeltaTime());
+		}
 	}
 	~SandBox() {
 

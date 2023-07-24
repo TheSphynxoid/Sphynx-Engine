@@ -33,5 +33,9 @@ bool RuntimeInit(void(*f)(Args... a), Args&&... args) {
 	f(SPH_Forward(args)...);
 	return true;
 }
+
+namespace Sphynx::Core::Graphics {
+
+}
 #else
 #endif

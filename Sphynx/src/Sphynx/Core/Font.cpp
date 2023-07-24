@@ -48,8 +48,16 @@ Sphynx::Core::Graphics::Texture* Sphynx::Core::Font::GetCharacterBitmap(char c)
 	void* Bm = (void*)stbtt_GetCodepointBitmap(FontInfo, 0, Scaling, c, &W, &H, &OX, &OY);
 	//stbtt_GetCodepointBitmap(FontInfo,)
 	//Create Texture Object
-	auto tex = Texture::Create(Bm, W, H, TextureType::Texture2D, TextureFormat::Red, TextureDataFormat::UByte);
+	auto tex = Texture::Create(Bm, W, H, 0, TextureType::Texture2D, TextureFormat::Red, TextureDataFormat::UByte);
 	return tex;
+}
+
+Sphynx::Core::Quad Sphynx::Core::Font::GetCharacterQuad(const char c)
+{
+	int x0, x1, y0, y1;
+	stbtt_GetCodepointBox(FontInfo, c, &x0, &y0, &x1, &y1);
+	Quad q = { x1 - x0, y1 - y0, x0, y0 };
+	return q;
 }
 
 //Sphynx::Core::Graphics::Texture* Sphynx::Core::Font::CreateFontAtlas()

@@ -69,9 +69,9 @@ void Sphynx::GameObject::Destroy()
     }
 }
 
-Sphynx::GameObject Sphynx::GameObject::CreatePrimitive(Primitives primitive, const char* name)
+Sphynx::GameObject Sphynx::GameObject::CreatePrimitive(Primitives primitive, std::string& name)
 {
-    auto rt = GameObject(name);
+    auto rt = GameObject(name.c_str());
     VertexBuffer* vb = nullptr;
     IndexBuffer* ib = nullptr;
     switch (primitive)

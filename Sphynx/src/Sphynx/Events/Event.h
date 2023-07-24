@@ -100,7 +100,6 @@ namespace Sphynx::Events {
             }
             return rt;
         }
-#ifndef Sphynx_Delegate
         template<class T, class EventType>
         void Subscribe(T* instance, void (T::* memberFunction)(EventType&))
         {
@@ -113,6 +112,7 @@ namespace Sphynx::Events {
 
             handlers->push_back(dynamic_cast<EventCallBackBase*>(new EventMemberCallBack<T, EventType>(instance, memberFunction)));
         };
+
         template<class EventType>
         void Subscribe(void (*Function)(EventType&))
         {
@@ -184,7 +184,7 @@ namespace Sphynx::Events {
             handlers->remove(function);
             delete ToDel;
         };
-#else
+#ifdef Sphynx_Delegate
         template<class Instance, typename EventType>
         void Subscribe(Delegate<void, Instance, EventType&> func)
         {

@@ -9,11 +9,10 @@ namespace Sphynx::Core {
 	private:
 		std::vector<Font> Fonts;
 		Graphics::Texture* Atlas = nullptr;
-		Graphics::Texture* AllocateTexture();
 	public:
 		FontAtlas();
 		void AddFont(Font* font) { Fonts.push_back(SPH_Forward(*font)); }
-		void PrepareAtlas();
+		void BuildAtlas();
 		inline Graphics::Texture* GetAtlasTexture() { return Atlas; }
 	};
 }

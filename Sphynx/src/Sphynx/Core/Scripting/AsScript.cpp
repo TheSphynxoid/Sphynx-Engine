@@ -34,12 +34,12 @@ using namespace Sphynx;
 using namespace Sphynx::Core;
 using namespace Sphynx::Core::Graphics;
 
-glm::vec3 up = { 0,1,0 };
-glm::vec3 down = { 0,-1,0 };
-glm::vec3 forward = { 0,0,1 };
-glm::vec3 backward = { 0,0,-1 };
-glm::vec3 right = { 0,-1,0 };
-glm::vec3 left = { 0,1,0 };
+const glm::vec3 up = { 0,1,0 };
+const glm::vec3 down = { 0,-1,0 };
+const glm::vec3 forward = { 0,0,1 };
+const glm::vec3 backward = { 0,0,-1 };
+const glm::vec3 right = { 0,-1,0 };
+const glm::vec3 left = { 0,1,0 };
 
 typedef Sphynx::Core::IWindow* Window;
 
@@ -386,6 +386,15 @@ Sphynx::Core::Scripting::AngelScript::AngelScript()
 	Engine->RegisterObjectType("Application", 0, asOBJ_REF | asOBJ_NOHANDLE);
 	Engine->RegisterObjectMethod("Application", "bool HasWindow()", asMETHOD(Application, Application::HasWindow), asCALL_THISCALL);
 	//GAMEOBJECT REGISTRATION
+	
+	//Primitives
+	Engine->RegisterEnum("Primitive");
+	Engine->RegisterEnumValue("Primitive", "Cube", (int)Primitives::Cube);
+	Engine->RegisterEnumValue("Primitive", "Plane", (int)Primitives::Plane);
+	Engine->RegisterEnumValue("Primitive", "Triangle", (int)Primitives::Triangle);
+	Engine->RegisterEnumValue("Primitive", "Sphere", (int)Primitives::Sphere);
+	Engine->RegisterEnumValue("Primitive", "Capsule", (int)Primitives::Capsule);
+
 	//GAMEOBJECT
 	Engine->RegisterObjectType("GameObject", 0, asOBJ_REF | asOBJ_NOCOUNT);
 	Engine->RegisterObjectMethod("GameObject", "void Destroy()", asMETHOD(GameObject, Destroy), asCALL_THISCALL);
@@ -396,7 +405,10 @@ Sphynx::Core::Scripting::AngelScript::AngelScript()
 	Engine->RegisterObjectMethod("GameObject", "bool opEquals(const GameObject& in)",
 		asMETHODPR(GameObject, operator==, (const GameObject&), bool), asCALL_THISCALL);
 	Engine->RegisterGlobalProperty("const GameObject@ PlaceHolder", (void*)&GameObject::PlaceHolder);
+	Engine->RegisterObjectMethod("GameObject", "GameObject CreatePrimive(Primitive, const string in)", 
+		asFUNCTION(GameObject::CreatePrimitive),asCALL_CDECL_OBJFIRST);
 
+	//Transform
 	Engine->RegisterObjectType("Transform", 0, asOBJ_REF | asOBJ_NOCOUNT);
 	Engine->RegisterObjectMethod("GameObject", "Transform@ get_transform() property", asMETHOD(GameObject, GetTransform), asCALL_THISCALL);
 	Engine->RegisterObjectMethod("Transform", "void Translate(Vector3)", asMETHOD(Transform, Translate), asCALL_THISCALL);

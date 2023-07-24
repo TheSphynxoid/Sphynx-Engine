@@ -29,13 +29,15 @@ Sphynx::Editor::EditorViewport::EditorViewport() : viewport()
 
 void Sphynx::Editor::EditorViewport::Draw()
 {
+	auto Cam = SceneManager::GetScene().GetPrimaryCamera();
 	if (ViewDockID == 0) {
 		ViewDockID = Sphynx::Core::Imgui::GetOverlayWindow<Editor>()->GetDockID();
-		SceneManager::GetScene().GetPrimaryCamera()->SetFrameBuffer(FrameBuffer::Create(100, 100,
-			{ Texture::Create(TextureType::Texture2D,100,100,TextureFormat::RGBA,TextureDataFormat::UByte),
-			Texture::Create(TextureType::Texture2D, 100,100, TextureFormat::Depth24_Stencil8,
+		Cam->SetFrameBuffer(FrameBuffer::Create(100, 100,
+			{ Texture::Create(TextureType::Texture2D,100,100,0,TextureFormat::RGBA,TextureDataFormat::UByte),
+			Texture::Create(TextureType::Texture2D, 100,100,0, TextureFormat::Depth24_Stencil8,
 			TextureDataFormat::UInt_24_8) }));
 		ResizeFlag = true;
+		
 		//SceneManager::GetScene().GetPrimaryCamera()->GetFrameBuffer()->SetClearColor({ 1,1,1,1 });
 	}
 	ImGui::SetNextWindowDockID(ViewDockID, ImGuiCond_FirstUseEver);
@@ -43,12 +45,12 @@ void Sphynx::Editor::EditorViewport::Draw()
 		| ImGuiWindowFlags_NoScrollWithMouse)) {
 		if (ResizeFlag) {
 			ResizeFlag = false;
-			Sphynx::Core::SceneManager::GetScene().GetPrimaryCamera()->SetViewport(
+			Cam->SetViewport(
 				{ 0,0,(int)ImGui::GetWindowWidth() - 10,(int)ImGui::GetWindowHeight() - 10 });
 		}
-		ImGui::Image(SceneManager::GetScene().GetPrimaryCamera()->GetFrameBuffer()->GetColorAttachment(0)->GetNativeID(),
-			{ (float)SceneManager::GetScene().GetPrimaryCamera()->GetFrameBuffer()->GetWidth(),
-				(float)SceneManager::GetScene().GetPrimaryCamera()->GetFrameBuffer()->GetHeight() }, { 0,1 }, { 1,0 });
+		ImGui::Image(Cam->GetFrameBuffer()->GetColorAttachment(0)->GetNativeID(),
+			{ (float)Cam->GetFrameBuffer()->GetWidth(),
+				(float)Cam->GetFrameBuffer()->GetHeight() }, { 0,1 }, { 1,0 });
         //Render info widget
 		ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav;
 		ImVec2 work_pos = ImGui::GetWindowPos(); // Use work area to avoid menu-bar/task-bar, if any!

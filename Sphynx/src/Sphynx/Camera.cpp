@@ -13,24 +13,26 @@ using namespace Sphynx::Core::Graphics;
 void Sphynx::Camera::ResizeWindow(Events::OnWindowResize& e)
 {
 	if (RenderTarget == nullptr || RenderTarget->IsDefaultFrameBuffer()) {
-		RenderTarget->Resize(e.Width, e.Height);
-		Events::GlobalEventSystem::GetInstance()->QueueEvent<OnFrameResize>
-			(OnFrameResize({ CamViewport.Width, CamViewport.Height }, { e.Width, e.Height }, this, RenderTarget));
 		CamViewport.Width = e.Width;
 		CamViewport.Height = e.Height;
 		if (IsOrtho)
 			ProjectionMatrix = glm::ortho(0.0f, (float)CamViewport.Width, 0.0f, (float)CamViewport.Height, NearClip, FarClip);
 		else
 			ProjectionMatrix = glm::perspective(glm::radians(FOV), (float)CamViewport.Width / CamViewport.Height, NearClip, FarClip);
+
+		Events::GlobalEventSystem::GetInstance()->QueueEvent<OnFrameResize>
+			(OnFrameResize({ CamViewport.Width, CamViewport.Height }, { e.Width, e.Height }, this, RenderTarget));
 	}
 }
 
 void Sphynx::Camera::OnComponentAttach(GameObject* Parent)
 {
+	Events::GlobalEventSystem::GetInstance()->Subscribe<Camera, Events::OnWindowResize>(this, &Camera::ResizeWindow);
 }
 
 void Sphynx::Camera::OnComponentDetach()
 {
+	Events::GlobalEventSystem::GetInstance()->UnSubscribe<Camera, Events::OnWindowResize>(this, &Camera::ResizeWindow);
 }
 
 Sphynx::Camera::Camera() : IsOrtho(false), FOV(60.0f), NearClip(0.1f), FarClip(100.0f), 
@@ -64,7 +66,7 @@ void Sphynx::Camera::Update()
 	RenderTarget->Clear();
 	GetMainWindow()->GetRenderer()->SetViewPort(CamViewport);
 	GetMainWindow()->GetRenderer()->Render();
-	GetMainWindow()->GetRenderer()->SetViewPort({ 0, 0, GetMainWindow()->GetWidth(), GetMainWindow()->GetHeight() });
+	//GetMainWindow()->GetRenderer()->SetViewPort({ 0, 0, GetMainWindow()->GetWidth(), GetMainWindow()->GetHeight() });
 	RenderTarget->Unbind();
 }
 

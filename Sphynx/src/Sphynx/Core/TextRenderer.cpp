@@ -6,6 +6,7 @@
 
 
 using namespace Sphynx::Core;
+using namespace Sphynx::Core::Graphics;
 
 void Sphynx::Core::TextRenderer::OnComponentAttach(GameObject* parent)
 {
@@ -19,11 +20,19 @@ void Sphynx::Core::TextRenderer::RenderLoop()
 	}
 }
 
+void Sphynx::Core::TextRenderer::GenQuads()
+{
+	Quads = std::vector<Quad>(String.size());
+	for (auto& c : String) {
+		Quads.push_back(font->GetCharacterQuad(c));
+	}
+}
+
 Sphynx::Core::TextRenderer::TextRenderer(Font* nfont, std::string st) : font(nfont), String(st)
 {
 	Atlas = FontAtlas();
 	Atlas.AddFont(nfont);
-	Atlas.PrepareAtlas();
+	GenQuads();
 }
 
 Sphynx::Core::TextRenderer::~TextRenderer()

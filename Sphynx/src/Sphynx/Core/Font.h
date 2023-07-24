@@ -8,6 +8,10 @@ namespace Sphynx::Core {
 		class Texture;
 	};
 	class FontAtlas;
+	struct Quad {
+		int Width, Height;
+		int OriginX, OriginY;
+	};
 	//Written on top of stbtt_truefont.
 	class Font
 	{
@@ -28,7 +32,9 @@ namespace Sphynx::Core {
 		Graphics::Texture* GetCharacterBitmap(char c);
 		std::string GetFontName() { return FontName; };
 		inline FontAtlas* GetAtlas() { return Atlas; };
-		static wchar_t* GetLatinRange() {
+		//Returns a Quad With unspecified Positions.
+		Quad GetCharacterQuad(const char c);
+		inline static wchar_t* GetLatinRange() {
 			wchar_t range[] = {
 				0x0020, 0x00FF,		// Basic Latin + Latin Supplement
 				//0x2000, 0x206F,		//General Ponctuation.
