@@ -15,6 +15,7 @@
     <IgnoreWarnCompileDuplicatedFilename>true</IgnoreWarnCompileDuplicatedFilename>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>Sandbox</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
@@ -58,36 +59,44 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\Sphynx\dep\spdlog\include;..\Sphynx\dep\glm;..\Sphynx\src\Sphynx;..\Sphynx\src;dep\angelscript\sdk\angelscript\include;dep\angelscript\sdk\add_on;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Sphynx\dep\spdlog\include;..\Sphynx\dep\glm;..\Sphynx\src\Sphynx;..\Sphynx\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
-      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>..\Sphynx\dep\mono\lib\libmono-static-sgen.lib;Ws2_32.lib;Winmm.lib;Version.lib;Bcrypt.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>xcopy "$(SolutionDir)$(ProjectName)\data" "$(SolutionDir)\build\bin\Debug-windows-x86_64\$(ProjectName)\data\mono" /e/i/s/y/h/k/c</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\Sphynx\dep\spdlog\include;..\Sphynx\dep\glm;..\Sphynx\src\Sphynx;..\Sphynx\src;dep\angelscript\sdk\angelscript\include;dep\angelscript\sdk\add_on;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Sphynx\dep\spdlog\include;..\Sphynx\dep\glm;..\Sphynx\src\Sphynx;..\Sphynx\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <MinimalRebuild>false</MinimalRebuild>
       <StringPooling>true</StringPooling>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>..\Sphynx\dep\mono\lib\libmono-static-sgen.lib;Ws2_32.lib;Winmm.lib;Version.lib;Bcrypt.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>xcopy "$(SolutionDir)$(ProjectName)\data" "$(SolutionDir)\build\bin\Release-windows-x86_64\$(ProjectName)\data\mono" /e/i/s/y/h/k/c</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\App.cpp" />
@@ -96,8 +105,11 @@
     <ProjectReference Include="..\Sphynx\Sphynx.vcxproj">
       <Project>{2F02A1D1-1BA4-CBA7-045F-DFFBF09F52F8}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\Sphynx\dep\angelscript\sdk\angelscript\projects\msvc2019\angelscript.vcxproj">
-      <Project>{39E6AF97-6BA3-4A72-8C61-BCEBF214EBFD}</Project>
+    <ProjectReference Include="..\ScriptAssembly\ScriptAssembly.csproj">
+      <Project>{3AAD24A5-267B-18AB-0F0F-89D1FB7BF40F}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\GameAssembly\GameAssembly.csproj">
+      <Project>{1F709DC6-0BD3-2C6B-B458-6521A09AF8ED}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

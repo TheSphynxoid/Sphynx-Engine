@@ -147,7 +147,7 @@ namespace Sphynx {
         Menu                = 348
     };
     enum class Action : int {
-        Pressed, Repeat, Release
+        Pressed, Repeat, Release, None
     };
 #define Last_Key 348
 #define Last_Mouse_Button 7

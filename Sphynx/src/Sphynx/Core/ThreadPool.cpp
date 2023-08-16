@@ -22,6 +22,7 @@ void Sphynx::Core::ThreadPool::Submit(std::function<void()> new_job)
 
 void Sphynx::Core::ThreadPool::Loop()
 {
+    //Sphynx::Events::GlobalEventSystem::GetInstance()->QueueEvent()
     while (IsRunning) {
         std::function<void()> job;
         {

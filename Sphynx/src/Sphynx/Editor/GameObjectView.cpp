@@ -7,7 +7,6 @@
 #include "Camera.h"
 #include "Core/Graphics/Pipeline/FrameBuffer.h"
 #include "Core/MeshRenderer.h"
-#include "Core/Scripting/AsScript.h"
 
 ImGuiID DockID = 0;
 std::string Title;
@@ -71,14 +70,6 @@ void Sphynx::Editor::GameObjectView::Draw()
 					if (ImGui::TreeNode("Textures {0}", std::to_string(mr->GetMaterial()->GetTextureCount()).c_str())) {
 					}
 					ImGui::TreePop();
-				}
-				ImGui::Separator();
-			}
-			if (Core::Internal::ComponentFactory::ComponentHelper::IsComponentInGameObject<Core::Scripting::AsScript>(CurrentGO)) {
-				auto s = CurrentGO->GetComponent<Core::Scripting::AsScript>();
-				ImGui::Text(s->GetScriptBehaviour().GetTypeInfo()->GetName());
-				if (ImGui::Button("Reload")) {
-					Core::Scripting::ScriptingEngine::GetAngelScript().ReloadScript(s);
 				}
 				ImGui::Separator();
 			}

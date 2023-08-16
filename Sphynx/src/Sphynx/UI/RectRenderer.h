@@ -19,6 +19,7 @@ namespace Sphynx::UI {
 		virtual void OnComponentAttach(GameObject* parent) override;
 		virtual void OnComponentDetach() override;
 	public:
+		CompImpl(RectRenderer);
 		virtual void Update() override;
 		RectRenderer(glm::vec2 bounds, Core::Graphics::Texture* texture);
 		Core::Graphics::Material* GetMaterial() {

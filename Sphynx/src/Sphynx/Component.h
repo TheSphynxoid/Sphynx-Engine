@@ -1,6 +1,9 @@
 #pragma once
 #ifndef Sphynx_Component
 #define Sphynx_Component
+#define CompImpl(T) \
+virtual const char* GetName() override { return #T ;}
+
 #include "Object.h"
 namespace Sphynx {
 	namespace Core::Internal {
@@ -22,6 +25,7 @@ namespace Sphynx {
 		virtual void Start() {};
 		virtual void Update() {};
 		virtual ~Component() = default;
+		virtual const char* GetName() = 0;
 		GameObject* GetGameObject() { return Parent; };
 		size_t GetID() { return InstanceID; };
 		Transform* GetTransform() {
