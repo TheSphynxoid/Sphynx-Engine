@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "ResourceManager.h"
 #include "GameObject.h"
-#include "Core/Scripting/AsScript.h"
 #include <fstream>
 #include <sstream>
 #define STB_IMAGE_IMPLEMENTATION
@@ -147,9 +146,4 @@ void Sphynx::ResourceManager::ReleaseFonts()
 
 void Sphynx::ResourceManager::ReleaseTextures()
 {
-}
-
-void Sphynx::ResourceManager::LoadScript(const char* path, Sphynx::GameObject* GO)
-{
-	GO->AddComponent<Sphynx::Core::Scripting::AsScript>(path, std::to_string(GO->GetID()).c_str());
 }

@@ -17,6 +17,7 @@ namespace Sphynx {
 		virtual void OnComponentDetach() override;
 		void CalcModelMatrix();
 	public:
+		CompImpl(Transform);
 		//You Can Force Matrix Calculations.
 		bool Changed = true;
 		Transform();

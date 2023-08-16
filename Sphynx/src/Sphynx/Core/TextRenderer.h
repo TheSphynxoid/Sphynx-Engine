@@ -21,6 +21,7 @@ namespace Sphynx::Core {
 		void RenderLoop();
 		void GenQuads();
 	public:
+		CompImpl(TextRenderer);
 		TextRenderer(Font* font, std::string st);
 		~TextRenderer();
 		virtual void Update();

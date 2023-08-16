@@ -18,6 +18,7 @@ namespace Sphynx {
 		virtual void OnComponentAttach(GameObject* Parent) override;
 		virtual void OnComponentDetach() override;
 	public:
+		CompImpl(MeshRenderer);
 		MeshRenderer(Core::Graphics::Mesh* _mesh, Core::Graphics::Material* mat);
 		~MeshRenderer();
 		void SetMaterial(Core::Graphics::Material* mat);

@@ -10,8 +10,8 @@
 #include "Scene.h"
 #include "Core/SceneManager.h"
 #include "Core/Threadpool.h"
-#include "Core/Scripting/AsScript.h"
 #include "Core/Scenic/Scenic.h"
+#include "Core/Scripting/Mono/MonoRuntime.h"
 #undef GetApplication
 #undef GetMainWindow
 
@@ -37,7 +37,7 @@ Sphynx::Application::Application()
 #endif
 	MainApplication = this;
 	this->CreateMainWindow(IWindow::Create(this));
-	Scripting::ScriptingEngine::InitScripting();
+	//Scripting::ScriptingEngine::InitScripting();
 }
 
 Application* Sphynx::Application::GetApplication()
@@ -58,11 +58,14 @@ void Sphynx::Application::Run(int argc, char** argv)
 	//Scenic::WriteScene(&SceneManager::GetScene())
 	Input::Init();
 	SceneManager::Start();
+	static Sphynx::Mono::MonoRuntime Mono ("GameAssembly.dll");
+	Mono.Start();
 	Start();
 	Time::Start();
 	int i = 0;
 	while (MainWindow->IsAlive()) {
 		Update();
+		Mono.Update();
 		Events::GlobalEventSystem::GetInstance()->DispatchImmediate<Events::OnApplicationUpdate>(Events::OnApplicationUpdate());
 		//Events
 		Events::GlobalEventSystem::GetInstance()->Dispatch();

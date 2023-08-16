@@ -28,8 +28,8 @@
     <Filter Include="Sphynx\Core\Scripting">
       <UniqueIdentifier>{A99DEA9F-150A-A69A-DEFD-3DF84A29C802}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Sphynx\Core\Scripting\BaseLib">
-      <UniqueIdentifier>{2A109644-9628-7D6E-5FD5-0C08CBAC1108}</UniqueIdentifier>
+    <Filter Include="Sphynx\Core\Scripting\Mono">
+      <UniqueIdentifier>{F12ECBE9-DD3E-77BA-46F8-DBD832276653}</UniqueIdentifier>
     </Filter>
     <Filter Include="Sphynx\Editor">
       <UniqueIdentifier>{85147340-F1D4-EE76-BA0F-38F4268F3353}</UniqueIdentifier>
@@ -169,19 +169,16 @@
     <ClInclude Include="src\Sphynx\Core\Scenic\Scenic.h">
       <Filter>Sphynx\Core\Scenic</Filter>
     </ClInclude>
-    <ClInclude Include="src\Sphynx\Core\Scripting\AsScript.h">
-      <Filter>Sphynx\Core\Scripting</Filter>
+    <ClInclude Include="src\Sphynx\Core\Scripting\Mono\CsScript.h">
+      <Filter>Sphynx\Core\Scripting\Mono</Filter>
     </ClInclude>
-    <ClInclude Include="src\Sphynx\Core\Scripting\BaseLib\AsBaseLib.h">
-      <Filter>Sphynx\Core\Scripting\BaseLib</Filter>
+    <ClInclude Include="src\Sphynx\Core\Scripting\Mono\MonoRuntime.h">
+      <Filter>Sphynx\Core\Scripting\Mono</Filter>
     </ClInclude>
     <ClInclude Include="src\Sphynx\Core\Scripting\Script.h">
       <Filter>Sphynx\Core\Scripting</Filter>
     </ClInclude>
-    <ClInclude Include="src\Sphynx\Core\Scripting\ScriptBehviour.h">
-      <Filter>Sphynx\Core\Scripting</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Sphynx\Core\Scripting\ScriptingEngine.h">
+    <ClInclude Include="src\Sphynx\Core\Scripting\ScriptingBackend.h">
       <Filter>Sphynx\Core\Scripting</Filter>
     </ClInclude>
     <ClInclude Include="src\Sphynx\Core\SpriteRenderer.h">
@@ -393,17 +390,11 @@
     <ClCompile Include="src\Sphynx\Core\Scenic\Scenic.cpp">
       <Filter>Sphynx\Core\Scenic</Filter>
     </ClCompile>
-    <ClCompile Include="src\Sphynx\Core\Scripting\AsScript.cpp">
-      <Filter>Sphynx\Core\Scripting</Filter>
+    <ClCompile Include="src\Sphynx\Core\Scripting\Mono\CsScript.cpp">
+      <Filter>Sphynx\Core\Scripting\Mono</Filter>
     </ClCompile>
-    <ClCompile Include="src\Sphynx\Core\Scripting\Script.cpp">
-      <Filter>Sphynx\Core\Scripting</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Sphynx\Core\Scripting\ScriptBehviour.cpp">
-      <Filter>Sphynx\Core\Scripting</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Sphynx\Core\Scripting\ScriptingEngine.cpp">
-      <Filter>Sphynx\Core\Scripting</Filter>
+    <ClCompile Include="src\Sphynx\Core\Scripting\Mono\MonoRuntime.cpp">
+      <Filter>Sphynx\Core\Scripting\Mono</Filter>
     </ClCompile>
     <ClCompile Include="src\Sphynx\Core\SpriteRenderer.cpp">
       <Filter>Sphynx\Core</Filter>
@@ -483,6 +474,7 @@
     <ClCompile Include="src\Sphynx\pch.cpp">
       <Filter>Sphynx</Filter>
     </ClCompile>
+    <ClCompile Include="src\Sphynx\Core\Scripting\Mono\MonoInternalCalls.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Sphynx\Scripts\Component.as">
