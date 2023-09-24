@@ -24,6 +24,7 @@ namespace Sphynx
             n_levels
         }
 
+<<<<<<< HEAD
         //[MethodImpl(MethodImplOptions.InternalCall)]
         //internal static extern Stream GetInStream();
         //[MethodImpl(MethodImplOptions.InternalCall)]
@@ -34,6 +35,18 @@ namespace Sphynx
         //    Console.SetIn(new StreamReader(GetInStream(), Encoding.ASCII));
         //    Console.SetOut(new StreamWriter(GetOutStream(), Encoding.ASCII));
         //}
+=======
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        internal static extern Stream GetInStream();
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        internal static extern Stream GetOutStream();
+
+        internal static void Initialize()
+        {
+            Console.SetIn(new StreamReader(GetInStream(), Encoding.ASCII));
+            Console.SetOut(new StreamWriter(GetOutStream(), Encoding.ASCII));
+        }
+>>>>>>> 8e4e7476835c79b1abd56bf61659663c37a76c4d
 
         [MethodImpl(MethodImplOptions.InternalCall)]
         public extern static void spdLog(string message, LogLevel logLevel);

@@ -10,7 +10,11 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("Sphynx.Properties")]
+<<<<<<< HEAD
 [assembly: AssemblyCopyright("The Sphynx Copyright ©  2023")]
+=======
+[assembly: AssemblyCopyright("Copyright ©  2023")]
+>>>>>>> 8e4e7476835c79b1abd56bf61659663c37a76c4d
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

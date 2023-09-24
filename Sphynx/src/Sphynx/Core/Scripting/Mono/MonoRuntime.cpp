@@ -10,7 +10,10 @@ extern "C" {
 //#include "mono/metadata/tabledefs.h"
 #include "mono/metadata/mono-debug.h"
 #include "mono/metadata/threads.h"
+<<<<<<< HEAD
 #include "mono/metadata/mono-debug.h"
+=======
+>>>>>>> 8e4e7476835c79b1abd56bf61659663c37a76c4d
 }
 
 //Seperation of Code.
@@ -23,6 +26,7 @@ static MonoAssembly* GameAssembly = nullptr;
 static MonoImage* ScriptImage = nullptr;
 static MonoImage* GameImage = nullptr;
 
+<<<<<<< HEAD
 //Sphynx Engine Internals
 void (_stdcall *WinResizeThunk)(int, int, MonoException**) = nullptr;
 
@@ -49,6 +53,8 @@ const std::unordered_map<std::string, MonoClass*> CommunTypes = {
 	{"void",mono_get_void_class()}
 };
 
+=======
+>>>>>>> 8e4e7476835c79b1abd56bf61659663c37a76c4d
 
 namespace Sphynx::Mono::Internal {
 	
@@ -61,6 +67,10 @@ namespace Sphynx::Mono::Internal {
 			Core_Error(mono_image_strerror(status));
 			return { nullptr,nullptr };
 		}
+<<<<<<< HEAD
+=======
+		ScriptImage == nullptr;
+>>>>>>> 8e4e7476835c79b1abd56bf61659663c37a76c4d
 
 		MonoAssembly* assembly = mono_assembly_load_from_full(image, AssemblyPath.c_str(), &status, 0);
 		
@@ -73,6 +83,7 @@ Sphynx::Mono::MonoRuntime::MonoRuntime() : isAlive(true)
 {
 	mono_set_assemblies_path("data");
 
+<<<<<<< HEAD
 #ifdef DEBUG
 	const char* argv[2] = {
 	"--debugger-agent=transport=dt_socket,address=127.0.0.1:2550,server=y,suspend=n,loglevel=3,logfile=MonoDebugger.log",
@@ -83,6 +94,8 @@ Sphynx::Mono::MonoRuntime::MonoRuntime() : isAlive(true)
 	mono_debug_init(MONO_DEBUG_FORMAT_MONO);
 #endif
 
+=======
+>>>>>>> 8e4e7476835c79b1abd56bf61659663c37a76c4d
 	JITdomain = mono_jit_init("ScriptJIT");
 }
 
@@ -95,8 +108,13 @@ Sphynx::Mono::MonoRuntime::~MonoRuntime()
 
 Sphynx::Mono::MonoRuntime::MonoRuntime(std::string AssemblyPath) : MonoRuntime()
 {
+<<<<<<< HEAD
 	Appdomain = mono_domain_create_appdomain("GameDomain", nullptr);
 	mono_thread_attach(Appdomain);
+=======
+
+	Appdomain = mono_domain_create_appdomain("GameDomain", nullptr);
+>>>>>>> 8e4e7476835c79b1abd56bf61659663c37a76c4d
 
 	//Load the ScriptAssembly
 	std::tie(ScriptAssembly, ScriptImage) = Internal::LoadAssembly("ScriptAssembly.dll");
@@ -104,12 +122,16 @@ Sphynx::Mono::MonoRuntime::MonoRuntime(std::string AssemblyPath) : MonoRuntime()
 	//Load the AppAssembly
 	std::tie(GameAssembly,GameImage) = Internal::LoadAssembly(AssemblyPath.c_str());
 
+<<<<<<< HEAD
 	MonoClass* CompClass = mono_class_from_name(ScriptImage, "Sphynx", "Component");
 
+=======
+>>>>>>> 8e4e7476835c79b1abd56bf61659663c37a76c4d
 	static bool HasRegisteredInternals = false;
 
 	if (!HasRegisteredInternals) {
 		Internal::RegisterInternalCalls();
+<<<<<<< HEAD
 		auto WinResize = mono_class_get_method_from_name(mono_class_from_name(ScriptImage, "Sphynx.Core.Graphics", "Window"), "InvokeResize", 2);
 		WinResizeThunk = (void(_stdcall *)(int, int,MonoException**))(mono_method_get_unmanaged_thunk(WinResize));
 
@@ -163,6 +185,10 @@ Sphynx::Mono::MonoRuntime::MonoRuntime(std::string AssemblyPath) : MonoRuntime()
 		bool IsComponent = mono_class_is_subclass_of(monoClass, CompClass, true);
 
 	}
+=======
+	}
+
+>>>>>>> 8e4e7476835c79b1abd56bf61659663c37a76c4d
 }
 
 void Sphynx::Mono::MonoRuntime::Start()

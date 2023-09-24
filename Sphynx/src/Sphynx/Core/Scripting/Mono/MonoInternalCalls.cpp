@@ -3,12 +3,15 @@
 #define Sphynx_Internal_Mono
 #define MonoExport __declspec(dllexport)
 #include "Logger.h"
+<<<<<<< HEAD
 #include "Component.h"
 #include "Core/Factories/ComponentFactory.h"
 //#define ExculdeEntryPoint
 //#include "../Sphynx.h"
 #include "Core/Graphics/Window.h"
 #include <glm/glm.hpp>
+=======
+>>>>>>> 8e4e7476835c79b1abd56bf61659663c37a76c4d
 
 extern "C" {
 
@@ -20,6 +23,7 @@ extern "C" {
 #include "mono/metadata/threads.h"
 }
 
+<<<<<<< HEAD
 extern MonoDomain* Appdomain;
 
 namespace Sphynx::Mono::Internal {
@@ -68,10 +72,24 @@ namespace Sphynx::Mono::Internal {
 	void RegisterInternalCalls() {
 		MainWindow = GetApplication()->GetMainWindow();
 
+=======
+namespace Sphynx::Mono::Internal {
+
+	MonoExport void NativeFinalize(MonoObject* Native) {
+		
+	}
+
+	MonoExport void spdLog(MonoString* string, spdlog::level::level_enum level) {
+		Logger::GetClientLogger()->log(level, mono_string_to_utf8(string));
+	}
+
+	void RegisterInternalCalls() {
+>>>>>>> 8e4e7476835c79b1abd56bf61659663c37a76c4d
 		//Sphynx.Core.Native.NativeComponent
 		mono_add_internal_call("Sphynx.Core.Native.NativeComponent::NativeFinalize", &NativeFinalize);
 		//Sphynx.Logger
 		mono_add_internal_call("Sphynx.Logger::spdLog", &spdLog);
+<<<<<<< HEAD
 		//Sphynx.Vector2
 		mono_add_internal_call("Sphynx.Vector2::Distance", &Distance<glm::vec2>);
 		mono_add_internal_call("Sphynx.Vector2::Dot", &Dot<glm::vec2>);
@@ -89,6 +107,8 @@ namespace Sphynx::Mono::Internal {
 		mono_add_internal_call("Sphynx.Core.Graphics.Window::GetVsync", &GetVsync);
 		mono_add_internal_call("Sphynx.Core.Graphics.Window::SetSize", &SetSize);
 		mono_add_internal_call("Sphynx.Core.Graphics.Window::GetSize", &GetSize);
+=======
+>>>>>>> 8e4e7476835c79b1abd56bf61659663c37a76c4d
 	}
 }
 #endif

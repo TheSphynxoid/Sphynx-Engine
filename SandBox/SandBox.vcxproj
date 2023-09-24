@@ -71,7 +71,11 @@
       <AdditionalDependencies>..\Sphynx\dep\mono\lib\libmono-static-sgen.lib;Ws2_32.lib;Winmm.lib;Version.lib;Bcrypt.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
+<<<<<<< HEAD
       <Command>xcopy "$(SolutionDir)$(ProjectName)\data" "$(SolutionDir)\build\bin\Debug-windows-x86_64\$(ProjectName)\data\mono" /e/i/s/y/h/k/c</Command>
+=======
+      <Command>xcopy $(SolutionDir)$(ProjectName)\mono $(SolutionDir)\build\bin\Debug-windows-x86_64\$(ProjectName)\data\mono /e/i/s/y/h/k/c</Command>
+>>>>>>> 8e4e7476835c79b1abd56bf61659663c37a76c4d
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -95,7 +99,11 @@
       <AdditionalDependencies>..\Sphynx\dep\mono\lib\libmono-static-sgen.lib;Ws2_32.lib;Winmm.lib;Version.lib;Bcrypt.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
+<<<<<<< HEAD
       <Command>xcopy "$(SolutionDir)$(ProjectName)\data" "$(SolutionDir)\build\bin\Release-windows-x86_64\$(ProjectName)\data\mono" /e/i/s/y/h/k/c</Command>
+=======
+      <Command>xcopy $(SolutionDir)$(ProjectName)\mono $(SolutionDir)\build\bin\Release-windows-x86_64\$(ProjectName)\data\mono /e/i/s/y/h/k/c</Command>
+>>>>>>> 8e4e7476835c79b1abd56bf61659663c37a76c4d
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>

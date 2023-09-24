@@ -17,7 +17,11 @@
     <PlatformTarget>x64</PlatformTarget>
     <DebugType>portable</DebugType>
     <DebugSymbols>true</DebugSymbols>
+<<<<<<< HEAD
     <Optimize>false</Optimize>
+=======
+    <Optimize>true</Optimize>
+>>>>>>> 8e4e7476835c79b1abd56bf61659663c37a76c4d
     <OutputPath>..\build\bin\Debug-windows-x86_64\ScriptAssembly\</OutputPath>
     <BaseIntermediateOutputPath>..\build\int\Debug-windows-x86_64\ScriptAssembly\</BaseIntermediateOutputPath>
     <IntermediateOutputPath>$(BaseIntermediateOutputPath)</IntermediateOutputPath>
@@ -44,20 +48,30 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Component.cs" />
+<<<<<<< HEAD
     <Compile Include="Core\Application.cs" />
     <Compile Include="Core\Engine.cs" />
     <Compile Include="Core\Graphics\Window.cs" />
     <Compile Include="Core\Native\ComponentFactory.cs" />
     <Compile Include="Core\Native\NativeComponent.cs" />
     <Compile Include="Event.cs" />
+=======
+    <Compile Include="Core\Native\ComponentFactory.cs" />
+    <Compile Include="Core\Native\NativeComponent.cs" />
+>>>>>>> 8e4e7476835c79b1abd56bf61659663c37a76c4d
     <Compile Include="GameObject.cs" />
     <Compile Include="Input.cs" />
     <Compile Include="Keys.cs" />
     <Compile Include="Logger.cs" />
+<<<<<<< HEAD
     <Compile Include="Math.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Time.cs" />
     <Compile Include="Vector.cs" />
+=======
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Time.cs" />
+>>>>>>> 8e4e7476835c79b1abd56bf61659663c37a76c4d
   </ItemGroup>
   <ItemGroup>
   </ItemGroup>

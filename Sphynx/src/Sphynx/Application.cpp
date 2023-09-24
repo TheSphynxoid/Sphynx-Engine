@@ -58,7 +58,11 @@ void Sphynx::Application::Run(int argc, char** argv)
 	//Scenic::WriteScene(&SceneManager::GetScene())
 	Input::Init();
 	SceneManager::Start();
+<<<<<<< HEAD
 	Sphynx::Mono::MonoRuntime Mono ("GameAssembly.dll");
+=======
+	static Sphynx::Mono::MonoRuntime Mono ("GameAssembly.dll");
+>>>>>>> 8e4e7476835c79b1abd56bf61659663c37a76c4d
 	Mono.Start();
 	Start();
 	Time::Start();

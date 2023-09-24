@@ -15,12 +15,20 @@ namespace Sphynx.Core.Native
         private UIntPtr NativePtr;
 
         [MethodImpl(MethodImplOptions.InternalCall)]
+<<<<<<< HEAD
         internal static extern bool NativeFinalize(UIntPtr NativePointer);
+=======
+        internal static extern bool NativeFinalize(NativeComponent ncomponent);
+>>>>>>> 8e4e7476835c79b1abd56bf61659663c37a76c4d
 
         [AllowReversePInvokeCalls]
         public void Dispose()
         {
+<<<<<<< HEAD
             NativeFinalize(NativePtr);
+=======
+            NativeFinalize(this);
+>>>>>>> 8e4e7476835c79b1abd56bf61659663c37a76c4d
         }
 
         public NativeComponent()

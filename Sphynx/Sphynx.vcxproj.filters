@@ -394,9 +394,12 @@
     <ClCompile Include="src\Sphynx\Core\Scripting\Mono\CsScript.cpp">
       <Filter>Sphynx\Core\Scripting\Mono</Filter>
     </ClCompile>
+<<<<<<< HEAD
     <ClCompile Include="src\Sphynx\Core\Scripting\Mono\MonoInternalCalls.cpp">
       <Filter>Sphynx\Core\Scripting\Mono</Filter>
     </ClCompile>
+=======
+>>>>>>> 8e4e7476835c79b1abd56bf61659663c37a76c4d
     <ClCompile Include="src\Sphynx\Core\Scripting\Mono\MonoRuntime.cpp">
       <Filter>Sphynx\Core\Scripting\Mono</Filter>
     </ClCompile>
@@ -478,6 +481,7 @@
     <ClCompile Include="src\Sphynx\pch.cpp">
       <Filter>Sphynx</Filter>
     </ClCompile>
+    <ClCompile Include="src\Sphynx\Core\Scripting\Mono\MonoInternalCalls.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Sphynx\Scripts\Component.as">
