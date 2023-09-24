@@ -1,6 +1,3 @@
--- rule "AngelScriptRule"
--- 	display "AngelScriptRule"
--- 	fileextension ".as"
 workspace "NewSphynx"
 	architecture "x86_64"
 	startproject "Sandbox"
@@ -40,13 +37,8 @@ project "Sphynx"
 		"%{prj.name}\\dep\\imgui",
 		"%{prj.name}\\dep\\glm",
 		"%{prj.name}\\dep\\stb",
-<<<<<<< HEAD
 		-- "%{prj.name}\\dep\\angelscript\\sdk\\angelscript\\include",
 		-- "%{prj.name}\\dep\\angelscript\\sdk\\add_on",
-=======
-		"%{prj.name}\\dep\\angelscript\\sdk\\angelscript\\include",
-		"%{prj.name}\\dep\\angelscript\\sdk\\add_on",
->>>>>>> 8e4e7476835c79b1abd56bf61659663c37a76c4d
 		"%{prj.name}\\dep\\mono\\include",
 	}
 	links
@@ -55,11 +47,7 @@ project "Sphynx"
 		"glad",
 		"imgui",
 		"opengl32.lib",
-<<<<<<< HEAD
 		-- "angelscript",
-=======
-		"angelscript",
->>>>>>> 8e4e7476835c79b1abd56bf61659663c37a76c4d
 		"%{wks.location}\\%{prj.name}\\dep\\mono\\lib\\libmono-static-sgen.lib",
 	}
 	defines{
@@ -115,13 +103,8 @@ project "Sandbox"
 		"%{wks.location}\\Sphynx\\dep\\glm",
 		"%{wks.location}\\Sphynx\\src\\Sphynx",
 		"%{wks.location}\\Sphynx\\src",
-<<<<<<< HEAD
 		-- "%{prj.name}\\dep\\angelscript\\sdk\\angelscript\\include",
 		-- "%{prj.name}\\dep\\angelscript\\sdk\\add_on"
-=======
-		"%{prj.name}\\dep\\angelscript\\sdk\\angelscript\\include",
-		"%{prj.name}\\dep\\angelscript\\sdk\\add_on"
->>>>>>> 8e4e7476835c79b1abd56bf61659663c37a76c4d
 	}
 
 	links
@@ -157,15 +140,9 @@ project "Sandbox"
 			"Version.lib",
 			"Bcrypt.lib"
 		}
-<<<<<<< HEAD
    		postbuildcommands { "xcopy \"%{wks.location}%{prj.name}\\data\" \"%{wks.location}\\build\\bin\\" .. outputdir .. "\\%{prj.name}\\data\\mono\" /e/i/s/y/h/k/c" }
 	filter { "not system:windows" }
    		postbuildcommands { "cp -f -r d%{wks.location}%{prj.name}\\data %{wks.location}\\build\\bin\\" .. outputdir .. "\\%{prj.name}\\data\\mono" }
-=======
-   		postbuildcommands { "xcopy \"%{wks.location}%{prj.name}\\mono\" \"%{wks.location}\\build\\bin\\" .. outputdir .. "\\%{prj.name}\\data\\mono\" /e/i/s/y/h/k/c" }
-	filter { "not system:windows" }
-   		postbuildcommands { "cp -f -r d%{wks.location}%{prj.name}\\mono %{wks.location}\\build\\bin\\" .. outputdir .. "\\%{prj.name}\\data\\mono" }
->>>>>>> 8e4e7476835c79b1abd56bf61659663c37a76c4d
 
 include "ScriptAssembly/ScriptAssembly.lua"
 include "GameAssembly/GameAssembly.lua"

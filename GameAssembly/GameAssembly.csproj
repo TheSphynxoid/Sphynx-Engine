@@ -21,12 +21,7 @@
     <OutputPath>..\build\bin\Debug-windows-x86_64\GameAssembly\</OutputPath>
     <BaseIntermediateOutputPath>..\build\int\Debug-windows-x86_64\GameAssembly\</BaseIntermediateOutputPath>
     <IntermediateOutputPath>$(BaseIntermediateOutputPath)</IntermediateOutputPath>
-<<<<<<< HEAD
-    <DefineConstants>
-    </DefineConstants>
-=======
     <DefineConstants></DefineConstants>
->>>>>>> 8e4e7476835c79b1abd56bf61659663c37a76c4d
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -38,12 +33,7 @@
     <OutputPath>..\build\bin\Release-windows-x86_64\GameAssembly\</OutputPath>
     <BaseIntermediateOutputPath>..\build\int\Release-windows-x86_64\GameAssembly\</BaseIntermediateOutputPath>
     <IntermediateOutputPath>$(BaseIntermediateOutputPath)</IntermediateOutputPath>
-<<<<<<< HEAD
-    <DefineConstants>
-    </DefineConstants>
-=======
     <DefineConstants></DefineConstants>
->>>>>>> 8e4e7476835c79b1abd56bf61659663c37a76c4d
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -56,11 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ScriptAssembly\ScriptAssembly.csproj">
-<<<<<<< HEAD
-      <Project>{3aad24a5-267b-18ab-0f0f-89d1fb7bf40f}</Project>
-=======
       <Project>{3AAD24A5-267B-18AB-0F0F-89D1FB7BF40F}</Project>
->>>>>>> 8e4e7476835c79b1abd56bf61659663c37a76c4d
       <Name>ScriptAssembly</Name>
     </ProjectReference>
   </ItemGroup>

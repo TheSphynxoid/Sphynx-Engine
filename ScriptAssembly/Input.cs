@@ -8,11 +8,7 @@ using System.Threading.Tasks;
 
 namespace Sphynx
 {
-<<<<<<< HEAD
     public static class Input
-=======
-    public class Input
->>>>>>> 8e4e7476835c79b1abd56bf61659663c37a76c4d
     {
         /// <summary>
         /// Return true if key is pressed
@@ -34,20 +30,10 @@ namespace Sphynx
         [MethodImpl(MethodImplOptions.InternalCall)]
         public extern static Action GetKeyState(Keys key);
 
-<<<<<<< HEAD
         public delegate void KeyEvent(Keys key);
 
         public static event KeyEvent OnKeyDown;
         public static event KeyEvent OnKeyUp;
         public static event KeyEvent OnRepeat;
-=======
-        public delegate void KeyPressEvent(Keys key);
-        public delegate void KeyUnpressEvent(Keys key);
-        public delegate void KeyRepeatEvent(Keys key);
-
-        public event KeyPressEvent OnKeyDown;
-        public event KeyUnpressEvent OnKeyUp;
-        public event KeyRepeatEvent OnRepeat;
->>>>>>> 8e4e7476835c79b1abd56bf61659663c37a76c4d
     }
 }

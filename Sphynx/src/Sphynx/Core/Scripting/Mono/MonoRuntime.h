@@ -15,10 +15,6 @@ namespace Sphynx::Mono {
 		virtual void Update() override;
 		virtual void Shutdown() override;
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 8e4e7476835c79b1abd56bf61659663c37a76c4d
 		inline bool IsAlive() { return isAlive; }
 	};
 }
