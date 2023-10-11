@@ -6,7 +6,6 @@ namespace Sphynx::Mono {
 	{
 	public:
 		CompImpl(CsScript);
-
 	};
 }
 

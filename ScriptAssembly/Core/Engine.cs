@@ -15,6 +15,5 @@ namespace Sphynx.Core
         public extern static bool IsRunning();
         [MethodImpl(MethodImplOptions.InternalCall)]
         public extern static string[] GetEngineArgs();
-
     }
 }

@@ -11,7 +11,7 @@ namespace Sphynx
     {
         internal NativeComponent Native;
 
-        public GameObject gameObject { get; }
+        public GameObject gameObject { get; internal set; }
 
         public Transform transform { get; }
 

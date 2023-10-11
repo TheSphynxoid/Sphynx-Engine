@@ -305,6 +305,7 @@
       <Filter>Sphynx</Filter>
     </ClInclude>
     <ClInclude Include="src\Sphynx\Core\Scripting\ScriptingBackend.h" />
+    <ClInclude Include="src\Sphynx\Core\Scripting\Script.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Sphynx\Application.cpp">

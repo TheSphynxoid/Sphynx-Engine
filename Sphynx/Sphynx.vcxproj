@@ -143,6 +143,7 @@
     <ClInclude Include="src\Sphynx\Core\Scripting\Mono\CSharp.h" />
     <ClInclude Include="src\Sphynx\Core\Scripting\Mono\CsScript.h" />
     <ClInclude Include="src\Sphynx\Core\Scripting\Mono\MonoRuntime.h" />
+    <ClInclude Include="src\Sphynx\Core\Scripting\Script.h" />
     <ClInclude Include="src\Sphynx\Core\Scripting\ScriptingBackend.h" />
     <ClInclude Include="src\Sphynx\Core\SpriteRenderer.h" />
     <ClInclude Include="src\Sphynx\Core\System.h" />
@@ -245,7 +246,9 @@
     <ClCompile Include="src\Sphynx\imgui\imgui_impl_glfw.cpp" />
     <ClCompile Include="src\Sphynx\imgui\imgui_impl_opengl3.cpp" />
     <ClCompile Include="src\Sphynx\imgui\imgui_impl_win32.cpp" />
-    <ClCompile Include="src\Sphynx\pch.cpp" />
+    <ClCompile Include="src\Sphynx\pch.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Sphynx\Scripts\Component.as" />
