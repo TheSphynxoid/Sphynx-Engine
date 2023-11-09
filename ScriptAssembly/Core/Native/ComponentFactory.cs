@@ -13,6 +13,8 @@ namespace Sphynx.Core.Native
         [MethodImpl(MethodImplOptions.InternalCall)]
         internal static extern NativeComponent CreateNative();
 
+        internal static List<Component> comps;
+
         internal static void DestroyComponent(Component component)
         {
             component.OnDestroy();
@@ -24,7 +26,7 @@ namespace Sphynx.Core.Native
             var TComp = new T();
             TComp.Native = CreateNative();
             TComp.gameObject = go;
-
+            
             TComp.Start();
 
             return TComp;
@@ -33,12 +35,12 @@ namespace Sphynx.Core.Native
         [MethodImpl(MethodImplOptions.InternalCall)]
         private extern static void CopyNativeComponent(GameObject Source, GameObject Destination, NativeComponent component);
 
-        public static void CopyComponent<T>(GameObject Origin, GameObject Destination) where T : Component, new() 
+        public static void CopyComponent<T>(GameObject Origin, GameObject Destination) where T : Component, new()
         {
             var comp = Origin.GetComponent<T>();
             if (comp != null)
             {
-                CopyNativeComponent(Origin,Destination, comp.Native);
+                CopyNativeComponent(Origin, Destination, comp.Native);
             }
             else
             {

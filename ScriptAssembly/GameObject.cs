@@ -9,6 +9,9 @@ namespace Sphynx
 {
     public class GameObject
     {
+
+        public enum Primitive { Sphere, Capsule, Cube, Plane, Triangle};
+
         public string Name { get; set; }
 
         public ulong Id { get; internal set; }
@@ -16,6 +19,11 @@ namespace Sphynx
         public Transform transform { get; set; }
 
         internal Dictionary<Type,Component> components = new Dictionary<Type, Component>();
+
+        public static GameObject CreatePrimitive(Primitive primitive)
+        {
+            return null;
+        }
 
         public T GetComponent<T>() where T : Component, new()
         {
@@ -46,12 +54,6 @@ namespace Sphynx
             }
 
         }
-
-        //public void SwapComponents<T1,T2>() where T1 : Component, new() where T2 : Component, new()
-        //{
-        //    var c = components[typeof(T1)];
-            
-        //}
 
         public static GameObject FindGameObjectByName(string name)
         {

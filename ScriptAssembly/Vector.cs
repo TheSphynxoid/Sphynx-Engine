@@ -84,11 +84,6 @@ namespace Sphynx
             return new Vector3(left.x * scalar, left.y * scalar, left.z * scalar);
         }
 
-        public static Vector3 operator *(Vector3 left, Vector3 right)
-        {
-            return Cross(left, right);
-        }
-
         //Upcast
         public static implicit operator Vector4(Vector3 v) => new Vector4(v.x, v.y, v.z, 0);
 

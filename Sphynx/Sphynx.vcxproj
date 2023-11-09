@@ -99,6 +99,8 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Sphynx\Engine.h" />
+    <ClInclude Include="src\Sphynx\Core\Scripting\Mono\BaseLib\NativeComponent.h" />
     <ClInclude Include="src\Sphynx.h" />
     <ClInclude Include="src\Sphynx\Application.h" />
     <ClInclude Include="src\Sphynx\BitBool.h" />
@@ -142,8 +144,10 @@
     <ClInclude Include="src\Sphynx\Core\Scenic\Scenic.h" />
     <ClInclude Include="src\Sphynx\Core\Scripting\Mono\CSharp.h" />
     <ClInclude Include="src\Sphynx\Core\Scripting\Mono\CsScript.h" />
+    <ClInclude Include="src\Sphynx\Core\Scripting\Mono\Marshaller.h" />
     <ClInclude Include="src\Sphynx\Core\Scripting\Mono\MonoRuntime.h" />
     <ClInclude Include="src\Sphynx\Core\Scripting\Script.h" />
+    <ClInclude Include="src\Sphynx\Core\Scripting\ScriptComponent.h" />
     <ClInclude Include="src\Sphynx\Core\Scripting\ScriptingBackend.h" />
     <ClInclude Include="src\Sphynx\Core\SpriteRenderer.h" />
     <ClInclude Include="src\Sphynx\Core\System.h" />
@@ -177,6 +181,7 @@
     <ClInclude Include="src\Sphynx\ResourceManager.h" />
     <ClInclude Include="src\Sphynx\Scene.h" />
     <ClInclude Include="src\Sphynx\SpTime.h" />
+    <ClInclude Include="src\Sphynx\System.h" />
     <ClInclude Include="src\Sphynx\UI\RectRenderer.h" />
     <ClInclude Include="src\Sphynx\Vector.h" />
     <ClInclude Include="src\Sphynx\imgui\imgui_impl_dx11.h" />
@@ -186,8 +191,13 @@
     <ClInclude Include="src\Sphynx\imgui\imgui_impl_opengl3_loader.h" />
     <ClInclude Include="src\Sphynx\imgui\imgui_impl_win32.h" />
     <ClInclude Include="src\Sphynx\pch.h" />
+    <ClInclude Include="src\Sphynx\Core\Scripting\Mono\BaseLib\TransformConverter.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Sphynx\Engine.cpp" />
+    <ClCompile Include="src\Sphynx\Core\Scripting\Mono\BaseLib\NativeComponent.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="src\Sphynx\Application.cpp" />
     <ClCompile Include="src\Sphynx\Camera.cpp" />
     <ClCompile Include="src\Sphynx\Component.cpp" />
@@ -221,6 +231,8 @@
     <ClCompile Include="src\Sphynx\Core\Scripting\Mono\CsScript.cpp" />
     <ClCompile Include="src\Sphynx\Core\Scripting\Mono\MonoInternalCalls.cpp" />
     <ClCompile Include="src\Sphynx\Core\Scripting\Mono\MonoRuntime.cpp" />
+    <ClCompile Include="src\Sphynx\Core\Scripting\ScriptComponent.cpp" />
+    <ClCompile Include="src\Sphynx\Core\Scripting\ScriptingBackend.cpp" />
     <ClCompile Include="src\Sphynx\Core\SpriteRenderer.cpp" />
     <ClCompile Include="src\Sphynx\Core\TextRenderer.cpp" />
     <ClCompile Include="src\Sphynx\Core\Thread.cpp" />
@@ -249,8 +261,10 @@
     <ClCompile Include="src\Sphynx\pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="src\Sphynx\Core\Scripting\Mono\BaseLib\TransformConverter.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="cpp.hint" />
     <None Include="src\Sphynx\Scripts\Component.as" />
     <None Include="src\Sphynx\Scripts\Testing.as" />
   </ItemGroup>

@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Application.h"
+#include "Engine.h"
 #include "Events/Event.h"
 #include "Events/ApplicationEvents.h"
 #include "SpTime.h"
@@ -67,16 +68,20 @@ void Sphynx::Application::Run(int argc, char** argv)
 		Update();
 		Mono.Update();
 		Events::GlobalEventSystem::GetInstance()->DispatchImmediate<Events::OnApplicationUpdate>(Events::OnApplicationUpdate());
+
 		//Events
 		Events::GlobalEventSystem::GetInstance()->Dispatch();
 		eventSystem.Dispatch();
+
 		//Physics
 		// Later
 		//Render
 		MainWindow->GetRenderer()->Clear();
 		SceneManager::Update();
+
 		//Imgui.
 		Imgui::OnOverlayUpdate();
+
 		//Buffer Swap
 		MainWindow->Update();
 

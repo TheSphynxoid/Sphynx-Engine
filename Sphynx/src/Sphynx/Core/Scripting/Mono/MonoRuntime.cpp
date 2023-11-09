@@ -1,9 +1,9 @@
 #include "pch.h"
 #include "MonoRuntime.h"
-
+#include "CsScript.h"
+#include "../ScriptComponent.h"
 
 extern "C" {
-
 #include "mono/jit/jit.h"
 #include "mono/metadata/assembly.h"
 #include "mono/metadata/object.h"
@@ -24,9 +24,9 @@ static MonoImage* ScriptImage = nullptr;
 static MonoImage* GameImage = nullptr;
 
 //Sphynx Engine Internals
-void (_stdcall *WinResizeThunk)(int, int, MonoException**) = nullptr;
+void(_stdcall* WinResizeThunk)(int, int, MonoException**) = nullptr;
 
-const std::unordered_map<std::string, MonoClass*> CommunTypes = {
+const std::unordered_map<const std::string, MonoClass*> CommunTypes = {
 	{"System.Object",mono_get_object_class()},
 	{"System.Int16",mono_get_int16_class()},
 	{"System.Int32",mono_get_int32_class()},
@@ -51,8 +51,8 @@ const std::unordered_map<std::string, MonoClass*> CommunTypes = {
 
 
 namespace Sphynx::Mono::Internal {
-	
-	std::pair<MonoAssembly*, MonoImage*> LoadAssembly(std::string AssemblyPath) 
+
+	std::pair<MonoAssembly*, MonoImage*> LoadAssembly(std::string AssemblyPath)
 	{
 		MonoImageOpenStatus status;
 		MonoImage* image = mono_image_open_full(AssemblyPath.c_str(), &status, false);
@@ -63,9 +63,14 @@ namespace Sphynx::Mono::Internal {
 		}
 
 		MonoAssembly* assembly = mono_assembly_load_from_full(image, AssemblyPath.c_str(), &status, 0);
-		
+
 		return { assembly, image };
 	}
+
+}
+
+void Sphynx::Mono::MonoRuntime::AddManagedComponent(MonoClass* Object, std::string Fullname)
+{
 
 }
 
@@ -102,7 +107,7 @@ Sphynx::Mono::MonoRuntime::MonoRuntime(std::string AssemblyPath) : MonoRuntime()
 	std::tie(ScriptAssembly, ScriptImage) = Internal::LoadAssembly("ScriptAssembly.dll");
 
 	//Load the AppAssembly
-	std::tie(GameAssembly,GameImage) = Internal::LoadAssembly(AssemblyPath.c_str());
+	std::tie(GameAssembly, GameImage) = Internal::LoadAssembly(AssemblyPath.c_str());
 
 	MonoClass* CompClass = mono_class_from_name(ScriptImage, "Sphynx", "Component");
 
@@ -111,15 +116,15 @@ Sphynx::Mono::MonoRuntime::MonoRuntime(std::string AssemblyPath) : MonoRuntime()
 	if (!HasRegisteredInternals) {
 		Internal::RegisterInternalCalls();
 		auto WinResize = mono_class_get_method_from_name(mono_class_from_name(ScriptImage, "Sphynx.Core.Graphics", "Window"), "InvokeResize", 2);
-		WinResizeThunk = (void(_stdcall *)(int, int,MonoException**))(mono_method_get_unmanaged_thunk(WinResize));
+		WinResizeThunk = (void(_stdcall*)(int, int, MonoException**))(mono_method_get_unmanaged_thunk(WinResize));
 
 		static auto ResizeLambda = [](Events::OnWindowResize& e)
 			{
 				MonoException* ex = nullptr;
 				(*WinResizeThunk)(e.Width, e.Height, &ex);
-				if (ex) { 
+				if (ex) {
 					mono_print_unhandled_exception((MonoObject*)ex);
-					throw std::exception(); 
+					throw std::exception();
 				}
 			};
 		Sphynx::Events::GlobalEventSystem::GetInstance()->Subscribe<Events::OnWindowResize>(ResizeLambda);
@@ -136,7 +141,7 @@ Sphynx::Mono::MonoRuntime::MonoRuntime(std::string AssemblyPath) : MonoRuntime()
 		MONO_TYPEDEF_NAMESPACE
 		MONO_TYPEDEF_EXTENDS
 		MONO_TYPEDEF_FIELD_LIST
-		MONO_TYPEDEF_METHOD_LIST 
+		MONO_TYPEDEF_METHOD_LIST
 	*/
 	int TypeCount = mono_table_info_get_rows(TypeDefTable);
 	//Loop over Types in the table.
@@ -156,12 +161,16 @@ Sphynx::Mono::MonoRuntime::MonoRuntime(std::string AssemblyPath) : MonoRuntime()
 		strcpy(&Fullname[0], Namespace);
 		Fullname[NamespaceLen] = '.';
 		strcpy(&Fullname[NamespaceLen + 1], Classname);
-		
+
 		Core_Info(Fullname);
 
 		MonoClass* monoClass = mono_class_from_name(GameImage, Namespace, Classname);
 		bool IsComponent = mono_class_is_subclass_of(monoClass, CompClass, true);
 
+		if (IsComponent) {
+			CompNames.insert(std::pair<std::string, MonoClass*>(Classname, monoClass));
+			AddManagedComponent(monoClass, Fullname);
+		}
 	}
 }
 
@@ -181,4 +190,18 @@ void Sphynx::Mono::MonoRuntime::Shutdown()
 	mono_domain_free(Appdomain, true);
 	mono_jit_cleanup(JITdomain);
 	isAlive = false;
+}
+
+Sphynx::Core::Scripting::Script* Sphynx::Mono::MonoRuntime::CreateScript(const char* path, GameObject GO)
+{
+	return nullptr;
+}
+
+Sphynx::Core::Scripting::Script* Sphynx::Mono::MonoRuntime::CreateScriptByName(std::string name, GameObject GO)
+{
+	MonoClass* CompClass = CompNames[name];
+	MonoObject* obj = mono_object_new(Appdomain, CompClass);
+	mono_runtime_object_init(obj);
+	auto script = new CsScript(obj, name);
+	return script;
 }

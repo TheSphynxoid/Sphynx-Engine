@@ -1,11 +1,19 @@
 #pragma once
 #include "Core/Scripting/ScriptingBackend.h"
 
+#define SphynxScripting Sphynx::Core::Scripting
+
+struct _MonoClass;
+
+typedef _MonoClass MonoClass;
 
 namespace Sphynx::Mono {
-	class MonoRuntime : public Sphynx::Core::Scripting::ScriptingBackend {
+	class MonoRuntime : public SphynxScripting::ScriptingBackend {
 	private:
-		bool isAlive;
+		static bool isAlive;
+		static std::unordered_map<std::string, MonoClass*> CompNames;
+
+		void AddManagedComponent(MonoClass* Object, std::string Fullname);
 	public:
 		MonoRuntime();
 		~MonoRuntime();
@@ -15,6 +23,11 @@ namespace Sphynx::Mono {
 		virtual void Update() override;
 		virtual void Shutdown() override;
 
-		inline bool IsAlive() { return isAlive; }
+		static inline bool IsAlive() { return isAlive; }
+
+		virtual SphynxScripting::Script* CreateScript(const char* path, GameObject GO) override;
+		virtual SphynxScripting::Script* CreateScriptByName(std::string name, GameObject GO) override;
+
 	};
 }
+#undef SphynxScripting

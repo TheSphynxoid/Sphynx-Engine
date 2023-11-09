@@ -21,6 +21,8 @@ namespace Sphynx::Core {
 		inline static std::mutex ThreadPoolMutex;
 		inline static std::atomic<bool> IsRunning{ false };
 		inline static std::atomic<bool> FinishedWork{ true };
+		inline static std::atomic<bool> HasStarted{ false };
+		inline static std::vector<std::function<void()>> startQueue;
 		inline static bool stopped = false;
 		ThreadPool operator=(const ThreadPool& tp) = delete;
 		ThreadPool(const ThreadPool&) = delete;
@@ -44,5 +46,7 @@ namespace Sphynx::Core {
 		}
 		static int GetMaxThreads() { return MaxThreads; };
 		static std::vector<std::thread>& GetThreads() { return threads; };
+
+		static void SetStartUpCallback(std::function<void()> funcs);
 	};
 }

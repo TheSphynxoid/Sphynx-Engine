@@ -2,11 +2,20 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Sphynx
 {
+    [AttributeUsage(AttributeTargets.Method,Inherited = true)]
+    public class ComponentBaseMethodAttribute : Attribute
+    {
+        string Name = "";
+        public ComponentBaseMethodAttribute() { }
+        public ComponentBaseMethodAttribute(string name) { Name = name; }
+        public string GetName() => Name;
+    }
     public abstract class Component
     {
         internal NativeComponent Native;
@@ -17,18 +26,35 @@ namespace Sphynx
 
         public ulong ID { get { return Native.NativeID; } }
 
-        public virtual void Start() { }
-        public virtual void Update() { }
-        public virtual void FixedUpdate() { }
-        public virtual void OnDestroy() { }
+        [ComponentBaseMethod("Awake")]
+        public virtual void Awake() 
+        {
+            Core.Engine.IgnoreCallback(GetType().FullName);
+        }
+        [ComponentBaseMethod("Start")]
+        public virtual void Start() 
+        {
+            Core.Engine.IgnoreCallback(GetType().FullName);
+        }
+        [ComponentBaseMethod("Update")]
+        public virtual void Update() 
+        { 
+            Core.Engine.IgnoreCallback(GetType().FullName);
+        }
+        [ComponentBaseMethod("FixedUpdate")]
+        public virtual void FixedUpdate()
+        {
+            Core.Engine.IgnoreCallback(GetType().FullName);
+        }
+        [ComponentBaseMethod("OnDestroy")]
+        public virtual void OnDestroy() 
+        {
+            Core.Engine.IgnoreCallback(GetType().FullName);
+        }
 
         public void Destroy()
         {
             ComponentFactory.DestroyComponent(this);
         }
-    }
-    public sealed class Transform : Component
-    {
-        public Vector3 Position { get; set; }
     }
 }

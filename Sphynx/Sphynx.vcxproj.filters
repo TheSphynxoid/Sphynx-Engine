@@ -306,6 +306,12 @@
     </ClInclude>
     <ClInclude Include="src\Sphynx\Core\Scripting\ScriptingBackend.h" />
     <ClInclude Include="src\Sphynx\Core\Scripting\Script.h" />
+    <ClInclude Include="src\Sphynx\Core\Scripting\Mono\BaseLib\NativeComponent.h" />
+    <ClInclude Include="src\Sphynx\Core\Scripting\Mono\Marshaller.h" />
+    <ClInclude Include="src\Sphynx\Core\Scripting\Mono\BaseLib\TransformConverter.h" />
+    <ClInclude Include="src\Sphynx\Core\Scripting\ScriptComponent.h" />
+    <ClInclude Include="src\Sphynx\System.h" />
+    <ClInclude Include="src\Sphynx\Engine.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Sphynx\Application.cpp">
@@ -485,6 +491,11 @@
     <ClCompile Include="src\Sphynx\pch.cpp">
       <Filter>Sphynx</Filter>
     </ClCompile>
+    <ClCompile Include="src\Sphynx\Core\Scripting\Mono\BaseLib\NativeComponent.cpp" />
+    <ClCompile Include="src\Sphynx\Core\Scripting\Mono\BaseLib\TransformConverter.cpp" />
+    <ClCompile Include="src\Sphynx\Core\Scripting\ScriptComponent.cpp" />
+    <ClCompile Include="src\Sphynx\Core\Scripting\ScriptingBackend.cpp" />
+    <ClCompile Include="src\Sphynx\Engine.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Sphynx\Scripts\Component.as">
@@ -493,5 +504,6 @@
     <None Include="src\Sphynx\Scripts\Testing.as">
       <Filter>Sphynx\Scripts</Filter>
     </None>
+    <None Include="cpp.hint" />
   </ItemGroup>
 </Project>

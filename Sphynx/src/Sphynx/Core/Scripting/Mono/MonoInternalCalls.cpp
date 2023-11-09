@@ -1,7 +1,11 @@
 #include "pch.h"
 #ifndef Sphynx_Internal_Mono
 #define Sphynx_Internal_Mono
+#ifdef Platform_Windows
 #define MonoExport __declspec(dllexport)
+#elif
+#define MonoExport
+#endif
 #include "Logger.h"
 #include "Component.h"
 #include "Core/Factories/ComponentFactory.h"
@@ -65,6 +69,10 @@ namespace Sphynx::Mono::Internal {
 	MonoExport Sphynx::Core::Bounds GetSize() {
 		return MainWindow->GetBounds();
 	}
+	MonoExport void SetPosition(MonoObject GO, glm::vec3) {
+		
+	}
+
 	void RegisterInternalCalls() {
 		MainWindow = GetApplication()->GetMainWindow();
 
@@ -89,6 +97,8 @@ namespace Sphynx::Mono::Internal {
 		mono_add_internal_call("Sphynx.Core.Graphics.Window::GetVsync", &GetVsync);
 		mono_add_internal_call("Sphynx.Core.Graphics.Window::SetSize", &SetSize);
 		mono_add_internal_call("Sphynx.Core.Graphics.Window::GetSize", &GetSize);
+		//Sphynx.Transform
+		mono_add_internal_call("Sphynx.Transform::SetPosition", NULL);
 	}
 }
 #endif
