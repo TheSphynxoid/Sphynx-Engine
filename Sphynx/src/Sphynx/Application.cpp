@@ -29,7 +29,6 @@ Application* MainApplication;
 
 Sphynx::Application::Application()
 {
-	ThreadPool::Start();
 	eventSystem = Events::EventSystem();
 	//eventSystem.Subscribe<Application, Events::OnWindowClose>(this, &Application::HandleWindowClose);
 #if defined(DEBUG)
@@ -62,6 +61,7 @@ void Sphynx::Application::Run(int argc, char** argv)
 	Sphynx::Mono::MonoRuntime Mono ("GameAssembly.dll");
 	Mono.Start();
 	Start();
+	ThreadPool::Start();
 	Time::Start();
 	int i = 0;
 	while (MainWindow->IsAlive()) {

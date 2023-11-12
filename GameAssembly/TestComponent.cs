@@ -11,7 +11,7 @@ namespace GameAssembly
     {
         public override void Start()
         {
-            
+            Logger.Info("C# Called");
         }
 
         public override void Update()

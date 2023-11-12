@@ -2,6 +2,7 @@
 #include "MonoRuntime.h"
 #include "CsScript.h"
 #include "../ScriptComponent.h"
+#include "Core/ThreadPool.h"
 
 extern "C" {
 #include "mono/jit/jit.h"
@@ -15,18 +16,23 @@ extern "C" {
 
 //Seperation of Code.
 #include "MonoInternalCalls.cpp"
-
+//Translation Module Statics
 static MonoDomain* JITdomain;
 static MonoDomain* Appdomain;
 static MonoAssembly* ScriptAssembly = nullptr;
 static MonoAssembly* GameAssembly = nullptr;
 static MonoImage* ScriptImage = nullptr;
 static MonoImage* GameImage = nullptr;
+static MonoClass* ComponentClass = nullptr;
+//MonoRuntime Static Members
+std::unordered_map<std::string, MonoClass*> Sphynx::Mono::MonoRuntime::CompNames;
+std::unordered_map<std::string, Sphynx::Mono::CsScript> Sphynx::Mono::MonoRuntime::CachedScripts;
 
 //Sphynx Engine Internals
+//Method Pointers
 void(_stdcall* WinResizeThunk)(int, int, MonoException**) = nullptr;
-
-const std::unordered_map<const std::string, MonoClass*> CommunTypes = {
+//A Map of Common
+const std::unordered_map<std::string, MonoClass*> CommonTypes = {
 	{"System.Object",mono_get_object_class()},
 	{"System.Int16",mono_get_int16_class()},
 	{"System.Int32",mono_get_int32_class()},
@@ -46,7 +52,8 @@ const std::unordered_map<const std::string, MonoClass*> CommunTypes = {
 	{"System.Threading.Thread",mono_get_thread_class()},
 	{"System.Enum",mono_get_enum_class()},
 	{"System.Exception",mono_get_exception_class()},
-	{"void",mono_get_void_class()}
+	{"void",mono_get_void_class()},
+	{"Sphynx.Component", ComponentClass}
 };
 
 
@@ -71,7 +78,7 @@ namespace Sphynx::Mono::Internal {
 
 void Sphynx::Mono::MonoRuntime::AddManagedComponent(MonoClass* Object, std::string Fullname)
 {
-
+	
 }
 
 Sphynx::Mono::MonoRuntime::MonoRuntime() : isAlive(true)
@@ -100,8 +107,13 @@ Sphynx::Mono::MonoRuntime::~MonoRuntime()
 
 Sphynx::Mono::MonoRuntime::MonoRuntime(std::string AssemblyPath) : MonoRuntime()
 {
+
+	CsScript::Runtime = this;
+
 	Appdomain = mono_domain_create_appdomain("GameDomain", nullptr);
 	mono_thread_attach(Appdomain);
+
+	Core::ThreadPool::SetStartUpCallback([]() {mono_thread_attach(Appdomain); });
 
 	//Load the ScriptAssembly
 	std::tie(ScriptAssembly, ScriptImage) = Internal::LoadAssembly("ScriptAssembly.dll");
@@ -109,7 +121,7 @@ Sphynx::Mono::MonoRuntime::MonoRuntime(std::string AssemblyPath) : MonoRuntime()
 	//Load the AppAssembly
 	std::tie(GameAssembly, GameImage) = Internal::LoadAssembly(AssemblyPath.c_str());
 
-	MonoClass* CompClass = mono_class_from_name(ScriptImage, "Sphynx", "Component");
+	ComponentClass = mono_class_from_name(ScriptImage, "Sphynx", "Component");
 
 	static bool HasRegisteredInternals = false;
 
@@ -162,10 +174,8 @@ Sphynx::Mono::MonoRuntime::MonoRuntime(std::string AssemblyPath) : MonoRuntime()
 		Fullname[NamespaceLen] = '.';
 		strcpy(&Fullname[NamespaceLen + 1], Classname);
 
-		Core_Info(Fullname);
-
 		MonoClass* monoClass = mono_class_from_name(GameImage, Namespace, Classname);
-		bool IsComponent = mono_class_is_subclass_of(monoClass, CompClass, true);
+		bool IsComponent = mono_class_is_subclass_of(monoClass, ComponentClass, true);
 
 		if (IsComponent) {
 			CompNames.insert(std::pair<std::string, MonoClass*>(Classname, monoClass));
@@ -199,9 +209,11 @@ Sphynx::Core::Scripting::Script* Sphynx::Mono::MonoRuntime::CreateScript(const c
 
 Sphynx::Core::Scripting::Script* Sphynx::Mono::MonoRuntime::CreateScriptByName(std::string name, GameObject GO)
 {
-	MonoClass* CompClass = CompNames[name];
-	MonoObject* obj = mono_object_new(Appdomain, CompClass);
-	mono_runtime_object_init(obj);
-	auto script = new CsScript(obj, name);
-	return script;
+	if (CachedScripts.find(name) == CachedScripts.end()){
+		MonoClass* CompClass = CompNames[name];
+		MonoObject* obj = mono_object_new(Appdomain, CompClass);
+		mono_runtime_object_init(obj);
+		CachedScripts[name] = CsScript(obj, name);
+	}
+	return CachedScripts[name].Copy();
 }
