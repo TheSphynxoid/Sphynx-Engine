@@ -9,6 +9,7 @@ namespace Sphynx::Mono {
 	private:
 		//A pointer the runtime.
 		static inline MonoRuntime* Runtime;
+		static inline MonoMethod* AwakeVirtMethod, * StartVirtMethod, * UpdateVirtMethod, * FixedUpdateVirtMethod, * OnDestroyVirtMethod;
 		//The Object in mono.
 		MonoObject* ScriptObject;
 		//Class name
@@ -18,11 +19,13 @@ namespace Sphynx::Mono {
 		//Start function thunk.
 		StartFunc StartThunk;
 		//Typedef of the Update function thunk.
-		typedef void(__stdcall *UpdateFunc)(MonoObject*, float delta, MonoException**);
+		typedef void(__stdcall *UpdateFunc)(MonoObject*, MonoException**);
 		//Update function thunk.
 		StartFunc UpdateThunk;
 		//This is to validate the existance of ScriptObject.
 		bool IsValid = false;
+
+		static void HandleException(MonoException* ex);
 	public:
 		CsScript() = default;
 		CsScript(MonoObject* obj,std::string name);

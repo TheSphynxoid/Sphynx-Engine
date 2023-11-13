@@ -9,25 +9,25 @@ struct _MonoClass;
 typedef _MonoClass MonoClass;
 
 namespace Sphynx::Mono {
-	class MonoRuntime : public SphynxScripting::ScriptingBackend {
+	class MonoRuntime {
 	private:
-		bool isAlive;
-		static std::unordered_map<std::string, MonoClass*> CompNames;
-		static std::unordered_map<std::string, CsScript> CachedScripts;
-		void AddManagedComponent(MonoClass* Object, std::string Fullname);
+		static inline bool isAlive;
+		static inline std::string GameAssemblyPath;
+		static inline std::unordered_map<std::string, MonoClass*> CompNames;
+		static inline std::unordered_map<std::string, CsScript> CachedScripts;
+		static void AddManagedComponent(MonoClass* Object, std::string Fullname);
+		static void ReadClassesMetadata();
 	public:
-		MonoRuntime();
-		~MonoRuntime();
-		MonoRuntime(std::string AssemblyPath);
-		// Inherited via ScriptingBackend
-		virtual void Start() override;
-		virtual void Update() override;
-		virtual void Shutdown() override;
+		static void Initialize(std::string AssemblyPath);
+		static void Shutdown();
 
-		inline bool IsAlive() { return isAlive; }
+		static inline bool IsAlive() { return isAlive; }
 
-		virtual SphynxScripting::Script* CreateScript(const char* path, GameObject GO) override;
-		virtual SphynxScripting::Script* CreateScriptByName(std::string name, GameObject GO) override;
+		static void ReloadGameAssembly();
+		static inline void SetGameAssemblyPath(std::string path) { GameAssemblyPath = path; };
+
+		static SphynxScripting::Script* CreateScript(const char* path, GameObject* GO);
+		static SphynxScripting::Script* CreateScriptByName(std::string name);
 
 	};
 }

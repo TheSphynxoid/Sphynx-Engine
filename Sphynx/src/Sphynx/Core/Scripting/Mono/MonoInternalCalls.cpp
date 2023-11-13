@@ -36,6 +36,7 @@ namespace Sphynx::Mono::Internal {
 	}
 
 	MonoExport void spdLog(MonoString* string, spdlog::level::level_enum level) {
+		Logger::GetInternalLogger()->flush();
 		Logger::GetInternalLogger()->log(level, mono_string_to_utf8(string));
 	}
 

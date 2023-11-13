@@ -46,7 +46,7 @@ namespace Sphynx::Core {
 		}
 		static int GetMaxThreads() { return MaxThreads; };
 		static std::vector<std::thread>& GetThreads() { return threads; };
-
+		static std::unique_lock<std::mutex> GetLock() { return std::unique_lock<std::mutex>(ThreadPoolMutex); };
 		static void SetStartUpCallback(std::function<void()> funcs);
 	};
 }

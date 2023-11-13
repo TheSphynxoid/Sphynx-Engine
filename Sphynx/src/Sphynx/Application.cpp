@@ -58,15 +58,16 @@ void Sphynx::Application::Run(int argc, char** argv)
 	//Scenic::WriteScene(&SceneManager::GetScene())
 	Input::Init();
 	SceneManager::Start();
-	Sphynx::Mono::MonoRuntime Mono ("GameAssembly.dll");
-	Mono.Start();
+	Sphynx::Mono::MonoRuntime::Initialize("GameAssembly.dll");
 	Start();
 	ThreadPool::Start();
 	Time::Start();
 	int i = 0;
 	while (MainWindow->IsAlive()) {
 		Update();
-		Mono.Update();
+
+		//Mono.Update();
+
 		Events::GlobalEventSystem::GetInstance()->DispatchImmediate<Events::OnApplicationUpdate>(Events::OnApplicationUpdate());
 
 		//Events
@@ -88,6 +89,7 @@ void Sphynx::Application::Run(int argc, char** argv)
 		Time::Update();
 	}
 	//SceneManager::End();
+	Mono::MonoRuntime::Shutdown();
 	ThreadPool::Stop();
 }
 

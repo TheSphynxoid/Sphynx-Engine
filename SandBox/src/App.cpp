@@ -10,6 +10,7 @@
 #include <Sphynx/ResourceManager.h>
 #include <Editor/TextureDebugger.h>
 #include <Core/TextRenderer.h>
+#include <Core/Scripting/ScriptComponent.h>
 
 using namespace Sphynx;
 using namespace Sphynx::Core;
@@ -23,18 +24,18 @@ public:
 		//Sphynx::Core::Bounds b = { 512, 384 };
 		//this->GetMainWindow()->Resize(b.Width, b.Height);
 #ifdef DEBUG
-		//Sphynx::Core::Imgui::AddOverlayWindow(new Editor::Editor());
-		//Sphynx::Core::Imgui::AddOverlayWindow(new Editor::SceneManagerView());
-		//Sphynx::Core::Imgui::AddOverlayWindow(new Editor::EditorViewport());
-		//Sphynx::Core::Imgui::AddOverlayWindow(new Editor::GameObjectView());
-		//Sphynx::Core::Imgui::AddOverlayWindow(new Editor::Console());
-		//GetApplication()
+		Sphynx::Core::Imgui::AddOverlayWindow(new Editor::Editor());
+		Sphynx::Core::Imgui::AddOverlayWindow(new Editor::SceneManagerView());
+		Sphynx::Core::Imgui::AddOverlayWindow(new Editor::EditorViewport());
+		Sphynx::Core::Imgui::AddOverlayWindow(new Editor::GameObjectView());
+		Sphynx::Core::Imgui::AddOverlayWindow(new Editor::Console());
 #elif RELEASE
 
 #endif
 	}
 	void Start() {
 		TextTest = GameObject::CreatePrimitive(Primitives::Cube);
+		TextTest.AddComponent<ScriptComponent>("TestComponent");
 		Sphynx::Core::SceneManager::GetScene().AddGameObject(&TextTest);
 	}
 	void Update() {	

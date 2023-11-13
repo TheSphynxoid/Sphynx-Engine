@@ -9,11 +9,27 @@ using System.Threading.Tasks;
 
 namespace Sphynx.Core.Graphics
 {
+    [StructLayout(LayoutKind.Sequential)]
     public struct Bounds
     {
-        public int Width,Height;
+        public int Width;
+        public int Height;
 
-        public Bounds(int width, int height) { Width = width; Height = height; } 
+        public Bounds(int width, int height) { Width = width; Height = height; }
+
+        public static Bounds operator* (int left, Bounds right)
+        {
+            right.Width *= left;
+            right.Height *= left;
+            return right;
+        }
+        public static Bounds operator +(Bounds left, Bounds right)
+        {
+            Bounds b;
+            b.Width = right.Width + left.Width;
+            b.Height = right.Height + left.Height;
+            return b;
+        }
     }
 
     /// <summary>
@@ -37,6 +53,10 @@ namespace Sphynx.Core.Graphics
         private static bool vsync = GetVsync();
         public static bool Vsync { get => vsync; set { if (value != vsync){ SetVsync(vsync); vsync = value; } } }
 
+
+        /// <summary>
+        /// Avoiding Having to send a struct we seperate the Width and Height
+        /// </summary>
         [MethodImpl(MethodImplOptions.InternalCall)]
         private static extern void SetSize(int width, int height);
         [MethodImpl(MethodImplOptions.InternalCall)]

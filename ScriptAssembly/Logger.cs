@@ -38,7 +38,6 @@ namespace Sphynx
         [MethodImpl(MethodImplOptions.InternalCall)]
         public extern static void spdLog(string message, LogLevel logLevel);
 
-#if DEBUG
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Trace(string message)
         {
@@ -74,20 +73,5 @@ namespace Sphynx
         {
             spdLog(message, LogLevel.critical);
         }
-#else
-
-        public static void Trace(string message) { }
-
-        public static void Info(string message) { }
-
-        public static void Debug(string message) { }
-
-        public static void Warn(string message) { }
-
-        public static void Error(string message) { }
-
-        public static void Critical(string message) { }
-#endif
-
     }
 }

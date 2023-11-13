@@ -9,7 +9,7 @@ namespace Sphynx::Core {
 	private:
 		Scripting::Script* script;
 	public:
-		ScriptComponent(std::string path);
+		ScriptComponent(std::string name);
 
 		// Inherited via Component
 		void OnComponentAttach(GameObject* parent) override;

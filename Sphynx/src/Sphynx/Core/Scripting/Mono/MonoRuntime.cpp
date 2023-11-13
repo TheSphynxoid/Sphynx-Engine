@@ -25,8 +25,6 @@ static MonoImage* ScriptImage = nullptr;
 static MonoImage* GameImage = nullptr;
 static MonoClass* ComponentClass = nullptr;
 //MonoRuntime Static Members
-std::unordered_map<std::string, MonoClass*> Sphynx::Mono::MonoRuntime::CompNames;
-std::unordered_map<std::string, Sphynx::Mono::CsScript> Sphynx::Mono::MonoRuntime::CachedScripts;
 
 //Sphynx Engine Internals
 //Method Pointers
@@ -81,68 +79,8 @@ void Sphynx::Mono::MonoRuntime::AddManagedComponent(MonoClass* Object, std::stri
 	
 }
 
-Sphynx::Mono::MonoRuntime::MonoRuntime() : isAlive(true)
+void Sphynx::Mono::MonoRuntime::ReadClassesMetadata()
 {
-	mono_set_assemblies_path("data");
-
-#ifdef DEBUG
-	const char* argv[2] = {
-	"--debugger-agent=transport=dt_socket,address=127.0.0.1:2550,server=y,suspend=n,loglevel=3,logfile=MonoDebugger.log",
-	"--soft-breakpoints"
-	};
-
-	mono_jit_parse_options(2, (char**)argv);
-	mono_debug_init(MONO_DEBUG_FORMAT_MONO);
-#endif
-
-	JITdomain = mono_jit_init("ScriptJIT");
-}
-
-Sphynx::Mono::MonoRuntime::~MonoRuntime()
-{
-	if (isAlive) {
-		Shutdown();
-	}
-}
-
-Sphynx::Mono::MonoRuntime::MonoRuntime(std::string AssemblyPath) : MonoRuntime()
-{
-
-	CsScript::Runtime = this;
-
-	Appdomain = mono_domain_create_appdomain("GameDomain", nullptr);
-	mono_thread_attach(Appdomain);
-
-	Core::ThreadPool::SetStartUpCallback([]() {mono_thread_attach(Appdomain); });
-
-	//Load the ScriptAssembly
-	std::tie(ScriptAssembly, ScriptImage) = Internal::LoadAssembly("ScriptAssembly.dll");
-
-	//Load the AppAssembly
-	std::tie(GameAssembly, GameImage) = Internal::LoadAssembly(AssemblyPath.c_str());
-
-	ComponentClass = mono_class_from_name(ScriptImage, "Sphynx", "Component");
-
-	static bool HasRegisteredInternals = false;
-
-	if (!HasRegisteredInternals) {
-		Internal::RegisterInternalCalls();
-		auto WinResize = mono_class_get_method_from_name(mono_class_from_name(ScriptImage, "Sphynx.Core.Graphics", "Window"), "InvokeResize", 2);
-		WinResizeThunk = (void(_stdcall*)(int, int, MonoException**))(mono_method_get_unmanaged_thunk(WinResize));
-
-		static auto ResizeLambda = [](Events::OnWindowResize& e)
-			{
-				MonoException* ex = nullptr;
-				(*WinResizeThunk)(e.Width, e.Height, &ex);
-				if (ex) {
-					mono_print_unhandled_exception((MonoObject*)ex);
-					throw std::exception();
-				}
-			};
-		Sphynx::Events::GlobalEventSystem::GetInstance()->Subscribe<Events::OnWindowResize>(ResizeLambda);
-		HasRegisteredInternals = true;
-	}
-
 	//Get All classes that inherit component from GameAssembly.
 	//See http://docs.go-mono.com/?link=xhtml%3adeploy%2fmono-api-metadata.html
 	const MonoTableInfo* TypeDefTable = mono_image_get_table_info(GameImage, MONO_TABLE_TYPEDEF);
@@ -184,13 +122,65 @@ Sphynx::Mono::MonoRuntime::MonoRuntime(std::string AssemblyPath) : MonoRuntime()
 	}
 }
 
-void Sphynx::Mono::MonoRuntime::Start()
+void Sphynx::Mono::MonoRuntime::Initialize(std::string AssemblyPath)
 {
 
-}
+	mono_set_assemblies_path("data");
 
-void Sphynx::Mono::MonoRuntime::Update()
-{
+#ifdef DEBUG
+	const char* argv[2] = {
+	"--debugger-agent=transport=dt_socket,address=127.0.0.1:2550,server=y,suspend=n,loglevel=3,logfile=MonoDebugger.log",
+	"--soft-breakpoints"
+	};
+
+	mono_jit_parse_options(2, (char**)argv);
+	mono_debug_init(MONO_DEBUG_FORMAT_MONO);
+#endif
+
+	JITdomain = mono_jit_init("ScriptJIT");
+
+	GameAssemblyPath = AssemblyPath;
+
+	Appdomain = mono_domain_create_appdomain("GameDomain", nullptr);
+	mono_thread_attach(Appdomain);
+
+	Core::ThreadPool::SetStartUpCallback([]() {mono_thread_attach(Appdomain); });
+
+	//Load the ScriptAssembly
+	std::tie(ScriptAssembly, ScriptImage) = Internal::LoadAssembly("ScriptAssembly.dll");
+
+	//Load the AppAssembly
+	std::tie(GameAssembly, GameImage) = Internal::LoadAssembly(AssemblyPath.c_str());
+
+	ComponentClass = mono_class_from_name(ScriptImage, "Sphynx", "Component");
+
+	CsScript::AwakeVirtMethod = mono_class_get_method_from_name(ComponentClass, "Awake", 0);
+	CsScript::StartVirtMethod = mono_class_get_method_from_name(ComponentClass, "Start", 0);
+	CsScript::UpdateVirtMethod = mono_class_get_method_from_name(ComponentClass, "Update", 0);
+	CsScript::FixedUpdateVirtMethod = mono_class_get_method_from_name(ComponentClass, "FixedUpdate", 0);
+	CsScript::OnDestroyVirtMethod = mono_class_get_method_from_name(ComponentClass, "OnDestroy", 0);
+
+	static bool HasRegisteredInternals = false;
+
+	if (!HasRegisteredInternals) {
+		Internal::RegisterInternalCalls();
+		auto WinResize = mono_class_get_method_from_name(mono_class_from_name(ScriptImage, "Sphynx.Core.Graphics", "Window"), "InvokeResize", 2);
+		WinResizeThunk = (void(_stdcall*)(int, int, MonoException**))(mono_method_get_unmanaged_thunk(WinResize));
+
+		static auto ResizeLambda = [](Events::OnWindowResize& e)
+			{
+				MonoException* ex = nullptr;
+				(*WinResizeThunk)(e.Width, e.Height, &ex);
+				if (ex) {
+					mono_print_unhandled_exception((MonoObject*)ex);
+					throw std::exception();
+				}
+			};
+		Sphynx::Events::GlobalEventSystem::GetInstance()->Subscribe<Events::OnWindowResize>(ResizeLambda);
+		HasRegisteredInternals = true;
+	}
+
+	ReadClassesMetadata();
 }
 
 void Sphynx::Mono::MonoRuntime::Shutdown()
@@ -202,12 +192,21 @@ void Sphynx::Mono::MonoRuntime::Shutdown()
 	isAlive = false;
 }
 
-Sphynx::Core::Scripting::Script* Sphynx::Mono::MonoRuntime::CreateScript(const char* path, GameObject GO)
+void Sphynx::Mono::MonoRuntime::ReloadGameAssembly()
+{
+	//Reload the assembly
+	std::tie(GameAssembly, GameImage) = Internal::LoadAssembly(GameAssemblyPath.c_str());
+
+	CompNames.clear();
+	CachedScripts.clear();
+}
+
+Sphynx::Core::Scripting::Script* Sphynx::Mono::MonoRuntime::CreateScript(const char* path, GameObject* GO)
 {
 	return nullptr;
 }
 
-Sphynx::Core::Scripting::Script* Sphynx::Mono::MonoRuntime::CreateScriptByName(std::string name, GameObject GO)
+Sphynx::Core::Scripting::Script* Sphynx::Mono::MonoRuntime::CreateScriptByName(std::string name)
 {
 	if (CachedScripts.find(name) == CachedScripts.end()){
 		MonoClass* CompClass = CompNames[name];
