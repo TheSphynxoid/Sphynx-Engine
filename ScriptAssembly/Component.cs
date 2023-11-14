@@ -29,27 +29,31 @@ namespace Sphynx
         [ComponentBaseMethod("Awake")]
         public virtual void Awake() 
         {
-            Core.Engine.IgnoreCallback(GetType().FullName);
+            //I Don't think it's possible to optimize them away
+            //Unless i think of something new i'll leave them as is
+            //Or maybe they get optimized already by the compiler either way i'm not sure.
+
+            //Core.Engine.IgnoreCallback(GetType().FullName);
         }
         [ComponentBaseMethod("Start")]
         public virtual void Start() 
         {
-            Core.Engine.IgnoreCallback(GetType().FullName);
+            //Core.Engine.IgnoreCallback(GetType().FullName);
         }
         [ComponentBaseMethod("Update")]
         public virtual void Update() 
         { 
-            Core.Engine.IgnoreCallback(GetType().FullName);
+            //Core.Engine.IgnoreCallback(GetType().FullName);
         }
         [ComponentBaseMethod("FixedUpdate")]
         public virtual void FixedUpdate()
         {
-            Core.Engine.IgnoreCallback(GetType().FullName);
+            //Core.Engine.IgnoreCallback(GetType().FullName);
         }
         [ComponentBaseMethod("OnDestroy")]
         public virtual void OnDestroy() 
         {
-            Core.Engine.IgnoreCallback(GetType().FullName);
+            //Core.Engine.IgnoreCallback(GetType().FullName);
         }
 
         public void Destroy()

@@ -11,7 +11,7 @@ void Sphynx::Mono::CsScript::HandleException(MonoException* ex)
 		mono_raise_exception(ex);
 		//Making this what i think is thread safe.
 		{
-			Sphynx::Core::ThreadPool::GetLock();
+			auto lock = Sphynx::Core::ThreadPool::GetLock();
 			CsScript::Runtime->ReloadGameAssembly();
 		}
 	}
@@ -20,7 +20,21 @@ void Sphynx::Mono::CsScript::HandleException(MonoException* ex)
 Sphynx::Mono::CsScript::CsScript(MonoObject* obj, std::string name) : ScriptObject(obj), Name(name)
 {
 	IsValid = true;
-	StartThunk = (StartFunc)mono_method_get_unmanaged_thunk(mono_object_get_virtual_method(ScriptObject, StartVirtMethod));
+
+	AwakeThunk = (UnmanagedThunk)mono_method_get_unmanaged_thunk(mono_object_get_virtual_method(ScriptObject, AwakeVirtMethod));
+	StartThunk = (UnmanagedThunk)mono_method_get_unmanaged_thunk(mono_object_get_virtual_method(ScriptObject, StartVirtMethod));
+	UpdateThunk = (UnmanagedThunk)mono_method_get_unmanaged_thunk(mono_object_get_virtual_method(ScriptObject, UpdateVirtMethod));
+	FixedUpdateThunk = (UnmanagedThunk)mono_method_get_unmanaged_thunk(mono_object_get_virtual_method(ScriptObject, FixedUpdateVirtMethod));
+	OnDestroyThunk = (UnmanagedThunk)mono_method_get_unmanaged_thunk(mono_object_get_virtual_method(ScriptObject, OnDestroyVirtMethod));
+}
+
+void Sphynx::Mono::CsScript::Awake()
+{
+	Sphynx::Core::ThreadPool::Submit([*this]() {
+		MonoException* ex;
+		AwakeThunk(ScriptObject, &ex);
+		HandleException(ex);
+		});
 }
 
 void Sphynx::Mono::CsScript::Start()
@@ -29,6 +43,33 @@ void Sphynx::Mono::CsScript::Start()
 			MonoException* ex;
 			StartThunk(ScriptObject, &ex);
 			HandleException(ex);
+		});
+}
+
+void Sphynx::Mono::CsScript::Update()
+{
+	Sphynx::Core::ThreadPool::Submit([*this]() {
+		MonoException* ex;
+		UpdateThunk(ScriptObject, &ex);
+		HandleException(ex);
+		});
+}
+
+void Sphynx::Mono::CsScript::FixedUpdate()
+{
+	Sphynx::Core::ThreadPool::Submit([*this]() {
+		MonoException* ex;
+		FixedUpdateThunk(ScriptObject, &ex);
+		HandleException(ex);
+		});
+}
+
+void Sphynx::Mono::CsScript::OnDestroy()
+{
+	Sphynx::Core::ThreadPool::Submit([*this]() {
+		MonoException* ex;
+		OnDestroyThunk(ScriptObject, &ex);
+		HandleException(ex);
 		});
 }
 

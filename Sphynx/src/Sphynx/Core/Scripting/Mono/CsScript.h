@@ -15,13 +15,14 @@ namespace Sphynx::Mono {
 		//Class name
 		std::string Name;
 		//Typedef of the Start function thunk.
-		typedef void(__stdcall *StartFunc)(MonoObject*, MonoException**);
+		typedef void(__stdcall *UnmanagedThunk)(MonoObject*, MonoException**);
+		UnmanagedThunk AwakeThunk;
 		//Start function thunk.
-		StartFunc StartThunk;
-		//Typedef of the Update function thunk.
-		typedef void(__stdcall *UpdateFunc)(MonoObject*, MonoException**);
+		UnmanagedThunk StartThunk;
 		//Update function thunk.
-		StartFunc UpdateThunk;
+		UnmanagedThunk UpdateThunk;
+		UnmanagedThunk FixedUpdateThunk;
+		UnmanagedThunk OnDestroyThunk;
 		//This is to validate the existance of ScriptObject.
 		bool IsValid = false;
 
@@ -29,7 +30,11 @@ namespace Sphynx::Mono {
 	public:
 		CsScript() = default;
 		CsScript(MonoObject* obj,std::string name);
+		virtual void Awake();
 		virtual void Start();
+		virtual void Update();
+		virtual void FixedUpdate();
+		virtual void OnDestroy();
 		virtual Script* Copy();
 		inline virtual const char* GetName() const noexcept {
 			return Name.c_str();

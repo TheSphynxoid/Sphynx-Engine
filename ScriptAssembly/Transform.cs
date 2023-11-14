@@ -11,6 +11,7 @@ namespace Sphynx
     {
         private Vector3 position;
         private bool IsChanged;
+        private bool IsRelative;
         public Vector3 Position
         {
             get => position;
@@ -20,6 +21,10 @@ namespace Sphynx
                 IsChanged = true;
             }
         }
+
+        //Implement Parent-Child relation.
+        //public GameObject Parent { get; set; }
+        //public List<GameObject> Children { get; set; }
 
         [MethodImpl(MethodImplOptions.InternalCall)]
         internal static extern void SetPosition(GameObject go, Vector3 pos);
@@ -33,7 +38,6 @@ namespace Sphynx
 
         public override void Update()
         {
-            base.Update();
             if (IsChanged)
             {
                 SetPosition(gameObject, position);

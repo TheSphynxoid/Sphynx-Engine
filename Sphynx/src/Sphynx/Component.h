@@ -24,6 +24,7 @@ namespace Sphynx {
 	public:
 		virtual void Start() {};
 		virtual void Update() {};
+		virtual void FixedUpdate() {};
 		virtual ~Component() = default;
 		virtual const char* GetName() = 0;
 		GameObject* GetGameObject() { return Parent; };

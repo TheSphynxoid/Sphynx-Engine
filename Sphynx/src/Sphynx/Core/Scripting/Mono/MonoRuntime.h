@@ -26,6 +26,11 @@ namespace Sphynx::Mono {
 		static void ReloadGameAssembly();
 		static inline void SetGameAssemblyPath(std::string path) { GameAssemblyPath = path; };
 
+		static MonoClass* GetCommonType(std::string name);
+
+		//Calls the default constructor.
+		static MonoObject* CreateObject(MonoClass* klass);
+
 		static SphynxScripting::Script* CreateScript(const char* path, GameObject* GO);
 		static SphynxScripting::Script* CreateScriptByName(std::string name);
 

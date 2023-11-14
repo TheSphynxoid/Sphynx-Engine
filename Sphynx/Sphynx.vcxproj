@@ -99,6 +99,7 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Sphynx\Core\Scripting\Mono\BaseLib\GameObjectWrapper.h" />
     <ClInclude Include="src\Sphynx\Engine.h" />
     <ClInclude Include="src\Sphynx\Core\Scripting\Mono\BaseLib\NativeComponent.h" />
     <ClInclude Include="src\Sphynx.h" />
@@ -191,9 +192,9 @@
     <ClInclude Include="src\Sphynx\imgui\imgui_impl_opengl3_loader.h" />
     <ClInclude Include="src\Sphynx\imgui\imgui_impl_win32.h" />
     <ClInclude Include="src\Sphynx\pch.h" />
-    <ClInclude Include="src\Sphynx\Core\Scripting\Mono\BaseLib\TransformConverter.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Sphynx\Core\Scripting\Mono\BaseLib\GameObjectWrapper.cpp" />
     <ClCompile Include="src\Sphynx\Engine.cpp" />
     <ClCompile Include="src\Sphynx\Core\Scripting\Mono\BaseLib\NativeComponent.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -261,7 +262,6 @@
     <ClCompile Include="src\Sphynx\pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="src\Sphynx\Core\Scripting\Mono\BaseLib\TransformConverter.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />

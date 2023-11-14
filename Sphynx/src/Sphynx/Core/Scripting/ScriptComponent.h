@@ -12,7 +12,11 @@ namespace Sphynx::Core {
 		ScriptComponent(std::string name);
 
 		// Inherited via Component
-		void OnComponentAttach(GameObject* parent) override;
+		virtual void Start() override;
+		virtual void Update() override;
+		virtual void FixedUpdate() override;
+		virtual void OnComponentAttach(GameObject* parent) override;
+		virtual void OnComponentDetach() override;
 		const char* GetName() override;
 	};
 }
