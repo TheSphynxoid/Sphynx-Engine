@@ -5,7 +5,15 @@
 Sphynx::Core::ScriptComponent::ScriptComponent(std::string name)
 {
 	//TODO: Change later make it backend independent
+	//GOWrapper = Mono::GameObjectWrapper(GetGameObject());
+
 	script = Mono::MonoRuntime::CreateScriptByName(name);
+	GOWrapper.AddComponent((Mono::CsScript*)script);
+	for (auto& comp : GetGameObject()->GetComponents()) {
+		if (comp->GetName() == "MeshRenderer") {
+
+		}
+	}
 }
 
 void Sphynx::Core::ScriptComponent::Start()

@@ -8,6 +8,7 @@ namespace Sphynx::Core {
 	{
 	private:
 		Scripting::Script* script;
+		Mono::GameObjectWrapper GOWrapper = Mono::GameObjectWrapper(GetGameObject());
 	public:
 		ScriptComponent(std::string name);
 

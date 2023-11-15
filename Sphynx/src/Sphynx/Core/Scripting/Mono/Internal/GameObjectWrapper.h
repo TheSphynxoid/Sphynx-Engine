@@ -15,7 +15,7 @@ namespace Sphynx::Mono {
 		//static inline MonoProperty TransformProp;
 	public:
 		GameObjectWrapper(GameObject* go);
-
+		void AddComponent(CsScript* script);
 		static GameObjectWrapper CreateGameObject() {};
 	};
 }

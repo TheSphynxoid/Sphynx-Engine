@@ -19,8 +19,6 @@ void Sphynx::Mono::CsScript::HandleException(MonoException* ex)
 
 Sphynx::Mono::CsScript::CsScript(MonoObject* obj, std::string name) : ScriptObject(obj), Name(name)
 {
-	IsValid = true;
-
 	AwakeThunk = (UnmanagedThunk)mono_method_get_unmanaged_thunk(mono_object_get_virtual_method(ScriptObject, AwakeVirtMethod));
 	StartThunk = (UnmanagedThunk)mono_method_get_unmanaged_thunk(mono_object_get_virtual_method(ScriptObject, StartVirtMethod));
 	UpdateThunk = (UnmanagedThunk)mono_method_get_unmanaged_thunk(mono_object_get_virtual_method(ScriptObject, UpdateVirtMethod));

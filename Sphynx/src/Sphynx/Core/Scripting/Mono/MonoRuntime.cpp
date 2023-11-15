@@ -231,7 +231,7 @@ Sphynx::Core::Scripting::Script* Sphynx::Mono::MonoRuntime::CreateScriptByName(s
 	return CachedScripts[name].Copy();
 }
 
-const MonoClass* Sphynx::Mono::MonoRuntime::GetCommonType(std::string name)
+MonoClass* Sphynx::Mono::MonoRuntime::GetCommonType(std::string name)
 {
-	return const_cast<const MonoClass*>(CommonTypes[name]);
+	return CommonTypes[name];
 }

@@ -8,3 +8,8 @@ Sphynx::Mono::GameObjectWrapper::GameObjectWrapper(GameObject* go)
 	auto GoClass = MonoRuntime::GetCommonType("Sphynx.GameObject");
 	Managedobj = MonoRuntime::CreateObject(GoClass);
 }
+
+void Sphynx::Mono::GameObjectWrapper::AddComponent(CsScript* script)
+{
+
+}

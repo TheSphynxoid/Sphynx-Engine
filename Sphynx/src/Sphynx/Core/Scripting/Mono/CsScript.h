@@ -1,5 +1,6 @@
 #pragma once
 #include "Core/Scripting/Script.h"
+#include "Internal/GameObjectWrapper.h"
 #include <mono/jit/jit.h>
 
 namespace Sphynx::Mono {
@@ -12,19 +13,17 @@ namespace Sphynx::Mono {
 		static inline MonoMethod* AwakeVirtMethod, * StartVirtMethod, * UpdateVirtMethod, * FixedUpdateVirtMethod, * OnDestroyVirtMethod;
 		//The Object in mono.
 		MonoObject* ScriptObject;
+		GameObjectWrapper* GOWrapper;
 		//Class name
 		std::string Name;
-		//Typedef of the Start function thunk.
+		//Typedef of the function thunk.
 		typedef void(__stdcall *UnmanagedThunk)(MonoObject*, MonoException**);
+		//Functions
 		UnmanagedThunk AwakeThunk;
-		//Start function thunk.
 		UnmanagedThunk StartThunk;
-		//Update function thunk.
 		UnmanagedThunk UpdateThunk;
 		UnmanagedThunk FixedUpdateThunk;
 		UnmanagedThunk OnDestroyThunk;
-		//This is to validate the existance of ScriptObject.
-		bool IsValid = false;
 
 		static void HandleException(MonoException* ex);
 	public:
