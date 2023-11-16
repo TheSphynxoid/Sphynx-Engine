@@ -99,9 +99,9 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Sphynx\Core\Scripting\Mono\Internal\ScriptManager.h" />
     <ClInclude Include="src\Sphynx\Core\Scripting\Mono\Internal\GameObjectWrapper.h" />
     <ClInclude Include="src\Sphynx\Engine.h" />
-    <ClInclude Include="src\Sphynx\Core\Scripting\Mono\Internal\NativeComponent.h" />
     <ClInclude Include="src\Sphynx.h" />
     <ClInclude Include="src\Sphynx\Application.h" />
     <ClInclude Include="src\Sphynx\BitBool.h" />
@@ -143,7 +143,6 @@
     <ClInclude Include="src\Sphynx\Core\OldMemory.h" />
     <ClInclude Include="src\Sphynx\Core\SceneManager.h" />
     <ClInclude Include="src\Sphynx\Core\Scenic\Scenic.h" />
-    <ClInclude Include="src\Sphynx\Core\Scripting\Mono\CSharp.h" />
     <ClInclude Include="src\Sphynx\Core\Scripting\Mono\CsScript.h" />
     <ClInclude Include="src\Sphynx\Core\Scripting\Mono\MonoRuntime.h" />
     <ClInclude Include="src\Sphynx\Core\Scripting\Script.h" />
@@ -193,11 +192,9 @@
     <ClInclude Include="src\Sphynx\pch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Sphynx\Core\Scripting\Mono\Internal\ScriptManager.cpp" />
     <ClCompile Include="src\Sphynx\Core\Scripting\Mono\Internal\GameObjectWrapper.cpp" />
     <ClCompile Include="src\Sphynx\Engine.cpp" />
-    <ClCompile Include="src\Sphynx\Core\Scripting\Mono\Internal\NativeComponent.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
-    </ClCompile>
     <ClCompile Include="src\Sphynx\Application.cpp" />
     <ClCompile Include="src\Sphynx\Camera.cpp" />
     <ClCompile Include="src\Sphynx\Component.cpp" />
@@ -227,7 +224,6 @@
     <ClCompile Include="src\Sphynx\Core\MeshRenderer.cpp" />
     <ClCompile Include="src\Sphynx\Core\SceneManager.cpp" />
     <ClCompile Include="src\Sphynx\Core\Scenic\Scenic.cpp" />
-    <ClCompile Include="src\Sphynx\Core\Scripting\Mono\CSharp.cpp" />
     <ClCompile Include="src\Sphynx\Core\Scripting\Mono\CsScript.cpp" />
     <ClCompile Include="src\Sphynx\Core\Scripting\Mono\MonoInternalCalls.cpp" />
     <ClCompile Include="src\Sphynx\Core\Scripting\Mono\MonoRuntime.cpp" />

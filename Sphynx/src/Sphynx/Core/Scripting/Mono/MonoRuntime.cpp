@@ -167,6 +167,8 @@ void Sphynx::Mono::MonoRuntime::Initialize(std::string AssemblyPath)
 	CsScript::OnDestroyVirtMethod = mono_class_get_method_from_name(ComponentClass, "OnDestroy", 0);
 
 	GameObjectClass = mono_class_from_name(ScriptImage, "Sphynx", "GameObject");
+	auto AddComp = mono_class_get_method_from_name(GameObjectClass, "AddComponent", 2);
+	GameObjectWrapper::AddComp = (GameObjectWrapper::AddCompThunk)mono_method_get_unmanaged_thunk(AddComp);
 
 	static bool HasRegisteredInternals = false;
 
@@ -226,7 +228,7 @@ Sphynx::Core::Scripting::Script* Sphynx::Mono::MonoRuntime::CreateScriptByName(s
 		MonoClass* CompClass = CompNames[name];
 		MonoObject* obj = mono_object_new(Appdomain, CompClass);
 		mono_runtime_object_init(obj);
-		CachedScripts[name] = CsScript(obj, name);
+		CachedScripts[name] = CsScript(obj, CompClass, name);
 	}
 	return CachedScripts[name].Copy();
 }

@@ -13,6 +13,7 @@ namespace Sphynx::Mono {
 		static inline MonoMethod* AwakeVirtMethod, * StartVirtMethod, * UpdateVirtMethod, * FixedUpdateVirtMethod, * OnDestroyVirtMethod;
 		//The Object in mono.
 		MonoObject* ScriptObject;
+		MonoClass* ScriptClass;
 		GameObjectWrapper* GOWrapper;
 		//Class name
 		std::string Name;
@@ -28,7 +29,7 @@ namespace Sphynx::Mono {
 		static void HandleException(MonoException* ex);
 	public:
 		CsScript() = default;
-		CsScript(MonoObject* obj,std::string name);
+		CsScript(MonoObject* obj,MonoClass* objClass,std::string name);
 		virtual void Awake();
 		virtual void Start();
 		virtual void Update();
@@ -40,6 +41,7 @@ namespace Sphynx::Mono {
 		};
 		inline virtual Core::Scripting::ScriptingBackend* GetScriptingBackend() { return (Core::Scripting::ScriptingBackend*)Runtime; };
 		friend MonoRuntime;
+		friend GameObjectWrapper;
 	};
 }
 

@@ -2,13 +2,16 @@
 #include "Component.h"
 #include "Script.h"
 
+namespace Sphynx::Mono {
+	class GameObjectWrapper;
+}
 
 namespace Sphynx::Core {
-	class ScriptComponent : public Component 
+	class ScriptComponent final : public Component 
 	{
 	private:
 		Scripting::Script* script;
-		Mono::GameObjectWrapper GOWrapper = Mono::GameObjectWrapper(GetGameObject());
+		Mono::GameObjectWrapper* GOWrapper;
 	public:
 		ScriptComponent(std::string name);
 

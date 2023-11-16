@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "ScriptComponent.h"
 #include "Mono/MonoRuntime.h"
+#include "Mono/Internal/GameObjectWrapper.h"
 
 Sphynx::Core::ScriptComponent::ScriptComponent(std::string name)
 {
@@ -8,12 +9,7 @@ Sphynx::Core::ScriptComponent::ScriptComponent(std::string name)
 	//GOWrapper = Mono::GameObjectWrapper(GetGameObject());
 
 	script = Mono::MonoRuntime::CreateScriptByName(name);
-	GOWrapper.AddComponent((Mono::CsScript*)script);
-	for (auto& comp : GetGameObject()->GetComponents()) {
-		if (comp->GetName() == "MeshRenderer") {
-
-		}
-	}
+	GOWrapper->AddComponent((Mono::CsScript*)script);
 }
 
 void Sphynx::Core::ScriptComponent::Start()
