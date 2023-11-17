@@ -2,6 +2,7 @@
 #include "ScriptComponent.h"
 #include "Mono/MonoRuntime.h"
 #include "Mono/Internal/GameObjectWrapper.h"
+#include "Mono/Internal/ScriptManager.h"
 
 Sphynx::Core::ScriptComponent::ScriptComponent(std::string name)
 {
@@ -9,7 +10,6 @@ Sphynx::Core::ScriptComponent::ScriptComponent(std::string name)
 	//GOWrapper = Mono::GameObjectWrapper(GetGameObject());
 
 	script = Mono::MonoRuntime::CreateScriptByName(name);
-	GOWrapper->AddComponent((Mono::CsScript*)script);
 }
 
 void Sphynx::Core::ScriptComponent::Start()
@@ -29,6 +29,8 @@ void Sphynx::Core::ScriptComponent::FixedUpdate()
 
 void Sphynx::Core::ScriptComponent::OnComponentAttach(GameObject* parent)
 {
+	GOWrapper = Mono::ScriptManager::GetGameobjectWrapper(GetGameObject());
+	GOWrapper->AddComponent((Mono::CsScript*)script);
 	script->Awake();
 }
 

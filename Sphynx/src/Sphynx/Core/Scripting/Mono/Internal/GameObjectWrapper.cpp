@@ -5,8 +5,7 @@
 Sphynx::Mono::GameObjectWrapper::GameObjectWrapper(GameObject* go)
 {
 	gameObject = go;
-	auto GoClass = MonoRuntime::GetCommonType("Sphynx.GameObject");
-	Managedobj = MonoRuntime::CreateObject(GoClass);
+	Managedobj = MonoRuntime::CreateObject(GameObjectClass);
 	for (auto& comp : go->GetComponents()) {
 		if (comp->GetName() == "MeshRenderer") {
 
@@ -19,7 +18,7 @@ void Sphynx::Mono::GameObjectWrapper::AddComponent(CsScript* script)
 	Scripts.push_back(script);
 	MonoException* ex;
 	AddComp(this->Managedobj, script->ScriptObject, script->ScriptClass, &ex);
-	if (ex != nullptr) {
+	if (ex == nullptr) {
 		mono_print_unhandled_exception((MonoObject*)ex);
 		mono_raise_exception(ex);
 		//

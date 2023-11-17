@@ -74,6 +74,6 @@ void Sphynx::Mono::CsScript::OnDestroy()
 Sphynx::Core::Scripting::Script* Sphynx::Mono::CsScript::Copy()
 {
 	MonoObject* obj = mono_object_clone(ScriptObject);
-	auto script = new CsScript(obj, Name);
+	auto script = new CsScript(obj, ScriptClass, Name);
 	return script;
 }

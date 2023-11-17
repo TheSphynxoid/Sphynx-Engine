@@ -19,7 +19,7 @@ namespace Sphynx
         public Transform transform { get; set; }
 
         internal Dictionary<Type,Component> components = new Dictionary<Type, Component>();
-        internal void AddComponent(Component comp,Type type)
+        internal void InternalAddComp(Component comp,Type type)
         {
             components.Add(type, comp);
         }

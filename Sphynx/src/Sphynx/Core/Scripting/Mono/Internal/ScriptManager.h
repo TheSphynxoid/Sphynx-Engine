@@ -7,7 +7,7 @@ namespace Sphynx::Mono {
 	class ScriptManager final {
 	private:
 		//Not sure if this is problematic if there is erasures.
-		static std::unordered_map<size_t, GameObjectWrapper*> GOWrapperRegistry;
+		static inline std::unordered_map<size_t, GameObjectWrapper*> GOWrapperRegistry;
 	public:
 		static GameObjectWrapper* CreateGameObjectWrapper(GameObject* go) {
 			GOWrapperRegistry[go->GetID()] = new GameObjectWrapper(go);
