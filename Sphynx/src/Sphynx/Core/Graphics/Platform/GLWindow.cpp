@@ -202,7 +202,6 @@ void Sphynx::Core::GLWindow::OnResize(Events::OnWindowResize& e)
 {
 	glfwSetWindowSize(((GLFWwindow*)e.GetWindow()->GetNativePointer()), e.Width, e.Height);
 	mid::FrameBufferResize(((GLFWwindow*)e.GetWindow()->GetNativePointer()), e.Width, e.Height);
-	//glViewport(0, 0, e.Width, e.Height);
 }
 
 void* Sphynx::Core::GLWindow::GetNativePointer()
@@ -243,7 +242,7 @@ void Sphynx::Core::GLWindow::SwitchContext(GLWindow* window)
 
 Bounds Sphynx::Core::GLWindow::GetBounds()
 {
-	return { Height, Width };
+	return { Width, Height };
 }
 
 int Sphynx::Core::GLWindow::GetHeight()

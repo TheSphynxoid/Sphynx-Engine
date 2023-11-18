@@ -5,6 +5,7 @@
 void Sphynx::Core::ThreadPool::Start(int numthreads)
 {
     MaxThreads = numthreads;
+    HasStarted.store(true);
     for (int i = 0; i < MaxThreads; i++) {
         threads.push_back(std::thread(&ThreadPool::Loop));
     }
@@ -20,8 +21,18 @@ void Sphynx::Core::ThreadPool::Submit(std::function<void()> new_job)
     condition.notify_one();
 }
 
+void Sphynx::Core::ThreadPool::SetStartUpCallback(std::function<void()> func)
+{
+    if(!HasStarted)
+        startQueue.push_back(func);
+}
+
 void Sphynx::Core::ThreadPool::Loop()
 {
+    //Sphynx::Events::GlobalEventSystem::GetInstance()->QueueEvent()
+    for (auto& func : startQueue) {
+        func();
+    }
     while (IsRunning) {
         std::function<void()> job;
         {

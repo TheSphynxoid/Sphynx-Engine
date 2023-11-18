@@ -12,10 +12,10 @@ namespace Sphynx {
 		class IWindow;
 	}
 	typedef struct _State{
-		bool IsPressed;
+		Action action;
 		Mods mods;
 		operator bool() {
-			return IsPressed;
+			return action == Action::Pressed;
 		}
 	}KeyState, MouseButtonState;
 

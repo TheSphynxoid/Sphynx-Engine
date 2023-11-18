@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Application.h"
+#include "Engine.h"
 #include "Events/Event.h"
 #include "Events/ApplicationEvents.h"
 #include "SpTime.h"
@@ -10,8 +11,8 @@
 #include "Scene.h"
 #include "Core/SceneManager.h"
 #include "Core/Threadpool.h"
-#include "Core/Scripting/AsScript.h"
 #include "Core/Scenic/Scenic.h"
+#include "Core/Scripting/Mono/MonoRuntime.h"
 #undef GetApplication
 #undef GetMainWindow
 
@@ -28,7 +29,6 @@ Application* MainApplication;
 
 Sphynx::Application::Application()
 {
-	ThreadPool::Start();
 	eventSystem = Events::EventSystem();
 	//eventSystem.Subscribe<Application, Events::OnWindowClose>(this, &Application::HandleWindowClose);
 #if defined(DEBUG)
@@ -37,7 +37,7 @@ Sphynx::Application::Application()
 #endif
 	MainApplication = this;
 	this->CreateMainWindow(IWindow::Create(this));
-	Scripting::ScriptingEngine::InitScripting();
+	//Scripting::ScriptingEngine::InitScripting();
 }
 
 Application* Sphynx::Application::GetApplication()
@@ -57,29 +57,39 @@ void Sphynx::Application::Run(int argc, char** argv)
 	Events::GlobalEventSystem::GetInstance()->DispatchImmediate<Events::OnApplicationStart>(Events::OnApplicationStart());
 	//Scenic::WriteScene(&SceneManager::GetScene())
 	Input::Init();
+	Sphynx::Mono::MonoRuntime::Initialize("GameAssembly.dll");
 	SceneManager::Start();
 	Start();
+	ThreadPool::Start();
 	Time::Start();
 	int i = 0;
 	while (MainWindow->IsAlive()) {
 		Update();
+
+		//Mono.Update();
+
 		Events::GlobalEventSystem::GetInstance()->DispatchImmediate<Events::OnApplicationUpdate>(Events::OnApplicationUpdate());
+
 		//Events
 		Events::GlobalEventSystem::GetInstance()->Dispatch();
 		eventSystem.Dispatch();
+
 		//Physics
 		// Later
 		//Render
 		MainWindow->GetRenderer()->Clear();
 		SceneManager::Update();
+
 		//Imgui.
 		Imgui::OnOverlayUpdate();
+
 		//Buffer Swap
 		MainWindow->Update();
 
 		Time::Update();
 	}
 	//SceneManager::End();
+	Mono::MonoRuntime::Shutdown();
 	ThreadPool::Stop();
 }
 

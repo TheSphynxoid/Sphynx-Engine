@@ -31,6 +31,7 @@ namespace Sphynx {
 		virtual void OnComponentAttach(GameObject* Parent);
 		virtual void OnComponentDetach();
 	public:
+		CompImpl(Camera);
 		//Creates a Camera with Default Settings
 		Camera();
 		//FOV must be in degrees. This Constructor Creates a Perspective Camera

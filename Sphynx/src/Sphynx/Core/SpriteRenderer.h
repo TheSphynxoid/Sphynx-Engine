@@ -17,6 +17,7 @@ namespace Sphynx::Core {
 		glm::vec2 Size;
 		//void OnSceneChange(Sphynx::Core::OnSceneChange& e);
 	public:
+		CompImpl(SpriteRenderer);
 		SpriteRenderer(Graphics::Material* mat, glm::vec2 size);
 		SpriteRenderer(Graphics::Texture* tex, glm::vec2 size);
 		void SetCenter(glm::vec2 Center);

@@ -60,4 +60,6 @@ namespace Sphynx {
 #include "Input.h"
 #include "Events/InputEvents.h"
 //--------------------EntryPoint Header-------------------------
+#ifndef ExculdeEntryPoint
 #include "Sphynx/EntryPoint.h"
+#endif

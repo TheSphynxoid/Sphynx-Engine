@@ -12,9 +12,7 @@ namespace Sphynx::Core {
 	namespace Graphics {
 		class IRenderer;
 	}
-	struct Coords {
-		int x, y;
-	};
+	typedef glm::vec2 Coords;
 	//Width Then Height
 	struct Bounds {
 		int Width, Height = 0;

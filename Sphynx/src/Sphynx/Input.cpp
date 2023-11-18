@@ -12,7 +12,7 @@ GLFWmousebuttonfun ImGuiMouseFunc;
 
 void Sphynx::Input::GLKeyHandler(GLFWwindow* window, int code, int scan, int action, int mods) {
 	ImguiKeyFunc(window, code, scan, action, mods);
-	keyStates[code] = { ((action == GLFW_PRESS || action == GLFW_REPEAT) ? true : false),(Mods)mods };
+	keyStates[code] = { (Action)action, (Mods)mods };
 	switch (action)
 	{
 	case GLFW_RELEASE:
@@ -32,7 +32,7 @@ void Sphynx::Input::GLKeyHandler(GLFWwindow* window, int code, int scan, int act
 
 void Sphynx::Input::GLMouseHandler(GLFWwindow* window, int button, int action, int mods)
 {
-	MouseStates[button] = { (action == GLFW_PRESS ? true : false),(Mods)mods };
+	MouseStates[button] = { (Action)action, (Mods)mods};
 	ImGuiMouseFunc(window, button, action, mods);
 }
 
@@ -77,12 +77,12 @@ void Sphynx::Input::Init()
 
 bool Sphynx::Input::IsKeyPressed(Keys key)
 {
-	return keyStates[(int)key].IsPressed;
+	return keyStates[(int)key];
 }
 
 bool Sphynx::Input::IsMouseButtonPressed(MouseButton button)
 {
-	return MouseStates[(int)button].IsPressed;
+	return MouseStates[(int)button];
 }
 
 glm::vec2 Sphynx::Input::GetMousePosition()

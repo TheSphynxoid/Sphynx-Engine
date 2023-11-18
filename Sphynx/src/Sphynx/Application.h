@@ -41,6 +41,7 @@ namespace Sphynx {
 		Application(Application&&) = default;
 		virtual ~Application();
 		static Application* GetApplication();
+		int GetArgs(const char** _argv) { _argv = const_cast<const char**>(argv); return argc; };
 		virtual void Update() = 0;
 		virtual void Start() = 0;
 		void Run(int argc = 0, char** argv = nullptr);

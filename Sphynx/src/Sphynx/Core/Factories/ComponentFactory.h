@@ -1,3 +1,4 @@
+#pragma once
 #ifndef Sphynx_ComponentFactory
 #define Sphynx_ComponentFactory
 #include "Component.h"
