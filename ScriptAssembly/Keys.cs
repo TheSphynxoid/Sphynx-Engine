@@ -162,7 +162,7 @@ namespace Sphynx
     /// </summary>
     public enum Action : int
     {
-        Pressed, Repeat, Release, None
+        Released, Pressed, Repeat, None
     };
 }
 

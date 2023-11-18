@@ -1,15 +1,6 @@
 #pragma once
 #include "GameObject.h"
-
-
-struct _MonoObject;
-typedef _MonoObject MonoObject;
-struct _MonoProperty;
-typedef _MonoProperty MonoProperty;
-struct _MonoClass;
-typedef _MonoClass MonoClass;
-struct _MonoException;
-typedef _MonoException MonoException;
+#include "TransformWrapper.h"
 
 namespace Sphynx::Mono {
 	class CsScript;
@@ -19,12 +10,12 @@ namespace Sphynx::Mono {
 		static inline MonoClass* GameObjectClass;
 		GameObject* gameObject;
 		MonoObject* Managedobj;
-		//TransformWrapper* transform;
+		TransformWrapper transform;
 		static inline MonoProperty* IDProp;
 		static inline MonoProperty* NameProp;
 		//static inline MonoProperty TransformProp;
 
-		typedef void( __stdcall *AddCompThunk)(MonoObject*, MonoObject*, MonoClass*, MonoException**);
+		typedef void( __stdcall *AddCompThunk)(MonoObject*, MonoObject*, MonoReflectionType*, MonoException**);
 		static inline AddCompThunk AddComp;
 		std::vector<CsScript*> Scripts = std::vector<CsScript*>();
 	public:

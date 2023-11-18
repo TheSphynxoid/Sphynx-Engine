@@ -14,29 +14,29 @@ Sphynx::Core::ScriptComponent::ScriptComponent(std::string name)
 
 void Sphynx::Core::ScriptComponent::Start()
 {
-	script->Start();
+	GOWrapper->Start();
 }
 
 void Sphynx::Core::ScriptComponent::Update()
 {
-	script->Update();
+	GOWrapper->Update();
 }
 
 void Sphynx::Core::ScriptComponent::FixedUpdate()
 {
-	script->FixedUpdate();
+	GOWrapper->FixedUpdate();
 }
 
 void Sphynx::Core::ScriptComponent::OnComponentAttach(GameObject* parent)
 {
 	GOWrapper = Mono::ScriptManager::GetGameobjectWrapper(GetGameObject());
 	GOWrapper->AddComponent((Mono::CsScript*)script);
-	script->Awake();
+	//GOWrapper->Awake();
 }
 
 void Sphynx::Core::ScriptComponent::OnComponentDetach()
 {
-	script->OnDestroy();
+	//script->OnDestroy();
 }
 
 const char* Sphynx::Core::ScriptComponent::GetName()

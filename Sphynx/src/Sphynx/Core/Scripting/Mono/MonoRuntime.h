@@ -5,8 +5,9 @@
 #define SphynxScripting Sphynx::Core::Scripting
 
 struct _MonoClass;
-
 typedef _MonoClass MonoClass;
+struct _MonoDomain;
+typedef _MonoDomain MonoDomain;
 
 namespace Sphynx::Mono {
 	class MonoRuntime {
@@ -30,6 +31,9 @@ namespace Sphynx::Mono {
 
 		//Calls the default constructor.
 		static MonoObject* CreateObject(MonoClass* klass);
+
+		static MonoDomain* GetAppdomain();
+		static MonoDomain* GetCoreDomain();
 
 		static SphynxScripting::Script* CreateScript(const char* path, GameObject* GO);
 		static SphynxScripting::Script* CreateScriptByName(std::string name);

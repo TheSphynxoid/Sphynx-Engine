@@ -13,12 +13,13 @@ namespace GameAssembly
         public override void Start()
         {
             Logger.Info("C# Called");
-            Window.Bounds = new Bounds(Window.Bounds.Width + 100, Window.Bounds.Height + 100);
         }
 
         public override void Update()
         {
-            if (Input.IsKeyDown(Keys.Up)){
+            if (Input.IsKeyDown(Keys.Up))
+            {
+                Logger.Info("Key Up Pressed");
             }
         }
     }

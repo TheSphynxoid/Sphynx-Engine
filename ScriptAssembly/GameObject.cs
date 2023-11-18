@@ -18,6 +18,11 @@ namespace Sphynx
 
         public Transform transform { get; set; }
 
+        public GameObject()
+        {
+            Console.WriteLine("GameObject Constructed");
+        }
+
         internal Dictionary<Type,Component> components = new Dictionary<Type, Component>();
         internal void InternalAddComp(Component comp,Type type)
         {

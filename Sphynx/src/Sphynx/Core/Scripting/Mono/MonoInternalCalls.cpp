@@ -73,6 +73,9 @@ namespace Sphynx::Mono::Internal {
 	MonoExport void SetPosition(MonoObject GO, glm::vec3) {
 		
 	}
+	MonoExport int GetKeyState(int key) {
+		return (int)Input::GetKeyState((Keys)key).action;
+	}
 
 	void RegisterInternalCalls() {
 		MainWindow = GetApplication()->GetMainWindow();
@@ -91,6 +94,8 @@ namespace Sphynx::Mono::Internal {
 		//Sphynx.Vector4
 		mono_add_internal_call("Sphynx.Vector2::Distance", &Distance<glm::vec4>);
 		mono_add_internal_call("Sphynx.Vector2::Dot", &Dot<glm::vec4>);
+		//Sphynx.Input
+		mono_add_internal_call("Sphynx.Input::InternalKeyState", &GetKeyState);
 		//Sphynx.Core.Graphics.Window
 		mono_add_internal_call("Sphynx.Core.Graphics.Window::SetTitle", &SetTitle);
 		mono_add_internal_call("Sphynx.Core.Graphics.Window::GetTitle", &GetTitle);

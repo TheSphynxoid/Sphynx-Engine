@@ -29,6 +29,7 @@ static MonoImage* ScriptImage = nullptr;
 static MonoImage* GameImage = nullptr;
 static MonoClass* ComponentClass;
 static MonoClass* GameObjectClass;
+static MonoClass* TransformClass;
 //MonoRuntime Static Members
 
 
@@ -58,7 +59,8 @@ std::unordered_map<std::string, MonoClass*> CommonTypes = {
 	{"System.Exception",mono_get_exception_class()},
 	{"void",mono_get_void_class()},
 	{"Sphynx.Component", ComponentClass},
-	{"Sphynx.GameObject", GameObjectClass}
+	{"Sphynx.GameObject", GameObjectClass},
+	{"Sphynx.Transform", TransformClass}
 };
 
 
@@ -158,19 +160,6 @@ void Sphynx::Mono::MonoRuntime::Initialize(std::string AssemblyPath)
 	//Load the AppAssembly
 	std::tie(GameAssembly, GameImage) = Internal::LoadAssembly(AssemblyPath.c_str());
 
-	ComponentClass = mono_class_from_name(ScriptImage, "Sphynx", "Component");
-
-	CsScript::AwakeVirtMethod = mono_class_get_method_from_name(ComponentClass, "Awake", 0);
-	CsScript::StartVirtMethod = mono_class_get_method_from_name(ComponentClass, "Start", 0);
-	CsScript::UpdateVirtMethod = mono_class_get_method_from_name(ComponentClass, "Update", 0);
-	CsScript::FixedUpdateVirtMethod = mono_class_get_method_from_name(ComponentClass, "FixedUpdate", 0);
-	CsScript::OnDestroyVirtMethod = mono_class_get_method_from_name(ComponentClass, "OnDestroy", 0);
-
-	GameObjectClass = mono_class_from_name(ScriptImage, "Sphynx", "GameObject");
-	GameObjectWrapper::GameObjectClass = GameObjectClass;
-	auto AddComp = mono_class_get_method_from_name(GameObjectClass, "InternalAddComp", 2);
-	GameObjectWrapper::AddComp = (GameObjectWrapper::AddCompThunk)mono_method_get_unmanaged_thunk(AddComp);
-
 	static bool HasRegisteredInternals = false;
 
 	if (!HasRegisteredInternals) {
@@ -190,6 +179,24 @@ void Sphynx::Mono::MonoRuntime::Initialize(std::string AssemblyPath)
 		Sphynx::Events::GlobalEventSystem::GetInstance()->Subscribe<Events::OnWindowResize>(ResizeLambda);
 		HasRegisteredInternals = true;
 	}
+
+	ComponentClass = mono_class_from_name(ScriptImage, "Sphynx", "Component");
+
+	CsScript::AwakeVirtMethod = mono_class_get_method_from_name(ComponentClass, "Awake", 0);
+	CsScript::StartVirtMethod = mono_class_get_method_from_name(ComponentClass, "Start", 0);
+	CsScript::UpdateVirtMethod = mono_class_get_method_from_name(ComponentClass, "Update", 0);
+	CsScript::FixedUpdateVirtMethod = mono_class_get_method_from_name(ComponentClass, "FixedUpdate", 0);
+	CsScript::OnDestroyVirtMethod = mono_class_get_method_from_name(ComponentClass, "OnDestroy", 0);
+
+	GameObjectClass = mono_class_from_name(ScriptImage, "Sphynx", "GameObject");
+	GameObjectWrapper::GameObjectClass = GameObjectClass;
+	auto AddComp = mono_class_get_method_from_name(GameObjectClass, "InternalAddComp", 2);
+	GameObjectWrapper::AddComp = (GameObjectWrapper::AddCompThunk)mono_method_get_unmanaged_thunk(AddComp);
+
+	TransformClass = mono_class_from_name(ScriptImage, "Sphynx", "Transform");
+	TransformWrapper::TransformClass = TransformClass;
+
+
 	ReadClassesMetadata();
 }
 
@@ -216,6 +223,16 @@ MonoObject* Sphynx::Mono::MonoRuntime::CreateObject(MonoClass* klass)
 	auto obj = mono_object_new(Appdomain, klass);
 	mono_runtime_object_init(obj);
 	return obj;
+}
+
+MonoDomain* Sphynx::Mono::MonoRuntime::GetAppdomain()
+{
+	return Appdomain;
+}
+
+MonoDomain* Sphynx::Mono::MonoRuntime::GetCoreDomain()
+{
+	return JITdomain;
 }
 
 Sphynx::Core::Scripting::Script* Sphynx::Mono::MonoRuntime::CreateScript(const char* path, GameObject* GO)

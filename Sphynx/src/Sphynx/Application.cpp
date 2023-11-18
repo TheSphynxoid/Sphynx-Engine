@@ -57,8 +57,8 @@ void Sphynx::Application::Run(int argc, char** argv)
 	Events::GlobalEventSystem::GetInstance()->DispatchImmediate<Events::OnApplicationStart>(Events::OnApplicationStart());
 	//Scenic::WriteScene(&SceneManager::GetScene())
 	Input::Init();
-	SceneManager::Start();
 	Sphynx::Mono::MonoRuntime::Initialize("GameAssembly.dll");
+	SceneManager::Start();
 	Start();
 	ThreadPool::Start();
 	Time::Start();

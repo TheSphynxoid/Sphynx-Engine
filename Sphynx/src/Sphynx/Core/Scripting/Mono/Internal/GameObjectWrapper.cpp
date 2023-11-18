@@ -16,9 +16,10 @@ Sphynx::Mono::GameObjectWrapper::GameObjectWrapper(GameObject* go)
 void Sphynx::Mono::GameObjectWrapper::AddComponent(CsScript* script)
 {
 	Scripts.push_back(script);
+	auto ScriptReflection = mono_type_get_object(MonoRuntime::GetAppdomain(), mono_class_get_type(script->ScriptClass));
 	MonoException* ex;
-	AddComp(this->Managedobj, script->ScriptObject, script->ScriptClass, &ex);
-	if (ex == nullptr) {
+	AddComp(this->Managedobj, script->ScriptObject, ScriptReflection , &ex);
+	if (ex != nullptr) {
 		mono_print_unhandled_exception((MonoObject*)ex);
 		mono_raise_exception(ex);
 		//

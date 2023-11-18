@@ -308,6 +308,7 @@
     <ClInclude Include="src\Sphynx\Engine.h" />
     <ClInclude Include="src\Sphynx\Core\Scripting\Mono\Internal\GameObjectWrapper.h" />
     <ClInclude Include="src\Sphynx\Core\Scripting\Mono\Internal\ScriptManager.h" />
+    <ClInclude Include="src\Sphynx\Core\Scripting\Mono\Internal\TransformWrapper.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Sphynx\Application.cpp">
@@ -489,6 +490,7 @@
     <ClCompile Include="src\Sphynx\Engine.cpp" />
     <ClCompile Include="src\Sphynx\Core\Scripting\Mono\Internal\GameObjectWrapper.cpp" />
     <ClCompile Include="src\Sphynx\Core\Scripting\Mono\Internal\ScriptManager.cpp" />
+    <ClCompile Include="src\Sphynx\Core\Scripting\Mono\Internal\TransformWrapper.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Sphynx\Scripts\Component.as">

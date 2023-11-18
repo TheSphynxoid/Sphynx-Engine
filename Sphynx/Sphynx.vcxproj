@@ -190,6 +190,7 @@
     <ClInclude Include="src\Sphynx\imgui\imgui_impl_opengl3_loader.h" />
     <ClInclude Include="src\Sphynx\imgui\imgui_impl_win32.h" />
     <ClInclude Include="src\Sphynx\pch.h" />
+    <ClInclude Include="src\Sphynx\Core\Scripting\Mono\Internal\TransformWrapper.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Sphynx\Core\Scripting\Mono\Internal\ScriptManager.cpp" />
@@ -257,6 +258,7 @@
     <ClCompile Include="src\Sphynx\pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="src\Sphynx\Core\Scripting\Mono\Internal\TransformWrapper.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />

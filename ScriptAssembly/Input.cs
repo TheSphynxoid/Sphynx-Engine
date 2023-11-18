@@ -15,20 +15,20 @@ namespace Sphynx
         /// </summary>
         /// <param name="key"></param>
         /// <returns></returns>
+        public static bool IsKeyDown(Keys key)
+        {
+            return ((Action)InternalKeyState((int)key)) == Action.Pressed;
+        }
+        public static bool IsKeyUp(Keys key)
+        {
+            return (Action)InternalKeyState((int)key) == Action.Released;
+        }
+        public static bool IsKeyRepeat(Keys key)
+        {
+            return (Action)InternalKeyState(((int)key)) == Action.Repeat;
+        }
         [MethodImpl(MethodImplOptions.InternalCall)]
-        public extern static bool IsKeyDown(Keys key);
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public extern static bool IsKeyUp(Keys key);
-        [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-        public extern static bool IsKeyRepeat(Keys key);
-
-        /// <summary>
-        /// Avoid For now.
-        /// </summary>
-        /// <param name="key">The Key to get the state of</param>
-        /// <returns></returns>
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public extern static Action GetKeyState(Keys key);
+        internal extern static int InternalKeyState(int key);
 
         public delegate void KeyEvent(Keys key);
 
