@@ -188,6 +188,8 @@ void Sphynx::Mono::MonoRuntime::Initialize(std::string AssemblyPath)
 	CsScript::FixedUpdateVirtMethod = mono_class_get_method_from_name(ComponentClass, "FixedUpdate", 0);
 	CsScript::OnDestroyVirtMethod = mono_class_get_method_from_name(ComponentClass, "OnDestroy", 0);
 
+	CsScript::NativeField = mono_class_get_field_from_name(ComponentClass, "Native");
+
 	GameObjectClass = mono_class_from_name(ScriptImage, "Sphynx", "GameObject");
 	GameObjectWrapper::GameObjectClass = GameObjectClass;
 	auto AddComp = mono_class_get_method_from_name(GameObjectClass, "InternalAddComp", 2);

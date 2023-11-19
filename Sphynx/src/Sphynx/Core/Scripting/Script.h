@@ -14,6 +14,5 @@ namespace Sphynx::Core::Scripting {
 		virtual void OnDestroy() = 0;
 		virtual Script* Copy() = 0;
 		virtual const char* GetName() const noexcept = 0;
-		virtual ScriptingBackend* GetScriptingBackend() = 0;
 	};
 }

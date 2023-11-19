@@ -11,7 +11,7 @@ namespace Sphynx.Core.Native
     internal static class ComponentFactory
     {
         [MethodImpl(MethodImplOptions.InternalCall)]
-        internal static extern NativeComponent CreateNative();
+        internal static extern NativeComponent CreateNative(string name);
 
         internal static List<Component> comps;
 
@@ -24,7 +24,7 @@ namespace Sphynx.Core.Native
         public static T CreateComponent<T>(GameObject go) where T : Component, new()
         {
             var TComp = new T();
-            TComp.Native = CreateNative();
+            TComp.Native = CreateNative(typeof(T).Name);
             TComp.gameObject = go;
             
             TComp.Start();

@@ -27,6 +27,7 @@ namespace Sphynx
         internal void InternalAddComp(Component comp,Type type)
         {
             components.Add(type, comp);
+            comp.gameObject = this;
         }
 
         public static GameObject CreatePrimitive(Primitive primitive)

@@ -29,6 +29,8 @@ Sphynx::Editor::EditorViewport::EditorViewport() : viewport()
 
 void Sphynx::Editor::EditorViewport::Draw()
 {
+	static bool StatsToggle = true;
+	if (Input::IsKeyPressed(Keys::F3) && Input::GetMods(Keys::F3) == Mods::Shift) StatsToggle != StatsToggle;
 	auto Cam = SceneManager::GetScene().GetPrimaryCamera();
 	if (ViewDockID == 0) {
 		ViewDockID = Sphynx::Core::Imgui::GetOverlayWindow<Editor>()->GetDockID();
@@ -42,7 +44,7 @@ void Sphynx::Editor::EditorViewport::Draw()
 	}
 	ImGui::SetNextWindowDockID(ViewDockID, ImGuiCond_FirstUseEver);
 	if (ImGui::Begin("Viewport", &IsOpen, ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoScrollbar
-		| ImGuiWindowFlags_NoScrollWithMouse)) {
+		| ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoNavInputs)) {
 		if (ResizeFlag) {
 			ResizeFlag = false;
 			Cam->SetViewport(

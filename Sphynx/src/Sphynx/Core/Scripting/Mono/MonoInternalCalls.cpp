@@ -13,7 +13,7 @@
 //#include "../Sphynx.h"
 #include "Core/Graphics/Window.h"
 #include <glm/glm.hpp>
-
+#include "Internal/NativeComponent.h"
 extern "C" {
 
 #include "mono/jit/jit.h"
@@ -76,10 +76,14 @@ namespace Sphynx::Mono::Internal {
 	MonoExport int GetKeyState(int key) {
 		return (int)Input::GetKeyState((Keys)key).action;
 	}
+	MonoExport Mono::NativeComponent CreateNativeComponent(MonoObject* Comp) {
+
+	}
 
 	void RegisterInternalCalls() {
 		MainWindow = GetApplication()->GetMainWindow();
 
+		mono_add_internal_call("Sphynx.Core.Native.ComponentFactory::CreateNative", &CreateNativeComponent);
 		//Sphynx.Core.Native.NativeComponent
 		mono_add_internal_call("Sphynx.Core.Native.NativeComponent::NativeFinalize", &NativeFinalize);
 		//Sphynx.Logger

@@ -9,7 +9,8 @@ using System.Runtime.InteropServices;
 
 namespace Sphynx.Core.Native
 {
-    internal sealed class NativeComponent : IDisposable
+    [StructLayout(LayoutKind.Sequential)]
+    internal struct NativeComponent : IDisposable
     {
         public readonly ulong NativeID;
         private UIntPtr NativePtr;
@@ -22,10 +23,5 @@ namespace Sphynx.Core.Native
         {
             NativeFinalize(NativePtr);
         }
-
-        public NativeComponent()
-        {
-        }
-
     }
 }

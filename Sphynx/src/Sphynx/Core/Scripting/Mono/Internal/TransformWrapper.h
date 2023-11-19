@@ -1,4 +1,5 @@
 #pragma once
+#include "GameObject.h"
 
 struct _MonoObject;
 typedef _MonoObject MonoObject;
@@ -10,13 +11,17 @@ struct _MonoReflectionType;
 typedef _MonoReflectionType MonoReflectionType;
 struct _MonoException;
 typedef _MonoException MonoException;
+struct _MonoClassField;
+typedef _MonoClassField MonoClassField;
 
 namespace Sphynx::Mono {
 	class TransformWrapper
 	{
 	private:
 		static inline MonoClass* TransformClass;
+		MonoObject* TransformObject;
 	public:
+		TransformWrapper();
 		friend class MonoRuntime;
 
 	};

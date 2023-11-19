@@ -12,7 +12,7 @@ void Sphynx::Mono::CsScript::HandleException(MonoException* ex)
 		//Making this what i think is thread safe.
 		{
 			auto lock = Sphynx::Core::ThreadPool::GetLock();
-			CsScript::Runtime->ReloadGameAssembly();
+			MonoRuntime::ReloadGameAssembly();
 		}
 	}
 }
