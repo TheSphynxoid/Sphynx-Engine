@@ -177,7 +177,7 @@ namespace Sphynx {
 		T* operator->() {
 			return Object;
 		}
-		Pointer& operator=(const Pointer& ptr) {
+		Pointer& operator=(const Pointer& ptr) noexcept {
 			T* const old = Object;
 			int oldcount = RefCount;
 			Object = ptr.Object;
@@ -185,10 +185,10 @@ namespace Sphynx {
 			if (--oldcount == 0) delete old;
 			return *this;
 		};
-		Pointer& operator=(const T& ptr) {
-
-		}
-		bool operator=(Pointer&& ptr) {
+		/*Pointer& operator=(const T& ptr) noexcept {
+			
+		}*/
+		bool operator=(Pointer&& ptr) noexcept{
 			if (this != &ptr) {
 				this->Object = ptr.Object;
 				this->array_info = ptr.array_info;
@@ -196,7 +196,7 @@ namespace Sphynx {
 				this->delegate = ptr.delegate;
 			}
 		};
-		bool operator==(const T* ptr) {
+		bool operator==(const T* ptr) noexcept {
 			return ptr == this->Object;
 		};
 		//Copies The Delegate Object

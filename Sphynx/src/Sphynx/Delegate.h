@@ -73,10 +73,10 @@ namespace Sphynx {
     public:
         //Delegate.
         Delegate() { callback = NULL; };
-        Delegate(const Delegate& d) {
+        Delegate(const Delegate& d) noexcept {
             this->callback = d.callback;
         }
-        Delegate(Delegate&& d) {
+        Delegate(Delegate&& d) noexcept {
             std::swap(this->callback, d.callback);
         }
         //If instance is void. Func is a function Pointer. else
@@ -84,10 +84,10 @@ namespace Sphynx {
         //Delegate(I_Function cb) : callback(cb) {};
         Delegate(Instance* inst, typename I_Function::InstFunc f) : callback(inst, f) {}
         virtual ~Delegate()override { callback = nullptr; };
-        Delegate& operator=(Delegate d) {
+        Delegate& operator=(Delegate d) noexcept {
             std::swap(callback, d.callback);
         }
-        Delegate& operator=(I_Function f) {
+        Delegate& operator=(I_Function f) noexcept {
             std::swap(callback, f);
         }
         Return Invokation(Args... args) override { return callback(SPH_Forward(args)...); };
@@ -127,20 +127,20 @@ namespace Sphynx {
     public:
         //Delegate.
         Delegate() { callback = NULL; };
-        Delegate(const Delegate& d) {
+        Delegate(const Delegate& d) noexcept {
             this->callback = d.callback;
         }
-        Delegate(Delegate&& d) {
+        Delegate(Delegate&& d) noexcept {
             std::swap(this->callback, d.callback);
         }
         //If instance is void. Func is a function Pointer. else
         //func is the struct InstFunc.
         Delegate(I_Function cb) : callback(cb) {};
         Delegate(Instance* inst, typename I_Function::InstFunc f) : callback(inst, f) {}
-        Delegate& operator=(Delegate d) {
+        Delegate& operator=(Delegate d) noexcept{
             std::swap(callback, d.callback);
         }
-        Delegate& operator=(I_Function f) {
+        Delegate& operator=(I_Function f) noexcept {
             std::swap(callback, f);
         }
         void Invokation(Args... args) override { /*return*/ callback(SPH_Forward(args)...); };
@@ -180,20 +180,20 @@ namespace Sphynx {
     public:
         //Delegate.
         Delegate() { callback = NULL; };
-        Delegate(const Delegate& d) {
+        Delegate(const Delegate& d) noexcept {
             this->callback = d.callback;
         }
-        Delegate(Delegate&& d) {
+        Delegate(Delegate&& d) noexcept {
             std::swap(this->callback, d.callback);
         }
         //If instance is void. Func is a function Pointer. else
         //func is the struct InstFunc.
         Delegate(I_Function cb) : callback(cb) {};
         Delegate(Instance* inst, typename I_Function::InstFunc f) : callback(inst, f) {}
-        Delegate& operator=(Delegate d) {
+        Delegate& operator=(Delegate d) noexcept {
             std::swap(callback, d.callback);
         }
-        Delegate& operator=(I_Function f) {
+        Delegate& operator=(I_Function f) noexcept {
             std::swap(callback, f);
         }
         void Invokation() override { /*return*/ callback(); };
@@ -214,19 +214,19 @@ namespace Sphynx {
     public:
         //Delegate.
         Delegate() { callback = NULL; };
-        Delegate(const Delegate& d) {
+        Delegate(const Delegate& d) noexcept {
             this->callback = d.callback;
         }
-        Delegate(Delegate&& d) {
+        Delegate(Delegate&& d) noexcept {
             std::swap(this->callback, d.callback);
         }
         //If instance is void. Func is a function Pointer. else
         //func is the struct InstFunc.
         Delegate(Function cb) : callback(cb) {};
-        Delegate& operator=(Delegate d) {
+        Delegate& operator=(Delegate d) noexcept {
             std::swap(callback, d.callback);
         }
-        Delegate& operator=(Function f) {
+        Delegate& operator=(Function f) noexcept {
             std::swap(callback, f);
         }
         Return Invokation(Args... args) override { return callback(SPH_Forward(args)...); };
@@ -248,19 +248,19 @@ namespace Sphynx {
     public:
         //Delegate.
         Delegate() { callback = NULL; };
-        Delegate(const Delegate& d) {
+        Delegate(const Delegate& d) noexcept {
             this->callback = d.callback;
         }
-        Delegate(Delegate&& d) {
+        Delegate(Delegate&& d) noexcept {
             std::swap(this->callback, d.callback);
         }
         //If instance is void. Func is a function Pointer. else
         //func is the struct InstFunc.
         Delegate(typename Function::FreeFunc cb) : callback(cb) {};
-        Delegate& operator=(Delegate d) {
+        Delegate& operator=(Delegate d) noexcept {
             std::swap(callback, d.callback);
         }
-        Delegate& operator=(Function f) {
+        Delegate& operator=(Function f) noexcept {
             std::swap(callback, f);
         }
         void Invokation(Args... args) override { callback(SPH_Forward(args)...); };
