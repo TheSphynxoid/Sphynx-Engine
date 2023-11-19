@@ -35,18 +35,18 @@ namespace Sphynx::Core {
 
 
 		//Delegates ?
-		static void Submit(std::function<void()> new_job);
+		static void Submit(const std::function<void()>& new_job);
 		template<class T>
-		static void Submit(Delegate<void, T, void> del) {
+		static void Submit(Delegate<void, T, void>& del) {
 			{
 				std::unique_lock<std::mutex> ul(ThreadPoolMutex);
 				this->funcQueue.push_back( [&del]()->void { del(); });
 			}
 			condition.notify_one();
 		}
-		static int GetMaxThreads() { return MaxThreads; };
-		static std::vector<std::thread>& GetThreads() { return threads; };
-		static std::unique_lock<std::mutex> GetLock() { return std::unique_lock<std::mutex>(ThreadPoolMutex); };
-		static void SetStartUpCallback(std::function<void()> funcs);
+		static const int GetMaxThreads() noexcept { return MaxThreads; };
+		static std::vector<std::thread>& GetThreads() noexcept { return threads; };
+		static std::unique_lock<std::mutex>&& GetLock() noexcept { return std::unique_lock<std::mutex>(ThreadPoolMutex); };
+		static void SetStartUpCallback(const std::function<void()>& func);
 	};
 }

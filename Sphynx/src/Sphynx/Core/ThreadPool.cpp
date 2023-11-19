@@ -12,7 +12,7 @@ void Sphynx::Core::ThreadPool::Start(int numthreads)
     IsRunning.store(true);
 }
 
-void Sphynx::Core::ThreadPool::Submit(std::function<void()> new_job)
+void Sphynx::Core::ThreadPool::Submit(const std::function<void()>& new_job)
 {
     {
         std::unique_lock<std::mutex> ul(ThreadPoolMutex);
@@ -21,7 +21,7 @@ void Sphynx::Core::ThreadPool::Submit(std::function<void()> new_job)
     condition.notify_one();
 }
 
-void Sphynx::Core::ThreadPool::SetStartUpCallback(std::function<void()> func)
+void Sphynx::Core::ThreadPool::SetStartUpCallback(const std::function<void()>& func)
 {
     if(!HasStarted)
         startQueue.push_back(func);
