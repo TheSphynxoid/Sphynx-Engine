@@ -483,7 +483,7 @@ DataBuffer Sphynx::Core::Graphics::GL::GLTexture::GetCompressed()
 	glGetTextureLevelParameteriv(this->TextureID, MipMapLevel, GL_TEXTURE_COMPRESSED, &Val);
 	if (Val) {
 		glGetTextureLevelParameteriv(TextureID, MipMapLevel, GL_TEXTURE_COMPRESSED_IMAGE_SIZE, &Val);
-		DataBuffer buf = { 0,Val };
+		DataBuffer buf = { 0,(size_t)Val };
 		glGetCompressedTextureImage(TextureID, MipMapLevel, buf.Size, &buf.Data);
 		return buf;
 	}

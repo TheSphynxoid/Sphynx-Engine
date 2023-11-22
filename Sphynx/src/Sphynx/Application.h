@@ -12,7 +12,7 @@
 #include <utility>
 #include <memory>
 #include <iostream>
-#define Sphynx_Version "V0.6-PreAlpha(TxtRend)"
+#define Sphynx_Version "V0.7-PreAlpha(TxtRend)"
 namespace Sphynx {
 	namespace Core {
 		class IWindow;

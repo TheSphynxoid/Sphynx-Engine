@@ -6,9 +6,11 @@ Sphynx::Mono::GameObjectWrapper::GameObjectWrapper(GameObject* go)
 {
 	gameObject = go;
 	Managedobj = MonoRuntime::CreateObject(GameObjectClass);
+	size_t ID = gameObject->GetID();
+	mono_property_set_value(IDProp, Managedobj, (void**)&ID, nullptr);
 	for (auto& comp : go->GetComponents()) {
-		if (comp->GetName() == "MeshRenderer") {
-
+		if (comp->GetName() == "Transform") {
+			transform = TransformWrapper();
 		}
 	}
 }

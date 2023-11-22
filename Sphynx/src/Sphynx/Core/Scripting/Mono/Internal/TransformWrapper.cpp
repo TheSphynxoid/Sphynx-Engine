@@ -4,6 +4,9 @@
 
 Sphynx::Mono::TransformWrapper::TransformWrapper()
 {
+}
+
+Sphynx::Mono::TransformWrapper::TransformWrapper(MonoObject* GO)
+{
 	TransformObject = MonoRuntime::CreateObject(TransformClass);
-	
 }

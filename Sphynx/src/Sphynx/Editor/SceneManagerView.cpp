@@ -28,7 +28,7 @@ void Sphynx::Editor::SceneManagerView::Draw()
 	if (ImGui::Begin("Scene Manager", &IsOpen, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_MenuBar)) {
 		if (ImGui::BeginMenuBar()) {
 			if (ImGui::Button("Create Object", ImVec2(ImGui::GetWindowWidth(), ImGui::GetWindowHeight() - 35))) {
-				Core::SceneManager::GetScene().AddGameObject(&GameObject::CreatePrimitive(Primitives::Cube));
+				Core::SceneManager::GetScene().AddGameObject(GameObject::CreatePrimitive(Primitives::Cube));
 			}
 			ImGui::EndMenuBar();
 		}

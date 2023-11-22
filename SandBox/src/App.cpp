@@ -18,7 +18,7 @@ using namespace Sphynx::Core;
 class SandBox : public Sphynx::Application
 {
 private:
-	GameObject TextTest;
+	GameObject* TextTest;
 public:
 	SandBox() {
 		//Sphynx::Core::Bounds b = { 512, 384 };
@@ -35,14 +35,14 @@ public:
 	}
 	void Start() {
 		TextTest = GameObject::CreatePrimitive(Primitives::Cube);
-		TextTest.AddComponent<ScriptComponent>("TestComponent");
-		Sphynx::Core::SceneManager::GetScene().AddGameObject(&TextTest);
+		TextTest->AddComponent<ScriptComponent>("TestComponent");
+		Sphynx::Core::SceneManager::GetScene().AddGameObject(TextTest);
 	}
 	void Update() {	
 		if (Sphynx::Input::GetKeyState(Sphynx::Keys::Up)) {
-			TextTest.GetTransform()->Translate(glm::vec3(0, 1, 0) * (float)Time::GetDeltaTime());
+			TextTest->GetTransform()->Translate(glm::vec3(0, 1, 0) * (float)Time::GetDeltaTime());
 		}if (Sphynx::Input::GetKeyState(Sphynx::Keys::RightShift)) {
-			TextTest.GetTransform()->Translate(glm::vec3(0, 0, -1) * (float)Time::GetDeltaTime());
+			TextTest->GetTransform()->Translate(glm::vec3(0, 0, -1) * (float)Time::GetDeltaTime());
 		}
 	}
 	~SandBox() {

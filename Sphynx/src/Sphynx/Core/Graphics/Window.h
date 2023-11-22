@@ -51,7 +51,7 @@ namespace Sphynx::Core {
 		void Resize(int width, int height) {
 			if (!InstanceHasInit)
 				throw "Not Initialized. Any Class That Derives from IWindow Must Call Init";
-			auto& e = Events::OnWindowResize(this, width, height);
+			auto e = Events::OnWindowResize(this, width, height);
 			OnResize(e);
 			Events::GlobalEventSystem::GetInstance()->QueueEvent<Events::OnWindowResize>(e);
 		};

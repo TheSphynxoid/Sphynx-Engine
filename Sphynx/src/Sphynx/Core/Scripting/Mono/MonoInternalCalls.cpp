@@ -76,37 +76,38 @@ namespace Sphynx::Mono::Internal {
 	MonoExport int GetKeyState(int key) {
 		return (int)Input::GetKeyState((Keys)key).action;
 	}
-	MonoExport Mono::NativeComponent CreateNativeComponent(MonoObject* Comp) {
-
+	MonoExport Mono::NativeComponent CreateNativeComponent(size_t goID) {
+		auto Native = NativeComponent();
+		return Native;
 	}
 
 	void RegisterInternalCalls() {
 		MainWindow = GetApplication()->GetMainWindow();
 
-		mono_add_internal_call("Sphynx.Core.Native.ComponentFactory::CreateNative", &CreateNativeComponent);
+		mono_add_internal_call("Sphynx.Core.Native.ComponentFactory::CreateNative", (void*)&CreateNativeComponent);
 		//Sphynx.Core.Native.NativeComponent
-		mono_add_internal_call("Sphynx.Core.Native.NativeComponent::NativeFinalize", &NativeFinalize);
+		mono_add_internal_call("Sphynx.Core.Native.NativeComponent::NativeFinalize", (void*)&NativeFinalize);
 		//Sphynx.Logger
-		mono_add_internal_call("Sphynx.Logger::spdLog", &spdLog);
+		mono_add_internal_call("Sphynx.Logger::spdLog", (void*)&spdLog);
 		//Sphynx.Vector2
-		mono_add_internal_call("Sphynx.Vector2::Distance", &Distance<glm::vec2>);
-		mono_add_internal_call("Sphynx.Vector2::Dot", &Dot<glm::vec2>);
+		mono_add_internal_call("Sphynx.Vector2::Distance", (void*)&Distance<glm::vec2>);
+		mono_add_internal_call("Sphynx.Vector2::Dot", (void*)&Dot<glm::vec2>);
 		//Sphynx.Vector3
-		mono_add_internal_call("Sphynx.Vector3::Distance", &Distance<glm::vec3>);
-		mono_add_internal_call("Sphynx.Vector3::Dot", &Dot<glm::vec3>);
-		mono_add_internal_call("Sphynx.Vector3::Cross", &Cross);
+		mono_add_internal_call("Sphynx.Vector3::Distance", (void*)&Distance<glm::vec3>);
+		mono_add_internal_call("Sphynx.Vector3::Dot", (void*)&Dot<glm::vec3>);
+		mono_add_internal_call("Sphynx.Vector3::Cross", (void*)&Cross);
 		//Sphynx.Vector4
-		mono_add_internal_call("Sphynx.Vector2::Distance", &Distance<glm::vec4>);
-		mono_add_internal_call("Sphynx.Vector2::Dot", &Dot<glm::vec4>);
+		mono_add_internal_call("Sphynx.Vector2::Distance", (void*)&Distance<glm::vec4>);
+		mono_add_internal_call("Sphynx.Vector2::Dot", (void*)&Dot<glm::vec4>);
 		//Sphynx.Input
-		mono_add_internal_call("Sphynx.Input::InternalKeyState", &GetKeyState);
+		mono_add_internal_call("Sphynx.Input::InternalKeyState", (void*)&GetKeyState);
 		//Sphynx.Core.Graphics.Window
-		mono_add_internal_call("Sphynx.Core.Graphics.Window::SetTitle", &SetTitle);
-		mono_add_internal_call("Sphynx.Core.Graphics.Window::GetTitle", &GetTitle);
-		mono_add_internal_call("Sphynx.Core.Graphics.Window::SetVsync", &SetVsync);
-		mono_add_internal_call("Sphynx.Core.Graphics.Window::GetVsync", &GetVsync);
-		mono_add_internal_call("Sphynx.Core.Graphics.Window::SetSize", &SetSize);
-		mono_add_internal_call("Sphynx.Core.Graphics.Window::GetSize", &GetSize);
+		mono_add_internal_call("Sphynx.Core.Graphics.Window::SetTitle", (void*)&SetTitle);
+		mono_add_internal_call("Sphynx.Core.Graphics.Window::GetTitle", (void*)&GetTitle);
+		mono_add_internal_call("Sphynx.Core.Graphics.Window::SetVsync", (void*)&SetVsync);
+		mono_add_internal_call("Sphynx.Core.Graphics.Window::GetVsync", (void*)&GetVsync);
+		mono_add_internal_call("Sphynx.Core.Graphics.Window::SetSize", (void*)&SetSize);
+		mono_add_internal_call("Sphynx.Core.Graphics.Window::GetSize", (void*)&GetSize);
 		//Sphynx.Transform
 		mono_add_internal_call("Sphynx.Transform::SetPosition", NULL);
 	}

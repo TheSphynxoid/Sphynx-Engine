@@ -12,7 +12,7 @@ namespace GameAssembly
     {
         public override void Start()
         {
-            Logger.Info("C# Called");
+            //Logger.Info($"{gameObject.ID}");
         }
 
         public override void Update()

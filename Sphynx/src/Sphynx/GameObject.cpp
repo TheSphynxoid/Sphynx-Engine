@@ -69,9 +69,9 @@ void Sphynx::GameObject::Destroy()
     }
 }
 
-Sphynx::GameObject Sphynx::GameObject::CreatePrimitive(Primitives primitive, std::string name)
+Sphynx::GameObject* Sphynx::GameObject::CreatePrimitive(Primitives primitive, std::string name)
 {
-    auto rt = GameObject(name.c_str());
+    auto rt = new GameObject(name.c_str());
     VertexBuffer* vb = nullptr;
     IndexBuffer* ib = nullptr;
     switch (primitive)
@@ -142,6 +142,6 @@ Sphynx::GameObject Sphynx::GameObject::CreatePrimitive(Primitives primitive, std
         break;
     }
     auto Mesh = Mesh::Create(vb, ib);
-    rt.AddComponent<MeshRenderer>(Mesh, Material::GetDefaultMaterialCopy());
+    rt->AddComponent<MeshRenderer>(Mesh, Material::GetDefaultMaterialCopy());
     return rt;
 }

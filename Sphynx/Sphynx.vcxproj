@@ -45,6 +45,7 @@
     <IntDir>..\build\int\Debug-windows-x86_64\Sphynx\</IntDir>
     <TargetName>Sphynx</TargetName>
     <TargetExt>.lib</TargetExt>
+    <CopyCppRuntimeToOutputDir>true</CopyCppRuntimeToOutputDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>..\build\bin\Release-windows-x86_64\Sphynx\</OutDir>

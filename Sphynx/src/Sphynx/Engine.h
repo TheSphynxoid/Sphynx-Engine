@@ -45,7 +45,7 @@ namespace Sphynx {
 			}
 		}
 		static void RemoveSystem(System* system) {
-			std::vector<System*>& SystemVector = std::vector<System*>();
+			std::vector<System*> SystemVector = std::vector<System*>();
 			switch (system->GetSystemUpdateOn())
 			{
 			case Sphynx::UpdateOn::PreEvents:

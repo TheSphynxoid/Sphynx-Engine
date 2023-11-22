@@ -22,6 +22,8 @@ namespace Sphynx::Mono {
 		MonoObject* TransformObject;
 	public:
 		TransformWrapper();
+		//Takes a Managed GameObject
+		TransformWrapper(MonoObject* GO);
 		friend class MonoRuntime;
 
 	};

@@ -3,6 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Runtime.Serialization;
+using System.Security.Claims;
+using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -23,7 +26,6 @@ namespace Sphynx
             //I Don't think it's possible to optimize empty function calls away
             //Unless i think of something new i'll leave them as is
             //Or maybe they get optimized already by the compiler either way i'm not sure.
-
             //Core.Engine.IgnoreCallback(GetType().FullName);
         }
 

@@ -87,6 +87,8 @@ project "Sandbox"
 	cppdialect "C++17"
 	staticruntime "off"
 
+	startproject "Sandbox"
+
 	targetdir ("%{wks.location}\\build\\bin\\" .. outputdir .. "\\%{prj.name}")
 	objdir ("%{wks.location}\\build\\int\\" .. outputdir .. "\\%{prj.name}")
 

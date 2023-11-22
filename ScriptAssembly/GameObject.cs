@@ -14,13 +14,14 @@ namespace Sphynx
 
         public string Name { get; set; }
 
-        public ulong Id { get; internal set; }
+        public ulong ID { get; internal set; }
 
         public Transform transform { get; set; }
 
         public GameObject()
         {
             Console.WriteLine("GameObject Constructed");
+
         }
 
         internal Dictionary<Type,Component> components = new Dictionary<Type, Component>();

@@ -66,6 +66,32 @@
     <Compile Include="Vector.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Mono.Cecil.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="ICSharpCode.SharpZipLib">
+      <HintPath>..\SandBox\mono\gac\ICSharpCode.SharpZipLib\4.84.0.0__1b03e6acf1164f73\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Build" />
+    <Reference Include="Mono.Cecil, Version=0.11.1.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>.\Mono.Cecil.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.CSharp">
+      <HintPath>..\SandBox\mono\gac\Mono.CSharp\4.0.0.0__0738eb9f132ed756\Mono.CSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Debugger.Soft">
+      <HintPath>..\SandBox\mono\gac\Mono.Debugger.Soft\4.0.0.0__0738eb9f132ed756\Mono.Debugger.Soft.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Parallel">
+      <HintPath>..\SandBox\mono\gac\Mono.Parallel\4.0.0.0__0738eb9f132ed756\Mono.Parallel.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Simd">
+      <HintPath>..\SandBox\mono\gac\Mono.Simd\4.0.0.0__0738eb9f132ed756\Mono.Simd.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Tasklets">
+      <HintPath>..\SandBox\mono\gac\Mono.Tasklets\4.0.0.0__0738eb9f132ed756\Mono.Tasklets.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
