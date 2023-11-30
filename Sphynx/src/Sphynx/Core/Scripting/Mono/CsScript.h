@@ -15,7 +15,7 @@ namespace Sphynx::Mono {
 		MonoObject* ScriptObject;
 		MonoClass* ScriptClass;
 		GameObjectWrapper* GOWrapper;
-		NativeComponent NativeComp;
+		//NativeComponent NativeComp;
 		//Class name
 		std::string Name;
 		//Typedef of the function thunk.
@@ -40,8 +40,8 @@ namespace Sphynx::Mono {
 		inline virtual const char* GetName() const noexcept {
 			return Name.c_str();
 		};
-		friend MonoRuntime;
-		friend GameObjectWrapper;
+		friend class MonoRuntime;
+		friend class GameObjectWrapper;
 	};
 }
 

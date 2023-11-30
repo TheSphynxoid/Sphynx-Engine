@@ -13,6 +13,7 @@ namespace GameAssembly
         public override void Start()
         {
             //Logger.Info($"{gameObject.ID}");
+            gameObject.AddComponent<TestComponent2>();
         }
 
         public override void Update()

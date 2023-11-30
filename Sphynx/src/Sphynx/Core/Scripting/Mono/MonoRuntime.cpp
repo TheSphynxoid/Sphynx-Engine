@@ -195,7 +195,7 @@ void Sphynx::Mono::MonoRuntime::Initialize(std::string AssemblyPath)
 	auto AddComp = mono_class_get_method_from_name(GameObjectClass, "InternalAddComp", 2);
 	GameObjectWrapper::AddComp = (GameObjectWrapper::AddCompThunk)mono_method_get_unmanaged_thunk(AddComp);
 	GameObjectWrapper::IDProp = mono_class_get_property_from_name(GameObjectClass, "ID");
-
+	GameObjectWrapper::NameProp = mono_class_get_property_from_name(GameObjectClass, "Name");
 	TransformClass = mono_class_from_name(ScriptImage, "Sphynx", "Transform");
 	TransformWrapper::TransformClass = TransformClass;
 

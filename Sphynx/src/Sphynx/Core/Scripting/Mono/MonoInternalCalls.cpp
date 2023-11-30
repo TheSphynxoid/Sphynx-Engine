@@ -87,6 +87,9 @@ namespace Sphynx::Mono::Internal {
 		mono_add_internal_call("Sphynx.Core.Native.ComponentFactory::CreateNative", (void*)&CreateNativeComponent);
 		//Sphynx.Core.Native.NativeComponent
 		mono_add_internal_call("Sphynx.Core.Native.NativeComponent::NativeFinalize", (void*)&NativeFinalize);
+		//Sphynx.Time
+		mono_add_internal_call("Sphynx.Time::GetDeltaTime", (void*)&Time::GetDeltaTime);
+		mono_add_internal_call("Sphynx.Time::GetDeltaTicks", (void*)&Time::GetDeltaTicks);
 		//Sphynx.Logger
 		mono_add_internal_call("Sphynx.Logger::spdLog", (void*)&spdLog);
 		//Sphynx.Vector2

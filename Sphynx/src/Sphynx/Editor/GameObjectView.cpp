@@ -68,6 +68,7 @@ void Sphynx::Editor::GameObjectView::Draw()
 				}
 				if (ImGui::TreeNode("Material")) {
 					if (ImGui::TreeNode("Textures {0}", std::to_string(mr->GetMaterial()->GetTextureCount()).c_str())) {
+						ImGui::TreePop();
 					}
 					ImGui::TreePop();
 				}

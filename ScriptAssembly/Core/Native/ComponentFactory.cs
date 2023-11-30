@@ -26,7 +26,7 @@ namespace Sphynx.Core.Native
             var TComp = new T();
             TComp.Native = CreateNative(go.ID, typeof(T).Name);
             TComp.gameObject = go;
-            
+            //TComp.Awake();
             TComp.Start();
 
             return TComp;

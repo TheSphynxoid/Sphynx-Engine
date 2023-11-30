@@ -8,6 +8,8 @@ Sphynx::Mono::GameObjectWrapper::GameObjectWrapper(GameObject* go)
 	Managedobj = MonoRuntime::CreateObject(GameObjectClass);
 	size_t ID = gameObject->GetID();
 	mono_property_set_value(IDProp, Managedobj, (void**)&ID, nullptr);
+	auto name = mono_string_new(MonoRuntime::GetAppdomain(), gameObject->GetName());
+	mono_property_set_value(NameProp, Managedobj, (void**)&name, nullptr);
 	for (auto& comp : go->GetComponents()) {
 		if (comp->GetName() == "Transform") {
 			transform = TransformWrapper();

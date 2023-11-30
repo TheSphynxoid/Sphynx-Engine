@@ -6,6 +6,8 @@ workspace "NewSphynx"
 		"Debug", "Release"
 	}
 
+	startproject "Sandbox"
+	
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
 project "Sphynx"
@@ -86,8 +88,6 @@ project "Sandbox"
 	language "C++"
 	cppdialect "C++17"
 	staticruntime "off"
-
-	startproject "Sandbox"
 
 	targetdir ("%{wks.location}\\build\\bin\\" .. outputdir .. "\\%{prj.name}")
 	objdir ("%{wks.location}\\build\\int\\" .. outputdir .. "\\%{prj.name}")

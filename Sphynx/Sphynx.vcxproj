@@ -45,7 +45,6 @@
     <IntDir>..\build\int\Debug-windows-x86_64\Sphynx\</IntDir>
     <TargetName>Sphynx</TargetName>
     <TargetExt>.lib</TargetExt>
-    <CopyCppRuntimeToOutputDir>true</CopyCppRuntimeToOutputDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>..\build\bin\Release-windows-x86_64\Sphynx\</OutDir>
@@ -100,10 +99,6 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\Sphynx\Core\Scripting\Mono\Internal\NativeComponent.h" />
-    <ClInclude Include="src\Sphynx\Core\Scripting\Mono\Internal\ScriptManager.h" />
-    <ClInclude Include="src\Sphynx\Core\Scripting\Mono\Internal\GameObjectWrapper.h" />
-    <ClInclude Include="src\Sphynx\Engine.h" />
     <ClInclude Include="src\Sphynx.h" />
     <ClInclude Include="src\Sphynx\Application.h" />
     <ClInclude Include="src\Sphynx\BitBool.h" />
@@ -142,10 +137,14 @@
     <ClInclude Include="src\Sphynx\Core\InternalUtility.h" />
     <ClInclude Include="src\Sphynx\Core\MeshRenderer.h" />
     <ClInclude Include="src\Sphynx\Core\Module.h" />
-    <ClInclude Include="src\Sphynx\Core\OldMemory.h" />
     <ClInclude Include="src\Sphynx\Core\SceneManager.h" />
     <ClInclude Include="src\Sphynx\Core\Scenic\Scenic.h" />
     <ClInclude Include="src\Sphynx\Core\Scripting\Mono\CsScript.h" />
+    <ClInclude Include="src\Sphynx\Core\Scripting\Mono\Internal\MonoWrapper.h" />
+    <ClInclude Include="src\Sphynx\Core\Scripting\Mono\Internal\GameObjectWrapper.h" />
+    <ClInclude Include="src\Sphynx\Core\Scripting\Mono\Internal\NativeComponent.h" />
+    <ClInclude Include="src\Sphynx\Core\Scripting\Mono\Internal\ScriptManager.h" />
+    <ClInclude Include="src\Sphynx\Core\Scripting\Mono\Internal\TransformWrapper.h" />
     <ClInclude Include="src\Sphynx\Core\Scripting\Mono\MonoRuntime.h" />
     <ClInclude Include="src\Sphynx\Core\Scripting\Script.h" />
     <ClInclude Include="src\Sphynx\Core\Scripting\ScriptComponent.h" />
@@ -163,6 +162,7 @@
     <ClInclude Include="src\Sphynx\Editor\GameObjectView.h" />
     <ClInclude Include="src\Sphynx\Editor\SceneManagerView.h" />
     <ClInclude Include="src\Sphynx\Editor\TextureDebugger.h" />
+    <ClInclude Include="src\Sphynx\Engine.h" />
     <ClInclude Include="src\Sphynx\EntryPoint.h" />
     <ClInclude Include="src\Sphynx\Events\ApplicationEvents.h" />
     <ClInclude Include="src\Sphynx\Events\Event.h" />
@@ -192,13 +192,8 @@
     <ClInclude Include="src\Sphynx\imgui\imgui_impl_opengl3_loader.h" />
     <ClInclude Include="src\Sphynx\imgui\imgui_impl_win32.h" />
     <ClInclude Include="src\Sphynx\pch.h" />
-    <ClInclude Include="src\Sphynx\Core\Scripting\Mono\Internal\TransformWrapper.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Sphynx\Core\Scripting\Mono\Internal\NativeComponent.cpp" />
-    <ClCompile Include="src\Sphynx\Core\Scripting\Mono\Internal\ScriptManager.cpp" />
-    <ClCompile Include="src\Sphynx\Core\Scripting\Mono\Internal\GameObjectWrapper.cpp" />
-    <ClCompile Include="src\Sphynx\Engine.cpp" />
     <ClCompile Include="src\Sphynx\Application.cpp" />
     <ClCompile Include="src\Sphynx\Camera.cpp" />
     <ClCompile Include="src\Sphynx\Component.cpp" />
@@ -229,12 +224,19 @@
     <ClCompile Include="src\Sphynx\Core\SceneManager.cpp" />
     <ClCompile Include="src\Sphynx\Core\Scenic\Scenic.cpp" />
     <ClCompile Include="src\Sphynx\Core\Scripting\Mono\CsScript.cpp" />
+    <ClCompile Include="src\Sphynx\Core\Scripting\Mono\Internal\MonoWrapper.cpp" />
+    <ClCompile Include="src\Sphynx\Core\Scripting\Mono\Internal\GameObjectWrapper.cpp" />
+    <ClCompile Include="src\Sphynx\Core\Scripting\Mono\Internal\NativeComponent.cpp" />
+    <ClCompile Include="src\Sphynx\Core\Scripting\Mono\Internal\ScriptManager.cpp" />
+    <ClCompile Include="src\Sphynx\Core\Scripting\Mono\Internal\TransformWrapper.cpp" />
     <ClCompile Include="src\Sphynx\Core\Scripting\Mono\MonoInternalCalls.cpp" />
     <ClCompile Include="src\Sphynx\Core\Scripting\Mono\MonoRuntime.cpp" />
     <ClCompile Include="src\Sphynx\Core\Scripting\ScriptComponent.cpp" />
     <ClCompile Include="src\Sphynx\Core\Scripting\ScriptingBackend.cpp" />
     <ClCompile Include="src\Sphynx\Core\SpriteRenderer.cpp" />
-    <ClCompile Include="src\Sphynx\Core\TextRenderer.cpp" />
+    <ClCompile Include="src\Sphynx\Core\TextRenderer.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="src\Sphynx\Core\Thread.cpp" />
     <ClCompile Include="src\Sphynx\Core\ThreadPool.cpp" />
     <ClCompile Include="src\Sphynx\Core\Transform.cpp" />
@@ -244,6 +246,7 @@
     <ClCompile Include="src\Sphynx\Editor\GameObjectView.cpp" />
     <ClCompile Include="src\Sphynx\Editor\SceneManagerView.cpp" />
     <ClCompile Include="src\Sphynx\Editor\TextureDebugger.cpp" />
+    <ClCompile Include="src\Sphynx\Engine.cpp" />
     <ClCompile Include="src\Sphynx\GameObject.cpp" />
     <ClCompile Include="src\Sphynx\Input.cpp" />
     <ClCompile Include="src\Sphynx\Logger.cpp" />
@@ -258,13 +261,9 @@
     <ClCompile Include="src\Sphynx\imgui\imgui_impl_glfw.cpp" />
     <ClCompile Include="src\Sphynx\imgui\imgui_impl_opengl3.cpp" />
     <ClCompile Include="src\Sphynx\imgui\imgui_impl_win32.cpp" />
-    <ClCompile Include="src\Sphynx\pch.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="src\Sphynx\Core\Scripting\Mono\Internal\TransformWrapper.cpp" />
+    <ClCompile Include="src\Sphynx\pch.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="cpp.hint" />
     <None Include="src\Sphynx\Scripts\Component.as" />
     <None Include="src\Sphynx\Scripts\Testing.as" />
   </ItemGroup>

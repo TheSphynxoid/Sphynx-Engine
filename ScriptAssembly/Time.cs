@@ -13,13 +13,9 @@ namespace Sphynx
         internal extern static double GetDeltaTime();
 
         [MethodImpl(MethodImplOptions.InternalCall)]
-        internal extern static ulong GetElapsedTicks();
-
-        [MethodImpl(MethodImplOptions.InternalCall)]
         internal extern static ulong GetDeltaTicks();
 
         public double deltaTime { get => GetDeltaTime(); }
-        public ulong elapsedTicks { get => GetElapsedTicks();}
         public ulong deltaTicks { get => GetDeltaTicks();}
         
     }

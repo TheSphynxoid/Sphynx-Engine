@@ -28,11 +28,11 @@
     <Filter Include="Sphynx\Core\Scripting">
       <UniqueIdentifier>{A99DEA9F-150A-A69A-DEFD-3DF84A29C802}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Sphynx\Core\Scripting\BaseLib">
-      <UniqueIdentifier>{2A109644-9628-7D6E-5FD5-0C08CBAC1108}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Sphynx\Core\Scripting\Mono">
       <UniqueIdentifier>{F12ECBE9-DD3E-77BA-46F8-DBD832276653}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sphynx\Core\Scripting\Mono\Internal">
+      <UniqueIdentifier>{3D9450BD-A94D-BB67-32AD-D5419E6571D7}</UniqueIdentifier>
     </Filter>
     <Filter Include="Sphynx\Editor">
       <UniqueIdentifier>{85147340-F1D4-EE76-BA0F-38F4268F3353}</UniqueIdentifier>
@@ -163,9 +163,6 @@
     <ClInclude Include="src\Sphynx\Core\Module.h">
       <Filter>Sphynx\Core</Filter>
     </ClInclude>
-    <ClInclude Include="src\Sphynx\Core\OldMemory.h">
-      <Filter>Sphynx\Core</Filter>
-    </ClInclude>
     <ClInclude Include="src\Sphynx\Core\SceneManager.h">
       <Filter>Sphynx\Core</Filter>
     </ClInclude>
@@ -175,8 +172,32 @@
     <ClInclude Include="src\Sphynx\Core\Scripting\Mono\CsScript.h">
       <Filter>Sphynx\Core\Scripting\Mono</Filter>
     </ClInclude>
+    <ClInclude Include="src\Sphynx\Core\Scripting\Mono\Internal\MonoWrapper.h">
+      <Filter>Sphynx\Core\Scripting\Mono\Internal</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Sphynx\Core\Scripting\Mono\Internal\GameObjectWrapper.h">
+      <Filter>Sphynx\Core\Scripting\Mono\Internal</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Sphynx\Core\Scripting\Mono\Internal\NativeComponent.h">
+      <Filter>Sphynx\Core\Scripting\Mono\Internal</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Sphynx\Core\Scripting\Mono\Internal\ScriptManager.h">
+      <Filter>Sphynx\Core\Scripting\Mono\Internal</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Sphynx\Core\Scripting\Mono\Internal\TransformWrapper.h">
+      <Filter>Sphynx\Core\Scripting\Mono\Internal</Filter>
+    </ClInclude>
     <ClInclude Include="src\Sphynx\Core\Scripting\Mono\MonoRuntime.h">
       <Filter>Sphynx\Core\Scripting\Mono</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Sphynx\Core\Scripting\Script.h">
+      <Filter>Sphynx\Core\Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Sphynx\Core\Scripting\ScriptComponent.h">
+      <Filter>Sphynx\Core\Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Sphynx\Core\Scripting\ScriptingBackend.h">
+      <Filter>Sphynx\Core\Scripting</Filter>
     </ClInclude>
     <ClInclude Include="src\Sphynx\Core\SpriteRenderer.h">
       <Filter>Sphynx\Core</Filter>
@@ -216,6 +237,9 @@
     </ClInclude>
     <ClInclude Include="src\Sphynx\Editor\TextureDebugger.h">
       <Filter>Sphynx\Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Sphynx\Engine.h">
+      <Filter>Sphynx</Filter>
     </ClInclude>
     <ClInclude Include="src\Sphynx\EntryPoint.h">
       <Filter>Sphynx</Filter>
@@ -274,6 +298,9 @@
     <ClInclude Include="src\Sphynx\SpTime.h">
       <Filter>Sphynx</Filter>
     </ClInclude>
+    <ClInclude Include="src\Sphynx\System.h">
+      <Filter>Sphynx</Filter>
+    </ClInclude>
     <ClInclude Include="src\Sphynx\UI\RectRenderer.h">
       <Filter>Sphynx\UI</Filter>
     </ClInclude>
@@ -301,15 +328,6 @@
     <ClInclude Include="src\Sphynx\pch.h">
       <Filter>Sphynx</Filter>
     </ClInclude>
-    <ClInclude Include="src\Sphynx\Core\Scripting\ScriptingBackend.h" />
-    <ClInclude Include="src\Sphynx\Core\Scripting\Script.h" />
-    <ClInclude Include="src\Sphynx\Core\Scripting\ScriptComponent.h" />
-    <ClInclude Include="src\Sphynx\System.h" />
-    <ClInclude Include="src\Sphynx\Engine.h" />
-    <ClInclude Include="src\Sphynx\Core\Scripting\Mono\Internal\GameObjectWrapper.h" />
-    <ClInclude Include="src\Sphynx\Core\Scripting\Mono\Internal\ScriptManager.h" />
-    <ClInclude Include="src\Sphynx\Core\Scripting\Mono\Internal\TransformWrapper.h" />
-    <ClInclude Include="src\Sphynx\Core\Scripting\Mono\Internal\NativeComponent.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Sphynx\Application.cpp">
@@ -402,11 +420,32 @@
     <ClCompile Include="src\Sphynx\Core\Scripting\Mono\CsScript.cpp">
       <Filter>Sphynx\Core\Scripting\Mono</Filter>
     </ClCompile>
+    <ClCompile Include="src\Sphynx\Core\Scripting\Mono\Internal\MonoWrapper.cpp">
+      <Filter>Sphynx\Core\Scripting\Mono\Internal</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Sphynx\Core\Scripting\Mono\Internal\GameObjectWrapper.cpp">
+      <Filter>Sphynx\Core\Scripting\Mono\Internal</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Sphynx\Core\Scripting\Mono\Internal\NativeComponent.cpp">
+      <Filter>Sphynx\Core\Scripting\Mono\Internal</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Sphynx\Core\Scripting\Mono\Internal\ScriptManager.cpp">
+      <Filter>Sphynx\Core\Scripting\Mono\Internal</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Sphynx\Core\Scripting\Mono\Internal\TransformWrapper.cpp">
+      <Filter>Sphynx\Core\Scripting\Mono\Internal</Filter>
+    </ClCompile>
     <ClCompile Include="src\Sphynx\Core\Scripting\Mono\MonoInternalCalls.cpp">
       <Filter>Sphynx\Core\Scripting\Mono</Filter>
     </ClCompile>
     <ClCompile Include="src\Sphynx\Core\Scripting\Mono\MonoRuntime.cpp">
       <Filter>Sphynx\Core\Scripting\Mono</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Sphynx\Core\Scripting\ScriptComponent.cpp">
+      <Filter>Sphynx\Core\Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Sphynx\Core\Scripting\ScriptingBackend.cpp">
+      <Filter>Sphynx\Core\Scripting</Filter>
     </ClCompile>
     <ClCompile Include="src\Sphynx\Core\SpriteRenderer.cpp">
       <Filter>Sphynx\Core</Filter>
@@ -440,6 +479,9 @@
     </ClCompile>
     <ClCompile Include="src\Sphynx\Editor\TextureDebugger.cpp">
       <Filter>Sphynx\Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Sphynx\Engine.cpp">
+      <Filter>Sphynx</Filter>
     </ClCompile>
     <ClCompile Include="src\Sphynx\GameObject.cpp">
       <Filter>Sphynx</Filter>
@@ -486,13 +528,6 @@
     <ClCompile Include="src\Sphynx\pch.cpp">
       <Filter>Sphynx</Filter>
     </ClCompile>
-    <ClCompile Include="src\Sphynx\Core\Scripting\ScriptComponent.cpp" />
-    <ClCompile Include="src\Sphynx\Core\Scripting\ScriptingBackend.cpp" />
-    <ClCompile Include="src\Sphynx\Engine.cpp" />
-    <ClCompile Include="src\Sphynx\Core\Scripting\Mono\Internal\GameObjectWrapper.cpp" />
-    <ClCompile Include="src\Sphynx\Core\Scripting\Mono\Internal\ScriptManager.cpp" />
-    <ClCompile Include="src\Sphynx\Core\Scripting\Mono\Internal\TransformWrapper.cpp" />
-    <ClCompile Include="src\Sphynx\Core\Scripting\Mono\Internal\NativeComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Sphynx\Scripts\Component.as">
@@ -501,6 +536,5 @@
     <None Include="src\Sphynx\Scripts\Testing.as">
       <Filter>Sphynx\Scripts</Filter>
     </None>
-    <None Include="cpp.hint" />
   </ItemGroup>
 </Project>
