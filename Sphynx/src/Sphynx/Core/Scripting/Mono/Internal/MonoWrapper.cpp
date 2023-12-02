@@ -13,12 +13,29 @@ Sphynx::Mono::Class::Class(MonoClass* monoclass)
 
 Object Sphynx::Mono::Class::InstantiateDefault()
 {
-	return Object(this, mono_object_new(mono_domain_get(), WrappedClass));
+	return Object(this);
 }
 
-Sphynx::Mono::Object Sphynx::Mono::Class::Instantiate()
+Sphynx::Mono::Object Sphynx::Mono::Class::Instantiate(void** Params, size_t count)
 {
-	return Object();
+	return Object(this);
+}
+
+const char* Sphynx::Mono::Class::GetName()
+{
+	return mono_class_get_name(WrappedClass);
+}
+
+void* Sphynx::Mono::Class::GetNative()
+{
+	return WrappedClass;
+}
+
+Sphynx::Mono::Object::Object(Class* c)
+{
+	InstanceOf = c;
+	WrappedObject = mono_object_new(mono_domain_get(), (MonoClass*)c->GetNative());
+	mono_runtime_object_init(WrappedObject);
 }
 
 Sphynx::Mono::Object::Object(Class* c, MonoObject* obj)

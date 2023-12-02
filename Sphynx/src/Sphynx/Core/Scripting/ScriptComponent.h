@@ -10,10 +10,10 @@ namespace Sphynx::Core {
 	class ScriptComponent final : public Component 
 	{
 	private:
-		Scripting::Script* script;
+		std::vector<Scripting::Script*> scripts;
 		Mono::GameObjectWrapper* GOWrapper;
 	public:
-		ScriptComponent(std::string name);
+		ScriptComponent();
 
 		// Inherited via Component
 		virtual void Start() override;
@@ -21,6 +21,7 @@ namespace Sphynx::Core {
 		virtual void FixedUpdate() override;
 		virtual void OnComponentAttach(GameObject* parent) override;
 		virtual void OnComponentDetach() override;
+		void AddComponent(std::string name);
 		const char* GetName() override;
 	};
 }

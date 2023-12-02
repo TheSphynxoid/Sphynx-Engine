@@ -4,12 +4,9 @@
 #include "Mono/Internal/GameObjectWrapper.h"
 #include "Mono/Internal/ScriptManager.h"
 
-Sphynx::Core::ScriptComponent::ScriptComponent(std::string name)
+Sphynx::Core::ScriptComponent::ScriptComponent()
 {
-	//TODO: Change later make it backend independent
-	//GOWrapper = Mono::GameObjectWrapper(GetGameObject());
 
-	script = Mono::MonoRuntime::CreateScriptByName(name);
 }
 
 void Sphynx::Core::ScriptComponent::Start()
@@ -30,13 +27,24 @@ void Sphynx::Core::ScriptComponent::FixedUpdate()
 void Sphynx::Core::ScriptComponent::OnComponentAttach(GameObject* parent)
 {
 	GOWrapper = Mono::ScriptManager::GetGameobjectWrapper(GetGameObject());
-	GOWrapper->AddComponent((Mono::CsScript*)script);
+	//GOWrapper->AddComponent((Mono::CsScript*)script);
+	for (auto s : scripts) {
+		GOWrapper->AddComponent((Mono::CsScript*)s);
+	}
 	//GOWrapper->Awake();
 }
 
 void Sphynx::Core::ScriptComponent::OnComponentDetach()
 {
 	//script->OnDestroy();
+}
+
+void Sphynx::Core::ScriptComponent::AddComponent(std::string name)
+{
+	//TODO: Change later make it backend independent
+	//GOWrapper = Mono::GameObjectWrapper(GetGameObject());
+
+	script = Mono::MonoRuntime::CreateScriptByName(name);
 }
 
 const char* Sphynx::Core::ScriptComponent::GetName()

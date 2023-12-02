@@ -1,15 +1,11 @@
 #pragma once
 
-struct _MonoProperty;
-typedef _MonoProperty MonoProperty;
-struct _MonoClass;
-typedef _MonoClass MonoClass;
-struct _MonoReflectionType;
-typedef _MonoReflectionType MonoReflectionType;
-struct _MonoException;
-typedef _MonoException MonoException;
-struct _MonoClassField;
-typedef _MonoClassField MonoClassField;
+typedef struct _MonoProperty MonoProperty;
+typedef struct _MonoClass MonoClass;
+typedef struct _MonoObject MonoObject;
+typedef struct _MonoReflectionType MonoReflectionType;
+typedef struct _MonoException MonoException;
+typedef struct _MonoClassField MonoClassField;
 
 namespace Sphynx::Mono {
 	class Class;
@@ -18,7 +14,7 @@ namespace Sphynx::Mono {
 		MonoObject* WrappedObject;
 		Class* InstanceOf;
 	public:
-		Object() = default;
+		Object(Class* c);
 		Object(Class* c, MonoObject* obj);
 		Class* GetClass() { return InstanceOf; }
 	};
@@ -37,8 +33,9 @@ namespace Sphynx::Mono {
 	public:
 		Class(MonoClass* monoclass);
 		Object InstantiateDefault();
-		Object Instantiate();
+		Object Instantiate(void** Params, size_t count);
 		const char* GetName();
+		void* GetNative();
 		Field GetField(std::string Name);
 	};
 }

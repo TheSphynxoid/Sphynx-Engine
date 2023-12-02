@@ -2,6 +2,15 @@
 #include "GameObjectWrapper.h"
 #include "../MonoRuntime.h"
 
+void Sphynx::Mono::GameObjectWrapper::Init()
+{
+	auto addcomp = mono_class_get_method_from_name(GameObjectClass, "InternalAddComp", 2);
+	AddComp = (AddCompThunk)mono_method_get_unmanaged_thunk(addcomp);
+	IDProp = mono_class_get_property_from_name(GameObjectClass, "ID");
+	NameProp = mono_class_get_property_from_name(GameObjectClass, "Name");
+	NativePtr = mono_class_get_field_from_name(GameObjectClass, "NativePtr");
+}
+
 Sphynx::Mono::GameObjectWrapper::GameObjectWrapper(GameObject* go)
 {
 	gameObject = go;
@@ -10,11 +19,22 @@ Sphynx::Mono::GameObjectWrapper::GameObjectWrapper(GameObject* go)
 	mono_property_set_value(IDProp, Managedobj, (void**)&ID, nullptr);
 	auto name = mono_string_new(MonoRuntime::GetAppdomain(), gameObject->GetName());
 	mono_property_set_value(NameProp, Managedobj, (void**)&name, nullptr);
+	mono_field_set_value(Managedobj, NativePtr, gameObject);
 	for (auto& comp : go->GetComponents()) {
 		if (comp->GetName() == "Transform") {
 			transform = TransformWrapper();
 		}
 	}
+}
+
+Sphynx::Mono::GameObjectWrapper::GameObjectWrapper(MonoObject* obj)
+{
+	if (mono_object_get_class(obj) != GameObjectClass) {
+		Core_Error("Invalid MonoObject. Is not GameObject class");
+		return;
+	}
+	Managedobj = obj;
+	mono_field_get_value(obj, NativePtr, gameObject);
 }
 
 void Sphynx::Mono::GameObjectWrapper::AddComponent(CsScript* script)
@@ -50,4 +70,11 @@ void Sphynx::Mono::GameObjectWrapper::FixedUpdate()
 	for (auto script : Scripts) {
 		script->FixedUpdate();
 	}
+}
+
+Sphynx::GameObject* Sphynx::Mono::GameObjectWrapper::GetFromObject_unchecked(MonoObject* obj)
+{
+	GameObject* gameObject;
+	mono_field_get_value(obj, NativePtr, gameObject);
+	return gameObject;
 }

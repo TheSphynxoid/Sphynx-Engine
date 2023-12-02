@@ -16,18 +16,20 @@ namespace Sphynx
 
         public ulong ID { get; internal set; }
 
+        private readonly IntPtr NativePtr;
+
         public Transform transform { get; set; }
 
         public GameObject()
         {
             Console.WriteLine("GameObject Constructed");
-
         }
 
         internal Dictionary<Type,Component> components = new Dictionary<Type, Component>();
         internal void InternalAddComp(Component comp,Type type)
         {
             components.Add(type, comp);
+            Logger.Info($"Native-Side Component {comp.ID} Added to {NativePtr} ");
             comp.gameObject = this;
         }
 

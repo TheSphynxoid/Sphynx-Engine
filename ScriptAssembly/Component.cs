@@ -13,13 +13,11 @@ namespace Sphynx
 {
     public abstract class Component
     {
-        internal NativeComponent Native;
-
         public GameObject gameObject { get; internal set; }
 
         public Transform transform { get; }
 
-        public ulong ID { get { return Native.NativeID; } }
+        internal readonly ulong ID;
 
         public virtual void Awake() 
         {

@@ -32,7 +32,7 @@ namespace Sphynx::Core::Internal {
 		}
 
 		//Utility
-		typedef struct ComponentHelper {
+		struct Helper {
 			template<class comp>
 			static bool CompareTypeToComponant_typeindex(Component* c) {
 				return (std::type_index(typeid(comp) == std::type_index(typeid(*c))));
@@ -52,7 +52,7 @@ namespace Sphynx::Core::Internal {
 			static bool IsComponentOfType(Component* component) {
 				return typeid(comp) == typeid(*component);
 			}
-		}ComponentHelper;
+		};
 	};
 }
 #else

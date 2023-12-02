@@ -9,8 +9,10 @@ namespace Sphynx::Mono {
 	class CsScript final : public Sphynx::Core::Scripting::Script
 	{
 	private:
+		static inline MonoClass* ComponentClass;
 		static inline MonoMethod* AwakeVirtMethod, * StartVirtMethod, * UpdateVirtMethod, * FixedUpdateVirtMethod, * OnDestroyVirtMethod;
-		static inline MonoClassField* NativeField;
+		//static inline MonoClassField* NativeField;
+		static inline MonoClassField* ID;
 		//The Object in mono.
 		MonoObject* ScriptObject;
 		MonoClass* ScriptClass;
@@ -27,7 +29,9 @@ namespace Sphynx::Mono {
 		UnmanagedThunk FixedUpdateThunk;
 		UnmanagedThunk OnDestroyThunk;
 
+		static void Init();
 		static void HandleException(MonoException* ex);
+		void SetInternalID(size_t id);
 	public:
 		CsScript() = default;
 		CsScript(MonoObject* obj,MonoClass* objClass,std::string name);
@@ -40,6 +44,7 @@ namespace Sphynx::Mono {
 		inline virtual const char* GetName() const noexcept {
 			return Name.c_str();
 		};
+		static MonoClass* GetNative() { return ComponentClass; };
 		friend class MonoRuntime;
 		friend class GameObjectWrapper;
 	};

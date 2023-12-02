@@ -35,7 +35,9 @@ public:
 	}
 	void Start() {
 		TextTest = GameObject::CreatePrimitive(Primitives::Cube);
-		TextTest->AddComponent<ScriptComponent>("TestComponent");
+		auto sc = TextTest->AddComponent<ScriptComponent>();
+		sc->AddScript("TestComponent");
+		TextTest->AddComponent<ScriptComponent>("TestComponent2");
 		Sphynx::Core::SceneManager::GetScene().AddGameObject(TextTest);
 	}
 	void Update() {	

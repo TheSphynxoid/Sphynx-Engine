@@ -50,7 +50,7 @@ namespace Sphynx {
 		component* AddComponent(Args&& ...args) {
 			//C++17
 			if (std::is_base_of_v<Component, component>) {
-				if (!Core::Internal::ComponentFactory::ComponentHelper::IsComponentInGameObject<component>(this)) {
+				if (!Core::Internal::ComponentFactory::Helper::IsComponentInGameObject<component>(this)) {
 					auto rtval = Core::Internal::ComponentFactory::CreateComponent<component>(this, SPH_Forward(args)...);
 					Components.push_back(rtval);
 					return rtval;
@@ -63,7 +63,7 @@ namespace Sphynx {
 			if (std::is_base_of_v<Component, component>)
 			{
 				for (auto comp : Components) {
-					if (Core::Internal::ComponentFactory::ComponentHelper::CompareTypeToComponant_typeid<component>(comp)) {
+					if (Core::Internal::ComponentFactory::Helper::CompareTypeToComponant_typeid<component>(comp)) {
 						return static_cast<component*>(comp);
 					}
 				}
@@ -75,7 +75,7 @@ namespace Sphynx {
 			if (!std::is_base_of_v<Component, component>) return;
 			else {
 				for (auto comp : Components) {
-					if (Core::Internal::ComponentFactory::ComponentHelper::CompareTypeToComponant_typeid<component>(comp)) {
+					if (Core::Internal::ComponentFactory::Helper::CompareTypeToComponant_typeid<component>(comp)) {
 						Core::Internal::ComponentFactory::RemoveComponent(this, comp);
 						Components.remove(comp);
 						return;

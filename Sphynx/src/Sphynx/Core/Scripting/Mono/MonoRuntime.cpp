@@ -27,8 +27,6 @@ static MonoAssembly* ScriptAssembly = nullptr;
 static MonoAssembly* GameAssembly = nullptr;
 static MonoImage* ScriptImage = nullptr;
 static MonoImage* GameImage = nullptr;
-static MonoClass* ComponentClass;
-static MonoClass* GameObjectClass;
 static MonoClass* TransformClass;
 //MonoRuntime Static Members
 
@@ -58,8 +56,8 @@ std::unordered_map<std::string, MonoClass*> CommonTypes = {
 	{"System.Enum",mono_get_enum_class()},
 	{"System.Exception",mono_get_exception_class()},
 	{"void",mono_get_void_class()},
-	{"Sphynx.Component", ComponentClass},
-	{"Sphynx.GameObject", GameObjectClass},
+	{"Sphynx.Component", CsScript::GetNative()},
+	{"Sphynx.GameObject", GameObjectWrapper::GetNative()},
 	{"Sphynx.Transform", TransformClass}
 };
 
@@ -122,7 +120,7 @@ void Sphynx::Mono::MonoRuntime::ReadClassesMetadata()
 		strcpy(&Fullname[NamespaceLen + 1], Classname);
 
 		MonoClass* monoClass = mono_class_from_name(GameImage, Namespace, Classname);
-		bool IsComponent = mono_class_is_subclass_of(monoClass, ComponentClass, true);
+		bool IsComponent = mono_class_is_subclass_of(monoClass, CsScript::GetNative(), true);
 
 		if (IsComponent) {
 			CompNames.insert(std::pair<std::string, MonoClass*>(Classname, monoClass));
@@ -180,22 +178,11 @@ void Sphynx::Mono::MonoRuntime::Initialize(std::string AssemblyPath)
 		HasRegisteredInternals = true;
 	}
 
-	ComponentClass = mono_class_from_name(ScriptImage, "Sphynx", "Component");
+	CsScript::ComponentClass = mono_class_from_name(ScriptImage, "Sphynx", "Component");
+	CsScript::Init();
+	GameObjectWrapper::GameObjectClass = mono_class_from_name(ScriptImage, "Sphynx", "GameObject");
+	GameObjectWrapper::Init();
 
-	CsScript::AwakeVirtMethod = mono_class_get_method_from_name(ComponentClass, "Awake", 0);
-	CsScript::StartVirtMethod = mono_class_get_method_from_name(ComponentClass, "Start", 0);
-	CsScript::UpdateVirtMethod = mono_class_get_method_from_name(ComponentClass, "Update", 0);
-	CsScript::FixedUpdateVirtMethod = mono_class_get_method_from_name(ComponentClass, "FixedUpdate", 0);
-	CsScript::OnDestroyVirtMethod = mono_class_get_method_from_name(ComponentClass, "OnDestroy", 0);
-
-	CsScript::NativeField = mono_class_get_field_from_name(ComponentClass, "Native");
-
-	GameObjectClass = mono_class_from_name(ScriptImage, "Sphynx", "GameObject");
-	GameObjectWrapper::GameObjectClass = GameObjectClass;
-	auto AddComp = mono_class_get_method_from_name(GameObjectClass, "InternalAddComp", 2);
-	GameObjectWrapper::AddComp = (GameObjectWrapper::AddCompThunk)mono_method_get_unmanaged_thunk(AddComp);
-	GameObjectWrapper::IDProp = mono_class_get_property_from_name(GameObjectClass, "ID");
-	GameObjectWrapper::NameProp = mono_class_get_property_from_name(GameObjectClass, "Name");
 	TransformClass = mono_class_from_name(ScriptImage, "Sphynx", "Transform");
 	TransformWrapper::TransformClass = TransformClass;
 

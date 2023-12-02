@@ -57,11 +57,11 @@ void Sphynx::Editor::GameObjectView::Draw()
 				CurrentGO->GetTransform()->SetScale({ TransformS[0],TransformS[1],TransformS[2] });
 			}
 			ImGui::Separator();
-			if (Core::Internal::ComponentFactory::ComponentHelper::IsComponentInGameObject<Camera>(CurrentGO)) {
+			if (Core::Internal::ComponentFactory::Helper::IsComponentInGameObject<Camera>(CurrentGO)) {
 				ImGui::Text("Camera");
 				ImGui::Separator();
 			}
-			if (Core::Internal::ComponentFactory::ComponentHelper::IsComponentInGameObject<MeshRenderer>(CurrentGO)) {
+			if (Core::Internal::ComponentFactory::Helper::IsComponentInGameObject<MeshRenderer>(CurrentGO)) {
 				ImGui::Text("Mesh Renderer");
 				if (ImGui::TreeNode("Mesh")) {
 					ImGui::TreePop();

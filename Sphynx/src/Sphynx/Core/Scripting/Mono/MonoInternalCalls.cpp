@@ -23,6 +23,7 @@ extern "C" {
 #include "mono/metadata/mono-debug.h"
 #include "mono/metadata/threads.h"
 }
+#include "Internal/GameObjectWrapper.h"
 
 extern MonoDomain* Appdomain;
 
@@ -70,9 +71,6 @@ namespace Sphynx::Mono::Internal {
 	MonoExport Sphynx::Core::Bounds GetSize() {
 		return MainWindow->GetBounds();
 	}
-	MonoExport void SetPosition(MonoObject GO, glm::vec3) {
-		
-	}
 	MonoExport int GetKeyState(int key) {
 		return (int)Input::GetKeyState((Keys)key).action;
 	}
@@ -80,7 +78,13 @@ namespace Sphynx::Mono::Internal {
 		auto Native = NativeComponent();
 		return Native;
 	}
-
+	MonoExport void SetPosition(MonoObject* go, glm::vec3 pos) {
+		GameObject* gameobj = GameObjectWrapper::GetFromObject_unchecked(go);
+		gameobj->GetTransform()->SetPosition(pos);
+	}
+	MonoExport glm::vec3 GetPosition(MonoObject* go) {
+		return GameObjectWrapper::GetFromObject_unchecked(go)->GetTransform()->GetPosition();
+	}
 	void RegisterInternalCalls() {
 		MainWindow = GetApplication()->GetMainWindow();
 
@@ -112,7 +116,8 @@ namespace Sphynx::Mono::Internal {
 		mono_add_internal_call("Sphynx.Core.Graphics.Window::SetSize", (void*)&SetSize);
 		mono_add_internal_call("Sphynx.Core.Graphics.Window::GetSize", (void*)&GetSize);
 		//Sphynx.Transform
-		mono_add_internal_call("Sphynx.Transform::SetPosition", NULL);
+		mono_add_internal_call("Sphynx.Transform::SetPosition", (void*)&SetPosition);
+		mono_add_internal_call("Sphynx.Transform::GetPosition", (void*)&GetPosition);
 	}
 }
 #endif
