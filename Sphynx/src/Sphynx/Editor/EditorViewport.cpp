@@ -30,6 +30,7 @@ Sphynx::Editor::EditorViewport::EditorViewport() : viewport()
 void Sphynx::Editor::EditorViewport::Draw()
 {
 	static bool StatsToggle = true;
+	static ImVec2 WinSize;
 	if (Input::IsKeyPressed(Keys::F3) && Input::GetMods(Keys::F3) == Mods::Shift) StatsToggle != StatsToggle;
 	auto Cam = SceneManager::GetScene().GetPrimaryCamera();
 	if (ViewDockID == 0) {
@@ -45,34 +46,38 @@ void Sphynx::Editor::EditorViewport::Draw()
 	ImGui::SetNextWindowDockID(ViewDockID, ImGuiCond_FirstUseEver);
 	if (ImGui::Begin("Viewport", &IsOpen, ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoScrollbar
 		| ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoNavInputs)) {
-		if (ResizeFlag) {
+		ImVec2 CurrSize = ImGui::GetContentRegionAvail();
+		if (CurrSize.x != WinSize.x || CurrSize.y != WinSize.y) {
 			ResizeFlag = false;
+			WinSize = CurrSize;
 			Cam->SetViewport(
-				{ 0,0,(int)ImGui::GetWindowWidth() - 10,(int)ImGui::GetWindowHeight() - 10 });
+				{ 0,0,(int)WinSize.x,(int)WinSize.y });
 		}
 		ImGui::Image(Cam->GetFrameBuffer()->GetColorAttachment(0)->GetNativeID(),
 			{ (float)Cam->GetFrameBuffer()->GetWidth(),
 				(float)Cam->GetFrameBuffer()->GetHeight() }, { 0,1 }, { 1,0 });
-        //Render info widget
-		ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav;
-		ImVec2 work_pos = ImGui::GetWindowPos(); // Use work area to avoid menu-bar/task-bar, if any!
-		ImVec2 work_size = ImGui::GetWindowSize();
-		ImVec2 window_pos, window_pos_pivot;
-		window_pos.x = (work_pos.x + work_size.x - 10.0f);
-		window_pos.y = (work_pos.y + 25.0f);
-		window_pos_pivot.x = 1.0f;
-		window_pos_pivot.y = 0.0f;
-		ImGui::SetNextWindowPos(window_pos, ImGuiCond_Always, window_pos_pivot);
-        ImGui::SetNextWindowBgAlpha(0.35f); // Transparent background
-        if (ImGui::Begin("Viewport Details", &IsOpen, window_flags))
-        {
-			auto fb = SceneManager::GetScene().GetPrimaryCamera()->GetFrameBuffer()->GetColorAttachment(0);
-			ImGui::Text("Framebuffer Size:%i,%i", fb->GetWidth(), fb->GetHeight());
-			ImGui::Text("Viewport Size:%i,%i", (int)ImGui::GetWindowWidth(), (int)ImGui::GetWindowHeight());
-			ImGui::Text("FPS:%i", (int)(1 / Time::GetDeltaTime()));
-        }
-		//End Render info widget 
-        ImGui::End();
+		if (StatsToggle) {
+			//Render info widget
+			ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav;
+			ImVec2 work_pos = ImGui::GetWindowPos(); // Use work area to avoid menu-bar/task-bar, if any!
+			ImVec2 work_size = ImGui::GetWindowSize();
+			ImVec2 window_pos, window_pos_pivot;
+			window_pos.x = (work_pos.x + work_size.x - 10.0f);
+			window_pos.y = (work_pos.y + 25.0f);
+			window_pos_pivot.x = 1.0f;
+			window_pos_pivot.y = 0.0f;
+			ImGui::SetNextWindowPos(window_pos, ImGuiCond_Always, window_pos_pivot);
+			ImGui::SetNextWindowBgAlpha(0.35f); // Transparent background
+			if (ImGui::Begin("Viewport Details", &IsOpen, window_flags))
+			{
+				auto fb = SceneManager::GetScene().GetPrimaryCamera()->GetFrameBuffer()->GetColorAttachment(0);
+				ImGui::Text("Framebuffer Size:%i,%i", fb->GetWidth(), fb->GetHeight());
+				ImGui::Text("Viewport Size:%i,%i", (int)ImGui::GetWindowWidth(), (int)ImGui::GetWindowHeight());
+				ImGui::Text("FPS:%i", (int)(1 / Time::GetDeltaTime()));
+			}
+			//End Render info widget 
+			ImGui::End();
+		}
 	}
 	ImGui::End();
 }

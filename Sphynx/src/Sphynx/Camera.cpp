@@ -58,8 +58,8 @@ Sphynx::Camera::Camera(float fov, float aspectRatio, float nearClip, float farCl
 void Sphynx::Camera::Update()
 {
 	if (GetTransform()->Changed) {
-		ViewMatrix = glm::lookAt(GetTransform()->GetPosition(), GetTransform()->GetPosition() + glm::vec3(0, 0, -1),
-			glm::rotate(GetTransform()->GetRotation(), glm::vec3(0,1,0)));
+		ViewMatrix = glm::lookAt(GetTransform()->GetPosition(), glm::rotate(GetTransform()->GetRotation(), GetTransform()->GetPosition() + glm::vec3(0, 0, -1)),
+		glm::vec3(0,1,0));
 		
 	}
 	RenderTarget->Bind();

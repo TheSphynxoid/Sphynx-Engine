@@ -39,6 +39,7 @@ Sphynx::GameObject::~GameObject()
         comp->OnComponentDetach();
         Components.remove(comp);
     }*/
+    delete transform;
 }
 
 Sphynx::GameObject& Sphynx::GameObject::operator=(GameObject&& obj)noexcept

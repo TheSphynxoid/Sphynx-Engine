@@ -39,15 +39,11 @@ void Sphynx::Core::ScriptComponent::OnComponentDetach()
 	//script->OnDestroy();
 }
 
-void Sphynx::Core::ScriptComponent::AddComponent(std::string name)
+void Sphynx::Core::ScriptComponent::AddScript(std::string name)
 {
 	//TODO: Change later make it backend independent
 	//GOWrapper = Mono::GameObjectWrapper(GetGameObject());
-
-	script = Mono::MonoRuntime::CreateScriptByName(name);
-}
-
-const char* Sphynx::Core::ScriptComponent::GetName()
-{
-	return script->GetName();
+	auto s = Mono::MonoRuntime::CreateScriptByName(name);
+	GOWrapper->AddComponent((Mono::CsScript*)s);
+	scripts.push_back(s);
 }

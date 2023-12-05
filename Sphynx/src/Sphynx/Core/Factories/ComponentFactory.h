@@ -1,7 +1,6 @@
 #pragma once
 #ifndef Sphynx_ComponentFactory
 #define Sphynx_ComponentFactory
-#include "Component.h"
 #include "GameObject.h"
 #include <typeindex>
 #include <unordered_map>

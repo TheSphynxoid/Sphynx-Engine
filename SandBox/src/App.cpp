@@ -37,15 +37,11 @@ public:
 		TextTest = GameObject::CreatePrimitive(Primitives::Cube);
 		auto sc = TextTest->AddComponent<ScriptComponent>();
 		sc->AddScript("TestComponent");
-		TextTest->AddComponent<ScriptComponent>("TestComponent2");
+		sc->AddScript("TestComponent2");
 		Sphynx::Core::SceneManager::GetScene().AddGameObject(TextTest);
 	}
 	void Update() {	
-		if (Sphynx::Input::GetKeyState(Sphynx::Keys::Up)) {
-			TextTest->GetTransform()->Translate(glm::vec3(0, 1, 0) * (float)Time::GetDeltaTime());
-		}if (Sphynx::Input::GetKeyState(Sphynx::Keys::RightShift)) {
-			TextTest->GetTransform()->Translate(glm::vec3(0, 0, -1) * (float)Time::GetDeltaTime());
-		}
+
 	}
 	~SandBox() {
 

@@ -8,10 +8,11 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Sphynx</RootNamespace>
-    <AssemblyName>SphynxManaged</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <AssemblyName>ScriptAssembly</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
     <PlatformTarget>x64</PlatformTarget>
@@ -25,6 +26,7 @@
     </DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
     <PlatformTarget>x64</PlatformTarget>
@@ -45,9 +47,6 @@
     </Reference>
     <Reference Include="Mono.CSharp">
       <HintPath>..\..\SphynxSandBox\mono\gacMono.CSharp\4.0.0.0__0738eb9f132ed756\Mono.CSharp.dll</HintPath>
-    </Reference>
-    <Reference Include="Mono.Cecil">
-      <HintPath>..\..\SphynxSandBox\mono\gacMono.Cecil\0.11.1.0__0738eb9f132ed756\Mono.Cecil.dll</HintPath>
     </Reference>
     <Reference Include="Mono.Parallel">
       <HintPath>..\..\SphynxSandBox\mono\gacMono.Parallel\4.0.0.0__0738eb9f132ed756\Mono.Parallel.dll</HintPath>

@@ -6,9 +6,17 @@ void Sphynx::Mono::GameObjectWrapper::Init()
 {
 	auto addcomp = mono_class_get_method_from_name(GameObjectClass, "InternalAddComp", 2);
 	AddComp = (AddCompThunk)mono_method_get_unmanaged_thunk(addcomp);
+	//auto Constructor = mono_class_get_method_from_name(GameObjectClass, "GameObject", 1);
 	IDProp = mono_class_get_property_from_name(GameObjectClass, "ID");
 	NameProp = mono_class_get_property_from_name(GameObjectClass, "Name");
 	NativePtr = mono_class_get_field_from_name(GameObjectClass, "NativePtr");
+
+	//Methods
+	AwakeMethod = mono_class_get_method_from_name(GameObjectClass, "Awake", 0);
+	StartMethod = mono_class_get_method_from_name(GameObjectClass, "Start", 0);
+	UpdateMethod = mono_class_get_method_from_name(GameObjectClass, "Update", 0);
+	FixedUpdateMethod = mono_class_get_method_from_name(GameObjectClass, "FixedUpdate", 0);
+	OnDestroyMethod = mono_class_get_method_from_name(GameObjectClass, "OnDestroy", 0);
 }
 
 Sphynx::Mono::GameObjectWrapper::GameObjectWrapper(GameObject* go)
@@ -19,12 +27,18 @@ Sphynx::Mono::GameObjectWrapper::GameObjectWrapper(GameObject* go)
 	mono_property_set_value(IDProp, Managedobj, (void**)&ID, nullptr);
 	auto name = mono_string_new(MonoRuntime::GetAppdomain(), gameObject->GetName());
 	mono_property_set_value(NameProp, Managedobj, (void**)&name, nullptr);
-	mono_field_set_value(Managedobj, NativePtr, gameObject);
-	for (auto& comp : go->GetComponents()) {
-		if (comp->GetName() == "Transform") {
-			transform = TransformWrapper();
-		}
-	}
+	mono_field_set_value(Managedobj, NativePtr, &gameObject);
+	mono_runtime_object_init(Managedobj);
+	//for (auto& comp : go->GetComponents()) {
+	//	if (comp->GetName() == "Transform") {
+	//		transform = TransformWrapper();
+	//	}
+	//}
+	AwakeThunk = (UnmanagedThunk)mono_method_get_unmanaged_thunk(mono_object_get_virtual_method(Managedobj, AwakeMethod));
+	StartThunk = (UnmanagedThunk)mono_method_get_unmanaged_thunk(mono_object_get_virtual_method(Managedobj, StartMethod));
+	UpdateThunk = (UnmanagedThunk)mono_method_get_unmanaged_thunk(mono_object_get_virtual_method(Managedobj, UpdateMethod));
+	FixedUpdateThunk = (UnmanagedThunk)mono_method_get_unmanaged_thunk(mono_object_get_virtual_method(Managedobj, FixedUpdateMethod));
+	OnDestroyThunk = (UnmanagedThunk)mono_method_get_unmanaged_thunk(mono_object_get_virtual_method(Managedobj, OnDestroyMethod));
 }
 
 Sphynx::Mono::GameObjectWrapper::GameObjectWrapper(MonoObject* obj)
@@ -34,7 +48,13 @@ Sphynx::Mono::GameObjectWrapper::GameObjectWrapper(MonoObject* obj)
 		return;
 	}
 	Managedobj = obj;
-	mono_field_get_value(obj, NativePtr, gameObject);
+	mono_field_get_value(obj, NativePtr, &gameObject);
+
+	AwakeThunk = (UnmanagedThunk)mono_method_get_unmanaged_thunk(mono_object_get_virtual_method(Managedobj, AwakeMethod));
+	StartThunk = (UnmanagedThunk)mono_method_get_unmanaged_thunk(mono_object_get_virtual_method(Managedobj, StartMethod));
+	UpdateThunk = (UnmanagedThunk)mono_method_get_unmanaged_thunk(mono_object_get_virtual_method(Managedobj, UpdateMethod));
+	FixedUpdateThunk = (UnmanagedThunk)mono_method_get_unmanaged_thunk(mono_object_get_virtual_method(Managedobj, FixedUpdateMethod));
+	OnDestroyThunk = (UnmanagedThunk)mono_method_get_unmanaged_thunk(mono_object_get_virtual_method(Managedobj, OnDestroyMethod));
 }
 
 void Sphynx::Mono::GameObjectWrapper::AddComponent(CsScript* script)
@@ -53,16 +73,16 @@ void Sphynx::Mono::GameObjectWrapper::AddComponent(CsScript* script)
 
 void Sphynx::Mono::GameObjectWrapper::Start()
 {
-	for (auto script : Scripts) {
-		script->Start();
-	}
+	MonoException* ex;
+	StartThunk(Managedobj, &ex);
+	HandleException(ex);
 }
 
 void Sphynx::Mono::GameObjectWrapper::Update()
 {
-	for (auto script : Scripts) {
-		script->Update();
-	}
+	MonoException* ex;
+	UpdateThunk(Managedobj, &ex);
+	HandleException(ex);
 }
 
 void Sphynx::Mono::GameObjectWrapper::FixedUpdate()
@@ -74,7 +94,7 @@ void Sphynx::Mono::GameObjectWrapper::FixedUpdate()
 
 Sphynx::GameObject* Sphynx::Mono::GameObjectWrapper::GetFromObject_unchecked(MonoObject* obj)
 {
-	GameObject* gameObject;
-	mono_field_get_value(obj, NativePtr, gameObject);
-	return gameObject;
+	void* gameObject = nullptr;
+	mono_field_get_value(obj, NativePtr, &gameObject);
+	return (GameObject*)gameObject;
 }

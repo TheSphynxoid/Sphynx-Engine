@@ -17,7 +17,8 @@ namespace Sphynx
         /// <returns></returns>
         public static bool IsKeyDown(Keys key)
         {
-            return ((Action)InternalKeyState((int)key)) == Action.Pressed;
+            var state = (Action)InternalKeyState((int)key);
+            return state == Action.Pressed || state == Action.Repeat;
         }
         public static bool IsKeyUp(Keys key)
         {

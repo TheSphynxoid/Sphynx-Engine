@@ -30,7 +30,7 @@ namespace Sphynx::Mono {
 		UnmanagedThunk OnDestroyThunk;
 
 		static void Init();
-		static void HandleException(MonoException* ex);
+		//static void HandleException(MonoException* ex);
 		void SetInternalID(size_t id);
 	public:
 		CsScript() = default;

@@ -30,6 +30,7 @@ namespace Sphynx::Mono {
 		static MonoClass* GetCommonType(std::string name);
 
 		//Calls the default constructor.
+		static MonoObject* CreateInitializedObject(MonoClass* klass);
 		static MonoObject* CreateObject(MonoClass* klass);
 
 		static MonoDomain* GetAppdomain();
@@ -39,5 +40,6 @@ namespace Sphynx::Mono {
 		static SphynxScripting::Script* CreateScriptByName(std::string name);
 
 	};
+	void HandleException(MonoException* ex);
 }
 #undef SphynxScripting

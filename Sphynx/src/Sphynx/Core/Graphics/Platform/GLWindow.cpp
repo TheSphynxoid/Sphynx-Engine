@@ -136,7 +136,6 @@ Sphynx::Core::GLWindow::GLWindow(Application* App, Bounds WinBounds, std::string
 	//ToDO: Init imgui and Renderer.
 	Renderer = new Core::Graphics::GL::GLRenderer();
 	Renderer->Start(this);
-	Core_Warn("TODO:FullScreen not Implemented.");
 }
 
 Sphynx::Core::GLWindow::GLWindow(Application* App, Bounds WinBounds, std::string title, bool fullscreen, GLWindow* share) :

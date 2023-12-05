@@ -7,22 +7,34 @@ using System.Threading.Tasks;
 
 namespace Sphynx
 {
+    /// <summary>
+    /// GameObject: Holds <see cref="Component"/>s that act as modules extending and adding fonctionality to the game.
+    /// </summary>
     public class GameObject
     {
-
+        /// <summary>
+        /// A Set of Primitive Graphical Objects.
+        /// </summary>
         public enum Primitive { Sphere, Capsule, Cube, Plane, Triangle};
 
         public string Name { get; set; }
 
         public ulong ID { get; internal set; }
 
-        private readonly IntPtr NativePtr;
-
-        public Transform transform { get; set; }
-
+        private readonly UIntPtr NativePtr;
+        /// <summary>
+        /// The Transform Component.
+        /// </summary>
+        public Transform transform { get; private set; }
+        /// <summary>
+        /// Don't Use. TODO: Refactor.
+        /// </summary>
         public GameObject()
         {
             Console.WriteLine("GameObject Constructed");
+            transform = new Transform();
+            transform.gameObject = this;
+            transform.Awake();
         }
 
         internal Dictionary<Type,Component> components = new Dictionary<Type, Component>();
@@ -32,13 +44,20 @@ namespace Sphynx
             Logger.Info($"Native-Side Component {comp.ID} Added to {NativePtr} ");
             comp.gameObject = this;
         }
-
+        /// <summary>
+        /// TODO: Not Implemented.
+        /// Create a GameObject with the specified primitive (Has a MeshRenderer).
+        /// </summary>
+        /// <returns>A new GameObject</returns>
         public static GameObject CreatePrimitive(Primitive primitive)
         {
             return null;
         }
-
-        public T GetComponent<T>() where T : Component, new()
+        /// <summary>
+        /// Gets the Component.
+        /// </summary>
+        /// <typeparam name="T">Must Derive from <see cref="Sphynx.Component"/> </typeparam>
+        public T GetComponent<T>() where T : Component
         {
             foreach(var component in components.Values)
             {
@@ -49,7 +68,10 @@ namespace Sphynx
             }
             return null;
         }
-
+        /// <summary>
+        /// Adds a Component to the GameObject and returns it.
+        /// </summary>
+        /// <typeparam name="T">Must Derive from <see cref="Sphynx.Component"/> </typeparam>
         public T AddComponent<T>() where T : Component, new()
         {           
             var comp = ComponentFactory.CreateComponent<T>(this);
@@ -67,12 +89,19 @@ namespace Sphynx
             }
 
         }
-
+        /// <summary>
+        /// TODO: Still not implemented.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns>null if not found.</returns>
         public static GameObject FindGameObjectByName(string name)
         {
             return null;
         }
-
+        /// <summary>
+        /// TODO: Still not implemented.
+        /// </summary>
+        /// <returns>null if not found.</returns>
         public static GameObject FindGameObjectByID(ulong ID)
         {
             return null;
@@ -92,12 +121,44 @@ namespace Sphynx
             }
             return components.ElementAt(index).Value;
         }
-
+        internal void Awake()
+        {
+            transform.Awake();
+            foreach (var comp in components.Values)
+            {
+                comp.Awake();
+            }
+        }
+        internal void Start()
+        {
+            transform.Start();
+            foreach (var comp in components.Values)
+            {
+                comp.Start();
+            }
+        }
         internal void Update()
         {
             foreach (var comp in components.Values)
             {
                 comp.Update();
+            }
+            transform.Update();
+        }
+        internal void FixedUpdate()
+        {
+            transform.FixedUpdate();
+            foreach (var comp in components.Values)
+            {
+                comp.FixedUpdate();
+            }
+        }
+        internal void OnDestroy()
+        {
+            transform.OnDestroy();
+            foreach (var comp in components.Values)
+            {
+                comp.OnDestroy();
             }
         }
     }

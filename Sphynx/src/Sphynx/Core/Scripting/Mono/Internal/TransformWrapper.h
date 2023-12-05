@@ -13,6 +13,7 @@ struct _MonoException;
 typedef _MonoException MonoException;
 struct _MonoClassField;
 typedef _MonoClassField MonoClassField;
+typedef struct _MonoMethod MonoMethod;
 
 namespace Sphynx::Mono {
 	class TransformWrapper

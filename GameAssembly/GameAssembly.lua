@@ -1,7 +1,7 @@
 project "GameAssembly"
 	kind "SharedLib"
 	language "C#"
-	dotnetframework "4.6"
+	dotnetframework "4.8"
 	architecture "x86_64"
 	files
 	{

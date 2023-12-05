@@ -17,7 +17,7 @@ project "Sphynx"
 	cppdialect "C++17"
 	staticruntime "off"
 	rtti "on"
-
+	characterset "unicode"
 	pchheader "pch.h"
 	pchsource "Sphynx\\src\\pch.cpp"
 
@@ -28,7 +28,6 @@ project "Sphynx"
 	{
 		"Sphynx\\src\\**.h",
 		"Sphynx\\src\\**.cpp",
-		"Sphynx\\src\\**.as"
 	}
 	includedirs
 	{
@@ -39,8 +38,6 @@ project "Sphynx"
 		"%{prj.name}\\dep\\imgui",
 		"%{prj.name}\\dep\\glm",
 		"%{prj.name}\\dep\\stb",
-		-- "%{prj.name}\\dep\\angelscript\\sdk\\angelscript\\include",
-		-- "%{prj.name}\\dep\\angelscript\\sdk\\add_on",
 		"%{prj.name}\\dep\\mono\\include",
 	}
 	links
@@ -49,7 +46,6 @@ project "Sphynx"
 		"glad",
 		"imgui",
 		"opengl32.lib",
-		-- "angelscript",
 		"%{wks.location}\\%{prj.name}\\dep\\mono\\lib\\libmono-static-sgen.lib",
 	}
 	defines{
@@ -64,13 +60,11 @@ project "Sphynx"
 		defines "DEBUG"
 		runtime "Debug"
 		symbols "on"
-		-- links{ "%{wks.location}\\%{prj.name}\\dep\\angelscript\\sdk\\angelscript\\lib\\angelscriptd.lib" }
 
 	filter "configurations:Release"
 		defines "RELEASE"
 		runtime "Release"
 		optimize "on"
-		-- links{ "%{wks.location}\\%{prj.name}\\dep\\angelscript\\sdk\\angelscript\\lib\\angelscript.lib" }
 
 	filter "system:windows"
 		systemversion "latest"
@@ -105,8 +99,6 @@ project "Sandbox"
 		"%{wks.location}\\Sphynx\\dep\\glm",
 		"%{wks.location}\\Sphynx\\src\\Sphynx",
 		"%{wks.location}\\Sphynx\\src",
-		-- "%{prj.name}\\dep\\angelscript\\sdk\\angelscript\\include",
-		-- "%{prj.name}\\dep\\angelscript\\sdk\\add_on"
 	}
 
 	links
@@ -115,8 +107,6 @@ project "Sandbox"
 		"ScriptAssembly",
 		"GameAssembly",
 		"%{wks.location}\\Sphynx\\dep\\mono\\lib\\libmono-static-sgen.lib",
-		--I think I am force to do this.
-		-- "AngelScript"
 	}
 
 	copylocal{
@@ -142,13 +132,12 @@ project "Sandbox"
 			"Version.lib",
 			"Bcrypt.lib"
 		}
-   		postbuildcommands { "xcopy \"%{wks.location}%{prj.name}\\data\" \"%{wks.location}\\build\\bin\\" .. outputdir .. "\\%{prj.name}\\data\\mono\" /e/i/s/y/h/k/c" }
+   		postbuildcommands { "xcopy \"%{wks.location}%{prj.name}\\data\" \"%{wks.location}\\build\\bin\\" .. outputdir .. "\\%{prj.name}\\data\" /e/i/s/y/h/k/c" }
 	filter { "not system:windows" }
-   		postbuildcommands { "cp -f -r d%{wks.location}%{prj.name}\\data %{wks.location}\\build\\bin\\" .. outputdir .. "\\%{prj.name}\\data\\mono" }
+   		postbuildcommands { "cp -f -r d%{wks.location}%{prj.name}\\data %{wks.location}\\build\\bin\\" .. outputdir .. "\\%{prj.name}\\data" }
 
 include "ScriptAssembly/ScriptAssembly.lua"
 include "GameAssembly/GameAssembly.lua"
 include "Sphynx/dep/glfw"
 include "Sphynx/dep/glad/glad"
 include "Sphynx/dep/imgui"
--- include "Sphynx/dep/AngelScript.lua"

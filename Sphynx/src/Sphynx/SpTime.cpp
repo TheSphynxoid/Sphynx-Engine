@@ -6,7 +6,7 @@
 #include <x86intrin.h>
 #endif
 
-double Sphynx::Time::GetDeltaTime()
+float Sphynx::Time::GetDeltaTime() noexcept
 {
 	return DeltaTime.count();
 }

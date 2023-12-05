@@ -18,13 +18,11 @@ namespace Sphynx.Core.Native
         internal static void DestroyComponent(Component component)
         {
             component.OnDestroy();
-            component.Native.Dispose(); 
         }
 
         public static T CreateComponent<T>(GameObject go) where T : Component, new()
         {
             var TComp = new T();
-            TComp.Native = CreateNative(go.ID, typeof(T).Name);
             TComp.gameObject = go;
             //TComp.Awake();
             TComp.Start();
@@ -40,7 +38,7 @@ namespace Sphynx.Core.Native
             var comp = Origin.GetComponent<T>();
             if (comp != null)
             {
-                CopyNativeComponent(Origin, Destination, comp.Native);
+                //CopyNativeComponent(Origin, Destination, comp.Native);
             }
             else
             {

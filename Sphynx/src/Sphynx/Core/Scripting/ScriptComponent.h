@@ -13,6 +13,7 @@ namespace Sphynx::Core {
 		std::vector<Scripting::Script*> scripts;
 		Mono::GameObjectWrapper* GOWrapper;
 	public:
+		CompImpl(ScriptComponent);
 		ScriptComponent();
 
 		// Inherited via Component
@@ -21,7 +22,6 @@ namespace Sphynx::Core {
 		virtual void FixedUpdate() override;
 		virtual void OnComponentAttach(GameObject* parent) override;
 		virtual void OnComponentDetach() override;
-		void AddComponent(std::string name);
-		const char* GetName() override;
+		void AddScript(std::string name);
 	};
 }

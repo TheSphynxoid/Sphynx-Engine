@@ -9,22 +9,23 @@ namespace Sphynx
 {
     public sealed class Transform : Component
     {
-        private Vector3 position;
-        private bool IsChanged;
+        private bool IsChanged = true;
         private bool IsRelative;
         public Vector3 Position
         {
-            get => position;
+            get => GetPosition(gameObject);
             set
             {
-                position = value;
-                IsChanged = true;
+                SetPosition(gameObject, value);
             }
         }
 
         //Implement Parent-Child relation.
+        
         //public GameObject Parent { get; set; }
         //public List<GameObject> Children { get; set; }
+
+        internal Transform() { }
 
         [MethodImpl(MethodImplOptions.InternalCall)]
         internal static extern void SetPosition(GameObject go, Vector3 pos);
@@ -33,15 +34,10 @@ namespace Sphynx
 
         public override void Awake()
         {
-            Position = GetPosition(gameObject);
         }
 
         public override void Update()
         {
-            if (IsChanged)
-            {
-                SetPosition(gameObject, position);
-            }
         }
     }
 }

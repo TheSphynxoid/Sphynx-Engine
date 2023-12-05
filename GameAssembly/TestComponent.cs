@@ -13,14 +13,14 @@ namespace GameAssembly
         public override void Start()
         {
             //Logger.Info($"{gameObject.ID}");
-            gameObject.AddComponent<TestComponent2>();
+            //gameObject.AddComponent<TestComponent2>();
         }
 
         public override void Update()
         {
             if (Input.IsKeyDown(Keys.Up))
             {
-                Logger.Info("Key Up Pressed");
+                transform.Position += new Vector3(0, 0, -1 * Time.deltaTime);
             }
         }
     }

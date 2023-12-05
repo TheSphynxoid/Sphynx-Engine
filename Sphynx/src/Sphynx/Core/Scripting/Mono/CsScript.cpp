@@ -15,19 +15,6 @@ void Sphynx::Mono::CsScript::Init()
 	ID = mono_class_get_field_from_name(ComponentClass, "ID");
 }
 
-void Sphynx::Mono::CsScript::HandleException(MonoException* ex)
-{
-	if (ex != nullptr) {
-		mono_print_unhandled_exception((MonoObject*)ex);
-		mono_raise_exception(ex);
-		//Making this what i think is thread safe.
-		{
-			auto lock = Sphynx::Core::ThreadPool::GetLock();
-			MonoRuntime::ReloadGameAssembly();
-		}
-	}
-}
-
 void Sphynx::Mono::CsScript::SetInternalID(size_t id)
 {
 	mono_field_set_value(ScriptObject, ID, &id);

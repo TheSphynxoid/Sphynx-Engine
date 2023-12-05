@@ -97,12 +97,12 @@ void Sphynx::Transform::CalcModelMatrix()
 	ModelMatrix = glm::translate(ModelMatrix, -Origin);
 	//Apply Scaling.
 	ModelMatrix = glm::scale(ModelMatrix, Scaling);
-
 }
 
 void Sphynx::Transform::Update()
 {
 	if (Changed) {
 		CalcModelMatrix();
+		Changed = false;
 	}
 }

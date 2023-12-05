@@ -10,13 +10,13 @@ namespace Sphynx
     public class Time
     {
         [MethodImpl(MethodImplOptions.InternalCall)]
-        internal extern static double GetDeltaTime();
+        internal extern static float GetDeltaTime();
 
         [MethodImpl(MethodImplOptions.InternalCall)]
         internal extern static ulong GetDeltaTicks();
 
-        public double deltaTime { get => GetDeltaTime(); }
-        public ulong deltaTicks { get => GetDeltaTicks();}
+        public static float deltaTime { get => GetDeltaTime(); }
+        public static ulong deltaTicks { get => GetDeltaTicks();}
         
     }
 }

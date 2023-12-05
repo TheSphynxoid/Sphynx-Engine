@@ -15,7 +15,7 @@ namespace Sphynx {
 		Action action;
 		Mods mods;
 		operator bool() {
-			return action == Action::Pressed;
+			return action == Action::Pressed || action == Action::Repeat;
 		}
 	}KeyState, MouseButtonState;
 

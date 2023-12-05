@@ -57,7 +57,6 @@ void Sphynx::Input::Init()
 #error "Implement Input for windows."
 #else
 	case Platform::Windows:
-		Core_Warn("Using OpenGL for Windows. Reminder:Add DirectX11");
 		[[fallthrough]];
 #endif
 	case Platform::Android:

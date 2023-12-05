@@ -85,6 +85,7 @@ namespace Sphynx::Mono::Internal {
 	MonoExport glm::vec3 GetPosition(MonoObject* go) {
 		return GameObjectWrapper::GetFromObject_unchecked(go)->GetTransform()->GetPosition();
 	}
+
 	void RegisterInternalCalls() {
 		MainWindow = GetApplication()->GetMainWindow();
 

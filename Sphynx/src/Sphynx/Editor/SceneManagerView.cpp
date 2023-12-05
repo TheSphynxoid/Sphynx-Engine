@@ -36,7 +36,8 @@ void Sphynx::Editor::SceneManagerView::Draw()
 			static int selected = -1;
 			int i = 0;
 			for (auto& go : Sphynx::Core::SceneManager::GetScene().GetGameObjects()) {
-				if (ImGui::Selectable(go->GetName(), selected == i , go->IsActive() ? ImGuiSelectableFlags_None : ImGuiSelectableFlags_Disabled)) {
+				if (ImGui::Selectable((std::string(go->GetName()) + "##" + std::to_string(go->GetID())).c_str()
+					, selected == i, go->IsActive() ? ImGuiSelectableFlags_None : ImGuiSelectableFlags_Disabled)) {
 					selected = i;
 					goView->SetGameObjectView(go);
 				}

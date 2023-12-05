@@ -80,6 +80,20 @@ namespace Sphynx::Mono::Internal {
 	}
 
 }
+	
+void Sphynx::Mono::HandleException(MonoException* ex)
+{
+	if (ex != nullptr) {
+		mono_print_unhandled_exception((MonoObject*)ex);
+		mono_raise_exception(ex);
+		//Making this what i think is thread safe.
+		{
+			auto lock = Sphynx::Core::ThreadPool::GetLock();
+			MonoRuntime::ReloadGameAssembly();
+		}
+	}
+}
+
 
 void Sphynx::Mono::MonoRuntime::AddManagedComponent(MonoClass* Object, std::string Fullname)
 {
@@ -124,6 +138,7 @@ void Sphynx::Mono::MonoRuntime::ReadClassesMetadata()
 
 		if (IsComponent) {
 			CompNames.insert(std::pair<std::string, MonoClass*>(Classname, monoClass));
+			Core_Info(Classname);
 			AddManagedComponent(monoClass, Fullname);
 		}
 	}
@@ -208,10 +223,16 @@ void Sphynx::Mono::MonoRuntime::ReloadGameAssembly()
 	CachedScripts.clear();
 }
 
-MonoObject* Sphynx::Mono::MonoRuntime::CreateObject(MonoClass* klass)
+MonoObject* Sphynx::Mono::MonoRuntime::CreateInitializedObject(MonoClass* klass)
 {
 	auto obj = mono_object_new(Appdomain, klass);
 	mono_runtime_object_init(obj);
+	return obj;
+}
+
+MonoObject* Sphynx::Mono::MonoRuntime::CreateObject(MonoClass* klass)
+{
+	auto obj = mono_object_new(Appdomain, klass);
 	return obj;
 }
 

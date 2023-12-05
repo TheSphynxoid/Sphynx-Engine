@@ -11,11 +11,15 @@ using System.Threading.Tasks;
 
 namespace Sphynx
 {
+    /// <summary>
+    /// Basic Construction block for the game.
+    /// Inherit from this to create scripts that bind to <see cref="GameObject"/> instance .
+    /// </summary>
     public abstract class Component
     {
         public GameObject gameObject { get; internal set; }
 
-        public Transform transform { get; }
+        public Transform transform { get => gameObject.transform; }
 
         internal readonly ulong ID;
 
@@ -30,15 +34,21 @@ namespace Sphynx
         public virtual void Start() 
         {
         }
-
+        /// <summary>
+        /// Called every Engine Update Loop (Every Frame).
+        /// </summary>
         public virtual void Update() 
         { 
         }
-
+        /// <summary>
+        /// Called every physics update (on a fixed period).
+        /// </summary>
         public virtual void FixedUpdate()
         {
         }
-
+        /// <summary>
+        /// Called When Component Removed or GameObject Destroyed.
+        /// </summary>
         public virtual void OnDestroy() 
         {
         }
@@ -48,5 +58,9 @@ namespace Sphynx
             ComponentFactory.DestroyComponent(this);
         }
 
+        public ulong GetID()
+        {
+            return ID;
+        }
     }
 }
