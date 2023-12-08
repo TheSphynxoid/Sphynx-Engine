@@ -57,8 +57,9 @@ void Sphynx::Application::Run(int argc, char** argv)
 	Events::GlobalEventSystem::GetInstance()->DispatchImmediate<Events::OnApplicationStart>(Events::OnApplicationStart());
 	//Scenic::WriteScene(&SceneManager::GetScene())
 	Input::Init();
-	Sphynx::Mono::MonoRuntime::Initialize("GameAssembly.dll");
+	Imgui::Start();
 	SceneManager::Start();
+	Sphynx::Mono::MonoRuntime::Initialize("GameAssembly.dll");
 	Start();
 	ThreadPool::Start();
 	Time::Start();
@@ -97,7 +98,6 @@ Sphynx::Core::IWindow* Sphynx::Application::CreateMainWindow(Core::IWindow* wind
 {
 	if (!MainWindow) {
 		MainWindow = window;
-		Imgui::Start();
 		MainWindow->Start();
 	}
 	else {

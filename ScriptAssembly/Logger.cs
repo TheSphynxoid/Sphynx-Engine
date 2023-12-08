@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Sphynx
 {
-    public class Logger
+    public sealed class Logger
     {
 
         public enum LogLevel

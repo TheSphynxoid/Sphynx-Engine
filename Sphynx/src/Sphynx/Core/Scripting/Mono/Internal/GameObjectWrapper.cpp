@@ -9,6 +9,7 @@ void Sphynx::Mono::GameObjectWrapper::Init()
 	//auto Constructor = mono_class_get_method_from_name(GameObjectClass, "GameObject", 1);
 	IDProp = mono_class_get_property_from_name(GameObjectClass, "ID");
 	NameProp = mono_class_get_property_from_name(GameObjectClass, "Name");
+	TransformProp = mono_class_get_property_from_name(GameObjectClass, "transform");
 	NativePtr = mono_class_get_field_from_name(GameObjectClass, "NativePtr");
 
 	//Methods
@@ -29,6 +30,7 @@ Sphynx::Mono::GameObjectWrapper::GameObjectWrapper(GameObject* go)
 	mono_property_set_value(NameProp, Managedobj, (void**)&name, nullptr);
 	mono_field_set_value(Managedobj, NativePtr, &gameObject);
 	mono_runtime_object_init(Managedobj);
+	transformWrapper = TransformWrapper(Managedobj, mono_property_get_value(TransformProp, Managedobj, nullptr, nullptr));
 	//for (auto& comp : go->GetComponents()) {
 	//	if (comp->GetName() == "Transform") {
 	//		transform = TransformWrapper();

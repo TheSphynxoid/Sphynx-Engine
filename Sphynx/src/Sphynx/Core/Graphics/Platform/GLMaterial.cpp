@@ -18,8 +18,8 @@ Sphynx::Core::Graphics::GL::GLMaterial::GLMaterial(const ShaderPack& shaders) : 
     if (shaders.Geom != NULL) {
         glAttachShader(ProgramId, ((GLShader*)shaders.Geom)->id);
     }
-    if (shaders.Tess != NULL) {
-        glAttachShader(ProgramId, ((GLShader*)shaders.Tess)->id);
+    if (shaders.TessEval != NULL) {
+        glAttachShader(ProgramId, ((GLShader*)shaders.TessEval)->id);
     }
     glLinkProgram(ProgramId);
     int success;
@@ -42,8 +42,12 @@ Sphynx::Core::Graphics::GL::GLMaterial::GLMaterial(const Sphynx::Core::Graphics:
     if(shaders.Geom != NULL){
         glAttachShader(ProgramId,((GLShader*)shaders.Geom)->id);
     }
-    if(shaders.Tess != NULL){
-        glAttachShader(ProgramId,((GLShader*)shaders.Tess)->id);
+    if (shaders.TessEval != NULL) {
+        glAttachShader(ProgramId, ((GLShader*)shaders.TessEval)->id);
+    }
+    //Handling if Tess is enabled and TessEval is null.
+    if (shaders.TessControl != NULL && shaders.TessEval == nullptr) {
+        Core_Error("Ignoring Tessellation Because Tessellation Evaluation Shader is null");
     }
     glLinkProgram(ProgramId);
     int success;
@@ -66,8 +70,15 @@ Sphynx::Core::Graphics::GL::GLMaterial::GLMaterial(const ShaderPack& shaders, st
     if (shaders.Geom != NULL) {
         glAttachShader(ProgramId, ((GLShader*)shaders.Geom)->id);
     }
-    if (shaders.Tess != NULL) {
-        glAttachShader(ProgramId, ((GLShader*)shaders.Tess)->id);
+    if (shaders.TessEval != NULL) {
+        glAttachShader(ProgramId, ((GLShader*)shaders.TessEval)->id);
+    }
+    //Handling if Tess is enabled and TessEval is null.
+    if (shaders.TessControl != NULL && shaders.TessEval == nullptr) {
+        Core_Error("Ignoring Tessellation Because Tessellation Evaluation Shader is null");
+    }
+    else {
+        glAttachShader(ProgramId, ((GLShader*)shaders.TessControl)->id);
     }
     glLinkProgram(ProgramId);
     int success;
@@ -126,8 +137,15 @@ void Sphynx::Core::Graphics::GL::GLMaterial::ReloadShaders(const ShaderPack& pac
     if (pack.Geom != NULL) {
         glAttachShader(ProgramId, ((GLShader*)pack.Geom)->id);
     }
-    if (pack.Tess != NULL) {
-        glAttachShader(ProgramId, ((GLShader*)pack.Tess)->id);
+    if (pack.TessEval != NULL) {
+        glAttachShader(ProgramId, ((GLShader*)pack.TessEval)->id);
+    }
+    //Handling if Tess is enabled and TessEval is null.
+    if (pack.TessControl != NULL && pack.TessEval == nullptr) {
+        Core_Error("Ignoring Tessellation Because Tessellation Evaluation Shader is null");
+    }
+    else {
+        glAttachShader(ProgramId, ((GLShader*)pack.TessControl)->id);
     }
     glLinkProgram(ProgramId);
     int success;
@@ -143,6 +161,12 @@ void Sphynx::Core::Graphics::GL::GLMaterial::ReloadShaders(const ShaderPack& pac
         ((GLUniform*)uni)->Set();
     }
     Unbind();
+}
+
+void Sphynx::Core::Graphics::GL::GLMaterial::ReloadShaders(Shader* shader)
+{
+    Shaders.ReplaceShader(shader);
+    ReloadShaders(Shaders);
 }
 
 Sphynx::Core::Graphics::Shader* Sphynx::Core::Graphics::GL::GLMaterial::GetDefaultShader(ShaderType type)
@@ -162,7 +186,7 @@ GLMaterial Sphynx::Core::Graphics::GL::GLMaterial::CreateDefaultMaterial()
 {
     GLShader::DefaultVertexShader = new GLShader(DEF_VSHADER, ShaderType::VertexShader);
     GLShader::DefaultFragmentShader = new GLShader(DEF_FSHADER, ShaderType::FragmentShader);
-    ShaderPack pack = ShaderPack(GLShader::DefaultVertexShader, GLShader::DefaultFragmentShader, nullptr, nullptr);
+    ShaderPack pack = ShaderPack(GLShader::DefaultVertexShader, GLShader::DefaultFragmentShader, nullptr, nullptr, nullptr);
     GLMaterial mat = GLMaterial(pack);
     return mat;
 }
@@ -218,7 +242,7 @@ Sphynx::Core::Graphics::GL::GLMaterial::~GLMaterial()
 
 GLMaterial* Sphynx::Core::Graphics::GL::GLMaterial::CreateDefaultMaterialCopy()
 {
-    auto m = (GLMaterial*)Create({ GLShader::DefaultVertexShader,GLShader::DefaultFragmentShader,nullptr,nullptr });
+    auto m = (GLMaterial*)Create({ GLShader::DefaultVertexShader, GLShader::DefaultFragmentShader, nullptr, nullptr, nullptr });
     return m;
 }
 

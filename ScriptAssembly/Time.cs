@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Sphynx
 {
-    public class Time
+    public static class Time
     {
         [MethodImpl(MethodImplOptions.InternalCall)]
         internal extern static float GetDeltaTime();

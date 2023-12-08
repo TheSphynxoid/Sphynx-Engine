@@ -78,7 +78,7 @@ Sphynx::Core::SpriteRenderer::SpriteRenderer(Sphynx::Core::Graphics::Texture* te
         "{"
         "color = texture(image, TexCoords);"
         "}", ShaderType::FragmentShader);
-    SpriteMaterial = Material::Create({ vShader,fShader,nullptr,nullptr }, tex);
+    SpriteMaterial = Material::Create({ vShader,fShader,nullptr,nullptr,nullptr }, tex);
 
     //Orthographic projection matrix.
     auto vb = Sphynx::Core::Graphics::VertexBuffer::Create(vertices, sizeof(vertices));

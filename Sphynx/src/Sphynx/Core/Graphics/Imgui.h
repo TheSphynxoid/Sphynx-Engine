@@ -46,6 +46,7 @@ namespace Sphynx::Core {
 		//Storing Names of the window classes for The Debug Window.
 		static inline std::list<const char*> Names;
 		static void ImGuiOnWindowShutdown(Events::OnWindowClose& e);
+		static bool HandleKey(Keys key, Action action, Mods mod);
 	public:
 		static void Start();
 		static void OnOverlayUpdate();

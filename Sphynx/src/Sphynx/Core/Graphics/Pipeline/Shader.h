@@ -7,6 +7,7 @@ namespace Sphynx::Core::Graphics {
 		FragmentShader,//The Same as pixel shader
 		PixelShader = FragmentShader,//The Same as fragment shader
 		GeometryShader,
+		//OpenGL names. add Ones for DX11/DX12 (For Future Compatibility)
 		TessellationControlShader, //Optional, For more detail : https://www.khronos.org/opengl/wiki/Tessellation_Control_Shader
 		TessellationEvaluationShader //Mandatory for tessellation to be active,//For more detail : https://www.khronos.org/opengl/wiki/Tessellation_Evaluation_Shader
 	};
@@ -30,14 +31,45 @@ namespace Sphynx::Core::Graphics {
 	typedef struct ShaderPack {
 		Shader* Vert;
 		Shader* Frag;
-		Shader* Tess;
+		Shader* TessEval;
+		Shader* TessControl;
 		Shader* Geom;
 
-		ShaderPack(Shader* vert, Shader* frag, Shader* tess, Shader* geom) {
+		/// <summary>
+		/// Creates a shaderpack (a structure that hold shaders for rendering).
+		/// </summary>
+		/// <param name="vert">Vertex Shader</param>
+		/// <param name="frag">Fragment Shader</param>
+		/// <param name="tess1">Tessellation Evaluation Shader</param>
+		/// <param name="tess2">Tessellation Control Shader</param>
+		/// <param name="geom">Geometry Shader</param>
+		ShaderPack(Shader* vert, Shader* frag, Shader* tess1, Shader* tess2, Shader* geom) {
 			Vert = vert;
 			Frag = frag;
-			Tess = tess;
 			Geom = geom;
+			TessEval = tess1;
+			TessControl = tess2;
+		}
+
+		void ReplaceShader(Shader* shader) {
+			switch (shader->GetShaderType())
+			{
+			case Sphynx::Core::Graphics::ShaderType::VertexShader:
+				Vert = shader;
+				break;
+			case Sphynx::Core::Graphics::ShaderType::FragmentShader:
+				Frag = shader;
+				break;
+			case Sphynx::Core::Graphics::ShaderType::GeometryShader:
+				Geom = shader;
+				break;
+			case Sphynx::Core::Graphics::ShaderType::TessellationControlShader:
+				TessControl = shader;
+				break;
+			case Sphynx::Core::Graphics::ShaderType::TessellationEvaluationShader:
+				TessEval = shader;
+				break;
+			}
 		}
 	}ShaderPack;
 }

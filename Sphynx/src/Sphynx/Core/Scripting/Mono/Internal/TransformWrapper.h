@@ -16,7 +16,7 @@ typedef _MonoClassField MonoClassField;
 typedef struct _MonoMethod MonoMethod;
 
 namespace Sphynx::Mono {
-	class TransformWrapper
+	class TransformWrapper final
 	{
 	private:
 		static inline MonoClass* TransformClass;
@@ -24,7 +24,7 @@ namespace Sphynx::Mono {
 	public:
 		TransformWrapper();
 		//Takes a Managed GameObject
-		TransformWrapper(MonoObject* GO);
+		TransformWrapper(MonoObject* GO, MonoObject* TransObj);
 		friend class MonoRuntime;
 
 	};

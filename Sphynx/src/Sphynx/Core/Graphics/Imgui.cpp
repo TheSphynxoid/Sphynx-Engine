@@ -30,8 +30,16 @@
 
 using namespace Sphynx::Events;
 
+
 void Sphynx::Core::Imgui::ImGuiOnWindowShutdown(Sphynx::Events::OnWindowClose& e) {
 	Shutdown();
+}
+
+bool Sphynx::Core::Imgui::HandleKey(Keys key, Action action, Mods mod)
+{
+	auto& io = ImGui::GetIO();
+	io.AddKeyEvent(ImGui_ImplGlfw_TranslateUntranslatedKey())
+	return io.WantCaptureKeyboard;
 }
 
 void Sphynx::Core::Imgui::Start()
@@ -104,7 +112,7 @@ void Sphynx::Core::Imgui::Start()
 	ImGuiIO& io = ImGui::GetIO();
 	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
 	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
-	ImGui_ImplGlfw_InitForOpenGL((GLFWwindow*)window->GetNativePointer(), true);
+	ImGui_ImplGlfw_InitForOpenGL((GLFWwindow*)window->GetNativePointer(), false);
 	ImGui_ImplOpenGL3_Init("#version 430 core");
 #endif
 }
@@ -151,7 +159,6 @@ int Sphynx::Core::Imgui::GetNumberOfWindows()
 
 void Sphynx::Core::Imgui::Shutdown()
 {
-	//window->GetEventSystem()->QueueEvent<Events::OnOverlayModuleDown>(Events::OnOverlayModuleDown());
 	for (auto& w : Overlays) {
 		if (w->IsOpen == false) {
 			RemoveOverlayWindow(w);

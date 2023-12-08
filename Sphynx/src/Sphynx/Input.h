@@ -32,6 +32,14 @@ namespace Sphynx {
 	public:
 		static void Init();
 		static bool IsKeyPressed(Keys key);
+		//For Imgui Support.
+
+		static void InstallKeyCallback();
+		static void InstallMouseCallback();
+		//A copy of ImGui_ImplGlfw_TranslateUntranslatedKey, Normal Input works for games this is for shortcuts.
+		//The Engine does not use this because i do not understand the problem it fixes :) This is purely for the user right now.
+		static int TranslateKey(int key, int scancode);
+
 		//Returns a pointer to a key state.
 		static KeyState GetKeyState(Keys key)
 		{
@@ -49,5 +57,8 @@ namespace Sphynx {
 			return MouseStates[(int)button].mods;
 		}
 		static glm::vec2 GetMousePosition();
+
+		//Gets the scancode of the current key being processed.
+		static inline int GetCurrentKeyScanCode();
 	};
 }

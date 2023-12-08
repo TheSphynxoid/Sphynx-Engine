@@ -7,11 +7,10 @@
 #endif
 using namespace Sphynx::Events;
 
-GLFWkeyfun ImguiKeyFunc;
-GLFWmousebuttonfun ImGuiMouseFunc;
+int ScanCode;
 
 void Sphynx::Input::GLKeyHandler(GLFWwindow* window, int code, int scan, int action, int mods) {
-	ImguiKeyFunc(window, code, scan, action, mods);
+	ScanCode = scan;
 	keyStates[code] = { (Action)action, (Mods)mods };
 	switch (action)
 	{
@@ -33,7 +32,21 @@ void Sphynx::Input::GLKeyHandler(GLFWwindow* window, int code, int scan, int act
 void Sphynx::Input::GLMouseHandler(GLFWwindow* window, int button, int action, int mods)
 {
 	MouseStates[button] = { (Action)action, (Mods)mods};
-	ImGuiMouseFunc(window, button, action, mods);
+	switch (action)
+	{
+	case GLFW_RELEASE:
+		GlobalEventSystem::GetInstance()->QueueEvent<OnMouseButtonRelease>(OnMouseButtonRelease((MouseButton)button));
+		break;
+	case GLFW_PRESS:
+		GlobalEventSystem::GetInstance()->QueueEvent<OnMouseButtonPress>(OnMouseButtonPress((MouseButton)button));
+		break;
+	//case GLFW_REPEAT:
+	//	GlobalEventSystem::GetInstance()->QueueEvent<OnMouseButtonRepeat>(OnMouseButtonRepeat((MouseButton)button));
+	//	break;
+	default:
+		Core_Warn("Unvalid action value, Key action unhandled");
+		break;
+	}
 }
 
 void Sphynx::Input::HandleWindowClose(Events::OnWindowClose& e)
@@ -64,8 +77,8 @@ void Sphynx::Input::Init()
 	case Platform::Linux:
 		if (GetApplication()->HasWindow()) {
 			GLFWwindow* win = reinterpret_cast<GLFWwindow*>(window->GetNativePointer());
-			ImguiKeyFunc = glfwSetKeyCallback(win, &Input::GLKeyHandler);
-			ImGuiMouseFunc = glfwSetMouseButtonCallback(win, &Input::GLMouseHandler);
+			glfwSetKeyCallback(win, &Input::GLKeyHandler);
+			glfwSetMouseButtonCallback(win, &Input::GLMouseHandler);
 		}
 		break;
 	default:
@@ -77,6 +90,31 @@ void Sphynx::Input::Init()
 bool Sphynx::Input::IsKeyPressed(Keys key)
 {
 	return keyStates[(int)key];
+}
+
+int Sphynx::Input::TranslateKey(int key, int scancode)
+{
+	// GLFW 3.1+ attempts to "untranslate" keys, which goes the opposite of what every other framework does, making using lettered shortcuts difficult.
+	// (It had reasons to do so: namely GLFW is/was more likely to be used for WASD-type game controls rather than lettered shortcuts, but IHMO the 3.1 change could have been done differently)
+	// See https://github.com/glfw/glfw/issues/1502 for details.
+	// Adding a workaround to undo this (so our keys are translated->untranslated->translated, likely a lossy process).
+	// This won't cover edge cases but this is at least going to cover common cases.
+	if (key >= GLFW_KEY_KP_0 && key <= GLFW_KEY_KP_EQUAL)
+		return key;
+	GLFWerrorfun prev_error_callback = glfwSetErrorCallback(nullptr);
+	const char* key_name = glfwGetKeyName(key, scancode);
+	glfwSetErrorCallback(prev_error_callback);
+	if (key_name && key_name[0] != 0 && key_name[1] == 0)
+	{
+		const char char_names[] = "`-=[]\\,;\'./";
+		const int char_keys[] = { GLFW_KEY_GRAVE_ACCENT, GLFW_KEY_MINUS, GLFW_KEY_EQUAL, GLFW_KEY_LEFT_BRACKET, GLFW_KEY_RIGHT_BRACKET, GLFW_KEY_BACKSLASH, GLFW_KEY_COMMA, GLFW_KEY_SEMICOLON, GLFW_KEY_APOSTROPHE, GLFW_KEY_PERIOD, GLFW_KEY_SLASH, 0 };
+		if (key_name[0] >= '0' && key_name[0] <= '9') { key = GLFW_KEY_0 + (key_name[0] - '0'); }
+		else if (key_name[0] >= 'A' && key_name[0] <= 'Z') { key = GLFW_KEY_A + (key_name[0] - 'A'); }
+		else if (key_name[0] >= 'a' && key_name[0] <= 'z') { key = GLFW_KEY_A + (key_name[0] - 'a'); }
+		else if (const char* p = strchr(char_names, key_name[0])) { key = char_keys[p - char_names]; }
+	}
+	// if (action == GLFW_PRESS) printf("key %d scancode %d name '%s'\n", key, scancode, key_name);
+	return key;
 }
 
 bool Sphynx::Input::IsMouseButtonPressed(MouseButton button)
@@ -92,4 +130,9 @@ glm::vec2 Sphynx::Input::GetMousePosition()
 	glfwGetCursorPos((GLFWwindow*)window->GetNativePointer(), &Xpos, &Ypos);
 	return { Xpos,Ypos };
 #endif // DEBUG
+}
+
+inline int Sphynx::Input::GetCurrentKeyScanCode()
+{
+	return ScanCode;
 }

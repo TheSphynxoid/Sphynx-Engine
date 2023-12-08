@@ -49,7 +49,7 @@ namespace Sphynx::Core::Graphics::GL {
         unsigned int ProgramId = 0;
         std::list<Texture*> textures;
         std::list<Uniform*> uniforms;
-        ShaderPack Shaders = ShaderPack(0, 0, 0, 0);
+        ShaderPack Shaders = ShaderPack(0, 0, 0, 0, 0);
         static GLMaterial* Bound;
         static GLMaterial DefaultMaterial;
         //Gets Called By the Renderer To Ensure that this gets called after OpenGL Context is created.
@@ -99,6 +99,7 @@ namespace Sphynx::Core::Graphics::GL {
         virtual unsigned int GetTextureCount() { return textures.size(); };
         virtual const unsigned int GetUniformLocation(const char* name);
         virtual void ReloadShaders(const ShaderPack& pack);
+        virtual void ReloadShaders(Shader* shader);
         virtual const ShaderPack& GetShaders()const { return Shaders; };
         virtual Shader* GetDefaultShader(ShaderType type);
         GLMaterial(const GLMaterial& mat) = delete;

@@ -10,7 +10,7 @@ namespace Sphynx
     /// <summary>
     /// GameObject: Holds <see cref="Component"/>s that act as modules extending and adding fonctionality to the game.
     /// </summary>
-    public class GameObject
+    public sealed class GameObject
     {
         /// <summary>
         /// A Set of Primitive Graphical Objects.
