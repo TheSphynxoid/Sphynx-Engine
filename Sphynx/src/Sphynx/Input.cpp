@@ -5,12 +5,12 @@
 #ifdef Platform_Windows
 #include <Windows.h>
 #endif
+
 using namespace Sphynx::Events;
 
-int ScanCode;
-
 void Sphynx::Input::GLKeyHandler(GLFWwindow* window, int code, int scan, int action, int mods) {
-	ScanCode = scan;
+	//if KeyCB not null and returns true.
+	if (KeyCB != nullptr && KeyCB((Keys)code, scan, (Action)action, (Mods)mods))return;
 	keyStates[code] = { (Action)action, (Mods)mods };
 	switch (action)
 	{
@@ -31,7 +31,9 @@ void Sphynx::Input::GLKeyHandler(GLFWwindow* window, int code, int scan, int act
 
 void Sphynx::Input::GLMouseHandler(GLFWwindow* window, int button, int action, int mods)
 {
+	if (MousePressCB && MousePressCB((MouseButton)button, (Action)action, (Mods)mods))return;
 	MouseStates[button] = { (Action)action, (Mods)mods};
+	Core_Info("aaa");
 	switch (action)
 	{
 	case GLFW_RELEASE:
@@ -47,6 +49,32 @@ void Sphynx::Input::GLMouseHandler(GLFWwindow* window, int button, int action, i
 		Core_Warn("Unvalid action value, Key action unhandled");
 		break;
 	}
+}
+
+void Sphynx::Input::GLCursorEnterHandler(GLFWwindow* window, int Entered)
+{
+	if(CursorEnterCB)CursorEnterCB(Entered);
+}
+
+void Sphynx::Input::GLCursorPositionHandler(GLFWwindow* window, double Xpos, double Ypos)
+{
+	//This is done this way to allow to get the old Cursor Postion.
+	glm::vec2 newPos = { Xpos,Ypos };
+	if(CursorPosCB)CursorPosCB(newPos);
+	CursorPos = newPos;
+}
+
+void Sphynx::Input::GLCharHandler(GLFWwindow* window, unsigned int codepoint)
+{
+	if (CharCB)CharCB(codepoint);
+}
+
+void Sphynx::Input::GLScrollHandler(GLFWwindow* window, double XOffset, double YOffset)
+{
+	if (ScrollCB != nullptr && ScrollCB(XOffset, YOffset))return;
+	ScrollX = XOffset;
+	ScrollY = YOffset;
+	GlobalEventSystem::GetInstance()->QueueEvent<OnMouseScrollEvent>(OnMouseScrollEvent(XOffset, YOffset));
 }
 
 void Sphynx::Input::HandleWindowClose(Events::OnWindowClose& e)
@@ -79,17 +107,16 @@ void Sphynx::Input::Init()
 			GLFWwindow* win = reinterpret_cast<GLFWwindow*>(window->GetNativePointer());
 			glfwSetKeyCallback(win, &Input::GLKeyHandler);
 			glfwSetMouseButtonCallback(win, &Input::GLMouseHandler);
+			glfwSetCursorEnterCallback(win, &Input::GLCursorEnterHandler);
+			glfwSetCursorPosCallback(win, &Input::GLCursorPositionHandler);
+			glfwSetScrollCallback(win, &Input::GLScrollHandler);
+			glfwSetCharCallback(win, &Input::GLCharHandler);
 		}
 		break;
 	default:
 		Core_Error("Unknown or Unsupported System");
 		break;
 	}
-}
-
-bool Sphynx::Input::IsKeyPressed(Keys key)
-{
-	return keyStates[(int)key];
 }
 
 int Sphynx::Input::TranslateKey(int key, int scancode)
@@ -115,24 +142,4 @@ int Sphynx::Input::TranslateKey(int key, int scancode)
 	}
 	// if (action == GLFW_PRESS) printf("key %d scancode %d name '%s'\n", key, scancode, key_name);
 	return key;
-}
-
-bool Sphynx::Input::IsMouseButtonPressed(MouseButton button)
-{
-	return MouseStates[(int)button];
-}
-
-glm::vec2 Sphynx::Input::GetMousePosition()
-{
-#ifdef DX_IMPL && Platform_Windows
-#else
-	double Xpos, Ypos;
-	glfwGetCursorPos((GLFWwindow*)window->GetNativePointer(), &Xpos, &Ypos);
-	return { Xpos,Ypos };
-#endif // DEBUG
-}
-
-inline int Sphynx::Input::GetCurrentKeyScanCode()
-{
-	return ScanCode;
 }

@@ -33,6 +33,7 @@ namespace Sphynx {
 #include "Sphynx/Logger.h"
 #include "Sphynx/Events/Event.h"
 #include "Sphynx/Core/Graphics/Imgui.h"
+#include "glm/glm.hpp"
 //Exposing Imgui on its own.
 #ifdef EXPOSE_IMGUI_H
 #include "../dep/imgui/imgui.h"

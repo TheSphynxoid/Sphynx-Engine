@@ -74,6 +74,9 @@ namespace Sphynx::Mono::Internal {
 	MonoExport int GetKeyState(int key) {
 		return (int)Input::GetKeyState((Keys)key).action;
 	}
+	MonoExport int GetButtonState(int button) {
+		return (int)Input::GetMouseButtonState((MouseButton)button).action;
+	}
 	MonoExport Mono::NativeComponent CreateNativeComponent(size_t goID) {
 		auto Native = NativeComponent();
 		return Native;
@@ -109,6 +112,8 @@ namespace Sphynx::Mono::Internal {
 		mono_add_internal_call("Sphynx.Vector2::Dot", (void*)&Dot<glm::vec4>);
 		//Sphynx.Input
 		mono_add_internal_call("Sphynx.Input::InternalKeyState", (void*)&GetKeyState);
+		mono_add_internal_call("Sphynx.Input::InternalButtonState", (void*)&GetButtonState);
+		mono_add_internal_call("Sphynx.Input::GetMousePosition", (void*)&Input::GetMousePosition);
 		//Sphynx.Core.Graphics.Window
 		mono_add_internal_call("Sphynx.Core.Graphics.Window::SetTitle", (void*)&SetTitle);
 		mono_add_internal_call("Sphynx.Core.Graphics.Window::GetTitle", (void*)&GetTitle);

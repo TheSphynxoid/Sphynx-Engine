@@ -38,4 +38,12 @@ namespace Sphynx::Events {
 	struct OnMouseButtonRelease : public MouseButtonEvent {
 		OnMouseButtonRelease(MouseButton button) : MouseButtonEvent(button) {};
 	};
+	struct OnMouseScrollEvent : public Event {
+	private:
+		double X, Y;
+	public:
+		double GetXOffsets() { return X; }
+		double GetYOffsets() { return Y; }
+		OnMouseScrollEvent(double x, double y) : X(x), Y(y) {};
+	};
 }

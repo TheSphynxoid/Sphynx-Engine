@@ -1,10 +1,12 @@
 #pragma once
 #include "Core/Module.h"
 #include "Events/ImGuiEvents.h"
+#include "KeyCode.h"
 #include "SpTime.h"
 #include <list>
 #include <typeinfo>
 #include <vector>
+#include "glm/glm.hpp"
 #ifdef EXPOSE_IMGUI_H
 #include "../dep/imgui/imgui.h"
 #endif // EXPOSE_IMGUI_H
@@ -46,7 +48,12 @@ namespace Sphynx::Core {
 		//Storing Names of the window classes for The Debug Window.
 		static inline std::list<const char*> Names;
 		static void ImGuiOnWindowShutdown(Events::OnWindowClose& e);
-		static bool HandleKey(Keys key, Action action, Mods mod);
+		static bool HandleKey(Keys key, int scan, Action action, Mods mod);
+		static void HandleChar(unsigned int codepoint);
+		static void HandleCursorPosition(glm::vec2 pos);
+		static bool HandleMouse(MouseButton button, Action action, Mods mod);
+		static bool HandleScroll(double Xoffset, double yoffset);
+		static void HandleFocus(Events::OnWindowFocus& e);
 	public:
 		static void Start();
 		static void OnOverlayUpdate();

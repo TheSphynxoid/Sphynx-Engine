@@ -34,10 +34,11 @@ namespace Sphynx::Events {
 		ImplDefaultWinEvent(OnWindowMinimize);
 	};
 	struct OnWindowFocus : public WindowEvent {
-		ImplDefaultWinEvent(OnWindowFocus);
-	};
-	struct OnWindowFocusLoss : public WindowEvent {
-		ImplDefaultWinEvent(OnWindowFocusLoss);
+	private:
+		int Focus = 0;
+	public:
+		int IsFocused() { return Focus; }
+		OnWindowFocus(Sphynx::Core::IWindow* win, int focus) : WindowEvent(win), Focus(focus) {};
 	};
 	struct OnWindowUpdate : public WindowEvent {
 	public:

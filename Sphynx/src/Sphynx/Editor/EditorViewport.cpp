@@ -31,7 +31,10 @@ void Sphynx::Editor::EditorViewport::Draw()
 {
 	static bool StatsToggle = true;
 	static ImVec2 WinSize;
-	if (Input::IsKeyPressed(Keys::F3) && Input::GetMods(Keys::F3) == Mods::Shift) StatsToggle != StatsToggle;
+	if ((Input::IsKeyPressed(Keys::F3) && (Input::GetMods(Keys::F3) == Mods::Shift)))
+	{
+		StatsToggle != StatsToggle;
+	}
 	auto Cam = SceneManager::GetScene().GetPrimaryCamera();
 	if (ViewDockID == 0) {
 		ViewDockID = Sphynx::Core::Imgui::GetOverlayWindow<Editor>()->GetDockID();
@@ -45,7 +48,7 @@ void Sphynx::Editor::EditorViewport::Draw()
 	}
 	ImGui::SetNextWindowDockID(ViewDockID, ImGuiCond_FirstUseEver);
 	if (ImGui::Begin("Viewport", &IsOpen, ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoScrollbar
-		| ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoNavInputs)) {
+		| ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoNav | ImGuiWindowFlags_NoInputs)) {
 		ImVec2 CurrSize = ImGui::GetContentRegionAvail();
 		if (CurrSize.x != WinSize.x || CurrSize.y != WinSize.y) {
 			ResizeFlag = false;

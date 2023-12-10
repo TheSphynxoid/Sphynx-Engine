@@ -30,9 +30,26 @@ namespace Sphynx
         }
         [MethodImpl(MethodImplOptions.InternalCall)]
         internal extern static int InternalKeyState(int key);
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        internal extern static int InternalButtonState(int button);
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public static extern Vector2 GetMousePosition();
+        public static bool IsMouseButtonDown(MouseButton button)
+        {
+            return (Action)InternalButtonState((int)button) == Action.Pressed;
+        }
+        public static bool IsMouseButtonUp(MouseButton button)
+        {
+            return (Action)InternalButtonState((int)button) == Action.Released;
+        }
+        public static bool IsMouseButtonRepeat(MouseButton button)
+        {
+            return (Action)InternalButtonState((int)button) == Action.Repeat;
+        }
 
         public delegate void KeyEvent(Keys key);
 
+        //Currently Unused
         public static event KeyEvent OnKeyDown;
         public static event KeyEvent OnKeyUp;
         public static event KeyEvent OnRepeat;

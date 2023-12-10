@@ -29,14 +29,7 @@ void Sphynx::Core::GLWindow::mid::Focus(GLFWwindow* win, int value)
 	GLWindow& inst = GetFromGLFW(win);
 	//BECAUSE THIS GETS CALLED WHEN THE WINDOW CLOSES. WTF DOES IT DO THAT
 	if (inst.IsAlive()) {
-		if (value == GLFW_TRUE) {
-			inst.OnFocus();
-			inst.GetEventSystem()->QueueEvent<OnWindowFocus>(OnWindowFocus(&inst));
-		}
-		else {
-			inst.OnFocusLoss();
-			inst.GetEventSystem()->QueueEvent<OnWindowFocusLoss>(OnWindowFocusLoss(&inst));
-		}
+		inst.GetEventSystem()->QueueEvent<OnWindowFocus>(OnWindowFocus(&inst, value));
 	}
 }
 

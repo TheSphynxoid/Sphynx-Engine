@@ -22,6 +22,11 @@ namespace GameAssembly
             {
                 transform.Position += new Vector3(0, 0, -1 * Time.deltaTime);
             }
+            if (Input.IsMouseButtonDown(MouseButton.LeftButton))
+            {
+                //var Pos = Input.GetMousePosition();
+                //Logger.Info($"Mouse Position: ({Pos.x},{Pos.y})");
+            }
         }
     }
 }
