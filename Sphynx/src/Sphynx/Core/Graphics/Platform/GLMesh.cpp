@@ -195,7 +195,7 @@ void Sphynx::Core::Graphics::GL::GLMesh::Bind()const
 	glBindVertexArray(VAO);
 }
 
-void Sphynx::Core::Graphics::GL::GLMesh::UnBind()const
+void Sphynx::Core::Graphics::GL::GLMesh::Unbind()const
 {
 	glBindVertexArray(0);
 }
@@ -205,7 +205,7 @@ void Sphynx::Core::Graphics::GL::GLMesh::AddVertexBuffer(VertexBuffer* VBuffer)
 	Bind();
 	VBuffers.push_back(VBuffer);
 	SetVertexAttribs(VBuffer, VAttribIndex);
-	UnBind();
+	Unbind();
 }
 
 void Sphynx::Core::Graphics::GL::GLMesh::AddVertexBuffers(std::vector<VertexBuffer*> _VBuffers)
@@ -215,7 +215,7 @@ void Sphynx::Core::Graphics::GL::GLMesh::AddVertexBuffers(std::vector<VertexBuff
 	for (auto& vb : _VBuffers) {
 		SetVertexAttribs(vb, VAttribIndex);
 	}
-	UnBind();
+	Unbind();
 }
 
 void Sphynx::Core::Graphics::GL::GLMesh::SetIndexBuffer(IndexBuffer* ibuf)
@@ -228,7 +228,7 @@ void Sphynx::Core::Graphics::GL::GLMesh::SetIndexBuffer(IndexBuffer* ibuf)
 void Sphynx::Core::Graphics::GL::GLMesh::Release()
 {
 	if (this->hasIndexArray) {
-		this->UnBind();
+		this->Unbind();
 		IBuffer->Release();
 	}
 	glDeleteVertexArrays(1, &VAO);

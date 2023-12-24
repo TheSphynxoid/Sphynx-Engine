@@ -195,7 +195,10 @@
     <ClInclude Include="src\Sphynx\pch.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Sphynx\Application.cpp" />
+    <ClCompile Include="src\Sphynx\Application.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="src\Sphynx\Camera.cpp" />
     <ClCompile Include="src\Sphynx\Component.cpp" />
     <ClCompile Include="src\Sphynx\Core\Factories\ComponentFactory.cpp" />
@@ -245,20 +248,12 @@
     <ClCompile Include="src\Sphynx\Editor\GameObjectView.cpp" />
     <ClCompile Include="src\Sphynx\Editor\SceneManagerView.cpp" />
     <ClCompile Include="src\Sphynx\Editor\TextureDebugger.cpp" />
-    <ClCompile Include="src\Sphynx\Engine.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
-    </ClCompile>
+    <ClCompile Include="src\Sphynx\Engine.cpp" />
     <ClCompile Include="src\Sphynx\GameObject.cpp" />
     <ClCompile Include="src\Sphynx\Input.cpp" />
-    <ClCompile Include="src\Sphynx\Logger.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
-    </ClCompile>
+    <ClCompile Include="src\Sphynx\Logger.cpp" />
     <ClCompile Include="src\Sphynx\Object.cpp" />
-    <ClCompile Include="src\Sphynx\Pointer.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
-    </ClCompile>
+    <ClCompile Include="src\Sphynx\Pointer.cpp" />
     <ClCompile Include="src\Sphynx\ResourceManager.cpp" />
     <ClCompile Include="src\Sphynx\Scene.cpp" />
     <ClCompile Include="src\Sphynx\SpTime.cpp" />

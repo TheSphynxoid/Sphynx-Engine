@@ -12,7 +12,7 @@
 #include <utility>
 #include <memory>
 #include <iostream>
-//#define Sphynx_Version "V0.7.2-PreAlpha"
+//#define Sphynx_Version "V0.7.4-PreAlpha"
 
 namespace Sphynx {
 	namespace Core {

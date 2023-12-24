@@ -99,6 +99,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="EditorDock.cpp" />
     <ClCompile Include="src\App.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -111,6 +112,9 @@
     <ProjectReference Include="..\GameAssembly\GameAssembly.csproj">
       <Project>{1F709DC6-0BD3-2C6B-B458-6521A09AF8ED}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="EditorDock.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

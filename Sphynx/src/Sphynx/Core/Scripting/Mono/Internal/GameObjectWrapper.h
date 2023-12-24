@@ -17,7 +17,6 @@ namespace Sphynx::Mono {
 		static inline MonoClassField* NativePtr;
 		typedef void( __stdcall *AddCompThunk)(MonoObject*, MonoObject*, MonoReflectionType*, MonoException**);
 		static inline AddCompThunk AddComp;
-		//typedef void(__stdcall *Constructor)()
 		std::vector<CsScript*> Scripts = std::vector<CsScript*>();
 
 		static inline MonoMethod* AwakeMethod, * StartMethod, * UpdateMethod, * FixedUpdateMethod, * OnDestroyMethod;

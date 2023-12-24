@@ -71,7 +71,7 @@ namespace Sphynx::Core::Graphics::GL {
 		GLMesh& operator=(GLMesh&& Mesh)noexcept;
 		virtual ~GLMesh()override;
 		virtual void Bind()const override;
-		virtual void UnBind()const override;
+		virtual void Unbind()const override;
 		virtual void AddVertexBuffer(VertexBuffer* VBuffer)override;
 		virtual void AddVertexBuffers(std::vector<VertexBuffer*> _VBuffers)override;
 		virtual void SetIndexBuffer(IndexBuffer* ibuf)override;

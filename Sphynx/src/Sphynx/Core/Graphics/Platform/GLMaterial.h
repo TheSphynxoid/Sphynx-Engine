@@ -16,7 +16,7 @@
 "void main()"\
 "{"\
 "	gl_Position = MVP * vec4(aPos, 1.0);"\
-"	vertexColor = vec4(0.0, 0.0, 1.0, 1.0);"\
+"	vertexColor = vec4(1.0, 1.0, 1.0, 1.0);"\
 "   TexCoord = texcoord;"\
 " }"
 #define DEF_FSHADER \
@@ -36,7 +36,7 @@ namespace Sphynx::Core::Graphics::GL {
         void* Data;
         int loc = -1;
     public:
-        void Set() { Set(loc); };
+        void BindLocation() { Set(loc); };
         GLUniform(void* data, ShaderDataType type);
         virtual void SetData(void* data) { Data = data; };
         virtual void Set(const int loc);
@@ -79,7 +79,7 @@ namespace Sphynx::Core::Graphics::GL {
                 i++;
             }
         }
-        virtual void RemoveTexture() { textures.clear(); };
+        virtual void ClearTextures() { textures.clear(); };
         virtual void SetTexture(Texture* texture, unsigned int index) {
             int i = 0;
             for (auto& tex : textures) {

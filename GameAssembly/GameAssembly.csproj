@@ -12,7 +12,6 @@
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
     <PlatformTarget>x64</PlatformTarget>
@@ -45,12 +44,12 @@
   <ItemGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="TestComponent.cs" />
+    <Compile Include="PlayerPaddle.cs" />
     <Compile Include="TestComponent2.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ScriptAssembly\ScriptAssembly.csproj">
-      <Project>{3aad24a5-267b-18ab-0f0f-89d1fb7bf40f}</Project>
+      <Project>{3AAD24A5-267B-18AB-0F0F-89D1FB7BF40F}</Project>
       <Name>ScriptAssembly</Name>
     </ProjectReference>
   </ItemGroup>

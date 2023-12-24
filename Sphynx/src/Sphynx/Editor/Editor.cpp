@@ -7,7 +7,6 @@
 Sphynx::Core::AboutWindow* About = new Sphynx::Core::AboutWindow();
 
 
-
 Sphynx::Editor::Editor::Editor()
 {
 	//Sphynx::Core::Imgui::AddOverlayWindow(new SceneManagerView());

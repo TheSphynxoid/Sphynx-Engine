@@ -13,25 +13,58 @@ auto OrthoProj = glm::mat4(0.0f);
 auto ProjView = OrthoProj;
 Uniform* ProjViewUniform = Uniform::Create(&ProjView[0], ShaderDataType::Mat4x4);
 bool HasInit = false;
+//Box
+float vertices[] = {
+    // pos      // tex
+    0.0f, 1.0f, 0.0f, 1.0f,
+    1.0f, 0.0f, 1.0f, 0.0f,
+    0.0f, 0.0f, 0.0f, 0.0f,
+
+    0.0f, 1.0f, 0.0f, 1.0f,
+    1.0f, 1.0f, 1.0f, 1.0f,
+    1.0f, 0.0f, 1.0f, 0.0f
+};
+auto vShader = Shader::Create("#version 330 core\n"
+    "layout(location = 0) in vec4 vertex;"
+    "out vec2 TexCoords;"
+    "uniform mat4 model;"
+    "uniform mat4 projection;"
+    "void main()"
+    "{"
+    "TexCoords = vertex.zw;"
+    "gl_Position = projection * model * vec4(vertex.xy, 0.0, 1.0);"
+    "}", ShaderType::VertexShader);
+auto fShader = Shader::Create("#version 330 core\n"
+    "in vec2 TexCoords;"
+    "out vec4 color;"
+    "uniform sampler2D image;"
+    "void main()"
+    "{"
+    "color = vec4(1,1,1,1);"
+    "}", ShaderType::FragmentShader);
 
 void FrameResize(Sphynx::OnFrameResize& e)
 {
     OrthoProj = glm::ortho(0.0f, e.NewDimensions.x, 0.0f, e.NewDimensions.y, -1.0f, 1.0f);
 }
 
+Sphynx::Core::SpriteRenderer::SpriteRenderer()
+{
+    if (!HasInit) {
+        HasInit = true;
+        OrthoProj = glm::ortho(0.0f, (float)GetMainWindow()->GetWidth(), 0.0f, (float)GetMainWindow()->GetHeight(), 0.1f, 1.0f);
+    }
+    SpriteMaterial = Material::Create({ vShader,fShader,nullptr,nullptr,nullptr });
+    //Orthographic projection matrix.
+    auto vb = Sphynx::Core::Graphics::VertexBuffer::Create(vertices, sizeof(vertices));
+    vb->SetDataLayout(BufferLayout({ BufferElement(ShaderDataType::Float4,false) }));
+    SpritePlane = Graphics::Mesh::Create(vb, nullptr);
+
+    Sphynx::Events::GlobalEventSystem::GetInstance()->Subscribe<Sphynx::OnFrameResize>(&FrameResize);
+}
+
 Sphynx::Core::SpriteRenderer::SpriteRenderer(Sphynx::Core::Graphics::Material* mat, glm::vec2 size)
 {
-    float vertices[] = {
-        // pos      // tex
-        0.0f, 1.0f, 0.0f, 1.0f,
-        1.0f, 0.0f, 1.0f, 0.0f,
-        0.0f, 0.0f, 0.0f, 0.0f,
-
-        0.0f, 1.0f, 0.0f, 1.0f,
-        1.0f, 1.0f, 1.0f, 1.0f,
-        1.0f, 0.0f, 1.0f, 0.0f
-    };
-
     if (!HasInit) {
         HasInit = true;
         OrthoProj = glm::ortho(0.0f, (float)GetMainWindow()->GetWidth(), 0.0f, (float)GetMainWindow()->GetHeight(), 0.1f, 1.0f);
@@ -49,37 +82,7 @@ Sphynx::Core::SpriteRenderer::SpriteRenderer(Sphynx::Core::Graphics::Material* m
 
 Sphynx::Core::SpriteRenderer::SpriteRenderer(Sphynx::Core::Graphics::Texture* tex, glm::vec2 size)
 {
-    float vertices[] = {
-        // pos      // tex
-        0.0f, 1.0f, 0.0f, 1.0f,
-        1.0f, 0.0f, 1.0f, 0.0f,
-        0.0f, 0.0f, 0.0f, 0.0f,
-
-        0.0f, 1.0f, 0.0f, 1.0f,
-        1.0f, 1.0f, 1.0f, 1.0f,
-        1.0f, 0.0f, 1.0f, 0.0f
-    };
-
-    static auto vShader = Shader::Create("#version 330 core\n"
-        "layout(location = 0) in vec4 vertex;"
-        "out vec2 TexCoords;"
-        "uniform mat4 model;"
-        "uniform mat4 projection;"
-        "void main()"
-        "{"
-        "TexCoords = vertex.zw;"
-        "gl_Position = projection * model * vec4(vertex.xy, 0.0, 1.0);"
-        "}", ShaderType::VertexShader);
-    static auto fShader = Shader::Create("#version 330 core\n"
-        "in vec2 TexCoords;"
-        "out vec4 color;"
-        "uniform sampler2D image;"
-        "void main()"
-        "{"
-        "color = texture(image, TexCoords);"
-        "}", ShaderType::FragmentShader);
     SpriteMaterial = Material::Create({ vShader,fShader,nullptr,nullptr,nullptr }, tex);
-
     //Orthographic projection matrix.
     auto vb = Sphynx::Core::Graphics::VertexBuffer::Create(vertices, sizeof(vertices));
     vb->SetDataLayout(BufferLayout({ BufferElement(ShaderDataType::Float4,false) }));

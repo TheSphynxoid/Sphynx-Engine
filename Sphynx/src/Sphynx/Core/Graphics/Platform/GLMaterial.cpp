@@ -158,7 +158,7 @@ void Sphynx::Core::Graphics::GL::GLMaterial::ReloadShaders(const ShaderPack& pac
     }
     Bind();
     for (auto& uni : uniforms) {
-        ((GLUniform*)uni)->Set();
+        ((GLUniform*)uni)->BindLocation();
     }
     Unbind();
 }

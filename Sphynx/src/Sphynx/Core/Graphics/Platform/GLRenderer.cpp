@@ -17,6 +17,7 @@
 
 #ifdef Platform_Windows
 extern "C" {
+	//To Use an Nvidia GPU if available.
 	__declspec(dllexport) DWORD NvOptimusEnablement = 1;
 }
 #endif
@@ -45,9 +46,8 @@ void Sphynx::Core::Graphics::GL::GLRenderer::Render()
 		pair.second->front().mat->Bind();
 		for (auto rend : *pair.second) {
 			rend.mesh->Bind();
-			//This is Probably the reason The Cubes Renderer on the same place.
 			for (auto& uni : ((GLMaterial*)rend.mat)->uniforms) {
-				((GLUniform*)uni)->Set();
+				((GLUniform*)uni)->BindLocation();
 			}
 			GLMesh* Mesh = (GLMesh*)rend.mesh;
 			if (Mesh->HasIndexArray()) {
@@ -56,7 +56,7 @@ void Sphynx::Core::Graphics::GL::GLRenderer::Render()
 			else {
 				glDrawArrays(GL_TRIANGLES, 0, Mesh->GetVertexBuffer()[0]->GetVertexBufferSize());
 			}
-			rend.mesh->UnBind();
+			rend.mesh->Unbind();
 		}
 	}
 }
