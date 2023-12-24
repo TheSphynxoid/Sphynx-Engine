@@ -24,7 +24,6 @@ void Sphynx::Editor::EditorViewport::OnResize(Events::OnWindowResize& e)
 Sphynx::Editor::EditorViewport::EditorViewport() : viewport()
 {
 	Events::GlobalEventSystem::GetInstance()->Subscribe<EditorViewport, Events::OnWindowResize>(this, &EditorViewport::OnResize);
-	//TODO: This is Wrong. Find a way to add multi camera support and handle scene changes in the future.
 }
 
 void Sphynx::Editor::EditorViewport::Draw()
@@ -44,7 +43,6 @@ void Sphynx::Editor::EditorViewport::Draw()
 			TextureDataFormat::UInt_24_8) }));
 		ResizeFlag = true;
 		
-		//SceneManager::GetScene().GetPrimaryCamera()->GetFrameBuffer()->SetClearColor({ 1,1,1,1 });
 	}
 	ImGui::SetNextWindowDockID(ViewDockID, ImGuiCond_FirstUseEver);
 	if (ImGui::Begin("Viewport", &IsOpen, ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoScrollbar

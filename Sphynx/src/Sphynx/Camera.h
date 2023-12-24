@@ -42,9 +42,12 @@ namespace Sphynx {
 		glm::mat4& GetProjectionMatrix() { return ProjectionMatrix; };
 		glm::mat4& GetViewMatrix() { return ViewMatrix; };
 		bool IsOrthographic() { return IsOrtho; };
-		//void SetOrthographic();
-		//void SetPerspective();
-		void SetViewMatrix(glm::mat4 mat) { GetGameObject()->GetTransform()->SetModelMatrix(mat); };
+		void SetToOrthographic(float Width, float Height, float nearclip, float farclip);
+		void SetToPerspective(float fov, float aspectRatio, float nearClip, float farClip);
+		void SetViewMatrix(glm::mat4 mat) {
+			GetGameObject()->GetTransform()->SetModelMatrix(mat); 
+		};
+		void SetAspectRatio(float aspectRatio);
 		void SetFrameBuffer(Sphynx::Core::Graphics::FrameBuffer* fb);
 		void SetViewport(Sphynx::Core::Graphics::Viewport v);
 		float GetZoom() { return Zoom; };

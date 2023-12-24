@@ -18,7 +18,7 @@ using namespace Sphynx::Core;
 class SandBox : public Sphynx::Application
 {
 private:
-	GameObject* TextTest;
+	GameObject LeftPaddle,RightPaddle;
 public:
 	SandBox() {
 		//Sphynx::Core::Bounds b = { 512, 384 };
@@ -29,19 +29,15 @@ public:
 		Sphynx::Core::Imgui::AddOverlayWindow(new Editor::EditorViewport());
 		Sphynx::Core::Imgui::AddOverlayWindow(new Editor::GameObjectView());
 		Sphynx::Core::Imgui::AddOverlayWindow(new Editor::Console());
-#elif RELEASE
-
 #endif
+
 	}
 	void Start() {
-		TextTest = GameObject::CreatePrimitive(Primitives::Cube);
-		auto sc = TextTest->AddComponent<ScriptComponent>();
-		sc->AddScript("TestComponent");
-		sc->AddScript("TestComponent2");
-		Sphynx::Core::SceneManager::GetScene().AddGameObject(TextTest);
+		//SceneManager::GetScene().GetPrimaryCamera()->SetViewMatrix();
+		LeftPaddle.AddComponent<ScriptComponent>("PlayerPaddle");
+		SceneManager::GetScene().AddGameObject(&LeftPaddle);
 	}
 	void Update() {	
-
 	}
 	~SandBox() {
 
@@ -53,5 +49,4 @@ Sphynx::Application* Sphynx::CreateApplication() {
 	auto sandbox = new SandBox();
 	sandbox->GetMainWindow()->ChangeTitle("Testing Grounds");
 	return sandbox;
-}
-
+};

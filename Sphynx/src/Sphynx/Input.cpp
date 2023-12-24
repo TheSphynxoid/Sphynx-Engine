@@ -33,7 +33,6 @@ void Sphynx::Input::GLMouseHandler(GLFWwindow* window, int button, int action, i
 {
 	if (MousePressCB && MousePressCB((MouseButton)button, (Action)action, (Mods)mods))return;
 	MouseStates[button] = { (Action)action, (Mods)mods};
-	Core_Info("aaa");
 	switch (action)
 	{
 	case GLFW_RELEASE:

@@ -149,7 +149,7 @@ namespace Sphynx::Core::Graphics {
 		static Mesh* Create(VertexBuffer* VBuffer, IndexBuffer* IBuffer);
 		static Mesh* Create(std::vector<VertexBuffer*> VBuffers, IndexBuffer* IBuffer);
 		virtual void Bind()const = 0;
-		virtual void UnBind()const = 0;
+		virtual void Unbind()const = 0;
 		virtual void AddVertexBuffer(VertexBuffer* VBuffer) = 0;
 		virtual void AddVertexBuffers(std::vector<VertexBuffer*> _VBuffers) = 0;
 		virtual void SetIndexBuffer(IndexBuffer* ibuf) = 0;

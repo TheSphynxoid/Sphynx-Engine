@@ -32,6 +32,10 @@ namespace Sphynx
         internal extern static int InternalKeyState(int key);
         [MethodImpl(MethodImplOptions.InternalCall)]
         internal extern static int InternalButtonState(int button);
+        /// <summary>
+        /// MAJOR ISSUE : Causes reading invalid memory in core.
+        /// </summary>
+        /// <returns></returns>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public static extern Vector2 GetMousePosition();
         public static bool IsMouseButtonDown(MouseButton button)

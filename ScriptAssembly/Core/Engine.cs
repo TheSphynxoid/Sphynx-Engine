@@ -1,4 +1,5 @@
-﻿using Sphynx.Core.Graphics;
+﻿using Mono.CSharp;
+using Sphynx.Core.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,10 @@ using System.Threading.Tasks;
 
 namespace Sphynx.Core
 {
+    public enum GraphicsBackend
+    {
+        OpenGL,Vulkan,DirectX11, DirectX12
+    }
     /// <summary>
     /// Engine Utility Class
     /// </summary>
@@ -28,5 +33,42 @@ namespace Sphynx.Core
         /// If the C# Scripting Engine is Running on Mono this has a true value. (This is here in case i decide to add the MicrosoftCLR)
         /// </summary>
         public static readonly bool IsMono = (Type.GetType("Mono.Runtime") != null);
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public extern static GraphicsBackend GetGraphicsBackend();
+    }
+    /// <summary>
+    /// Marker for the originating header for wrapped type.
+    /// </summary>
+    [System.AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct, Inherited = false, AllowMultiple = false)]
+    public sealed class HeaderAttribute : System.Attribute
+    {
+        readonly string headerName;
+        public string NativeTypeName { get; set; }
+
+        public string HeaderName { get => headerName; }
+        public HeaderAttribute(string headername) { this.headerName = headername; }
+    }
+
+    /// <summary>
+    /// Marker for Wrappers and additional information.
+    /// </summary>
+    [System.AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct, Inherited = false, AllowMultiple = false)]
+    internal sealed class NativeWrapperAttribute : System.Attribute
+    {
+        readonly string nativeName;
+        readonly bool isVirtual;
+
+        public NativeWrapperAttribute(string nativeName, bool isVirtual)
+        {
+            this.nativeName = nativeName;
+            this.isVirtual = isVirtual;        
+        }
+
+        public string NativeName
+        {
+            get { return nativeName; }
+        }
+        public bool IsVirtual { get => isVirtual; }
     }
 }

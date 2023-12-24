@@ -6,7 +6,6 @@ void Sphynx::Mono::GameObjectWrapper::Init()
 {
 	auto addcomp = mono_class_get_method_from_name(GameObjectClass, "InternalAddComp", 2);
 	AddComp = (AddCompThunk)mono_method_get_unmanaged_thunk(addcomp);
-	//auto Constructor = mono_class_get_method_from_name(GameObjectClass, "GameObject", 1);
 	IDProp = mono_class_get_property_from_name(GameObjectClass, "ID");
 	NameProp = mono_class_get_property_from_name(GameObjectClass, "Name");
 	TransformProp = mono_class_get_property_from_name(GameObjectClass, "transform");
@@ -31,11 +30,7 @@ Sphynx::Mono::GameObjectWrapper::GameObjectWrapper(GameObject* go)
 	mono_field_set_value(Managedobj, NativePtr, &gameObject);
 	mono_runtime_object_init(Managedobj);
 	transformWrapper = TransformWrapper(Managedobj, mono_property_get_value(TransformProp, Managedobj, nullptr, nullptr));
-	//for (auto& comp : go->GetComponents()) {
-	//	if (comp->GetName() == "Transform") {
-	//		transform = TransformWrapper();
-	//	}
-	//}
+
 	AwakeThunk = (UnmanagedThunk)mono_method_get_unmanaged_thunk(mono_object_get_virtual_method(Managedobj, AwakeMethod));
 	StartThunk = (UnmanagedThunk)mono_method_get_unmanaged_thunk(mono_object_get_virtual_method(Managedobj, StartMethod));
 	UpdateThunk = (UnmanagedThunk)mono_method_get_unmanaged_thunk(mono_object_get_virtual_method(Managedobj, UpdateMethod));

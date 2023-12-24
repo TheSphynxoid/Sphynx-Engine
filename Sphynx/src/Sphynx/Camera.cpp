@@ -70,6 +70,24 @@ void Sphynx::Camera::Update()
 	RenderTarget->Unbind();
 }
 
+void Sphynx::Camera::SetToOrthographic(float Width, float Height, float nearclip, float farclip)
+{
+	NearClip = nearclip; FarClip = farclip;
+	ProjectionMatrix = glm::ortho(0.0f, (float)CamViewport.Width, 0.0f, (float)CamViewport.Height, NearClip, FarClip);
+}
+
+void Sphynx::Camera::SetToPerspective(float fov, float aspectRatio, float nearClip, float farClip)
+{
+	FOV = fov;
+	AspectRatio = aspectRatio;
+	NearClip = nearClip; FarClip = farClip;
+	ProjectionMatrix = glm::perspective(glm::radians(FOV), aspectRatio, NearClip, FarClip);
+}
+
+void Sphynx::Camera::SetAspectRatio(float aspectRatio)
+{
+}
+
 void Sphynx::Camera::SetFrameBuffer(Sphynx::Core::Graphics::FrameBuffer* fb)
 {
 	RenderTarget = fb;

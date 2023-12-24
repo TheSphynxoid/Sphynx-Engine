@@ -37,7 +37,7 @@ namespace Sphynx::Core::Graphics {
 		virtual void RemoveTexture(Texture* texture) = 0;
 		virtual void RemoveTexture(unsigned int index) = 0;
 		//Clears Textures.
-		virtual void RemoveTexture() = 0;
+		virtual void ClearTextures() = 0;
 		virtual void SetTexture(Texture* texture, unsigned int index) = 0;
 		virtual Texture* GetTexture(unsigned int index) = 0;
 		virtual unsigned int GetTextureCount() = 0;

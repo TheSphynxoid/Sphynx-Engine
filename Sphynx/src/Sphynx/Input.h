@@ -32,7 +32,7 @@ namespace Sphynx {
 		inline static KeyState keyStates[Last_Key];
 		inline static MouseButtonState MouseStates[Last_Mouse_Button];
 		inline static double ScrollX = 0, ScrollY = 0;
-		inline static glm::vec2 CursorPos = { 0,0 };
+		inline static glm::vec2 CursorPos = glm::vec2(0,0);
 		//Window Polled.
 		inline static Core::IWindow* window = nullptr;
 		//Callbacks.
