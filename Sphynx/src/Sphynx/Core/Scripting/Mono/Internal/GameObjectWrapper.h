@@ -1,6 +1,7 @@
 #pragma once
 #include "GameObject.h"
 #include "TransformWrapper.h"
+#include "Core/Scripting/Script.h"
 
 namespace Sphynx::Mono {
 	class CsScript;
@@ -11,13 +12,14 @@ namespace Sphynx::Mono {
 		GameObject* gameObject;
 		MonoObject* Managedobj;
 		TransformWrapper transformWrapper;
-		static inline MonoProperty* IDProp;
 		static inline MonoProperty* NameProp;
 		static inline MonoProperty* TransformProp;
+		static inline MonoClassField* IDField;
 		static inline MonoClassField* NativePtr;
 		typedef void( __stdcall *AddCompThunk)(MonoObject*, MonoObject*, MonoReflectionType*, MonoException**);
 		static inline AddCompThunk AddComp;
-		std::vector<CsScript*> Scripts = std::vector<CsScript*>();
+		//Update: now decoupled from CsScript.
+		std::vector<Core::Scripting::Script*> Scripts = std::vector<Core::Scripting::Script*>();
 
 		static inline MonoMethod* AwakeMethod, * StartMethod, * UpdateMethod, * FixedUpdateMethod, * OnDestroyMethod;
 		//Typedef of the function thunk.
@@ -43,6 +45,7 @@ namespace Sphynx::Mono {
 		void Start();
 		void Update();
 		void FixedUpdate();
+		const std::vector<Core::Scripting::Script*>& GetScripts() { return Scripts; };
 		/// <summary>
 		/// Converts the MonoObject to a GameObject* without checking the type of MonoObject is "Sphynx.GameObject".
 		/// </summary>

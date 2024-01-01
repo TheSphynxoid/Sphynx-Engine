@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -18,8 +19,9 @@ namespace Sphynx
         public enum Primitive { Sphere, Capsule, Cube, Plane, Triangle};
 
         public string Name { get; set; }
-
-        public ulong ID { get; internal set; }
+        //ID Field
+        private ulong id;
+        public ulong ID { get => id; }
 
         private readonly UIntPtr NativePtr;
         /// <summary>
@@ -41,7 +43,7 @@ namespace Sphynx
         internal void InternalAddComp(Component comp,Type type)
         {
             components.Add(type, comp);
-            Logger.Info($"Native-Side Component {comp.ID} Added to {NativePtr} ");
+            Logger.Info($"Native-Side Component {comp.ID} Added to 0x{ID.ToString("X")} ");
             comp.gameObject = this;
         }
         /// <summary>

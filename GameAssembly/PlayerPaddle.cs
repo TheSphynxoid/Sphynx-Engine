@@ -12,7 +12,7 @@ namespace GameAssembly
     {
         public override void Start()
         {
-            gameObject.AddComponent<SpriteRenderer>();
+            //gameObject.AddComponent<SpriteRenderer>();
         }
 
         public override void Update()

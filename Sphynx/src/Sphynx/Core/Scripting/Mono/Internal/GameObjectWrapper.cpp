@@ -6,9 +6,9 @@ void Sphynx::Mono::GameObjectWrapper::Init()
 {
 	auto addcomp = mono_class_get_method_from_name(GameObjectClass, "InternalAddComp", 2);
 	AddComp = (AddCompThunk)mono_method_get_unmanaged_thunk(addcomp);
-	IDProp = mono_class_get_property_from_name(GameObjectClass, "ID");
 	NameProp = mono_class_get_property_from_name(GameObjectClass, "Name");
 	TransformProp = mono_class_get_property_from_name(GameObjectClass, "transform");
+	IDField = mono_class_get_field_from_name(GameObjectClass, "id");
 	NativePtr = mono_class_get_field_from_name(GameObjectClass, "NativePtr");
 
 	//Methods
@@ -24,7 +24,7 @@ Sphynx::Mono::GameObjectWrapper::GameObjectWrapper(GameObject* go)
 	gameObject = go;
 	Managedobj = MonoRuntime::CreateObject(GameObjectClass);
 	size_t ID = gameObject->GetID();
-	mono_property_set_value(IDProp, Managedobj, (void**)&ID, nullptr);
+	mono_field_set_value(Managedobj, IDField, (void**)&ID);
 	auto name = mono_string_new(MonoRuntime::GetAppdomain(), gameObject->GetName());
 	mono_property_set_value(NameProp, Managedobj, (void**)&name, nullptr);
 	mono_field_set_value(Managedobj, NativePtr, &gameObject);
@@ -57,9 +57,9 @@ Sphynx::Mono::GameObjectWrapper::GameObjectWrapper(MonoObject* obj)
 void Sphynx::Mono::GameObjectWrapper::AddComponent(CsScript* script)
 {
 	Scripts.push_back(script);
-	auto ScriptReflection = mono_type_get_object(MonoRuntime::GetAppdomain(), mono_class_get_type(script->ScriptClass));
+	auto ScriptReflection = mono_type_get_object(MonoRuntime::GetAppdomain(), mono_class_get_type((MonoClass*)script->GetNativeClass()));
 	MonoException* ex;
-	AddComp(this->Managedobj, script->ScriptObject, ScriptReflection , &ex);
+	AddComp(this->Managedobj, (MonoObject*)script->GetNativeObject(), ScriptReflection, &ex);
 	if (ex != nullptr) {
 		mono_print_unhandled_exception((MonoObject*)ex);
 		mono_raise_exception(ex);

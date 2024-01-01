@@ -31,6 +31,12 @@ void Sphynx::Core::Internal::ComponentRegistry::CopyGameObject(GameObject* ori, 
 	Registry[newGO->GetID()] = Registry[ori->GetID()];
 }
 
+void Sphynx::Core::Internal::ComponentRegistry::MoveCompsToGameObject(const Sphynx::GameObject* Src, Sphynx::GameObject* Dest)
+{
+	Registry[Dest->GetID()] = Registry[Src->GetID()];
+	Registry.erase(Src->GetID());
+}
+
 bool Sphynx::Core::Internal::ComponentRegistry::CompInfo::operator==(const CompInfo& rhs) const
 {
 	if (comp_ptr == nullptr || rhs.comp_ptr == nullptr) {

@@ -18,6 +18,10 @@ namespace Sphynx {
 		void CalcModelMatrix();
 	public:
 		CompImpl(Transform);
+		virtual Component* CopyInstance() {
+			Core_Info("Transform (id = {0}) Copied.", GetID());
+			return new Transform((Transform&)*this);
+		}
 		//You Can Force Matrix Calculations.
 		bool Changed = true;
 		Transform();

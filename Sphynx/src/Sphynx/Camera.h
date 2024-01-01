@@ -32,6 +32,10 @@ namespace Sphynx {
 		virtual void OnComponentDetach();
 	public:
 		CompImpl(Camera);
+		//Untested ,Probably Works.
+		virtual Component* CopyInstance() override {
+			return new Camera((Camera&)*this);
+		}
 		//Creates a Camera with Default Settings
 		Camera();
 		//FOV must be in degrees. This Constructor Creates a Perspective Camera

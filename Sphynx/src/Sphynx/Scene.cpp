@@ -39,7 +39,7 @@ Sphynx::Core::Scene::GameObjects Sphynx::Core::Scene::GetGameObjects()
 
 void Sphynx::Core::Scene::Start()
 {
-	PrimaryCameraObject = GameObject("Camera");
+	PrimaryCameraObject.SetName("Camera");
 	PrimaryCameraObject.AddComponent<Camera>();
 	PrimaryCamera = PrimaryCameraObject.GetComponent<Camera>();
 	GObjs.push_back(&PrimaryCameraObject);

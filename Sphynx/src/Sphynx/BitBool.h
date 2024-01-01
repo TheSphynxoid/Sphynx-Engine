@@ -84,7 +84,7 @@ namespace Sphynx::Util {
 			return elements[Mapped.ArrayIndex][Mapped.BitIndex];
 		}
 	};
-
+	//2-Byte bitflags.
 	struct BitFlags {
 		unsigned short f0 : 1;
 		unsigned short f1 : 1;
@@ -101,6 +101,7 @@ namespace Sphynx::Util {
 		BitFlags flags[size];
 	public:
 		BitFlags operator[](int index) { return flags[index]; };
-	};
+	};	
+
 }
 #pragma pop_macro("max")

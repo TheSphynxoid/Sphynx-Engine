@@ -7,7 +7,7 @@ using namespace Sphynx::Core::Graphics;
 
 const Sphynx::GameObject Sphynx::GameObject::PlaceHolder = Sphynx::GameObject("PlaceHolder");
 
-Sphynx::GameObject::GameObject(const char* name) : IsAlive(true), InstanceID((size_t)this), Name(name)
+Sphynx::GameObject::GameObject(const char* name) : IsAlive(true), InstanceID(EntityRegistry::GetID(this, EntityFlag::GameObject)), Name(name)
 {
     //((Component*)&transform)->Parent = this;
     //((Component*)&transform)->_transform = transform;
@@ -16,6 +16,7 @@ Sphynx::GameObject::GameObject(const char* name) : IsAlive(true), InstanceID((si
 Sphynx::GameObject::GameObject(const GameObject& obj)noexcept
 {
     this->Components = obj.Components;
+    for (auto& comp : Components) { comp->Parent = this; }
     this->transform = obj.transform;
     this->IsAlive = obj.IsAlive;
     //InstanceID = (size_t)this;
@@ -56,6 +57,7 @@ Sphynx::GameObject& Sphynx::GameObject::operator=(GameObject&& obj)noexcept
 Sphynx::GameObject& Sphynx::GameObject::operator=(const GameObject& obj)noexcept
 {
     this->Components = obj.Components;
+    Core::Internal::ComponentFactory::CompMove(&obj, this);
     this->IsAlive = obj.IsAlive;
     this->transform = obj.transform;
     this->InstanceID = obj.InstanceID;
@@ -68,6 +70,7 @@ void Sphynx::GameObject::Destroy()
     for (auto comp : Components) {
         Core::Internal::ComponentFactory::RemoveComponent(this, comp);
     }
+    EntityRegistry::ReturnID(InstanceID);   
 }
 
 Sphynx::GameObject* Sphynx::GameObject::CreatePrimitive(Primitives primitive, std::string name)

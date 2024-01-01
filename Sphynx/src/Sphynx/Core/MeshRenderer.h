@@ -19,6 +19,9 @@ namespace Sphynx {
 		virtual void OnComponentDetach() override;
 	public:
 		CompImpl(MeshRenderer);
+		virtual Component* CopyInstance() {
+			return new MeshRenderer((MeshRenderer&)*this);
+		}
 		MeshRenderer(Core::Graphics::Mesh* _mesh, Core::Graphics::Material* mat);
 		~MeshRenderer();
 		void SetMaterial(Core::Graphics::Material* mat);

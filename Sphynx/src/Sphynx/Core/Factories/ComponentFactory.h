@@ -12,9 +12,10 @@ namespace Sphynx::Core::Internal {
 	public:
 		template<typename component, typename ...Args>
 		static component* CreateComponent(Sphynx::GameObject* object, Args&& ...args) {
-			//We Don't Check Because GameObject Does That.
+			//We don't check if it's a valid Component type because GameObject does that.
 			auto comp = new component(SPH_Forward(args)...);
 			comp->Parent = object;
+			comp->InstanceID = EntityRegistry::GetID(comp, EntityFlag::Component);
 			comp->_transform = object->GetTransform();
 			((Component*)comp)->OnComponentAttach(object);
 			//TypeIndex List
@@ -24,12 +25,16 @@ namespace Sphynx::Core::Internal {
 		static void RemoveComponent(Sphynx::GameObject* go, Component* comp) {
 			ComponentRegistry::RemoveComp(go, comp);
 			comp->OnComponentDetach();
+			EntityRegistry::ReturnID(comp->InstanceID);
+			//Clean-up.
 			delete comp;
 		}
 		static void CompCopy(GameObject* ori, GameObject* cpy) {
 			ComponentRegistry::CopyGameObject(ori, cpy);
 		}
-
+		static void CompMove(const GameObject* Src, GameObject* movedTo) {
+			ComponentRegistry::MoveCompsToGameObject(Src, movedTo);
+		}
 		//Utility
 		struct Helper {
 			template<class comp>

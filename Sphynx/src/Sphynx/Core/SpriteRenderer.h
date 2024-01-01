@@ -18,6 +18,10 @@ namespace Sphynx::Core {
 		//void OnSceneChange(Sphynx::Core::OnSceneChange& e);
 	public:
 		CompImpl(SpriteRenderer);
+
+		virtual Component* CopyInstance() {
+			return new SpriteRenderer((SpriteRenderer&)*this);
+		}
 		SpriteRenderer();
 		SpriteRenderer(Graphics::Material* mat, glm::vec2 size);
 		SpriteRenderer(Graphics::Texture* tex, glm::vec2 size);

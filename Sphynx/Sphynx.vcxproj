@@ -108,6 +108,7 @@
     <ClInclude Include="src\Sphynx\Core\Exceptions.h" />
     <ClInclude Include="src\Sphynx\Core\Factories\ComponentFactory.h" />
     <ClInclude Include="src\Sphynx\Core\Factories\ComponentRegistry.h" />
+    <ClInclude Include="src\Sphynx\Core\Factories\ID.h" />
     <ClInclude Include="src\Sphynx\Core\Font.h" />
     <ClInclude Include="src\Sphynx\Core\FontAtlas.h" />
     <ClInclude Include="src\Sphynx\Core\Graphics\Imgui.h" />

@@ -70,6 +70,7 @@
     <Compile Include="Component.cs" />
     <Compile Include="Core\Application.cs" />
     <Compile Include="Core\Engine.cs" />
+    <Compile Include="Core\EntityID.cs" />
     <Compile Include="Core\Graphics\Material.cs" />
     <Compile Include="Core\Graphics\Shader.cs" />
     <Compile Include="Core\Graphics\SpriteRenderer.cs" />

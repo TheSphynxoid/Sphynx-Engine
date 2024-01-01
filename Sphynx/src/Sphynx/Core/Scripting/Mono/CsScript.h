@@ -40,13 +40,18 @@ namespace Sphynx::Mono {
 		virtual void Update();
 		virtual void FixedUpdate();
 		virtual void OnDestroy();
+		virtual void* GetNativeObject() {
+			return ScriptObject;
+		}
+		virtual void* GetNativeClass() {
+			return ScriptClass;
+		}
 		virtual Script* Copy();
 		inline virtual const char* GetName() const noexcept {
 			return Name.c_str();
 		};
 		static MonoClass* GetNative() { return ComponentClass; };
 		friend class MonoRuntime;
-		friend class GameObjectWrapper;
 	};
 }
 

@@ -27,11 +27,9 @@ void Sphynx::Core::ScriptComponent::FixedUpdate()
 void Sphynx::Core::ScriptComponent::OnComponentAttach(GameObject* parent)
 {
 	GOWrapper = Mono::ScriptManager::GetGameobjectWrapper(GetGameObject());
-	//GOWrapper->AddComponent((Mono::CsScript*)script);
 	for (auto s : scripts) {
 		GOWrapper->AddComponent((Mono::CsScript*)s);
 	}
-	//GOWrapper->Awake();
 }
 
 void Sphynx::Core::ScriptComponent::OnComponentDetach()
@@ -42,7 +40,6 @@ void Sphynx::Core::ScriptComponent::OnComponentDetach()
 void Sphynx::Core::ScriptComponent::AddScript(std::string name)
 {
 	//TODO: Change later make it backend independent
-	//GOWrapper = Mono::GameObjectWrapper(GetGameObject());
 	auto s = Mono::MonoRuntime::CreateScriptByName(name);
 	GOWrapper->AddComponent((Mono::CsScript*)s);
 	scripts.push_back(s);

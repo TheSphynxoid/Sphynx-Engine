@@ -20,13 +20,14 @@ namespace Sphynx {
 		virtual void OnComponentDetach() {};
 		GameObject* Parent;
 		Transform* _transform;
-		size_t InstanceID = (size_t)this;
+		EntityID InstanceID = (EntityID)0;
 	public:
 		virtual void Start() {};
 		virtual void Update() {};
 		virtual void FixedUpdate() {};
 		virtual ~Component() = default;
 		virtual const char* GetName() = 0;
+		virtual Component* CopyInstance() = 0;
 		GameObject* GetGameObject() { return Parent; };
 		size_t GetID() { return InstanceID; };
 		Transform* GetTransform() {

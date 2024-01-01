@@ -14,6 +14,14 @@ namespace Sphynx::Core {
 		Mono::GameObjectWrapper* GOWrapper;
 	public:
 		CompImpl(ScriptComponent);
+		virtual Component* CopyInstance() {
+			auto copy = new ScriptComponent();
+			for (auto& script : scripts) {
+				Scripting::Script* ScriptCopy = script->Copy();
+				copy->scripts.push_back(ScriptCopy);
+			}
+			return copy;
+		}
 		ScriptComponent();
 
 		// Inherited via Component

@@ -14,9 +14,6 @@ namespace Sphynx::Core {
 		std::thread TRenderThread;
 		std::string String = "";
 		std::vector<Quad> Quads;
-#ifdef DEBUG
-		bool BasicMode;
-#endif // DEBUG
 		virtual void OnComponentAttach(GameObject* parent) override;
 		void RenderLoop();
 		void GenQuads();
@@ -38,9 +35,6 @@ namespace Sphynx::Core {
 		std::string& GetString() {
 			return String;
 		}
-#ifdef DEBUG
-		void SetBasicRendering(bool& val) { BasicMode = val; }
-#endif //DEBUG
 	};
 }
 

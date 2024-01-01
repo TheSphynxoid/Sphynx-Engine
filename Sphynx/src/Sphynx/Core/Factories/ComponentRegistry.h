@@ -26,6 +26,7 @@ namespace Sphynx::Core::Internal {
 		static bool IsCompInGO(Sphynx::GameObject* go, std::type_index typeindex);
 		static bool IsCompInGO(Sphynx::GameObject* go, Sphynx::Component* comp);
 		static void CopyGameObject(Sphynx::GameObject* ori, Sphynx::GameObject* newGO);
+		static void MoveCompsToGameObject(const Sphynx::GameObject* Src, Sphynx::GameObject* Dest);
 		friend std::hash<CompInfo>;
 	};
 }
