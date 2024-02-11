@@ -49,7 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ScriptAssembly\ScriptAssembly.csproj">
-      <Project>{3AAD24A5-267B-18AB-0F0F-89D1FB7BF40F}</Project>
+      <Project>{3aad24a5-267b-18ab-0f0f-89d1fb7bf40f}</Project>
       <Name>ScriptAssembly</Name>
     </ProjectReference>
   </ItemGroup>

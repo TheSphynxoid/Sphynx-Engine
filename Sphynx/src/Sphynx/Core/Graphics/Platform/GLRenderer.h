@@ -7,6 +7,7 @@
 #include "GLMaterial.h"
 #include "GLMesh.h"
 #include "GLTexture.h"
+#include "Core/Thread.h"
 
 namespace Sphynx::Core::Graphics::GL {
 	class GLRenderer : public IRenderer
@@ -19,6 +20,7 @@ namespace Sphynx::Core::Graphics::GL {
 		void RendererResizeEvent(Events::OnWindowResize& e);
 		//Default.
 		inline static RenderObject DefaultRenderObject = RenderObject(nullptr, nullptr);
+		inline static LoopThread<std::mutex> RenderingThread;
 		virtual void OnSubmit(RenderObject rend) override;
 	public:
 		//Starts The Rendering Engine.
@@ -33,6 +35,8 @@ namespace Sphynx::Core::Graphics::GL {
 			return CurrViewPort;
 		};
 		//Submits Object for rendering.
+
+		static LoopThread<std::mutex>* GetRenderingThread() noexcept { return &RenderingThread; };
 	};
 }
 #else

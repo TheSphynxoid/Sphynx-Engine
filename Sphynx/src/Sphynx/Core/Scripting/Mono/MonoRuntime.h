@@ -15,7 +15,6 @@ namespace Sphynx::Mono {
 		static inline bool isAlive;
 		static inline std::string GameAssemblyPath;
 		static inline std::unordered_map<std::string, MonoClass*> CompNames;
-		static inline std::unordered_map<std::string, CsScript> CachedScripts;
 		static void AddManagedComponent(MonoClass* Object, std::string Fullname);
 		static void ReadClassesMetadata();
 	public:
@@ -37,7 +36,7 @@ namespace Sphynx::Mono {
 		static MonoDomain* GetCoreDomain();
 
 		static SphynxScripting::Script* CreateScript(const char* path, GameObject* GO);
-		static SphynxScripting::Script* CreateScriptByName(std::string name);
+		static SphynxScripting::Script* CreateScriptByName(const std::string& name, const EntityID& id);
 
 	};
 	void HandleException(MonoException* ex);

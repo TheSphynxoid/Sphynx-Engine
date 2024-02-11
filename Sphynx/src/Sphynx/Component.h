@@ -28,15 +28,15 @@ namespace Sphynx {
 		virtual ~Component() = default;
 		virtual const char* GetName() = 0;
 		virtual Component* CopyInstance() = 0;
-		GameObject* GetGameObject() { return Parent; };
-		size_t GetID() { return InstanceID; };
-		Transform* GetTransform() {
+		GameObject* GetGameObject() const noexcept { return Parent; };
+		const EntityID& GetID() const noexcept { return InstanceID; };
+		Transform* GetTransform() const noexcept {
 			return _transform; 
 		};
-		bool operator==(Component* comp) {
+		bool operator==(Component* comp) const noexcept {
 			return InstanceID == comp->InstanceID;
 		}
-		bool operator!=(Component* comp) {
+		bool operator!=(Component* comp) const noexcept {
 			return (this->InstanceID != comp->InstanceID);
 		}
 		friend Core::Internal::ComponentFactory;

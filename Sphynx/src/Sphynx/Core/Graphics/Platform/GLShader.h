@@ -24,6 +24,8 @@ namespace Sphynx::Core::Graphics::GL {
 		GLShader(GLShader&& shader)noexcept;
 		GLShader& operator=(GLShader&& shader)noexcept;
 		virtual bool IsValid() noexcept override { return id; };
+		//Not a pointer.
+		virtual void* GetNative() noexcept { return (void*)id; }
 		//Destructor
 		~GLShader();
 		friend class GLMaterial;

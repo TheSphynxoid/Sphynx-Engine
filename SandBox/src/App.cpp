@@ -33,9 +33,8 @@ public:
 
 	}
 	void Start() {
-		auto sc = LeftPaddle.AddComponent<ScriptComponent>();
+		auto sc = LeftPaddle.AddComponent<ScriptComponent>("PlayerPaddle");
 		//Change this.
-		sc->AddScript("PlayerPaddle");
 		SceneManager::GetScene().AddGameObject(&LeftPaddle);
 	}
 	void Update() {	

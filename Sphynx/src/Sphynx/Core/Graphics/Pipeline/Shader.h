@@ -25,6 +25,7 @@ namespace Sphynx::Core::Graphics {
 		static Shader* Create(const char* code, ShaderType type);
 		ShaderType GetShaderType() { return Type; };
 		virtual bool IsValid() = 0;
+		virtual void* GetNative() = 0;
 		virtual ~Shader() = default;
 	};
 

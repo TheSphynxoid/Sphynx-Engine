@@ -1,4 +1,5 @@
-﻿using Sphynx.Core.Native;
+﻿using Sphynx.Core;
+using Sphynx.Core.Native;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,13 +22,11 @@ namespace Sphynx
 
         public Transform transform { get => gameObject.transform; }
 
-        internal readonly ulong ID;
+        internal readonly EntityID ID;
 
         public virtual void Awake() 
         {
-            //I Don't think it's possible to optimize empty function calls away
-            //Unless i think of something new i'll leave them as is
-            //Or maybe they get optimized already by the compiler either way i'm not sure.
+            //This may become possible.
             //Core.Engine.IgnoreCallback(GetType().FullName);
         }
 
@@ -58,7 +57,7 @@ namespace Sphynx
             ComponentFactory.DestroyComponent(this);
         }
 
-        public ulong GetID()
+        public EntityID GetID()
         {
             return ID;
         }

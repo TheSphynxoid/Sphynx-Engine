@@ -63,7 +63,7 @@ void Sphynx::Core::GLWindow::mid::Maximize(GLFWwindow* win, int value)
 
 void Sphynx::Core::GLWindow::mid::FrameBufferResize(GLFWwindow* win, int width, int height)
 {
-	glViewport(0, 0, width, height);
+	//glViewport(0, 0, width, height);
 	auto& inst = GetFromGLFW(win);
 	inst.Height = height;
 	inst.Width = width;

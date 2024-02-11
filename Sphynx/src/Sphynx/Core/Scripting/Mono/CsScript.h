@@ -16,7 +16,6 @@ namespace Sphynx::Mono {
 		//The Object in mono.
 		MonoObject* ScriptObject;
 		MonoClass* ScriptClass;
-		GameObjectWrapper* GOWrapper;
 		//NativeComponent NativeComp;
 		//Class name
 		std::string Name;
@@ -30,11 +29,10 @@ namespace Sphynx::Mono {
 		UnmanagedThunk OnDestroyThunk;
 
 		static void Init();
-		//static void HandleException(MonoException* ex);
 		void SetInternalID(size_t id);
 	public:
 		CsScript() = default;
-		CsScript(MonoObject* obj,MonoClass* objClass,std::string name);
+		CsScript(MonoObject* obj,MonoClass* objClass,std::string name, const EntityID& id);
 		virtual void Awake();
 		virtual void Start();
 		virtual void Update();

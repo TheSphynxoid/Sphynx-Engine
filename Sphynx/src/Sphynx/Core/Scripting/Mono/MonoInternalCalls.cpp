@@ -14,6 +14,7 @@
 #include "Core/Graphics/Window.h"
 #include <glm/glm.hpp>
 #include "Internal/NativeComponent.h"
+#include "Core/Graphics/Pipeline/Material.h"
 extern "C" {
 
 #include "mono/jit/jit.h"
@@ -24,6 +25,7 @@ extern "C" {
 #include "mono/metadata/threads.h"
 }
 #include "Internal/GameObjectWrapper.h"
+#include "ResourceManager.h"
 
 extern MonoDomain* Appdomain;
 
@@ -91,6 +93,12 @@ namespace Sphynx::Mono::Internal {
 	MonoExport glm::vec3 GetPosition(MonoObject* go) {
 		return GameObjectWrapper::GetFromObject_unchecked(go)->GetTransform()->GetPosition();
 	}
+	//MonoExport Sphynx::Core::Graphics::Shader* CreateShaders() {
+	//	Core::Graphics::Shader::Create()
+	//}
+	MonoExport unsigned int ShaderLoader(MonoString* path, Sphynx::Core::Graphics::ShaderType type) {
+		return (unsigned int)Sphynx::ResourceManager::LoadShader(mono_string_to_utf8(path), type)->GetNative();
+	}
 
 	void RegisterInternalCalls() {
 		MainWindow = GetApplication()->GetMainWindow();
@@ -127,6 +135,8 @@ namespace Sphynx::Mono::Internal {
 		//Sphynx.Transform
 		mono_add_internal_call("Sphynx.Transform::SetPosition", (void*)&SetPosition);
 		mono_add_internal_call("Sphynx.Transform::GetPosition", (void*)&GetPosition);
+		//Sphynx.Core.AssetManager
+		mono_add_internal_call("Sphynx.Core.AssetManager::RM_LoadShader", (void*)&ShaderLoader);
 	}
 }
 #endif

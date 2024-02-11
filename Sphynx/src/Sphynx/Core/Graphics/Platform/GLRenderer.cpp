@@ -22,14 +22,19 @@ extern "C" {
 }
 #endif
 
+
 void Sphynx::Core::Graphics::GL::GLRenderer::RendererResizeEvent(Events::OnWindowResize& e)
 {
-	glViewport(0, 0, e.Width, e.Height);
+	//glViewport(0, 0, e.Width, e.Height);
+	//testing std::bind
+	//RenderingThread.Submit(std::bind(std::function(glViewport), 0, 0, e.Width, e.Height));
 }
 
 void Sphynx::Core::Graphics::GL::GLRenderer::Start(IWindow* app)
 {
-	//Events::GlobalEventSystem::GetInstance()->Subscribe(this, &GLRenderer::RendererResizeEvent);
+	
+	Events::GlobalEventSystem::GetInstance()->Subscribe(this, &GLRenderer::RendererResizeEvent);
+	//RenderingThread.Submit([&app]() {glfwMakeContextCurrent((GLFWwindow*)app->GetNativePointer()); });
 	GLMaterial::DefaultMaterial = GLMaterial::CreateDefaultMaterial();
 	DefaultRenderObject = RenderObject(nullptr, &GLMaterial::DefaultMaterial);
 	//GL features.

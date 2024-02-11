@@ -8,11 +8,11 @@ namespace Sphynx::Mono {
 	private:
 		//Not sure if this is problematic if there is erasures.
 		static inline std::unordered_map<size_t, GameObjectWrapper*> GOWrapperRegistry;
-	public:
 		static GameObjectWrapper* CreateGameObjectWrapper(GameObject* go) {
 			GOWrapperRegistry[go->GetID()] = new GameObjectWrapper(go);
 			return GOWrapperRegistry[go->GetID()];
 		};
+	public:
 		static GameObjectWrapper* GetGameobjectWrapper(GameObject* go) {
 			if (GOWrapperRegistry[go->GetID()] == nullptr) {
 				return CreateGameObjectWrapper(go);

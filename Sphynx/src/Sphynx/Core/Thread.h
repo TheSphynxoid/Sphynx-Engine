@@ -28,7 +28,7 @@ namespace Sphynx {
 		void Detach() {
 			thread.detach();
 		}
-		std::thread::id GetID() {
+		std::thread::id GetID() const noexcept {
 			return thread.get_id();
 		}
 		template<typename fty>
@@ -36,15 +36,16 @@ namespace Sphynx {
 			thread = std::thread(func);
 		}
 	};
+	template<typename Mutex = std::mutex>
 	class LoopThread : public Thread {
 	private:
 		std::atomic<bool> IsRunning = false;
 		std::deque<std::function<void()>> funcQueue;
 		std::condition_variable condition;
-		std::mutex ThreadMutex;
-		bool Stopped;
+		bool Stopped = false;
+		Mutex ThreadMutex;
 		void Loop() {
-			std::unique_lock<std::mutex> ul(ThreadMutex);
+			std::unique_lock<Mutex> ul(ThreadMutex);
 			while (IsRunning || !funcQueue.empty()) {
 				if (!funcQueue.empty()) {
 					std::function<void()> job(std::move(funcQueue.front()));
@@ -70,7 +71,7 @@ namespace Sphynx {
 		void Abort() {
 			if (!Stopped) {
 				{
-					std::unique_lock<std::mutex> lock(ThreadMutex);
+					std::unique_lock<Mutex> lock(ThreadMutex);
 					IsRunning.store(false); // use this flag in condition.wait
 				}
 				condition.notify_all(); // wake up all threads.
@@ -81,11 +82,15 @@ namespace Sphynx {
 			}
 		}
 		void Submit(std::function<void()> func) {
+			//By my logic we don't need a mutex because this doesn't cause any race condition on the call thread
+			//There is nothing to wait for before adding a job
 			funcQueue.push_back(func);
 			condition.notify_one();
 		}
 		template<typename T>
 		void Submit(T* instance, void(T::* f)()) {
+			//By my logic we don't need a mutex because this doesn't cause any race condition on the call thread
+			//There is nothing to wait for before adding a job
 			funcQueue.push_back([instance]() {(instance->*f)(); });
 			condition.notify_one();
 		}

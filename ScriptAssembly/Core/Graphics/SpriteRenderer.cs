@@ -11,6 +11,14 @@ namespace Sphynx.Core.Graphics
         public Material Material { get; set; }
         public Vector2 Center { get; set; }
         public Vector2 Size { get; set; }
+        private Texture sprite;
+        public Texture Sprite { get => sprite; set { sprite = value; Invalidate(); } }
+
+        internal void Invalidate()
+        {
+            //Regen Material.
+
+        }
 
         public override void Update()
         {

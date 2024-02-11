@@ -12,10 +12,10 @@ namespace Sphynx.Core
 {
     public enum GraphicsBackend
     {
-        OpenGL,Vulkan,DirectX11, DirectX12
+        OpenGL ,Vulkan ,DirectX11 ,DirectX12
     }
     /// <summary>
-    /// Engine Utility Class
+    /// Engine Utility Class.
     /// </summary>
     public static class Engine
     {
@@ -25,7 +25,7 @@ namespace Sphynx.Core
         [MethodImpl(MethodImplOptions.InternalCall)]
         public extern static bool IsRunning();
         /// <summary>
-        /// Gets the args that the Application received to start
+        /// Gets the args that the Application received to start.
         /// </summary>
         [MethodImpl(MethodImplOptions.InternalCall)]
         public extern static string[] GetEngineArgs();
@@ -59,7 +59,7 @@ namespace Sphynx.Core
         readonly string nativeName;
         readonly bool isVirtual;
 
-        public NativeWrapperAttribute(string nativeName, bool isVirtual)
+        public NativeWrapperAttribute(string nativeName, bool isVirtual = false)
         {
             this.nativeName = nativeName;
             this.isVirtual = isVirtual;        

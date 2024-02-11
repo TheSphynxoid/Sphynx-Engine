@@ -19,7 +19,11 @@ namespace Sphynx
         internal List<Texture> textures;
         public ref readonly List<Texture> Textures { get => ref textures; }
 
-        public Material() { }
+        internal UIntPtr NativePtr;
+
+        public Material() 
+        {
+        }
         public Material(ShaderPack shaders) { }
         public void ReloadShaders(ShaderPack shaders) { }
         public void Bind() { }
@@ -34,5 +38,7 @@ namespace Sphynx
             textures.Add(tex);
         }
         public void RemoveTexture() { }
+
+        public UIntPtr GetNative() { return  NativePtr; }
     }
 }

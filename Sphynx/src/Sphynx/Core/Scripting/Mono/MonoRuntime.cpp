@@ -8,7 +8,7 @@ extern "C" {
 #include "mono/jit/jit.h"
 #include "mono/metadata/assembly.h"
 #include "mono/metadata/object.h"
-//#include "mono/metadata/tabledefs.h"
+	//#include "mono/metadata/tabledefs.h"
 #include "mono/metadata/mono-debug.h"
 #include "mono/metadata/threads.h"
 #include "mono/metadata/mono-debug.h"
@@ -80,7 +80,7 @@ namespace Sphynx::Mono::Internal {
 	}
 
 }
-	
+
 void Sphynx::Mono::HandleException(MonoException* ex)
 {
 	if (ex != nullptr) {
@@ -97,7 +97,7 @@ void Sphynx::Mono::HandleException(MonoException* ex)
 
 void Sphynx::Mono::MonoRuntime::AddManagedComponent(MonoClass* Object, std::string Fullname)
 {
-	
+
 }
 
 void Sphynx::Mono::MonoRuntime::ReadClassesMetadata()
@@ -150,7 +150,7 @@ void Sphynx::Mono::MonoRuntime::Initialize(std::string AssemblyPath)
 	mono_set_assemblies_path("data");
 
 #ifdef DEBUG
-	const char* argv[2] = {
+	const char* argv[] = {
 	"--debugger-agent=transport=dt_socket,address=127.0.0.1:2550,server=y,suspend=n,loglevel=3,logfile=MonoDebugger.log",
 	"--soft-breakpoints"
 	};
@@ -201,8 +201,8 @@ void Sphynx::Mono::MonoRuntime::Initialize(std::string AssemblyPath)
 	TransformClass = mono_class_from_name(ScriptImage, "Sphynx", "Transform");
 	TransformWrapper::TransformClass = TransformClass;
 
-
 	ReadClassesMetadata();
+
 }
 
 void Sphynx::Mono::MonoRuntime::Shutdown()
@@ -220,7 +220,6 @@ void Sphynx::Mono::MonoRuntime::ReloadGameAssembly()
 	std::tie(GameAssembly, GameImage) = Internal::LoadAssembly(GameAssemblyPath.c_str());
 
 	CompNames.clear();
-	CachedScripts.clear();
 }
 
 MonoObject* Sphynx::Mono::MonoRuntime::CreateInitializedObject(MonoClass* klass)
@@ -251,15 +250,14 @@ Sphynx::Core::Scripting::Script* Sphynx::Mono::MonoRuntime::CreateScript(const c
 	return nullptr;
 }
 
-Sphynx::Core::Scripting::Script* Sphynx::Mono::MonoRuntime::CreateScriptByName(std::string name)
+Sphynx::Core::Scripting::Script* Sphynx::Mono::MonoRuntime::CreateScriptByName(const std::string& name, const EntityID& id)
 {
-	if (CachedScripts.find(name) == CachedScripts.end()){
-		MonoClass* CompClass = CompNames[name];
-		MonoObject* obj = mono_object_new(Appdomain, CompClass);
-		mono_runtime_object_init(obj);
-		CachedScripts[name] = CsScript(obj, CompClass, name);
-	}
-	return CachedScripts[name].Copy();
+	MonoClass* CompClass = CompNames[name];
+	MonoObject* obj = mono_object_new(Appdomain, CompClass);
+	mono_runtime_object_init(obj);
+	//Handle Deletion.
+	auto rt = new CsScript(obj, CompClass, name, id);
+	return rt;
 }
 
 MonoClass* Sphynx::Mono::MonoRuntime::GetCommonType(std::string name)

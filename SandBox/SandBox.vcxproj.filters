@@ -136,8 +136,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\App.cpp" />
+    <ClCompile Include="EditorDock.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <Font Include="assets\fonts\atwriter.ttf" />
+    <ClInclude Include="EditorDock.h" />
   </ItemGroup>
 </Project>
