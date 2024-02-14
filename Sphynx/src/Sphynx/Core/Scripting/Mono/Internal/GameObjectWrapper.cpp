@@ -70,16 +70,16 @@ void Sphynx::Mono::GameObjectWrapper::AddComponent(CsScript* script)
 
 void Sphynx::Mono::GameObjectWrapper::Start()
 {
-	MonoException* ex;
-	StartThunk(Managedobj, &ex);
-	HandleException(ex);
+	for (auto s : Scripts) {
+		s->Start();
+	}
 }
 
 void Sphynx::Mono::GameObjectWrapper::Update()
 {
-	MonoException* ex;
-	UpdateThunk(Managedobj, &ex);
-	HandleException(ex);
+	for (auto s : Scripts) {
+		s->Update();
+	}
 }
 
 void Sphynx::Mono::GameObjectWrapper::FixedUpdate()

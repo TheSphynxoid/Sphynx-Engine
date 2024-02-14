@@ -12,7 +12,8 @@ namespace GameAssembly
     {
         public override void Start()
         {
-            //gameObject.AddComponent<SpriteRenderer>();
+            gameObject.AddComponent<SpriteRenderer>();
+            Logger.Info("Testing for thread");
         }
 
         public override void Update()

@@ -35,22 +35,6 @@ namespace Sphynx::Core::Graphics {
 		Shader* TessControl;
 		Shader* Geom;
 
-		/// <summary>
-		/// Creates a shaderpack (a structure that hold shaders for rendering).
-		/// </summary>
-		/// <param name="vert">Vertex Shader</param>
-		/// <param name="frag">Fragment Shader</param>
-		/// <param name="tess1">Tessellation Evaluation Shader</param>
-		/// <param name="tess2">Tessellation Control Shader</param>
-		/// <param name="geom">Geometry Shader</param>
-		ShaderPack(Shader* vert, Shader* frag, Shader* tess1, Shader* tess2, Shader* geom) {
-			Vert = vert;
-			Frag = frag;
-			Geom = geom;
-			TessEval = tess1;
-			TessControl = tess2;
-		}
-
 		void ReplaceShader(Shader* shader) {
 			switch (shader->GetShaderType())
 			{
