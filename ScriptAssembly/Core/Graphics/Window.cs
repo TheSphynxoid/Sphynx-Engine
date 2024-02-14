@@ -12,6 +12,7 @@ namespace Sphynx.Core.Graphics
     [StructLayout(LayoutKind.Sequential)]
     public struct Bounds
     {
+        public static readonly Bounds Zero = new Bounds(0, 0);
         public int Width;
         public int Height;
 

@@ -1,4 +1,5 @@
-﻿using Sphynx.Core.Native;
+﻿using Sphynx.Core;
+using Sphynx.Core.Native;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,8 +21,11 @@ namespace Sphynx
 
         public string Name { get; set; }
         //ID Field
-        private ulong id;
-        public ulong ID { get => id; }
+        private EntityID id;
+        /// <summary>
+        /// Gets the Gameobject ID
+        /// </summary>
+        public EntityID ID { get => id; }
 
         private readonly UIntPtr NativePtr;
         /// <summary>
@@ -43,7 +47,7 @@ namespace Sphynx
         internal void InternalAddComp(Component comp,Type type)
         {
             components.Add(type, comp);
-            Logger.Info($"Native-Side Component {comp.ID} Added to 0x{ID.ToString("X")} ");
+            Logger.Info($"Native-Side Component {comp.ID} Added to 0x{id.NumericRepresentation.ToString("X")} ");
             comp.gameObject = this;
         }
         /// <summary>

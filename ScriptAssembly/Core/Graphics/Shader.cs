@@ -28,30 +28,45 @@ namespace Sphynx.Core.Graphics
     public sealed class Shader : IDisposable
     {
 
-        internal uint id;
+        internal UIntPtr id;
         
-        public uint ID { get => id; }
+        public UIntPtr ID { get => id; }
 
         public ShaderType Type { get; private set; }
 
         [MethodImpl(MethodImplOptions.InternalCall)]
         internal extern static void CreateShader(Shader obj, byte stype);
         [MethodImpl(MethodImplOptions.InternalCall)]
-        internal extern static bool IsShaderValid(uint id);
+        internal extern static bool IsShaderValid(UIntPtr id);
         [MethodImpl(MethodImplOptions.InternalCall)]
-        internal extern static void DeleteShader(uint id);
+        internal extern static void DeleteShader(UIntPtr id);
 
         public bool Valid { get => IsShaderValid(id); }
+
+        /// <summary>
+        /// Create a shader with it's Native id. (Internal use only.)
+        /// </summary>
+        /// <param name="id">Native ID.</param>
+        /// <param name="type">Shader Type.</param>
+        internal Shader(UIntPtr id, ShaderType type)
+        {
+            this.id = id;
+            Type=type;
+        }
 
         public Shader(string path, ShaderType shadertype)
         {
             CreateShader(this, (byte)shadertype);
         }
 
+        ~Shader()
+        {
+            Dispose();
+        }
         public void Dispose() 
         {
             DeleteShader(id);
-            id = 0;
+            id = UIntPtr.Zero;
         }
     }
     [StructLayout(LayoutKind.Sequential)]

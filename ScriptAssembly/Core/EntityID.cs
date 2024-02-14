@@ -19,6 +19,8 @@ namespace Sphynx.Core
     public struct EntityID
     {
         [FieldOffset(0)]
+        public ulong NumericRepresentation;
+        [FieldOffset(0)]
         public ushort InstanceID;
         [FieldOffset(2)]
         public ushort GenerationID;
@@ -28,7 +30,5 @@ namespace Sphynx.Core
         public byte Padding;
         [FieldOffset(7)]
         public byte Flag;
-        [FieldOffset(0)]
-        public ulong NumericRepresentation;
     }
 }
