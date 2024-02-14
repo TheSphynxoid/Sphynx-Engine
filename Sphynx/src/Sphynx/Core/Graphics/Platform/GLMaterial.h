@@ -49,12 +49,13 @@ namespace Sphynx::Core::Graphics::GL {
         unsigned int ProgramId = 0;
         std::list<Texture*> textures;
         std::list<Uniform*> uniforms;
-        ShaderPack Shaders = ShaderPack(0, 0, 0, 0, 0);
+        ShaderPack Shaders = { 0, 0, 0, 0, 0 };
         static GLMaterial* Bound;
         static GLMaterial DefaultMaterial;
         //Gets Called By the Renderer To Ensure that this gets called after OpenGL Context is created.
         static GLMaterial CreateDefaultMaterial();
         void Release();
+        void SharedInit(const ShaderPack& shaders);
         //Texture Missing.
     public:
         GLMaterial() { ProgramId = 0; };

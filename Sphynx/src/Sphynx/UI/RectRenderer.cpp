@@ -52,6 +52,6 @@ Sphynx::UI::RectRenderer::RectRenderer(glm::vec2 bounds, Core::Graphics::Texture
 		"uniform sampler2D screenTexture;\n"
 		"void main() { FragColor = texture(screenTexture, TexCoords) * vec4(1,1,1,1); }", Core::Graphics::ShaderType::FragmentShader);
 #endif
-	rectMaterial = Core::Graphics::Material::Create(Core::Graphics::ShaderPack(vs, fs, 0, 0, 0), texture);
+	rectMaterial = Core::Graphics::Material::Create({ vs, fs, 0, 0, 0 }, texture);
 	RO = Core::Graphics::RenderObject(rectMesh, rectMaterial);
 }

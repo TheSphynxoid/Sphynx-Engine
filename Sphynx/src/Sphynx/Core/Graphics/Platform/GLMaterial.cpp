@@ -62,33 +62,7 @@ Sphynx::Core::Graphics::GL::GLMaterial::GLMaterial(const Sphynx::Core::Graphics:
 
 Sphynx::Core::Graphics::GL::GLMaterial::GLMaterial(const ShaderPack& shaders, std::initializer_list<Texture*> _tex) : textures(_tex), Shaders(shaders)
 {
-    
-    ProgramId = glCreateProgram();
-    glUseProgram(ProgramId);
-    glAttachShader(ProgramId, ((GLShader*)shaders.Vert)->id);
-    glAttachShader(ProgramId, ((GLShader*)shaders.Frag)->id);
-    if (shaders.Geom != NULL) {
-        glAttachShader(ProgramId, ((GLShader*)shaders.Geom)->id);
-    }
-    if (shaders.TessEval != NULL) {
-        glAttachShader(ProgramId, ((GLShader*)shaders.TessEval)->id);
-    }
-    //Handling if Tess is enabled and TessEval is null.
-    if (shaders.TessControl != NULL && shaders.TessEval == nullptr) {
-        Core_Error("Ignoring Tessellation Because Tessellation Evaluation Shader is null");
-    }
-    else {
-        glAttachShader(ProgramId, ((GLShader*)shaders.TessControl)->id);
-    }
-    glLinkProgram(ProgramId);
-    int success;
-    glGetProgramiv(ProgramId, GL_LINK_STATUS, &success);
-    if (!success) {
-        char log[1024];
-        glGetProgramInfoLog(ProgramId, 512, NULL, log);
-        Core_Error(log);
-        return;
-    }
+
 }
 
 void Sphynx::Core::Graphics::GL::GLMaterial::SetUniform(Uniform* uniform, const char* name)
@@ -186,7 +160,7 @@ GLMaterial Sphynx::Core::Graphics::GL::GLMaterial::CreateDefaultMaterial()
 {
     GLShader::DefaultVertexShader = new GLShader(DEF_VSHADER, ShaderType::VertexShader);
     GLShader::DefaultFragmentShader = new GLShader(DEF_FSHADER, ShaderType::FragmentShader);
-    ShaderPack pack = ShaderPack(GLShader::DefaultVertexShader, GLShader::DefaultFragmentShader, nullptr, nullptr, nullptr);
+    ShaderPack pack = { GLShader::DefaultVertexShader, GLShader::DefaultFragmentShader, nullptr, nullptr, nullptr };
     GLMaterial mat = GLMaterial(pack);
     return mat;
 }
@@ -195,6 +169,36 @@ void Sphynx::Core::Graphics::GL::GLMaterial::Release()
 {
     glDeleteProgram(ProgramId);
     ProgramId = 0;
+}
+
+void Sphynx::Core::Graphics::GL::GLMaterial::SharedInit(const ShaderPack& shaders)
+{
+    ProgramId = glCreateProgram();
+    glUseProgram(ProgramId);
+    glAttachShader(ProgramId, ((GLShader*)shaders.Vert)->id);
+    glAttachShader(ProgramId, ((GLShader*)shaders.Frag)->id);
+    if (shaders.Geom != NULL) {
+        glAttachShader(ProgramId, ((GLShader*)shaders.Geom)->id);
+    }
+    if (shaders.TessEval != NULL) {
+        glAttachShader(ProgramId, ((GLShader*)shaders.TessEval)->id);
+    }
+    //Handling if Tess is enabled and TessEval is null.
+    if (shaders.TessControl != NULL && shaders.TessEval == nullptr) {
+        Core_Error("Ignoring Tessellation Because Tessellation Evaluation Shader is null");
+    }
+    else {
+        glAttachShader(ProgramId, ((GLShader*)shaders.TessControl)->id);
+    }
+    glLinkProgram(ProgramId);
+    int success;
+    glGetProgramiv(ProgramId, GL_LINK_STATUS, &success);
+    if (!success) {
+        char log[1024];
+        glGetProgramInfoLog(ProgramId, 512, NULL, log);
+        Core_Error(log);
+        return;
+    }
 }
 
 void GLMaterial::Bind()
