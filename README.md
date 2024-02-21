@@ -7,4 +7,4 @@ Run gen.bat if you are on windows to generate project files and build Sandbox of
 The Sphynx project is the framework
 
 This Project currently has no license.
-Although i wouldn't mind if you used it.
+Although i wouldn't mind if you used it after informing me.
