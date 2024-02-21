@@ -1,23 +1,33 @@
 #pragma once
 
 namespace Sphynx::Core::Graphics {
-	enum class MapAccess {
+	enum class MapAccess : unsigned char {
 		Read, Write, ReadWrite
 	};
-
-	struct Buffer {
-	public:
-		virtual void* Map(const MapAccess& access) = 0;
-		virtual void Unmap() noexcept = 0;
+	enum class UsageHint : unsigned char {
+		Stream, Static, Dynamic
+	};
+	enum class AccessHint : unsigned char {
+		Draw, Read, Copy
 	};
 	//Not Implemented.
-	struct GPUBuffer : public Buffer {
+	struct GPUBuffer {
 	public:
-		virtual void* GetLocation() = 0;
-		virtual bool IsMapped() = 0;
-		virtual size_t GetSize() = 0;
+		//Create Buffer
+		GPUBuffer* Create(size_t size, void* data, const UsageHint hint, const AccessHint accesshint);
+		virtual void Bind()const noexcept = 0;
+		virtual void Unbind()const noexcept = 0;
+		virtual void* Map(const MapAccess access) = 0;
+		virtual void Unmap() noexcept = 0;
+		//Get Buffer size.
+		virtual size_t GetSize()const noexcept = 0;
 		//Reallocate store.
-		virtual void SetSize() = 0;
-
+		//For Buffer orphaning.
+		virtual void Reallocate(size_t size, void* data) = 0;
+		virtual void Invalidate() noexcept = 0;
+		virtual void SetData(const void* data, size_t size, size_t offset) = 0;
+		virtual void Release() = 0;
+		//virtual void* GetNative() noexcept = 0;
+		virtual void* GetNative()const noexcept = 0;
 	};
 }

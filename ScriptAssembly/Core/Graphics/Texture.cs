@@ -2,9 +2,12 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using System.Security;
 using System.Text;
 using System.Threading.Tasks;
+using System.Drawing;
 
 namespace Sphynx.Core.Graphics
 {
@@ -28,7 +31,7 @@ namespace Sphynx.Core.Graphics
     {
         Stencil,Depth_Component16, Depth_Component24, Depth_Component32, Depth_Component32F, Depth24_Stencil8, Depth32F_Stencil8,
 		Red, Red8, Red8SNorm, Red16, Red16SNorm, RG, RG8, RG8SNorm, RG16,
-		RG16SNorm, R3_G3_B2, RGB, RGB4, RGB5, RGB8, RGB8SNorm, RGB10, RGB12, RGB16, RGB16SNorm, RGBA, RGBA2, RGBA4, RGB5_A1, RGBA8,
+		RG16SNorm, R3_G3_B2, RGB565, RGB, RGB4, RGB5, RGB8, RGB8SNorm, RGB10, RGB12, RGB16, RGB16SNorm, RGBA, RGBA2, RGBA4, RGB5_A1, RGBA8,
 		RGBA8SNorm, RGB10_A2, UIntRGB10_A2, RGBA12, RGBA16, SRGB8, SRGB8_A8, BGR, BGRA, FloatR16, FloatRG16, 
 		FloatRGB16, FloatRGBA16, FloatR32, FloatRG32, FloatRGB32, FloatRGBA32, FloatRG11_B10, RGB9_E5, IntRed8, UIntRed8, IntRed16, 
 		UIntRed16, IntRed32, UIntRed32, IntRG8, UIntRG8, IntRG16, UIntRG16, UIntRG32, IntRGB8, UIntRGB8, IntRGB16, UIntRGB16, 
@@ -50,60 +53,105 @@ namespace Sphynx.Core.Graphics
     {
         Texture1D,Texture1D_Array,Texture2D, Texture2D_Array, Texture3D, CubeMap, Rectangle
     };
+
+    //TODO: Implement Buffers and Allow for mapping texture data (and buffer orphaning).
     [Header("Texture.h")]
     public sealed class Texture : IDisposable
     {
-        internal UIntPtr Nativeid;
+
+        private UIntPtr nativePointer;
+        private UIntPtr Nativeid;
+        /// <summary>
+        /// Used for interoping with Engine.
+        /// </summary>
         public UIntPtr ID { get => Nativeid; }
-        private Vector2 size;
-        public Vector2 Size { get => size; set { Resize(value); size = value; } }
+        private Vector3 dims;
+        public Vector3 Dimensions { get => dims; set => Resize(value); }
+        public Vector2 Size { get => new(dims.x, dims.y); set => Resize(new Vector3(value, dims.z)); }
+        public int Depth { get => (int)dims.z; set { dims.z = value; Resize(dims); } }
         private TextureType type;
         public TextureType Type { get => type; }
         private TextureDataFormat dataformat;
         public TextureDataFormat DataFormat { get => dataformat; }
         private TextureFormat format;
+        public TextureFormat Format { get => format; }
         private bool disposedValue;
 
-        public TextureFormat Format { get => format; }
 
-        [DllImport("__Internal")]
-        internal extern static uint CreateTexture();
+        /// <summary>
+        /// Returns a pointer to a native texture object.
+        /// Note: the pointer holds a reference to an abstract class.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        [SuppressUnmanagedCodeSecurity]
+        internal extern static UIntPtr CreateTexture(byte[] data, int width, int height, ushort texturetype, int mipmaplevel, ushort textureformat,
+            ushort datatype, ushort wrap, ushort filter, ushort mipmapmode);
 
-        [DllImport("__Internal")]
+        /// <summary>
+        /// Automatically creates Mipmaps for the texture.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        [SuppressUnmanagedCodeSecurity]
         public extern static void GenerateMipmaps();
 
-        //Does nothing.
-        internal Texture() { }
+        /// <summary>
+        /// Returned by call to native function <see cref="GetTexInfo(UIntPtr)"/> and hold infomation about the texture.
+        /// </summary>
+        internal struct TexInfo
+        {
+            public UIntPtr NativeID;
+            public TextureDataFormat dataFormat;
+            public TextureFormat format;
+            public Vector3 Dimension;
+        }
 
-        internal Texture(UIntPtr native)
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        [SuppressUnmanagedCodeSecurity]
+        internal extern static TexInfo GetTexInfo(UIntPtr Pointer);
+
+
+        /// <summary>
+        /// This constructor doesn't allocated memory for a texture.
+        /// </summary>
+        public Texture() 
         {
 
         }
+        //Create from native ptr.
+        internal Texture(UIntPtr nativeptr)
+        {
+            TexInfo info = GetTexInfo(nativeptr);
+            dims = info.Dimension;
+            format = info.format;
+            dataformat = info.dataFormat;
+            Nativeid = info.NativeID;
+        }
 
         /// <summary>
-        /// Pre-allocate a Texture with the specified size.
+        /// Allocate an empty <see cref="Texture"/> with the specified size.
         /// </summary>
         public Texture(Vector2 size)
         {
-
+            //CreateTexture(0,)
         }
 
-        public Texture(Byte[] buffer, ulong datasize, TextureDataFormat textureDataFormat, TextureFormat format)
+        public Texture(byte[] buffer, Vector3 dimensions, TextureDataFormat textureDataFormat, TextureFormat format)
         {
         }
         /// <summary>
-        /// Read from GPU and returns a buffer with the texture data. (Repeated call will slow down the game because of GPU and CPU Syncing)
+        /// Read from GPU and returns a buffer with the texture data. 
+        /// This is very costly because of 1) GPU and CPU syncing and 2) copying the buffer from native to managed.
         /// </summary>
-        /// <param name="Compress">if True compresses the data before returning</param>
-        /// <returns>Texture Pixel Data</returns>
-        public Byte[] ReadAllBytes(bool Compress) 
+        /// <param name="Compress">if <c>true</c> compresses the data before returning</param>
+        /// <returns>Texture Pixel Data. It can be release in managed.</returns>
+        public byte[] ReadAllBytes(bool Compress) 
         {
             return null;
         }
         /// <summary>
         /// Returns a new Compressed texture.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>A new <see cref="Texture"/>.</returns>
         public Texture Compress()
         {
             return null;
@@ -118,10 +166,13 @@ namespace Sphynx.Core.Graphics
 
         }
 
-        public void Resize(Vector2 nsize)
+        public void Resize(Vector3 ndim)
         {
 
         }
+
+        public void Bind() { }
+        public void Unbind() { }
 
         private void Dispose(bool disposing)
         {

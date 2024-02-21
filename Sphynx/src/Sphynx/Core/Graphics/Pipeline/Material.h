@@ -25,7 +25,7 @@ namespace Sphynx::Core::Graphics {
 		static Material* GetDefaultMaterial();
 		static Material* GetDefaultMaterialCopy();
 		//static void SetUniform();
-		virtual bool IsValid() = 0;
+		virtual bool IsValid()const noexcept = 0;
 		virtual ~Material() = default;
 		virtual void Bind() = 0;
 		virtual void Unbind() = 0;
@@ -40,7 +40,7 @@ namespace Sphynx::Core::Graphics {
 		virtual void ClearTextures() = 0;
 		virtual void SetTexture(Texture* texture, unsigned int index) = 0;
 		virtual Texture* GetTexture(unsigned int index) = 0;
-		virtual unsigned int GetTextureCount() = 0;
+		virtual unsigned int GetTextureCount()const noexcept = 0;
 		virtual const unsigned int GetUniformLocation(const char* name) = 0;
 		virtual void ReloadShaders(const ShaderPack& pack) = 0;
 		virtual void ReloadShaders(Shader* shader) = 0;

@@ -3,6 +3,8 @@ project "GameAssembly"
 	language "C#"
 	dotnetframework "4.8"
 	architecture "x86_64"
+	csversion "11"
+	debuggertype "Mixed"
 	files
 	{
 		"**.cs"

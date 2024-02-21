@@ -2,6 +2,7 @@
 #include "GLMaterial.h"
 #include "GLShader.h"
 #include "GLTexture.h"
+#include "GLRenderer.h"
 //#include "glad/glad.h"
 
 using namespace Sphynx::Core::Graphics::GL;
@@ -11,53 +12,14 @@ GLMaterial GLMaterial::DefaultMaterial;
 
 Sphynx::Core::Graphics::GL::GLMaterial::GLMaterial(const ShaderPack& shaders) : Shaders(shaders)
 {
-    ProgramId = glCreateProgram();
-    glUseProgram(ProgramId);
-    glAttachShader(ProgramId, ((GLShader*)shaders.Vert)->id);
-    glAttachShader(ProgramId, ((GLShader*)shaders.Frag)->id);
-    if (shaders.Geom != NULL) {
-        glAttachShader(ProgramId, ((GLShader*)shaders.Geom)->id);
-    }
-    if (shaders.TessEval != NULL) {
-        glAttachShader(ProgramId, ((GLShader*)shaders.TessEval)->id);
-    }
-    glLinkProgram(ProgramId);
-    int success;
-    glGetProgramiv(ProgramId, GL_LINK_STATUS, &success);
-    if (!success) {
-        char log[1024];
-        glGetProgramInfoLog(ProgramId, 512, NULL, log);
-        Core_Error(log);
-        return;
-    }
+    SharedInit(shaders);
 }
 
 Sphynx::Core::Graphics::GL::GLMaterial::GLMaterial(const Sphynx::Core::Graphics::ShaderPack& shaders, Sphynx::Core::Graphics::Texture* _tex)
     : textures(), Shaders(shaders)
 {
     textures.push_back(_tex);
-    ProgramId = glCreateProgram();
-    glAttachShader(ProgramId,((GLShader*)shaders.Vert)->id);
-    glAttachShader(ProgramId,((GLShader*)shaders.Frag)->id);
-    if(shaders.Geom != NULL){
-        glAttachShader(ProgramId,((GLShader*)shaders.Geom)->id);
-    }
-    if (shaders.TessEval != NULL) {
-        glAttachShader(ProgramId, ((GLShader*)shaders.TessEval)->id);
-    }
-    //Handling if Tess is enabled and TessEval is null.
-    if (shaders.TessControl != NULL && shaders.TessEval == nullptr) {
-        Core_Error("Ignoring Tessellation Because Tessellation Evaluation Shader is null");
-    }
-    glLinkProgram(ProgramId);
-    int success;
-    glGetProgramiv(ProgramId, GL_LINK_STATUS, &success);
-    if (!success) {
-        char log[1024];
-        glGetProgramInfoLog(ProgramId, 512, NULL, log);
-        Core_Error(log);
-        return;
-    }
+    SharedInit(Shaders);
 }
 
 Sphynx::Core::Graphics::GL::GLMaterial::GLMaterial(const ShaderPack& shaders, std::initializer_list<Texture*> _tex) : textures(_tex), Shaders(shaders)
@@ -97,39 +59,17 @@ void Sphynx::Core::Graphics::GL::GLMaterial::AddTexture(Texture* texture)
     this->textures.push_back(texture);
 }
 
-const unsigned int Sphynx::Core::Graphics::GL::GLMaterial::GetUniformLocation(const char* name)
+//This function is not critical thus maybe ignored if the rendering thread causes an issue.
+const unsigned int Sphynx::Core::Graphics::GL::GLMaterial::GetUniformLocation(const char* name) noexcept
 {
     return glGetUniformLocation(ProgramId, name);
 }
 
 void Sphynx::Core::Graphics::GL::GLMaterial::ReloadShaders(const ShaderPack& pack)
 {
+    Shaders = pack;
     glDeleteProgram(ProgramId);
-    ProgramId = glCreateProgram();
-    glAttachShader(ProgramId, ((GLShader*)pack.Vert)->id);
-    glAttachShader(ProgramId, ((GLShader*)pack.Frag)->id);
-    if (pack.Geom != NULL) {
-        glAttachShader(ProgramId, ((GLShader*)pack.Geom)->id);
-    }
-    if (pack.TessEval != NULL) {
-        glAttachShader(ProgramId, ((GLShader*)pack.TessEval)->id);
-    }
-    //Handling if Tess is enabled and TessEval is null.
-    if (pack.TessControl != NULL && pack.TessEval == nullptr) {
-        Core_Error("Ignoring Tessellation Because Tessellation Evaluation Shader is null");
-    }
-    else {
-        glAttachShader(ProgramId, ((GLShader*)pack.TessControl)->id);
-    }
-    glLinkProgram(ProgramId);
-    int success;
-    glGetProgramiv(ProgramId, GL_LINK_STATUS, &success);
-    if (!success) {
-        char log[1024];
-        glGetProgramInfoLog(ProgramId, 512, NULL, log);
-        Core_Error(log);
-        return;
-    }
+    SharedInit(pack);
     Bind();
     for (auto& uni : uniforms) {
         ((GLUniform*)uni)->BindLocation();
@@ -183,11 +123,7 @@ void Sphynx::Core::Graphics::GL::GLMaterial::SharedInit(const ShaderPack& shader
     if (shaders.TessEval != NULL) {
         glAttachShader(ProgramId, ((GLShader*)shaders.TessEval)->id);
     }
-    //Handling if Tess is enabled and TessEval is null.
-    if (shaders.TessControl != NULL && shaders.TessEval == nullptr) {
-        Core_Error("Ignoring Tessellation Because Tessellation Evaluation Shader is null");
-    }
-    else {
+    if(shaders.TessControl != nullptr) {
         glAttachShader(ProgramId, ((GLShader*)shaders.TessControl)->id);
     }
     glLinkProgram(ProgramId);

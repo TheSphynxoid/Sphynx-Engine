@@ -20,7 +20,7 @@ namespace Sphynx.Core.Graphics
 		FragmentShader,//The Same as pixel shader
 		PixelShader = FragmentShader,//The Same as fragment shader
 		GeometryShader,
-		//OpenGL names. add Ones for DX11/DX12 (For Future Compatibility)
+		//OpenGL names. add Ones for DX11/DX12/Vulkan (For Future Compatibility)
 		TessellationControlShader, //Optional, For more detail : https://www.khronos.org/opengl/wiki/Tessellation_Control_Shader
 		TessellationEvaluationShader //Mandatory for tessellation to be active,//For more detail : https://www.khronos.org/opengl/wiki/Tessellation_Evaluation_Shader
     };

@@ -25,6 +25,8 @@ namespace Sphynx::Core::Graphics {
 		static Shader* Create(const char* code, ShaderType type);
 		ShaderType GetShaderType() { return Type; };
 		virtual bool IsValid() = 0;
+		virtual void* GetNative() = 0;
+		virtual void Release() noexcept = 0;
 		virtual ~Shader() = default;
 	};
 
@@ -35,7 +37,7 @@ namespace Sphynx::Core::Graphics {
 		Shader* TessControl;
 		Shader* Geom;
 
-		void ReplaceShader(Shader* shader) {
+		void ReplaceShader(Shader* shader) noexcept {
 			switch (shader->GetShaderType())
 			{
 			case Sphynx::Core::Graphics::ShaderType::VertexShader:
@@ -55,5 +57,17 @@ namespace Sphynx::Core::Graphics {
 				break;
 			}
 		}
-	}ShaderPack;
+		void ReleaseAll() {
+			if(Vert) Vert->Release();
+			Vert = nullptr;
+			if(Frag) Frag->Release();
+			Frag = nullptr;
+			if (TessEval) TessEval->Release();
+			TessEval = nullptr;
+			if (TessControl) TessControl->Release();
+			TessControl = nullptr;
+			if (Geom) Geom->Release();
+			Geom = nullptr;
+		}
+	};
 }

@@ -3,6 +3,7 @@
 #include <atomic>
 #include <mutex>
 #include <functional>
+#include <future>
 
 namespace Sphynx {
 	class Thread
@@ -86,6 +87,9 @@ namespace Sphynx {
 		}
 		template<typename T>
 		void Submit(T* instance, void(T::* f)()) {
+			//By my logic we don't need a mutex because this doesn't cause any race condition on the call thread
+			//There is nothing to wait for before adding a job
+			//Or do we want to ensure order ?
 			funcQueue.push_back([instance]() {(instance->*f)(); });
 			condition.notify_one();
 		}

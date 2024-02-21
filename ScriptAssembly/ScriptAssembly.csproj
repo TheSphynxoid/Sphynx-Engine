@@ -12,26 +12,26 @@
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <TargetFrameworkProfile />
+    <LangVersion>11</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
     <PlatformTarget>x64</PlatformTarget>
-    <DebugType>portable</DebugType>
+    <DebugType>pdbonly</DebugType>
     <DebugSymbols>true</DebugSymbols>
     <Optimize>false</Optimize>
     <OutputPath>..\build\bin\Debug-windows-x86_64\ScriptAssembly\</OutputPath>
     <BaseIntermediateOutputPath>..\build\int\Debug-windows-x86_64\ScriptAssembly\</BaseIntermediateOutputPath>
     <IntermediateOutputPath>$(BaseIntermediateOutputPath)</IntermediateOutputPath>
-    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <DefineConstants>DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
     <PlatformTarget>x64</PlatformTarget>
-    <DebugType>portable</DebugType>
+    <DebugType>pdbonly</DebugType>
     <DebugSymbols>true</DebugSymbols>
-    <Optimize>true</Optimize>
+    <Optimize>false</Optimize>
     <OutputPath>..\build\bin\Release-windows-x86_64\ScriptAssembly\</OutputPath>
     <BaseIntermediateOutputPath>..\build\int\Release-windows-x86_64\ScriptAssembly\</BaseIntermediateOutputPath>
     <IntermediateOutputPath>$(BaseIntermediateOutputPath)</IntermediateOutputPath>
@@ -43,38 +43,41 @@
   </PropertyGroup>
   <ItemGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
     <Reference Include="Microsoft.Build">
-      <HintPath>..\..\SphynxSandBox\mono\gacMicrosoft.Build\14.0.0.0__b03f5f7f11d50a3a\Microsoft.Build.dll</HintPath>
+      <HintPath>..\SandBox\mono\gac\Microsoft.Build\14.0.0.0__b03f5f7f11d50a3a\Microsoft.Build.dll</HintPath>
     </Reference>
     <Reference Include="Mono.CSharp">
-      <HintPath>..\..\SphynxSandBox\mono\gacMono.CSharp\4.0.0.0__0738eb9f132ed756\Mono.CSharp.dll</HintPath>
+      <HintPath>..\SandBox\mono\gac\Mono.CSharp\4.0.0.0__0738eb9f132ed756\Mono.CSharp.dll</HintPath>
     </Reference>
     <Reference Include="Mono.Cecil">
-      <HintPath>..\..\SphynxSandBox\mono\gacMono.Cecil\0.11.1.0__0738eb9f132ed756\Mono.Cecil.dll</HintPath>
+      <HintPath>..\SandBox\mono\gac\Mono.Cecil\0.11.1.0__0738eb9f132ed756\Mono.Cecil.dll</HintPath>
     </Reference>
     <Reference Include="Mono.Parallel">
-      <HintPath>..\..\SphynxSandBox\mono\gacMono.Parallel\4.0.0.0__0738eb9f132ed756\Mono.Parallel.dll</HintPath>
+      <HintPath>..\SandBox\mono\gac\Mono.Parallel\4.0.0.0__0738eb9f132ed756\Mono.Parallel.dll</HintPath>
     </Reference>
+    <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
     <Reference Include="Microsoft.Build">
-      <HintPath>..\..\SphynxSandBox\mono\gacMicrosoft.Build\14.0.0.0__b03f5f7f11d50a3a\Microsoft.Build.dll</HintPath>
+      <HintPath>..\SandBox\mono\gac\Microsoft.Build\14.0.0.0__b03f5f7f11d50a3a\Microsoft.Build.dll</HintPath>
     </Reference>
     <Reference Include="Mono.CSharp">
-      <HintPath>..\..\SphynxSandBox\mono\gacMono.CSharp\4.0.0.0__0738eb9f132ed756\Mono.CSharp.dll</HintPath>
+      <HintPath>..\SandBox\mono\gac\Mono.CSharp\4.0.0.0__0738eb9f132ed756\Mono.CSharp.dll</HintPath>
     </Reference>
     <Reference Include="Mono.Cecil">
-      <HintPath>..\..\SphynxSandBox\mono\gacMono.Cecil\0.11.1.0__0738eb9f132ed756\Mono.Cecil.dll</HintPath>
+      <HintPath>..\SandBox\mono\gac\Mono.Cecil\0.11.1.0__0738eb9f132ed756\Mono.Cecil.dll</HintPath>
     </Reference>
     <Reference Include="Mono.Parallel">
-      <HintPath>..\..\SphynxSandBox\mono\gacMono.Parallel\4.0.0.0__0738eb9f132ed756\Mono.Parallel.dll</HintPath>
+      <HintPath>..\SandBox\mono\gac\Mono.Parallel\4.0.0.0__0738eb9f132ed756\Mono.Parallel.dll</HintPath>
     </Reference>
+    <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AssetManager.cs" />
     <Compile Include="Component.cs" />
     <Compile Include="Core\Application.cs" />
+    <Compile Include="Core\AssetManager.cs" />
     <Compile Include="Core\Engine.cs" />
     <Compile Include="Core\EntityID.cs" />
+    <Compile Include="Core\Graphics\GPUBuffer.cs" />
     <Compile Include="Core\Graphics\Material.cs" />
     <Compile Include="Core\Graphics\Shader.cs" />
     <Compile Include="Core\Graphics\SpriteRenderer.cs" />

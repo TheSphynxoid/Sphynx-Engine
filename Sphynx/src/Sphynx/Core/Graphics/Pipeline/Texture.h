@@ -17,15 +17,15 @@ namespace Sphynx::Core::Graphics {
 	enum class TextureFormat : unsigned short {
 		Stencil,Depth_Component16, Depth_Component24, Depth_Component32, Depth_Component32F, Depth24_Stencil8, Depth32F_Stencil8,
 		Red, Red8, Red8SNorm, Red16, Red16SNorm, RG, RG8, RG8SNorm, RG16,
-		RG16SNorm, R3_G3_B2, RGB, RGB4, RGB5, RGB8, RGB8SNorm, RGB10, RGB12, RGB16, RGB16SNorm, RGBA, RGBA2, RGBA4, RGB5_A1, RGBA8,
+		RG16SNorm, R3_G3_B2, RGB565, RGB, RGB4, RGB5, RGB8, RGB8SNorm, RGB10, RGB12, RGB16, RGB16SNorm, RGBA, RGBA2, RGBA4, RGB5_A1, RGBA8,
 		RGBA8SNorm, RGB10_A2, UIntRGB10_A2, RGBA12, RGBA16, SRGB8, SRGB8_A8, BGR, BGRA, FloatR16, FloatRG16, 
 		FloatRGB16, FloatRGBA16, FloatR32, FloatRG32, FloatRGB32, FloatRGBA32, FloatRG11_B10, RGB9_E5, IntRed8, UIntRed8, IntRed16, 
 		UIntRed16, IntRed32, UIntRed32, IntRG8, UIntRG8, IntRG16, UIntRG16, UIntRG32, IntRGB8, UIntRGB8, IntRGB16, UIntRGB16, 
 		IntRGB32, UIntRGB32, IntRGBA8, UIntRGBA8, IntRGBA16, UIntRGBA16, IntRGBA32, UIntRGBA32, CompressedRed, CompressedRG, CompressedRGB,
 		CompressedRGBA, CompressedSRGB, CompressedSRGB_A, CompressedRed_RGTC1, SignedCompressedRed_RGTC1, CompressedRG_RGTC2, 
-		CompressedRGBA_BPTC_Unorm, CompressedSRGB_A_BPTC_UNorm, FloatCompressedRGB_BPTC, UFloatCompressedRGB_BPTC
+		CompressedRGBA_BPTC_Unorm, CompressedSRGB_A_BPTC_UNorm, FloatCompressedRGB_BPTC, UFloatCompressedRGB_BPTC, 
 	};
-	//\I Don't know any of these formats
+	//
 	enum class TextureDataFormat : unsigned short {
 		UByte, Byte, UShort, Short, UInt, Int, HalfFloat, Float, UByte_3_3_2,
 		UByte_2_3_3_REV, UShort_5_6_5, UShort_5_6_5_REV, UShort_4_4_4_4,
@@ -33,12 +33,11 @@ namespace Sphynx::Core::Graphics {
 		UInt_8_8_8_8_REV, UInt_10_10_10_2, UInt_2_10_10_10_REV, UInt_24_8
 	};
 	enum class TextureType : unsigned short {
-		Texture1D,Texture1D_Array,Texture2D, Texture2D_Array, Texture3D, CubeMap, Rectangle
+		Texture1D, Texture1D_Array, Texture2D, Texture2D_Array, Texture3D, CubeMap, Rectangle
 	};
 #pragma endregion
-	class TextureBuffer : public Buffer {};
-	//Represents a Texture in gpu memory.
-	//ToDO : Bindless Texturing
+	//TODO : Bindless Texturing, Texture streaming, Buffer Orphaning.
+	//Texture Interface.
 	class Texture
 	{
 	protected:
@@ -77,14 +76,14 @@ namespace Sphynx::Core::Graphics {
 		//If Height and width are larger then the textures Dimensions then the texture storage will be reallocated then data will be sent.
 		virtual void SetData(void* data,int Level = 0, int OffsetX = 0, int OffsetY = 0, int OffsetZ = 0, 
 			int Width = -1, int Height = -1, int Depth = -1) = 0;
-		//This will reallocated the texture and reset it to a value specified by data. 
+		//This will reallocate the texture and reset it to a value specified by data. 
 		virtual void Resize(int Width, int Height, int Depth, int Level = 0,
 			TextureFormat format = (TextureFormat)-1, TextureDataFormat dataformat = (TextureDataFormat)-1, const void* data = 0) = 0;
 		virtual void Clear(int level, int OffsetX, int OffsetY, int OffsetZ, int Depth, int Width, int Height,
 			TextureFormat format = (TextureFormat)-1, TextureDataFormat dataformat = (TextureDataFormat)-1, const void* data = 0) = 0;
 		virtual void Clear(int level, TextureFormat format, TextureDataFormat dataformat, const void* data) = 0;
 		virtual void Clear(int level) = 0;
-		//Binds the texture for usage (For gl interop)
+		//Binds the texture for usage.
 		virtual void Bind() = 0;
 		//Unbinds the texture (for opengl it binds the textureid = 0, an empty texture not for use).
 		virtual void Unbind() = 0;
@@ -95,18 +94,23 @@ namespace Sphynx::Core::Graphics {
 		static void MarkForCleanup(Texture* tex) { /*tex->DeleteFlag = true;*/ };
 		virtual int GetWidth() = 0;
 		virtual int GetHeight() = 0;
+		virtual int GetDepth() = 0;
 		virtual int GetBitsPerPixel() = 0;
 		virtual void* ReadAllPixels(TextureDataFormat data) = 0;
 		//Gets the native handle (uint for opengl).
 		virtual void* GetNativeID() = 0;
 		//Generates Mipmaps for the texture.
 		virtual void GenerateMipmaps() = 0;
+
 		//Gets the compressed texture data.
-		virtual DataBuffer GetCompressed() = 0;
+		//Will get obsoleted.
+		[[deprecated("Will be moved outside of texture.")]] virtual DataBuffer GetCompressed() = 0;
+
 		//Compresses the texture into a new texture object (if possible)
-		virtual Texture* Compress() = 0;
+		//Will get obsoleted.
+		[[deprecated("Will be moved outside of texture.")]] virtual Texture* Compress() = 0;
+
 		virtual void CopyInto(Texture* Tex, int Height, int Width, int Depth = 0, int SrcMipLevel = 0, int SrcX = 0, int SrcY = 0, int SrcZ = 0, int DstMipLevel = 0, int DstX = 0, int DstY = 0, int DstZ = 0) = 0;
-		virtual TextureBuffer* GetTextureBuffer() = 0;
 		friend class IRenderer;
 	};
 }

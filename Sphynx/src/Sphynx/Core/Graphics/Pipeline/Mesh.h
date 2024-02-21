@@ -100,7 +100,7 @@ namespace Sphynx::Core::Graphics {
 		unsigned int Stride = 0;
 	public:
 		BufferLayout() noexcept {};
-		BufferLayout(std::initializer_list<BufferElement>&& elements) : Elements(elements) {
+		BufferLayout(std::initializer_list<BufferElement>&& elements) noexcept : Elements(elements) {
 			size_t offset = 0;
 			for (auto& element : Elements)
 			{
@@ -109,7 +109,7 @@ namespace Sphynx::Core::Graphics {
 				Stride += element.Size;
 			}
 		};
-		inline unsigned int GetStride()noexcept { return Stride; };
+		inline unsigned int GetStride() const noexcept { return Stride; };
 		inline std::vector<BufferElement>& GetElements()noexcept { return Elements; };
 		inline size_t GetElementCount()const noexcept { return Elements.size(); };
 		inline std::vector<BufferElement>::iterator begin()noexcept { return Elements.begin(); };
@@ -119,24 +119,19 @@ namespace Sphynx::Core::Graphics {
 		inline BufferElement& operator[](size_t pos)noexcept { return Elements[pos]; };
 	};
 
-	struct VertexBuffer : public Buffer {
+	struct VertexBuffer : public GPUBuffer {
 		virtual ~VertexBuffer() = default;
-		virtual void Bind()const = 0;
-		virtual void Unbind()const = 0;
-		virtual void SetData(const void* data, size_t offset, size_t Size) = 0;
 		virtual void SetDataLayout(BufferLayout layout) = 0;
 		virtual BufferLayout GetLayout()const = 0;
-		virtual const void* GetData() const = 0;
+		virtual const void* GetData()const noexcept = 0;
 		virtual size_t GetVertexBufferSize()const noexcept = 0;
 		static VertexBuffer* Create(float* vertices, size_t Size);
 		static VertexBuffer* CreateEmpty(size_t Size);
 	};
-	struct IndexBuffer : public Buffer {
+	struct IndexBuffer : public GPUBuffer {
 		virtual ~IndexBuffer() = default;
-		virtual void Bind()const = 0;
-		virtual void Unbind()const = 0;
 		virtual void SetData(const unsigned int* data, uint64_t count) = 0;
-		virtual const void* GetData() = 0;
+		virtual const void* GetData()const noexcept = 0;
 		virtual int GetCount()const noexcept = 0;
 		static IndexBuffer* Create(unsigned int* indices, size_t Size);
 	};

@@ -1,17 +1,8 @@
 #pragma once
 #include "Core/Graphics/Pipeline/Texture.h"
 namespace Sphynx::Core::Graphics::GL {
-	struct GLTextureBuffer : public TextureBuffer {
-		unsigned int _Ownerid = 0;
-		GLTextureBuffer() = default;
-		GLTextureBuffer(unsigned int id) : _Ownerid(id) {};
-		~GLTextureBuffer() {
-			if (isMapped)Unmap();
-		}
-		virtual void* Map(const MapAccess& access);
-		virtual void Unmap() noexcept;
-	private:
-		bool isMapped = false;
+	class GLBufferTexture {
+
 	};
 	class GLTexture : public Texture
 	{
@@ -24,7 +15,6 @@ namespace Sphynx::Core::Graphics::GL {
 		TextureFormat Format;
 		TextureDataFormat DataFormat;
 		TextureType Type;
-		GLTextureBuffer TexBuffer;
 		void Release();
 	public:
 		GLTexture(void* data, int width, int height, int depth, TextureType Type, int MipmapLevel, TextureFormat format, TextureDataFormat datatype, TextureWrappingMode warp,
@@ -57,6 +47,7 @@ namespace Sphynx::Core::Graphics::GL {
 		}
 		virtual int GetWidth() override { return Width; }
 		virtual int GetHeight() override { return Height; }
+		virtual int GetDepth() override { return Depth; };
 		virtual int GetBitsPerPixel() override { return Bits; };
 		virtual void* ReadAllPixels(TextureDataFormat data) override;
 		virtual void* GetNativeID() override { return (void*)TextureID; };
@@ -65,7 +56,6 @@ namespace Sphynx::Core::Graphics::GL {
 		virtual Texture* Compress() override;
 		virtual void CopyInto(Texture* Tex, int Height, int Width, int Depth = 0, int SrcMipLevel = 0, 
 			int SrcX = 0, int SrcY = 0, int SrcZ = 0, int DstMipLevel = 0, int DstX = 0, int DstY = 0, int DstZ = 0) override;
-		virtual TextureBuffer* GetTextureBuffer() override;
 		friend class GLFrameBuffer;
 	};
 }

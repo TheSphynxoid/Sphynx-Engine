@@ -63,6 +63,7 @@ namespace Sphynx
 
         public Vector3(float scalar) { x = scalar;y=scalar;z = scalar; }
         public Vector3(float X = 0, float Y = 0, float Z = 0) { x = X; y=Y; z=Z; }
+        public Vector3(Vector2 vec2, float Z) { x = vec2.x; y = vec2.y; z=Z; }
 
         public bool Equals(Vector3 other)
         {
@@ -116,8 +117,10 @@ namespace Sphynx
         public float x, y, z, w;
         public Vector4(float scalar) { x=scalar;y=scalar;z=scalar; w=scalar; }
         public Vector4(float X, float Y, float Z, float W) { x=X; y=Y; z=Z; w=W; }
+        public Vector4(Vector2 vec2, float Z, float W) { x=vec2.x; y=vec2.y; z=Z; w=W; }
+        public Vector4(Vector3 vec3, float W) { x=vec3.x; y=vec3.y; z=vec3.z; w=W; }
 
-
+        public override string ToString() => $"({x},{y},{z},{w})";
 
         [MethodImpl(MethodImplOptions.InternalCall)]
         public extern static float Dot(Vector4 left, Vector4 right);

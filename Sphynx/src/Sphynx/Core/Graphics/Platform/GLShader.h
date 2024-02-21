@@ -10,7 +10,6 @@ namespace Sphynx::Core::Graphics::GL {
 		inline static GLShader* DefaultFragmentShader = nullptr;
 		std::string ReadFile(std::string path);
 		//Inherited From Shader, Gets Called To Create Shader.
-		void Release()noexcept;
 	public:
 		GLShader(const char* code, ShaderType Type);
 		//Spec:
@@ -24,6 +23,9 @@ namespace Sphynx::Core::Graphics::GL {
 		GLShader(GLShader&& shader)noexcept;
 		GLShader& operator=(GLShader&& shader)noexcept;
 		virtual bool IsValid() noexcept override { return id; };
+		//Not a pointer.
+		virtual void* GetNative() noexcept { return (void*)id; }
+		virtual void Release() noexcept;
 		//Destructor
 		~GLShader();
 		friend class GLMaterial;

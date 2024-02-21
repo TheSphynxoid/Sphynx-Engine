@@ -14,6 +14,8 @@
 #include "Core/Graphics/Window.h"
 #include <glm/glm.hpp>
 #include "Internal/NativeComponent.h"
+#include "Core/Graphics/Pipeline/Material.h"
+#include "Core/Graphics/Pipeline/Texture.h"
 extern "C" {
 
 #include "mono/jit/jit.h"
@@ -24,8 +26,11 @@ extern "C" {
 #include "mono/metadata/threads.h"
 }
 #include "Internal/GameObjectWrapper.h"
+#include "ResourceManager.h"
 
 extern MonoDomain* Appdomain;
+
+using namespace Sphynx::Core::Graphics;
 
 namespace Sphynx::Mono::Internal {
 
@@ -65,7 +70,7 @@ namespace Sphynx::Mono::Internal {
 	MonoExport bool GetVsync() {
 		return MainWindow->IsVsyncEnabled();
 	}
-	MonoExport void SetSize(int width,int height) {
+	MonoExport void SetSize(int width, int height) {
 		MainWindow->Resize(width, height);
 	}
 	MonoExport Sphynx::Core::Bounds GetSize() {
@@ -90,6 +95,30 @@ namespace Sphynx::Mono::Internal {
 	}
 	MonoExport glm::vec3 GetPosition(MonoObject* go) {
 		return GameObjectWrapper::GetFromObject_unchecked(go)->GetTransform()->GetPosition();
+	}
+	struct TexInfo {
+		void* NativeID;
+		TextureDataFormat dataFormat;
+		TextureFormat format;
+		glm::vec3 Dimension;
+	};
+	MonoExport TexInfo GetTexInfo(Texture* tex) {
+		TexInfo info;
+		info.NativeID = tex->GetNativeID();
+		info.dataFormat = tex->GetDataFormat();
+		info.format = tex->GetFormat();
+		info.Dimension = { tex->GetWidth(),tex->GetHeight(),tex->GetDepth() };
+
+		return info;
+	}
+	//MonoExport Sphynx::Core::Graphics::Shader* CreateShaders() {
+	//	Core::Graphics::Shader::Create()
+	//}
+	MonoExport unsigned int ShaderLoader(MonoString* path, Sphynx::Core::Graphics::ShaderType type) {
+		return (unsigned int)Sphynx::ResourceManager::LoadShader(mono_string_to_utf8(path), type)->GetNative();
+	}
+	MonoExport Texture* TextureLoader(MonoString* path, TextureType type, bool compress) {
+		return ResourceManager::LoadTexture(mono_string_to_utf8(path), type, compress);
 	}
 
 	void RegisterInternalCalls() {
@@ -127,6 +156,14 @@ namespace Sphynx::Mono::Internal {
 		//Sphynx.Transform
 		mono_add_internal_call("Sphynx.Transform::SetPosition", (void*)&SetPosition);
 		mono_add_internal_call("Sphynx.Transform::GetPosition", (void*)&GetPosition);
+		//Sphynx.Core.AssetManager
+		mono_add_internal_call("Sphynx.Core.AssetManager::RM_LoadShader", (void*)&ShaderLoader);
+		mono_add_internal_call("Sphynx.Core.AssetManager::RM_LoadTexture", (void*)&TextureLoader);
+		//Sphynx.Core.Graphics.Texture
+		mono_add_internal_call("Sphynx.Core.Graphics.Texture::CreateTexture", 
+			static_cast<Texture* (*)(void*, int, int, int, TextureType, int, TextureFormat, TextureDataFormat, TextureWrappingMode, 
+				TextureFilterMode, TextureMipmapMode)>(&Texture::Create));
+		mono_add_internal_call("Sphynx.Core.Graphics.Texture::GetTexInfo", (void*)&GetTexInfo);
 	}
 }
 #endif

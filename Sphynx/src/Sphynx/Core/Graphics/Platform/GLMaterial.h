@@ -46,7 +46,8 @@ namespace Sphynx::Core::Graphics::GL {
     class GLMaterial final : public Material
     {
     private:
-        unsigned int ProgramId = 0;
+        std::atomic_bool ShouldValidate;
+        unsigned int ProgramId = -1;
         std::list<Texture*> textures;
         std::list<Uniform*> uniforms;
         ShaderPack Shaders = { 0, 0, 0, 0, 0 };
@@ -66,7 +67,7 @@ namespace Sphynx::Core::Graphics::GL {
         //Binds The Program.
         virtual void Bind() override;
         virtual void Unbind() override;
-        virtual bool IsValid() override { return ProgramId; }
+        virtual bool IsValid()const noexcept override { return ProgramId != -1; }
         virtual void SetUniform(Uniform* uniform, const char* name);
         virtual void SetUniform(Uniform* uniform, const int index);
         virtual void SetUniformBuffer(UniformBuffer* Ubuf, const char* name);
@@ -97,8 +98,11 @@ namespace Sphynx::Core::Graphics::GL {
                 i++;
             }
         };
-        virtual unsigned int GetTextureCount() { return textures.size(); };
-        virtual const unsigned int GetUniformLocation(const char* name);
+        virtual unsigned int GetTextureCount()const noexcept { return textures.size(); };
+        //Returns the location of the uniform with the specified name, or -1 in case of an error.
+        //Will not throw an exception.
+        //implementation details : this function will attempt to read the return value from the rendering thread and will timeout after 100ms if failed and return -1.
+        virtual const unsigned int GetUniformLocation(const char* name) noexcept;
         virtual void ReloadShaders(const ShaderPack& pack);
         virtual void ReloadShaders(Shader* shader);
         virtual const ShaderPack& GetShaders()const { return Shaders; };

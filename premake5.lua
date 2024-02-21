@@ -64,7 +64,7 @@ project "Sphynx"
 	filter "configurations:Release"
 		defines "RELEASE"
 		runtime "Release"
-		optimize "on"
+		optimize "off"
 
 	filter "system:windows"
 		systemversion "latest"

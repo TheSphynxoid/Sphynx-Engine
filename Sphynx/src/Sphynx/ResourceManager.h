@@ -9,17 +9,6 @@ namespace Sphynx {
 	namespace Core {
 		class Font;
 	}
-	//template<class T>
-	//class Resource {
-	//private:
-	//	Sphynx::Pointer<T> Res;
-	//public:
-	//	Resource(T* res) : Res(res) {};
-	//	Resource(T&& obj) {
-	//		T* cpy = new T(obj);
-	//		Res = cpy;
-	//	}
-	//};
 	
 	class ResourceManager
 	{

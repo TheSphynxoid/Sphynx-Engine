@@ -15,7 +15,7 @@ namespace Sphynx.Core.Graphics
         internal static extern UIntPtr CreateUniform(); 
 
         /// <summary>
-        /// Pointer to the C++ Uniform interface (It's an "Abstract" class)
+        /// Pointer to the C++ Uniform interface (It's an "Abstract" class).
         /// </summary>
         internal UIntPtr NativeUniform;
 
@@ -26,7 +26,7 @@ namespace Sphynx.Core.Graphics
         /// <summary>
         /// Create a uniform object from a buffer
         /// </summary>
-        /// <param name="bytes">if null it's the same as Calling <code>new Uniform(datatype)</code></param>
+        /// <param name="bytes">if null it's the same as calling <code>new Uniform(datatype)</code></param>
         /// <param name="dataType">The type of the data this uniform contains</param>
         public Uniform(Byte[] bytes, ShaderDataType dataType)
         {

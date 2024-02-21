@@ -5,18 +5,8 @@
 //#include "stb_image.h"
 
 using namespace Sphynx::Core::Graphics;
+
 //Redefined. Does the compiler optimize this ?
-static inline GLenum MapAccessToGLenum(const Sphynx::Core::Graphics::MapAccess& _access) {
-	switch (_access)
-	{
-	case Sphynx::Core::Graphics::MapAccess::Read:
-		return GL_READ_ONLY;
-	case Sphynx::Core::Graphics::MapAccess::Write:
-		return GL_WRITE_ONLY;
-	case Sphynx::Core::Graphics::MapAccess::ReadWrite:
-		return GL_READ_WRITE;
-	}
-}
 
 inline GLenum GetGLTextureType(Sphynx::Core::Graphics::TextureType type) {
 	switch (type)
@@ -97,6 +87,7 @@ inline GLenum GetGLInternalFormat(Sphynx::Core::Graphics::TextureFormat format) 
 	case TextureFormat::RG16:						return GL_RG16;
 	case TextureFormat::RG16SNorm:					return GL_RG16_SNORM;
 	case TextureFormat::R3_G3_B2:					return GL_R3_G3_B2;
+	case TextureFormat::RGB565:						return GL_RGB565;
 	case TextureFormat::RGB:						return GL_RGB;
 	case TextureFormat::RGB4:						return GL_RGB4;
 	case TextureFormat::RGB5:						return GL_RGB5;
@@ -270,6 +261,7 @@ GLenum GetGLFilter(Sphynx::Core::Graphics::TextureFilterMode filter) {
 	{
 	case Sphynx::Core::Graphics::TextureFilterMode::Nearest:	return GL_NEAREST;
 	case Sphynx::Core::Graphics::TextureFilterMode::Linear:		return GL_LINEAR;
+	default:													return GL_LINEAR;
 	}
 	return 0;
 }
@@ -498,19 +490,4 @@ Texture* Sphynx::Core::Graphics::GL::GLTexture::Compress()
 void Sphynx::Core::Graphics::GL::GLTexture::CopyInto(Texture* Tex, int Height, int Width, int Depth, int SrcMipLevel, int SrcX, int SrcY, int SrcZ, int DstMipLevel, int DstX, int DstY, int DstZ)
 {
 	glCopyImageSubData(TextureID, GetGLTextureType(Type), SrcMipLevel, SrcX, SrcY, SrcZ, *(GLuint*)Tex->GetNativeID(), GetGLTextureType(Tex->GetTextureType()), DstMipLevel, DstX, DstY, DstZ, Width, Height, Depth);
-}
-
-TextureBuffer* Sphynx::Core::Graphics::GL::GLTexture::GetTextureBuffer()
-{
-	return nullptr;
-}
-
-void* Sphynx::Core::Graphics::GL::GLTextureBuffer::Map(const MapAccess& access)
-{
-	return glMapNamedBuffer(_Ownerid, MapAccessToGLenum(access));
-}
-
-void Sphynx::Core::Graphics::GL::GLTextureBuffer::Unmap() noexcept
-{
-	glUnmapNamedBuffer(_Ownerid);
 }

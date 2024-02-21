@@ -20,11 +20,33 @@ namespace Sphynx
         public ref readonly List<Texture> Textures { get => ref textures; }
 
         internal UIntPtr NativePtr;
+        internal UIntPtr NativeID;
+
+        /// <summary>
+        /// This is not a pointer.
+        /// </summary>
+        public UIntPtr ID { get => NativeID; }
+
+        internal Material(UIntPtr native)
+        {
+            
+        }
 
         public Material() 
         {
+
         }
-        public Material(ShaderPack shaders) { }
+
+        public Material(ShaderPack shaders)
+        {
+
+        }
+
+        public Material(ShaderPack shaders, List<Texture> textures)
+        {
+
+        }
+
         public void ReloadShaders(ShaderPack shaders) { }
         public void Bind() { }
         public void Unbind() { }
