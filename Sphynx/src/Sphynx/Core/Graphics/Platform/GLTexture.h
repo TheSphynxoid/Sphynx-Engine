@@ -34,23 +34,23 @@ namespace Sphynx::Core::Graphics::GL {
 			TextureFormat format = (TextureFormat)-1, TextureDataFormat dataformat = (TextureDataFormat)-1, const void* data = 0) override;
 		virtual void Clear(int Level, TextureFormat format, TextureDataFormat dataformat, const void* data) override;
 		virtual void Clear(int Level) override;
-		virtual void Bind() override;
-		virtual void Unbind() override;
-		virtual const TextureFormat& GetFormat() override {
+		virtual void Bind()noexcept override;
+		virtual void Unbind()noexcept override;
+		virtual const TextureFormat& GetFormat()const noexcept override {
 			return Format;
 		}
-		virtual const TextureDataFormat& GetDataFormat() override {
+		virtual const TextureDataFormat& GetDataFormat()const noexcept override {
 			return DataFormat;
 		}
-		virtual const TextureType& GetTextureType() override {
+		virtual const TextureType& GetTextureType()const noexcept override {
 			return Type;
 		}
-		virtual int GetWidth() override { return Width; }
-		virtual int GetHeight() override { return Height; }
-		virtual int GetDepth() override { return Depth; };
-		virtual int GetBitsPerPixel() override { return Bits; };
+		virtual int GetWidth()const noexcept override { return Width; }
+		virtual int GetHeight()const noexcept override { return Height; }
+		virtual int GetDepth()const noexcept override { return Depth; };
+		virtual int GetBitsPerPixel()const noexcept override { return Bits; };
 		virtual void* ReadAllPixels(TextureDataFormat data) override;
-		virtual void* GetNativeID() override { return (void*)TextureID; };
+		virtual void* GetNativeID()noexcept override { return (void*)TextureID; };
 		virtual void GenerateMipmaps() override;
 		virtual DataBuffer GetCompressed() override;
 		virtual Texture* Compress() override;

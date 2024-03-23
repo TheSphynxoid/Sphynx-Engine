@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using System.Security;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Sphynx
 {
+    [NativeCppClass]
     public struct Vector2
     {
         public float x, y;
@@ -29,22 +31,41 @@ namespace Sphynx
         {
             return new Vector2(left.x - right.x, left.y - right.y);
         }
-        
-        public static Vector2 operator*(Vector2 left,float scalar)
+
+        public static Vector2 operator *(Vector2 left, float scalar)
         {
             return new Vector2(left.x * scalar, left.y * scalar);
         }
 
+        public static Vector2 operator*(Vector2 left,int scalar)
+        {
+            return new Vector2(left.x * scalar, left.y * scalar);
+        }
+
+        public static Vector2 operator/(Vector2 left, float scalar)
+        {
+            return new Vector2(left.x / scalar, left.y / scalar);
+        }
+
+        public static Vector2 operator /(Vector2 left, int scalar)
+        {
+            return new Vector2(left.x / scalar, left.y / scalar);
+        }
+
         [MethodImpl(MethodImplOptions.InternalCall)]
+        [SuppressUnmanagedCodeSecurity]
         public extern static float Dot(Vector2 left, Vector2 right);
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [SuppressUnmanagedCodeSecurity]
         public float Dot(ref Vector2 right)
         {
             return Dot(this, right);
         }
         [MethodImpl(MethodImplOptions.InternalCall)]
+        [SuppressUnmanagedCodeSecurity]
         public extern static float Distance(Vector2 v, Vector2 v2);
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [SuppressUnmanagedCodeSecurity]
         public float Distance(ref Vector2 v)
         {
             return Distance(this, v);
@@ -57,6 +78,7 @@ namespace Sphynx
 
         public override string ToString() => $"({x},{y})";
     }
+    [NativeCppClass]
     public struct Vector3
     {
         public float x, y, z;
@@ -84,34 +106,49 @@ namespace Sphynx
         {
             return new Vector3(left.x * scalar, left.y * scalar, left.z * scalar);
         }
-
+        public static Vector3 operator /(Vector3 left, float scalar)
+        {
+            return new Vector3(left.x / scalar, left.y / scalar, left.z / scalar);
+        }
+        public static Vector3 operator /(Vector3 left, int scalar)
+        {
+            return new Vector3(left.x / scalar, left.y / scalar, left.z / scalar);
+        }
         //Upcast
         public static implicit operator Vector4(Vector3 v) => new Vector4(v.x, v.y, v.z, 0);
 
         public override string ToString() => $"({x},{y},{z})";
 
         [MethodImpl(MethodImplOptions.InternalCall)]
+        [SuppressUnmanagedCodeSecurity]
         public extern static float Dot(Vector3 left, Vector3 right);
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [SuppressUnmanagedCodeSecurity]
         public float Dot(Vector3 right)
         {
             return Dot(this, right);
         }
         [MethodImpl(MethodImplOptions.InternalCall)]
+        [SuppressUnmanagedCodeSecurity]
         public extern static Vector3 Cross(Vector3 left, Vector3 right);
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [SuppressUnmanagedCodeSecurity]
         public Vector3 Cross(Vector3 right)
         {
             return Cross(this, right);
         }
         [MethodImpl(MethodImplOptions.InternalCall)]
+        [SuppressUnmanagedCodeSecurity]
         public extern static float Distance(Vector3 v, Vector3 v2);
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [SuppressUnmanagedCodeSecurity]
         public float Distance(ref Vector3 v)
         {
             return Distance(this, v);
         }
     }
+
+    [NativeCppClass]
     public struct Vector4
     {
         public float x, y, z, w;
@@ -123,19 +160,41 @@ namespace Sphynx
         public override string ToString() => $"({x},{y},{z},{w})";
 
         [MethodImpl(MethodImplOptions.InternalCall)]
+        [SuppressUnmanagedCodeSecurity]
         public extern static float Dot(Vector4 left, Vector4 right);
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [SuppressUnmanagedCodeSecurity]
         public float Dot(Vector4 right)
         {
             return Dot(this, right);
         }
         [MethodImpl(MethodImplOptions.InternalCall)]
+        [SuppressUnmanagedCodeSecurity]
         public extern static float Distance(Vector4 v, Vector4 v2);
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [SuppressUnmanagedCodeSecurity]
         public float Distance(Vector4 v)
         {
             return Distance(this, v);
         }
     }
     
+    //TODO: Int Vectors.
+    [NativeCppClass]
+    public struct IntVector2
+    {
+
+    }
+    
+    [NativeCppClass]
+    public struct IntVector3
+    {
+
+    }
+    
+    [NativeCppClass]
+    public struct IntVector4
+    {
+
+    }
 }

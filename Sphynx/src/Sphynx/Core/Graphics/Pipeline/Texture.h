@@ -42,21 +42,24 @@ namespace Sphynx::Core::Graphics {
 	{
 	protected:
 		int Refs = 0;
-		Texture();
+		Texture() noexcept;
 	public:
-		virtual ~Texture() 
+		virtual ~Texture() noexcept
 		{ 
 			Refs--;
 			if (!Refs)MarkForCleanup(this);
 		};
 		//Sets the default format used when creating texture with unspecified format.
-		static void SetDefaultFormat(TextureFormat format);
+		static void SetDefaultFormat(TextureFormat format)noexcept;
 		//Sets the default Wrapping mode used when creating texture with unspecified Wrapping mode.
-		static void SetDefaultWrappingMode(TextureWrappingMode wrapmode);
+		static void SetDefaultWrappingMode(TextureWrappingMode wrapmode)noexcept;
 		//Sets the default Filtering used when creating texture with unspecified Filtering.
-		static void SetDefaultFilterMode(TextureFilterMode filter);
+		static void SetDefaultFilterMode(TextureFilterMode filter)noexcept;
 		//Sets the default Mipmap mode used when creating texture with unspecified Mipmap mode.
-		static void SetDefaultMipmapMode(TextureMipmapMode mipmapMode);
+		static void SetDefaultMipmapMode(TextureMipmapMode mipmapMode)noexcept;
+		static TextureWrappingMode GetDefaultWrappingMode()noexcept;
+		static TextureFilterMode GetDefaultFilterMode()noexcept;
+		static TextureMipmapMode GetDefaultMipmapMode()noexcept;
 		//\Mipmap level 0
 		//Creates a Texture interface object with the specified pixel data and dimensions.
 		static Texture* Create(void* data, int width, int height, int depth , TextureType Type, TextureDataFormat datatype);
@@ -70,6 +73,7 @@ namespace Sphynx::Core::Graphics {
 
 		//Texture With Immutable Storage.
 		//static Texture* CreateImmutable();
+		//virtual bool IsImmutable() const noexcept = 0;
 		
 		//Sets the Texture Data and sends it to the gpu (if texture resides in the gpu)
 		//This Assumes that the data is of the correct format and size (over size shouldn't cause a problem in Opengl) and does not do checks.
@@ -84,21 +88,21 @@ namespace Sphynx::Core::Graphics {
 		virtual void Clear(int level, TextureFormat format, TextureDataFormat dataformat, const void* data) = 0;
 		virtual void Clear(int level) = 0;
 		//Binds the texture for usage.
-		virtual void Bind() = 0;
+		virtual void Bind()noexcept = 0;
 		//Unbinds the texture (for opengl it binds the textureid = 0, an empty texture not for use).
-		virtual void Unbind() = 0;
-		virtual const TextureFormat& GetFormat() = 0;
-		virtual const TextureDataFormat& GetDataFormat() = 0;
-		virtual const TextureType& GetTextureType() = 0;
+		virtual void Unbind()noexcept = 0;
+		virtual const TextureFormat& GetFormat()const noexcept = 0;
+		virtual const TextureDataFormat& GetDataFormat()const noexcept = 0;
+		virtual const TextureType& GetTextureType()const noexcept = 0;
 		//Still unused (Intended for Garbage collection).
 		static void MarkForCleanup(Texture* tex) { /*tex->DeleteFlag = true;*/ };
-		virtual int GetWidth() = 0;
-		virtual int GetHeight() = 0;
-		virtual int GetDepth() = 0;
-		virtual int GetBitsPerPixel() = 0;
+		virtual int GetWidth()const noexcept = 0;
+		virtual int GetHeight()const noexcept = 0;
+		virtual int GetDepth()const noexcept = 0;
+		virtual int GetBitsPerPixel()const noexcept = 0;
 		virtual void* ReadAllPixels(TextureDataFormat data) = 0;
 		//Gets the native handle (uint for opengl).
-		virtual void* GetNativeID() = 0;
+		virtual void* GetNativeID()noexcept = 0;
 		//Generates Mipmaps for the texture.
 		virtual void GenerateMipmaps() = 0;
 

@@ -1,10 +1,15 @@
 ﻿using Mono.CSharp;
-using Sphynx.Core.Graphics;
+using Sphynx.Graphics;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Diagnostics.Contracts;
+using System.Globalization;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using System.Security;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -12,7 +17,7 @@ namespace Sphynx.Core
 {
     public enum GraphicsBackend
     {
-        OpenGL ,Vulkan ,DirectX11 ,DirectX12
+        OpenGL, Vulkan, DirectX11, DirectX12
     }
     /// <summary>
     /// Engine Utility Class.
@@ -22,6 +27,7 @@ namespace Sphynx.Core
         /// <summary>
         /// Checks if the Engine is running.
         /// </summary>
+        [Pure]
         [MethodImpl(MethodImplOptions.InternalCall)]
         public extern static bool IsRunning();
         /// <summary>
@@ -36,11 +42,27 @@ namespace Sphynx.Core
 
         [MethodImpl(MethodImplOptions.InternalCall)]
         public extern static GraphicsBackend GetGraphicsBackend();
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        public extern static void NativeDebuggerBreak();
+
+        [AllowReversePInvokeCalls]
+        public static void LaunchDebugger()
+        {
+
+        }
+
+        public static void NativeBreak()
+        {
+            StackTrace trace = new StackTrace();
+            Console.WriteLine("Native Offset : {0}",trace.GetFrame(0).GetNativeOffset());
+            NativeDebuggerBreak();
+        }
     }
     /// <summary>
     /// Marker for the originating header for wrapped type.
     /// </summary>
-    [System.AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct, Inherited = false, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct, Inherited = false, AllowMultiple = false)]
     public sealed class HeaderAttribute : System.Attribute
     {
         readonly string headerName;
@@ -53,7 +75,7 @@ namespace Sphynx.Core
     /// <summary>
     /// Marker for Wrappers and additional information.
     /// </summary>
-    [System.AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct, Inherited = false, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct, Inherited = false, AllowMultiple = false)]
     internal sealed class NativeWrapperAttribute : System.Attribute
     {
         readonly string nativeName;
@@ -62,7 +84,7 @@ namespace Sphynx.Core
         public NativeWrapperAttribute(string nativeName, bool isVirtual = false)
         {
             this.nativeName = nativeName;
-            this.isVirtual = isVirtual;        
+            this.isVirtual = isVirtual;
         }
 
         public string NativeName

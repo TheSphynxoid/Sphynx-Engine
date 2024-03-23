@@ -6,17 +6,16 @@ using System.Text;
 using System.Threading.Tasks;
 using Sphynx;
 using Sphynx.Core;
-using Sphynx.Core.Graphics;
+using Sphynx.Graphics;
 
 namespace GameAssembly
 {
     public class PlayerPaddle : Component
     {
+        SpriteRenderer spriteRenderer;
         public override void Start()
         {
-            //gameObject.AddComponent<SpriteRenderer>();
-            Material material = new Material();
-            Logger.Info("Testing for thread");
+            spriteRenderer = gameObject.AddComponent<SpriteRenderer>();
         }
 
         public override void Update()

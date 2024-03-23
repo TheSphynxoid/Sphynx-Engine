@@ -4,7 +4,7 @@
 #include "Buffer.h"
 
 namespace Sphynx::Core::Graphics {
-	enum class MeshType {
+	enum class MeshType : unsigned char {
 		//Changing Buffer
 		Dynamic, 
 		//Constant Buffer
@@ -46,6 +46,7 @@ namespace Sphynx::Core::Graphics {
 		}
 		return 0;
 	}
+
 	class BufferElement final{
 	private:
 		friend class BufferLayout;

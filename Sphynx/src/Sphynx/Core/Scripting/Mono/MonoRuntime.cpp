@@ -12,6 +12,7 @@ extern "C" {
 #include "mono/metadata/mono-debug.h"
 #include "mono/metadata/threads.h"
 #include "mono/metadata/mono-debug.h"
+#include "mono/metadata/mono-gc.h"
 }
 
 //Seperation of Code.
@@ -151,7 +152,7 @@ void Sphynx::Mono::MonoRuntime::Initialize(std::string AssemblyPath)
 
 #ifdef DEBUG
 	const char* argv[2] = {
-	"--debugger-agent=transport=dt_socket,address=127.0.0.1:2550,server=y,suspend=n,loglevel=3,logfile=MonoDebugger.log",
+	"--debugger-agent=transport=dt_socket,address=127.0.0.1:55555,server=y,suspend=n,loglevel=3,logfile=MonoDebugger.log",
 	"--soft-breakpoints"
 	};
 
@@ -177,7 +178,7 @@ void Sphynx::Mono::MonoRuntime::Initialize(std::string AssemblyPath)
 
 	if (!HasRegisteredInternals) {
 		Internal::RegisterInternalCalls();
-		auto WinResize = mono_class_get_method_from_name(mono_class_from_name(ScriptImage, "Sphynx.Core.Graphics", "Window"), "InvokeResize", 2);
+		auto WinResize = mono_class_get_method_from_name(mono_class_from_name(ScriptImage, "Sphynx.Graphics", "Window"), "InvokeResize", 2);
 		WinResizeThunk = (void(_stdcall*)(int, int, MonoException**))(mono_method_get_unmanaged_thunk(WinResize));
 
 		static auto ResizeLambda = [](Events::OnWindowResize& e)
@@ -197,6 +198,9 @@ void Sphynx::Mono::MonoRuntime::Initialize(std::string AssemblyPath)
 	CsScript::Init();
 	GameObjectWrapper::GameObjectClass = mono_class_from_name(ScriptImage, "Sphynx", "GameObject");
 	GameObjectWrapper::Init();
+	MonoClass* EngineClass = mono_class_from_name(ScriptImage, "Sphynx.Core", "Engine");
+	MonoMethod* DebugLaunch = mono_class_get_method_from_name(EngineClass, "LaunchDebugger", 0);
+	mono_runtime_invoke(DebugLaunch, nullptr, nullptr, nullptr);
 
 	TransformClass = mono_class_from_name(ScriptImage, "Sphynx", "Transform");
 	TransformWrapper::TransformClass = TransformClass;

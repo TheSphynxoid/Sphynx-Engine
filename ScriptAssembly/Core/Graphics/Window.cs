@@ -4,12 +4,14 @@ using System.Linq;
 using System.Reflection.Emit;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using System.Security;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Sphynx.Core.Graphics
+namespace Sphynx.Graphics
 {
     [StructLayout(LayoutKind.Sequential)]
+    [NativeCppClass]
     public struct Bounds
     {
         public static readonly Bounds Zero = new Bounds(0, 0);
@@ -31,6 +33,9 @@ namespace Sphynx.Core.Graphics
             b.Height = right.Height + left.Height;
             return b;
         }
+
+        public static implicit operator Vector2(Bounds v) => new Vector2(v.Width, v.Height);
+        public static explicit operator Vector3(Bounds v) => new Vector3(v.Width, v.Height);
     }
 
     /// <summary>
@@ -47,8 +52,10 @@ namespace Sphynx.Core.Graphics
         public static string Title { get => title; set { SetTitle(value);title = value; } }
 
         [MethodImpl(MethodImplOptions.InternalCall)]
+        [SuppressUnmanagedCodeSecurity]
         private static extern void SetVsync(bool vsync);
         [MethodImpl(MethodImplOptions.InternalCall)]
+        [SuppressUnmanagedCodeSecurity]
         private static extern bool GetVsync();
 
         private static bool vsync = GetVsync();
@@ -59,8 +66,10 @@ namespace Sphynx.Core.Graphics
         /// Avoiding Having to send a struct we seperate the Width and Height
         /// </summary>
         [MethodImpl(MethodImplOptions.InternalCall)]
+        [SuppressUnmanagedCodeSecurity]
         private static extern void SetSize(int width, int height);
         [MethodImpl(MethodImplOptions.InternalCall)]
+        [SuppressUnmanagedCodeSecurity]
         private static extern Bounds GetSize();
 
         private static Bounds bounds = GetSize();
@@ -75,9 +84,9 @@ namespace Sphynx.Core.Graphics
         /// <summary>
         /// Internal function that handles invoking the OnResizeEvent.
         /// </summary>
-        /// <param name="Width">New Window Width</param>
-        /// <param name="Height">New Window Height</param>
-        internal static void InvokeResize(int Width, int Height)
+        /// <param name="Width">New window width.</param>
+        /// <param name="Height">New window height.</param>
+        private static void InvokeResize(int Width, int Height)
         {
             OnResizeEvent?.Invoke(new Bounds(Width, Height));
         }

@@ -440,12 +440,12 @@ void Sphynx::Core::Graphics::GL::GLTexture::Clear(int Level)
 	glClearTexImage(TextureID, Level, 0, 0, 0);
 }
 
-void Sphynx::Core::Graphics::GL::GLTexture::Bind()
+void Sphynx::Core::Graphics::GL::GLTexture::Bind()noexcept
 {
 	glBindTexture(GLTextureType, TextureID);
 }
 
-void Sphynx::Core::Graphics::GL::GLTexture::Unbind()
+void Sphynx::Core::Graphics::GL::GLTexture::Unbind()noexcept
 {
 	glBindTexture(GLTextureType, 0);
 }

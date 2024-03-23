@@ -33,6 +33,7 @@ public:
 
 	}
 	void Start() {
+		LeftPaddle.SetName("LeftPaddle");
 		auto sc = LeftPaddle.AddComponent<ScriptComponent>();
 		//Change this.
 		sc->AddScript("PlayerPaddle");

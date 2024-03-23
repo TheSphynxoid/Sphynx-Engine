@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,6 +17,7 @@ namespace Sphynx.Core
         UserDefined = 0x8
     }
     [StructLayout(LayoutKind.Explicit, Size = 8)]
+    [NativeCppClass]
     public struct EntityID
     {
         [FieldOffset(0)]

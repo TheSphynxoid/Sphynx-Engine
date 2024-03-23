@@ -60,7 +60,7 @@ void Sphynx::Core::Graphics::GL::GLMaterial::AddTexture(Texture* texture)
 }
 
 //This function is not critical thus maybe ignored if the rendering thread causes an issue.
-const unsigned int Sphynx::Core::Graphics::GL::GLMaterial::GetUniformLocation(const char* name) noexcept
+const int Sphynx::Core::Graphics::GL::GLMaterial::GetUniformLocation(const char* name) noexcept
 {
     return glGetUniformLocation(ProgramId, name);
 }
@@ -101,8 +101,7 @@ GLMaterial Sphynx::Core::Graphics::GL::GLMaterial::CreateDefaultMaterial()
     GLShader::DefaultVertexShader = new GLShader(DEF_VSHADER, ShaderType::VertexShader);
     GLShader::DefaultFragmentShader = new GLShader(DEF_FSHADER, ShaderType::FragmentShader);
     ShaderPack pack = { GLShader::DefaultVertexShader, GLShader::DefaultFragmentShader, nullptr, nullptr, nullptr };
-    GLMaterial mat = GLMaterial(pack);
-    return mat;
+    return GLMaterial(pack);
 }
 
 void Sphynx::Core::Graphics::GL::GLMaterial::Release()
@@ -137,7 +136,7 @@ void Sphynx::Core::Graphics::GL::GLMaterial::SharedInit(const ShaderPack& shader
     }
 }
 
-void GLMaterial::Bind()
+void GLMaterial::Bind()noexcept
 {
     glUseProgram(ProgramId);
     int i = 0;
@@ -149,7 +148,7 @@ void GLMaterial::Bind()
     Bound = this;
 }
 
-void Sphynx::Core::Graphics::GL::GLMaterial::Unbind()
+void Sphynx::Core::Graphics::GL::GLMaterial::Unbind()noexcept
 {
     for (auto& tex : textures) {
         tex->Unbind();
@@ -162,6 +161,7 @@ Sphynx::Core::Graphics::GL::GLMaterial::GLMaterial(GLMaterial&& mat) noexcept
 {
     std::swap(ProgramId, mat.ProgramId);
     std::swap(textures, mat.textures);
+    std::swap(Shaders, mat.Shaders);
 }
 
 GLMaterial& Sphynx::Core::Graphics::GL::GLMaterial::operator=(GLMaterial&& mat) noexcept
@@ -170,6 +170,7 @@ GLMaterial& Sphynx::Core::Graphics::GL::GLMaterial::operator=(GLMaterial&& mat) 
         Release();
         std::swap(ProgramId, mat.ProgramId);
         std::swap(textures, mat.textures);
+        std::swap(Shaders, mat.Shaders);
     }
     return *this;
 }
@@ -178,12 +179,6 @@ Sphynx::Core::Graphics::GL::GLMaterial::~GLMaterial()
 {
     if (IsBound())Bound = nullptr;
     Release();
-}
-
-GLMaterial* Sphynx::Core::Graphics::GL::GLMaterial::CreateDefaultMaterialCopy()
-{
-    auto m = (GLMaterial*)Create({ GLShader::DefaultVertexShader, GLShader::DefaultFragmentShader, nullptr, nullptr, nullptr });
-    return m;
 }
 
 int Sphynx::Core::Graphics::GL::GLMaterial::GetAttributeLocation(std::string name)

@@ -137,7 +137,4 @@
   <ItemGroup>
     <ClCompile Include="src\App.cpp" />
   </ItemGroup>
-  <ItemGroup>
-    <Font Include="assets\fonts\atwriter.ttf" />
-  </ItemGroup>
 </Project>

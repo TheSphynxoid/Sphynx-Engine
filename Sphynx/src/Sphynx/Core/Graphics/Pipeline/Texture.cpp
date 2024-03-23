@@ -10,29 +10,44 @@ static TextureWrappingMode DefWrap = TextureWrappingMode::ClampToBorder;
 static TextureFilterMode DefFilter = TextureFilterMode::Linear;
 static TextureMipmapMode DefMipmap = TextureMipmapMode::LinearMipmapLinear;
 
-Sphynx::Core::Graphics::Texture::Texture()
+Sphynx::Core::Graphics::Texture::Texture()noexcept
 {
 	Refs++;
 }
 
-void Sphynx::Core::Graphics::Texture::SetDefaultFormat(TextureFormat format)
+void Sphynx::Core::Graphics::Texture::SetDefaultFormat(TextureFormat format)noexcept
 {
 	DefFormat = format;
 }
 
-void Sphynx::Core::Graphics::Texture::SetDefaultWrappingMode(TextureWrappingMode wrapmode)
+void Sphynx::Core::Graphics::Texture::SetDefaultWrappingMode(TextureWrappingMode wrapmode)noexcept
 {
 	DefWrap = wrapmode;
 }
 
-void Sphynx::Core::Graphics::Texture::SetDefaultFilterMode(TextureFilterMode filter)
+void Sphynx::Core::Graphics::Texture::SetDefaultFilterMode(TextureFilterMode filter)noexcept
 {
 	DefFilter = filter;
 }
 
-void Sphynx::Core::Graphics::Texture::SetDefaultMipmapMode(TextureMipmapMode mipmapMode)
+void Sphynx::Core::Graphics::Texture::SetDefaultMipmapMode(TextureMipmapMode mipmapMode)noexcept
 {
 	DefMipmap = mipmapMode;
+}
+
+TextureWrappingMode Sphynx::Core::Graphics::Texture::GetDefaultWrappingMode() noexcept
+{
+	return DefWrap;
+}
+
+TextureFilterMode Sphynx::Core::Graphics::Texture::GetDefaultFilterMode() noexcept
+{
+	return DefFilter;
+}
+
+TextureMipmapMode Sphynx::Core::Graphics::Texture::GetDefaultMipmapMode() noexcept
+{
+	return DefMipmap;
 }
 
 Texture* Sphynx::Core::Graphics::Texture::Create(void* data, int width, int height, int depth, TextureType Type, TextureDataFormat datatype)

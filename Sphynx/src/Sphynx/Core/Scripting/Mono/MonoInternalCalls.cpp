@@ -2,7 +2,7 @@
 #ifndef Sphynx_Internal_Mono
 #define Sphynx_Internal_Mono
 #ifdef Platform_Windows
-#define MonoExport __declspec(dllexport)
+#define MonoExport /*__declspec(dllexport)*/
 #elif
 #define MonoExport
 #endif
@@ -16,6 +16,7 @@
 #include "Internal/NativeComponent.h"
 #include "Core/Graphics/Pipeline/Material.h"
 #include "Core/Graphics/Pipeline/Texture.h"
+#include "Core/Graphics/Pipeline/Mesh.h"
 extern "C" {
 
 #include "mono/jit/jit.h"
@@ -43,7 +44,9 @@ namespace Sphynx::Mono::Internal {
 
 	MonoExport void spdLog(MonoString* string, spdlog::level::level_enum level) {
 		Logger::GetInternalLogger()->flush();
-		Logger::GetInternalLogger()->log(level, mono_string_to_utf8(string));
+		auto msg = mono_string_to_utf8(string);
+		Logger::GetInternalLogger()->log(level, msg);
+		mono_free(msg);
 	}
 
 	template<class T>
@@ -59,7 +62,9 @@ namespace Sphynx::Mono::Internal {
 	}
 
 	MonoExport void SetTitle(MonoString* string) {
-		MainWindow->ChangeTitle(mono_string_to_utf8(string));
+		auto title = mono_string_to_utf8(string);
+		MainWindow->ChangeTitle(title);
+		mono_free(title);
 	}
 	MonoExport MonoString* GetTitle() {
 		return mono_string_new(Appdomain, MainWindow->GetTitle());
@@ -102,23 +107,52 @@ namespace Sphynx::Mono::Internal {
 		TextureFormat format;
 		glm::vec3 Dimension;
 	};
-	MonoExport TexInfo GetTexInfo(Texture* tex) {
+	MonoExport TexInfo GetTexInfo(Texture* tex)noexcept {
 		TexInfo info;
 		info.NativeID = tex->GetNativeID();
 		info.dataFormat = tex->GetDataFormat();
 		info.format = tex->GetFormat();
 		info.Dimension = { tex->GetWidth(),tex->GetHeight(),tex->GetDepth() };
-
 		return info;
 	}
-	//MonoExport Sphynx::Core::Graphics::Shader* CreateShaders() {
-	//	Core::Graphics::Shader::Create()
-	//}
-	MonoExport unsigned int ShaderLoader(MonoString* path, Sphynx::Core::Graphics::ShaderType type) {
-		return (unsigned int)Sphynx::ResourceManager::LoadShader(mono_string_to_utf8(path), type)->GetNative();
+	MonoExport Shader* ShaderLoader(MonoString* path, Sphynx::Core::Graphics::ShaderType type) {
+		auto p = mono_string_to_utf8(path);
+		auto shader = Sphynx::ResourceManager::LoadShader(p, type);
+		mono_free(p);
+		return shader;
 	}
 	MonoExport Texture* TextureLoader(MonoString* path, TextureType type, bool compress) {
-		return ResourceManager::LoadTexture(mono_string_to_utf8(path), type, compress);
+		auto p = mono_string_to_utf8(path);
+		auto tex = ResourceManager::LoadTexture(p, type, compress);
+		mono_free(p);
+		return tex;
+	}
+	MonoExport void MatBind(Material* mat)noexcept {
+		mat->Bind();
+	}
+	MonoExport void MatUnbind(Material* mat)noexcept {
+		mat->Unbind();
+	}
+	MonoExport void AddTex(Material* mat, Texture* tex) {
+		mat->AddTexture(tex);
+	}	
+	MonoExport void RemoveTex(Material* mat, Texture* tex) {
+		mat->RemoveTexture(tex);
+	}	
+	MonoExport void SetTex(Material* mat, Texture* tex, unsigned int index) {
+		mat->SetTexture(tex, index);
+	}
+	MonoExport int GetUniLoc(Material* mat, MonoString* name) {
+		auto uniname = mono_string_to_utf8(name);
+		auto loc = mat->GetUniformLocation(uniname);
+		mono_free(uniname);
+		return loc;
+	}	
+	MonoExport void SetUni(Material* mat, Uniform* uni, int loc) {
+		mat->SetUniform(uni, loc);
+	}
+	Uniform* CreateUniform(void* data, ShaderDataType type) {
+		return Uniform::Create(data, type);
 	}
 
 	void RegisterInternalCalls() {
@@ -147,23 +181,46 @@ namespace Sphynx::Mono::Internal {
 		mono_add_internal_call("Sphynx.Input::InternalButtonState", (void*)&GetButtonState);
 		mono_add_internal_call("Sphynx.Input::GetMousePosition", (void*)&GetMousePosition);
 		//Sphynx.Core.Graphics.Window
-		mono_add_internal_call("Sphynx.Core.Graphics.Window::SetTitle", (void*)&SetTitle);
-		mono_add_internal_call("Sphynx.Core.Graphics.Window::GetTitle", (void*)&GetTitle);
-		mono_add_internal_call("Sphynx.Core.Graphics.Window::SetVsync", (void*)&SetVsync);
-		mono_add_internal_call("Sphynx.Core.Graphics.Window::GetVsync", (void*)&GetVsync);
-		mono_add_internal_call("Sphynx.Core.Graphics.Window::SetSize", (void*)&SetSize);
-		mono_add_internal_call("Sphynx.Core.Graphics.Window::GetSize", (void*)&GetSize);
+		mono_add_internal_call("Sphynx.Graphics.Window::SetTitle", (void*)&SetTitle);
+		mono_add_internal_call("Sphynx.Graphics.Window::GetTitle", (void*)&GetTitle);
+		mono_add_internal_call("Sphynx.Graphics.Window::SetVsync", (void*)&SetVsync);
+		mono_add_internal_call("Sphynx.Graphics.Window::GetVsync", (void*)&GetVsync);
+		mono_add_internal_call("Sphynx.Graphics.Window::SetSize", (void*)&SetSize);
+		mono_add_internal_call("Sphynx.Graphics.Window::GetSize", (void*)&GetSize);
 		//Sphynx.Transform
 		mono_add_internal_call("Sphynx.Transform::SetPosition", (void*)&SetPosition);
 		mono_add_internal_call("Sphynx.Transform::GetPosition", (void*)&GetPosition);
 		//Sphynx.Core.AssetManager
 		mono_add_internal_call("Sphynx.Core.AssetManager::RM_LoadShader", (void*)&ShaderLoader);
 		mono_add_internal_call("Sphynx.Core.AssetManager::RM_LoadTexture", (void*)&TextureLoader);
-		//Sphynx.Core.Graphics.Texture
-		mono_add_internal_call("Sphynx.Core.Graphics.Texture::CreateTexture", 
+		//Sphynx.Graphics.Texture
+		mono_add_internal_call("Sphynx.Graphics.Texture::CreateTexture", 
 			static_cast<Texture* (*)(void*, int, int, int, TextureType, int, TextureFormat, TextureDataFormat, TextureWrappingMode, 
 				TextureFilterMode, TextureMipmapMode)>(&Texture::Create));
-		mono_add_internal_call("Sphynx.Core.Graphics.Texture::GetTexInfo", (void*)&GetTexInfo);
+		mono_add_internal_call("Sphynx.Graphics.Texture::GetTexInfo", (void*)&GetTexInfo);
+		mono_add_internal_call("Sphynx.Graphics.Texture::GetDefaultFilterMode", &Texture::GetDefaultFilterMode);
+		mono_add_internal_call("Sphynx.Graphics.Texture::GetDefaultWrappingMode", &Texture::GetDefaultWrappingMode);
+		mono_add_internal_call("Sphynx.Graphics.Texture::GetDefaultMipmapMode", &Texture::GetDefaultMipmapMode);
+		//Sphynx.Graphics.Material
+		mono_add_internal_call("Sphynx.Graphics.Material::CreateMaterial(Sphynx.Graphics.Material/NativeShaderPack)",
+			static_cast<Material* (*)(const ShaderPack&)>(&Material::Create));
+		mono_add_internal_call("Sphynx.Graphics.Material::"
+			"CreateMaterial",
+			static_cast<Material* (*)(const ShaderPack&, std::initializer_list<Texture*>)>(&Material::Create));
+		mono_add_internal_call("Sphynx.Graphics.Material::MatBind", &MatBind);
+		mono_add_internal_call("Sphynx.Graphics.Material::MatUnbind", &MatUnbind);
+		mono_add_internal_call("Sphynx.Graphics.Material::MatGetDefaultShader", &Material::GetDefaultShader);
+		mono_add_internal_call("Sphynx.Graphics.Material::AddTex", &AddTex);
+		mono_add_internal_call("Sphynx.Graphics.Material::RemoveTex", &RemoveTex);
+		mono_add_internal_call("Sphynx.Graphics.Material::SetTex", &SetTex);
+		mono_add_internal_call("Sphynx.Graphics.Material::GetUniformLoc", &GetUniLoc);
+		mono_add_internal_call("Sphynx.Graphics.Material::SetUni", &SetUni);
+		//Sphynx.Graphics.Uniform
+		mono_add_internal_call("Sphynx.Graphics.Uniform::CreateUniform", &CreateUniform);
+		//Sphynx.Graphics.Utils
+		mono_add_internal_call("Sphynx.Graphics.Utils::GetDataTypeSize_Internal", &GetShaderDataTypeSize);
+		//Sphynx.Graphics.Mesh
+
 	}
 }
 #endif

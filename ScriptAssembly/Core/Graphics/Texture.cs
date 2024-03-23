@@ -1,5 +1,7 @@
 ﻿using System;
+using Sphynx.Core;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -7,22 +9,21 @@ using System.Runtime.InteropServices;
 using System.Security;
 using System.Text;
 using System.Threading.Tasks;
-using System.Drawing;
 
-namespace Sphynx.Core.Graphics
+namespace Sphynx.Graphics
 {
     //Copied As-is from Texture.h
     public enum TextureWrappingMode : ushort
     {
-        Repeat, MirroredRepeat, ClampToEdge, ClampToBorder
+        Repeat, MirroredRepeat, ClampToEdge, ClampToBorder, Default
     }
     public enum TextureFilterMode : ushort
     {
-        Nearest, Linear
+        Nearest, Linear, Default
     }
     public enum TextureMipmapMode : ushort
     {
-        NearestMipmapNearest, NearestMipmapLinear, LinearMipmapNearest, LinearMipmapLinear
+        NearestMipmapNearest, NearestMipmapLinear, LinearMipmapNearest, LinearMipmapLinear, Default
     }
     /// <summary>
     /// Represents how the data is interpeted (EX: RGB, Depth) by the backend.
@@ -54,12 +55,20 @@ namespace Sphynx.Core.Graphics
         Texture1D,Texture1D_Array,Texture2D, Texture2D_Array, Texture3D, CubeMap, Rectangle
     };
 
+    public struct TexCopyTarget
+    {
+        public Texture Destination;
+        public Vector3 DstTo;
+        public Vector3 SrcFrom;
+        public uint MipmapLevel;
+    }
+
     //TODO: Implement Buffers and Allow for mapping texture data (and buffer orphaning).
     [Header("Texture.h")]
     public sealed class Texture : IDisposable
     {
 
-        private UIntPtr nativePointer;
+        private readonly UIntPtr nativePointer;
         private UIntPtr Nativeid;
         /// <summary>
         /// Used for interoping with Engine.
@@ -68,8 +77,8 @@ namespace Sphynx.Core.Graphics
         private Vector3 dims;
         public Vector3 Dimensions { get => dims; set => Resize(value); }
         public Vector2 Size { get => new(dims.x, dims.y); set => Resize(new Vector3(value, dims.z)); }
-        public int Depth { get => (int)dims.z; set { dims.z = value; Resize(dims); } }
-        private TextureType type;
+        public int Depth { get => (int)dims.z; set { var ndim = dims; ndim.z = value; Resize(ndim); } }
+        private readonly TextureType type;
         public TextureType Type { get => type; }
         private TextureDataFormat dataformat;
         public TextureDataFormat DataFormat { get => dataformat; }
@@ -77,6 +86,31 @@ namespace Sphynx.Core.Graphics
         public TextureFormat Format { get => format; }
         private bool disposedValue;
 
+        private static TextureMipmapMode defMipmapMode = GetDefaultMipmapMode();
+        public static TextureMipmapMode DefaultMipmapMode { get => defMipmapMode; set { defMipmapMode = value;SetDefaultMipmapMode(value); } }
+        private static TextureWrappingMode defWrappingMode = GetDefaultWrappingMode();
+        public static TextureWrappingMode DefaultWrappingMode { get => defWrappingMode; set { defWrappingMode = value; SetDefaulWrappingMode(value); } }
+        private static TextureFilterMode defFilterMode = GetDefaultFilterMode();
+        public static TextureFilterMode DefaultFilterMode { get => defFilterMode; set { defFilterMode = value; SetDefaultFilterMode(value); } }
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        [SuppressUnmanagedCodeSecurity]
+        private extern static void SetDefaultFilterMode(TextureFilterMode mode);
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        [SuppressUnmanagedCodeSecurity]
+        private extern static void SetDefaulWrappingMode(TextureWrappingMode mode);
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        [SuppressUnmanagedCodeSecurity]
+        private extern static void SetDefaultMipmapMode(TextureMipmapMode mode);
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        [SuppressUnmanagedCodeSecurity]
+        private extern static TextureFilterMode GetDefaultFilterMode();
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        [SuppressUnmanagedCodeSecurity]
+        private extern static TextureWrappingMode GetDefaultWrappingMode();
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        [SuppressUnmanagedCodeSecurity]
+        private extern static TextureMipmapMode GetDefaultMipmapMode();
 
         /// <summary>
         /// Returns a pointer to a native texture object.
@@ -87,17 +121,24 @@ namespace Sphynx.Core.Graphics
         internal extern static UIntPtr CreateTexture(byte[] data, int width, int height, ushort texturetype, int mipmaplevel, ushort textureformat,
             ushort datatype, ushort wrap, ushort filter, ushort mipmapmode);
 
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        [SuppressUnmanagedCodeSecurity]
+        private extern static void GenMipmaps(UIntPtr tex);
+
         /// <summary>
         /// Automatically creates Mipmaps for the texture.
         /// </summary>
-        [MethodImpl(MethodImplOptions.InternalCall)]
         [SuppressUnmanagedCodeSecurity]
-        public extern static void GenerateMipmaps();
+        public void GenerateMipmaps()
+        {
+            GenMipmaps(nativePointer);
+        }
 
         /// <summary>
         /// Returned by call to native function <see cref="GetTexInfo(UIntPtr)"/> and hold infomation about the texture.
         /// </summary>
-        internal struct TexInfo
+        [NativeCppClass]
+        private struct TexInfo
         {
             public UIntPtr NativeID;
             public TextureDataFormat dataFormat;
@@ -107,18 +148,10 @@ namespace Sphynx.Core.Graphics
 
         [MethodImpl(MethodImplOptions.InternalCall)]
         [SuppressUnmanagedCodeSecurity]
-        internal extern static TexInfo GetTexInfo(UIntPtr Pointer);
+        private extern static TexInfo GetTexInfo(UIntPtr Pointer);
 
-
-        /// <summary>
-        /// This constructor doesn't allocated memory for a texture.
-        /// </summary>
-        public Texture() 
-        {
-
-        }
-        //Create from native ptr.
-        internal Texture(UIntPtr nativeptr)
+        [SuppressUnmanagedCodeSecurity]
+        internal void SetUp(UIntPtr nativeptr)
         {
             TexInfo info = GetTexInfo(nativeptr);
             dims = info.Dimension;
@@ -128,16 +161,44 @@ namespace Sphynx.Core.Graphics
         }
 
         /// <summary>
+        /// This constructor doesn't allocated memory for a texture.
+        /// </summary>
+        public Texture() 
+        {
+        }
+
+        //Create from native ptr.
+        internal Texture(UIntPtr nativeptr)
+        {
+            nativePointer = nativeptr;
+            SetUp(nativeptr);
+        }
+
+        /// <summary>
         /// Allocate an empty <see cref="Texture"/> with the specified size.
         /// </summary>
-        public Texture(Vector2 size)
+        public Texture(Vector2 size, TextureType type, TextureFormat format, TextureDataFormat dataFormat, int mipmapLevel = 0, 
+            TextureWrappingMode wrap = TextureWrappingMode.Default, TextureFilterMode filter = TextureFilterMode.Default, 
+            TextureMipmapMode mipmapMode = TextureMipmapMode.Default)
         {
-            //CreateTexture(0,)
+            mipmapMode = (mipmapMode == TextureMipmapMode.Default) ? defMipmapMode : mipmapMode;
+            wrap = (wrap == TextureWrappingMode.Default) ? defWrappingMode : wrap;
+            filter = (filter == TextureFilterMode.Default) ? defFilterMode : filter;
+
+            this.type = type;
+            this.format = format;
+            dataformat = dataFormat;
+
+            nativePointer = CreateTexture(null, (int)size.x, (int)size.y,
+                (ushort)type, mipmapLevel, (ushort)format, (ushort)dataformat, (ushort)wrap, (ushort)filter, (ushort)mipmapMode);
+
+            SetUp(nativePointer);
         }
 
         public Texture(byte[] buffer, Vector3 dimensions, TextureDataFormat textureDataFormat, TextureFormat format)
         {
         }
+
         /// <summary>
         /// Read from GPU and returns a buffer with the texture data. 
         /// This is very costly because of 1) GPU and CPU syncing and 2) copying the buffer from native to managed.
@@ -166,13 +227,20 @@ namespace Sphynx.Core.Graphics
 
         }
 
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        [SuppressUnmanagedCodeSecurity]
+        private static extern void ResizeTexture(UIntPtr ptr, Vector3 dim);
+
+        [SuppressUnmanagedCodeSecurity]
         public void Resize(Vector3 ndim)
         {
-
+            ResizeTexture(nativePointer,ndim);
+            dims = ndim;
         }
 
         public void Bind() { }
         public void Unbind() { }
+        public UIntPtr GetNative() { return nativePointer; }
 
         private void Dispose(bool disposing)
         {

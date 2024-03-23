@@ -14,7 +14,7 @@ namespace Sphynx
 {
     /// <summary>
     /// Basic Construction block for the game.
-    /// Inherit from this to create scripts that bind to <see cref="GameObject"/> instance .
+    /// Inherit from this to create scripts that bind to <see cref="GameObject"/> instances.
     /// </summary>
     public abstract class Component
     {

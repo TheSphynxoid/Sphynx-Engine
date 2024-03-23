@@ -59,14 +59,14 @@ namespace Sphynx::Core::Graphics::GL {
         void SharedInit(const ShaderPack& shaders);
         //Texture Missing.
     public:
-        GLMaterial() { ProgramId = 0; };
+        GLMaterial() noexcept { ProgramId = 0; };
         GLMaterial(const ShaderPack& shaders);
         GLMaterial(const ShaderPack& pack, Texture* _tex);
         GLMaterial(const ShaderPack& shaders, std::initializer_list<Texture*> _tex);
         ~GLMaterial();
         //Binds The Program.
-        virtual void Bind() override;
-        virtual void Unbind() override;
+        virtual void Bind()noexcept override;
+        virtual void Unbind()noexcept override;
         virtual bool IsValid()const noexcept override { return ProgramId != -1; }
         virtual void SetUniform(Uniform* uniform, const char* name);
         virtual void SetUniform(Uniform* uniform, const int index);
@@ -90,8 +90,9 @@ namespace Sphynx::Core::Graphics::GL {
                 }
             }
         }
-        virtual Texture* GetTexture(unsigned int index)
+        virtual Texture* GetTexture(unsigned int index)noexcept
         {
+            if (index >= textures.size())return nullptr;
             int i = 0;
             for (auto& tex : textures) {
                 if (i == index)return tex;
@@ -102,22 +103,24 @@ namespace Sphynx::Core::Graphics::GL {
         //Returns the location of the uniform with the specified name, or -1 in case of an error.
         //Will not throw an exception.
         //implementation details : this function will attempt to read the return value from the rendering thread and will timeout after 100ms if failed and return -1.
-        virtual const unsigned int GetUniformLocation(const char* name) noexcept;
+        virtual const int GetUniformLocation(const char* name) noexcept;
         virtual void ReloadShaders(const ShaderPack& pack);
         virtual void ReloadShaders(Shader* shader);
         virtual const ShaderPack& GetShaders()const { return Shaders; };
-        virtual Shader* GetDefaultShader(ShaderType type);
         GLMaterial(const GLMaterial& mat) = delete;
         GLMaterial& operator=(const GLMaterial& mat) = delete;
         GLMaterial(GLMaterial&& mat)noexcept;
         GLMaterial& operator=(GLMaterial&& mat)noexcept;
         //Checks Whether the Material Is Valid i.e. Succesfully Linked and created.
-        bool IsBound() { return Bound == this; };
+        bool IsBound()const noexcept { return Bound == this; };
         //Getters
-        static GLMaterial* GetBoundMaterial() { return Bound; };
+        static GLMaterial* GetBoundMaterial() noexcept { return Bound; };
         //Returns the Default Material.
-        static GLMaterial* GetDefaultMaterial() { return &DefaultMaterial; };
-        static GLMaterial* CreateDefaultMaterialCopy();
+        static GLMaterial* GetDefaultMaterial()noexcept { return &DefaultMaterial; };
+        static GLMaterial* CreateDefaultMaterialCopy() noexcept {
+            return (GLMaterial*)Create(DefaultMaterial.Shaders);
+        };
+        static Shader* GetDefaultShader(ShaderType type);
         int GetAttributeLocation(std::string name);
         friend class GLRenderer;
     };

@@ -92,6 +92,24 @@ Sphynx::Core::Graphics::Material* Sphynx::Core::Graphics::Material::GetDefaultMa
 	return nullptr;
 }
 
+Sphynx::Core::Graphics::Shader* Sphynx::Core::Graphics::Material::GetDefaultShader(ShaderType type)
+{
+	switch (CurrentPlatform)
+	{
+	case Sphynx::Platform::Windows:
+#ifdef DX_IMPL
+		static_assert(true, "DirectX Not Implemented");
+#else
+		return GL::GLMaterial::GetDefaultShader(type);
+#endif
+	case Sphynx::Platform::Linux:
+		return GL::GLMaterial::GetDefaultShader(type);
+	default:
+		break;
+	}
+	return nullptr;
+}
+
 Sphynx::Core::Graphics::Uniform* Sphynx::Core::Graphics::Uniform::Create(void* data, ShaderDataType type)
 {
 	switch (CurrentPlatform)

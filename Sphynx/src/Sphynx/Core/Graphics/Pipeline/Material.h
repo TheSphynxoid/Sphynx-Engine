@@ -14,21 +14,21 @@ namespace Sphynx::Core::Graphics {
 	class Material
 	{
 	protected:
-		Texture* Textures = nullptr;
-		Material(const ShaderPack& shader, Texture* texture) : Textures(texture) {};
+		Material(const ShaderPack& shader, Texture* texture) {};
 	public:
-		Material() {};
+		Material() = default;
 		//A Material is storage for shaders and textures.
 		static Material* Create(const ShaderPack& shaders);
 		static Material* Create(const ShaderPack& shaders, Texture* textures);
 		static Material* Create(const ShaderPack& shaders, std::initializer_list<Texture*> textures);
 		static Material* GetDefaultMaterial();
 		static Material* GetDefaultMaterialCopy();
+		static Shader* GetDefaultShader(ShaderType type);
 		//static void SetUniform();
 		virtual bool IsValid()const noexcept = 0;
 		virtual ~Material() = default;
-		virtual void Bind() = 0;
-		virtual void Unbind() = 0;
+		virtual void Bind()noexcept = 0;
+		virtual void Unbind()noexcept = 0;
 		virtual void SetUniform(Uniform* uniform, const char* name) = 0;
 		virtual void SetUniform(Uniform* uniform, const int index) = 0;
 		virtual void SetUniformBuffer(UniformBuffer* Ubuf, const char* name) = 0;
@@ -41,10 +41,9 @@ namespace Sphynx::Core::Graphics {
 		virtual void SetTexture(Texture* texture, unsigned int index) = 0;
 		virtual Texture* GetTexture(unsigned int index) = 0;
 		virtual unsigned int GetTextureCount()const noexcept = 0;
-		virtual const unsigned int GetUniformLocation(const char* name) = 0;
+		virtual const int GetUniformLocation(const char* name) = 0;
 		virtual void ReloadShaders(const ShaderPack& pack) = 0;
 		virtual void ReloadShaders(Shader* shader) = 0;
 		virtual const ShaderPack& GetShaders()const = 0;
-		virtual Shader* GetDefaultShader(ShaderType type) = 0;
 	};
 }

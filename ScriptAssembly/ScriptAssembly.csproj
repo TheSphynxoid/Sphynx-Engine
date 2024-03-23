@@ -42,9 +42,6 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
-    <Reference Include="Microsoft.Build">
-      <HintPath>..\SandBox\mono\gac\Microsoft.Build\14.0.0.0__b03f5f7f11d50a3a\Microsoft.Build.dll</HintPath>
-    </Reference>
     <Reference Include="Mono.CSharp">
       <HintPath>..\SandBox\mono\gac\Mono.CSharp\4.0.0.0__0738eb9f132ed756\Mono.CSharp.dll</HintPath>
     </Reference>
@@ -54,7 +51,6 @@
     <Reference Include="Mono.Parallel">
       <HintPath>..\SandBox\mono\gac\Mono.Parallel\4.0.0.0__0738eb9f132ed756\Mono.Parallel.dll</HintPath>
     </Reference>
-    <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
     <Reference Include="Microsoft.Build">
@@ -77,10 +73,13 @@
     <Compile Include="Core\AssetManager.cs" />
     <Compile Include="Core\Engine.cs" />
     <Compile Include="Core\EntityID.cs" />
+    <Compile Include="Core\Events\Event.cs" />
     <Compile Include="Core\Graphics\GPUBuffer.cs" />
     <Compile Include="Core\Graphics\Material.cs" />
+    <Compile Include="Core\Graphics\Mesh.cs" />
+    <Compile Include="Core\Graphics\Renderer.cs" />
     <Compile Include="Core\Graphics\Shader.cs" />
-    <Compile Include="Core\Graphics\SpriteRenderer.cs" />
+    <Compile Include="SpriteRenderer.cs" />
     <Compile Include="Core\Graphics\Texture.cs" />
     <Compile Include="Core\Graphics\Uniform.cs" />
     <Compile Include="Core\Graphics\Window.cs" />
@@ -100,6 +99,15 @@
     <Compile Include="Vector.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="Mono.Debugger.Soft, Version=4.0.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\build\bin\Debug-windows-x86_64\Sandbox\data\mono\gac\Mono.Debugger.Soft\4.0.0.0__0738eb9f132ed756\Mono.Debugger.Soft.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Http">
+      <HintPath>..\build\bin\Debug-windows-x86_64\Sandbox\data\mono\gac\Mono.Http\4.0.0.0__0738eb9f132ed756\Mono.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Net" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
