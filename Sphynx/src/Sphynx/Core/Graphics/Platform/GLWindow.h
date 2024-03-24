@@ -19,10 +19,10 @@ namespace Sphynx::Core {
 		Graphics::GL::GLRenderer* Renderer;
 		GLFWwindow* window;
 		static bool GLFWInit;
-		bool Vsync;
-		bool Sharing = false;
 		int Height, Width;
 		int SHeight, SWidth;
+		bool Vsync;
+		bool Sharing = false;
 		//middle-man between GLFW and the engine.
 		struct mid{
 			static void Close(GLFWwindow* win);

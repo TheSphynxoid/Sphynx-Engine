@@ -64,7 +64,7 @@ void Sphynx::Camera::Update()
 	}
 	RenderTarget->Bind();
 	RenderTarget->Clear();
-	GetMainWindow()->GetRenderer()->SetViewPort(CamViewport);
+	GetMainWindow()->GetRenderer()->SetViewport(CamViewport);
 	GetMainWindow()->GetRenderer()->Render();
 	//GetMainWindow()->GetRenderer()->SetViewPort({ 0, 0, GetMainWindow()->GetWidth(), GetMainWindow()->GetHeight() });
 	RenderTarget->Unbind();

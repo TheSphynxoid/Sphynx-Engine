@@ -33,7 +33,7 @@ namespace Sphynx::Events {
     class Event
     {
     public:
-        bool isHandled = false;
+        //bool isHandled = false;
     };
     //Event Handlers.
     class EventCallBackBase {
@@ -82,10 +82,6 @@ namespace Sphynx::Events {
 #endif // !Sphynx_Delegate
         std::map<std::type_index, Handlers*> subscribers;
         std::deque<std::pair<std::type_index, Event*>> Queue;
-        bool PropagateEvent = true;
-        void SkipCurrentEvent() {
-            PropagateEvent = false;
-        };
     public:
         EventSystem() : subscribers() {};
         ~EventSystem() {}
@@ -246,7 +242,6 @@ namespace Sphynx::Events {
             for (auto& handle : *handlers) {
                 if (handle != nullptr) {
                     handle->Invoke(e);
-                    if (!PropagateEvent)/*PropagateEvent = true; */return;
                 }
             }
         }
@@ -260,7 +255,6 @@ namespace Sphynx::Events {
                         handle->Invoke(*pair.second);
                         //if Event is Handled it won't propagate.
                         //if ((*pair.second).isHandled == true)break;
-                        if (!PropagateEvent)/*PropagateEvent = true; */return;
                     }
                 }
                 //Delete the temporary object.

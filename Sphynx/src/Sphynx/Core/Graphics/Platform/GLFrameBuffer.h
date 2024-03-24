@@ -11,9 +11,9 @@ namespace Sphynx::Core::Graphics::GL {
 	private:
 		unsigned int ID = 0;
 		int Width = 0, Height = 0;
+		int ColorAttachmentsCount = 0;
 		Texture* DepthAttachment = nullptr;
 		std::vector<Texture*> ColorAttachments;
-		int ColorAttachmentsCount = 0;
 		void Release();
 		//Used to Create the Default framebuffer
 		GLFrameBuffer(unsigned int id, int width, int height, std::initializer_list<Texture*> attachments = {});

@@ -6,9 +6,9 @@ namespace Sphynx::Core::Graphics::GL {
 	class GLUniformBuffer : public UniformBuffer
 	{
 	private:
-		unsigned int Buffer = 0;
 		size_t Size = 0;
 		void* MappedAddress = nullptr;
+		unsigned int Buffer = 0;
 		void Release();
 	public:
 		GLUniformBuffer(size_t Size);

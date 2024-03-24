@@ -10,11 +10,11 @@ namespace Sphynx::Core::Graphics {
 	enum class AccessHint : unsigned char {
 		Draw, Read, Copy
 	};
-	//Not Implemented.
+
 	struct GPUBuffer {
 	public:
 		//Create Buffer
-		GPUBuffer* Create(size_t size, void* data, const UsageHint hint, const AccessHint accesshint);
+		static GPUBuffer* Create(size_t size, void* data, const UsageHint hint, const AccessHint accesshint);
 		virtual void Bind()const noexcept = 0;
 		virtual void Unbind()const noexcept = 0;
 		virtual void* Map(const MapAccess access) = 0;

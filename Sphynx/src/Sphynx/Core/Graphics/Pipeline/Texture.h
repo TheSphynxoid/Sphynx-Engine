@@ -41,13 +41,10 @@ namespace Sphynx::Core::Graphics {
 	class Texture
 	{
 	protected:
-		int Refs = 0;
 		Texture() noexcept;
 	public:
 		virtual ~Texture() noexcept
 		{ 
-			Refs--;
-			if (!Refs)MarkForCleanup(this);
 		};
 		//Sets the default format used when creating texture with unspecified format.
 		static void SetDefaultFormat(TextureFormat format)noexcept;
@@ -95,7 +92,6 @@ namespace Sphynx::Core::Graphics {
 		virtual const TextureDataFormat& GetDataFormat()const noexcept = 0;
 		virtual const TextureType& GetTextureType()const noexcept = 0;
 		//Still unused (Intended for Garbage collection).
-		static void MarkForCleanup(Texture* tex) { /*tex->DeleteFlag = true;*/ };
 		virtual int GetWidth()const noexcept = 0;
 		virtual int GetHeight()const noexcept = 0;
 		virtual int GetDepth()const noexcept = 0;

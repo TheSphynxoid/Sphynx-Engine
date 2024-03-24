@@ -28,7 +28,7 @@ namespace Sphynx::Core::Graphics::GL {
 		//Clears The Screen with color specified with SetClearColor(Vec4 color).
 		virtual void Clear() override;
 		virtual void SetDepthTesting(bool value) override;
-		virtual void SetViewPort(Viewport view) override;
+		virtual void SetViewport(Viewport view) override;
 		virtual const Viewport& GetViewport() override {
 			return CurrViewPort;
 		};

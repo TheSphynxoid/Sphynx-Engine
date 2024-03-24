@@ -77,7 +77,7 @@ void Sphynx::Core::Graphics::GL::GLRenderer::SetDepthTesting(bool value)
 		glEnable(GL_DEPTH_TEST);
 }
 
-void Sphynx::Core::Graphics::GL::GLRenderer::SetViewPort(Sphynx::Core::Graphics::Viewport view)
+void Sphynx::Core::Graphics::GL::GLRenderer::SetViewport(Sphynx::Core::Graphics::Viewport view)
 {
 	glViewport(view.PosX, view.PosY, view.Width, view.Height);
 	CurrViewPort = view;

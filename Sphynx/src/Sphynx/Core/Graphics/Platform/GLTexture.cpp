@@ -352,7 +352,6 @@ Sphynx::Core::Graphics::GL::GLTexture::GLTexture(GLTexture&& tex)noexcept
 	std::swap(Width, tex.Width);
 	std::swap(Height, tex.Height);
 	std::swap(Depth, tex.Depth);
-	std::swap(Refs, tex.Refs);
 	std::swap(DataFormat, tex.DataFormat);
 }
 
@@ -366,7 +365,6 @@ Sphynx::Core::Graphics::GL::GLTexture& Sphynx::Core::Graphics::GL::GLTexture::op
 		std::swap(Type, tex.Type);
 		std::swap(Width, tex.Width);
 		std::swap(Height, tex.Height);
-		std::swap(Refs, tex.Refs);
 	}
 	return *this;
 }

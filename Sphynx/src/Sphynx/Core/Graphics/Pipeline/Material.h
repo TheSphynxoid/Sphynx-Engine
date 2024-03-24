@@ -5,7 +5,6 @@
 namespace Sphynx::Core::Graphics {
 	class UniformBuffer;
 	class Uniform {
-		ShaderDataType Type;
 	public:
 		static Uniform* Create(void* data, ShaderDataType type);
 		virtual void SetData(void* data) = 0;

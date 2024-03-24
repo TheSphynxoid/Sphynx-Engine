@@ -9,8 +9,8 @@ namespace Sphynx::Core {
 		typedef std::list<GameObject*> GameObjects;
 		GameObjects GObjs = GameObjects();
 		unsigned int SceneNum = 0;
-		std::string SceneName = "Scene";
 		bool IsCurrent = false;
+		std::string SceneName = "Scene";
 		Scene* NextScene;
 		GameObject PrimaryCameraObject;
 		Camera* PrimaryCamera;

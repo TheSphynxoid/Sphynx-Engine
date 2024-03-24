@@ -21,9 +21,10 @@ namespace Sphynx::Core {
 	//Base Window Interface.(Each Derived class must ensure Input, Closing...)
 	class IWindow {
 	private:
-		Events::EventSystem OwnerEvent = *Events::GlobalEventSystem::GetInstance();
 		//Ensure that this instance is Initialized.
+		std::string Title;
 		bool InstanceHasInit = false;
+		bool FullScreen = false;
 	protected:
 		virtual void Internal_ChangeTitle(const char* title) = 0;
 	public:
@@ -41,12 +42,11 @@ namespace Sphynx::Core {
 		//May be removed as all this does is Queue OnWindowUpdate.
 		void Update()
 		{
-			
 			OnUpdate();
-			OwnerEvent.QueueEvent<Events::OnWindowUpdate>(Events::OnWindowUpdate(this));
+			Events::GlobalEventSystem::GetInstance()->QueueEvent<Events::OnWindowUpdate>(Events::OnWindowUpdate(this));
 		};
 		void Close() {
-			OwnerEvent.DispatchImmediate<Events::OnWindowClose>(Events::OnWindowClose(this));
+			Events::GlobalEventSystem::GetInstance()->DispatchImmediate<Events::OnWindowClose>(Events::OnWindowClose(this));
 		}
 		void Resize(int width, int height) {
 			if (!InstanceHasInit)
@@ -86,16 +86,13 @@ namespace Sphynx::Core {
 		virtual Sphynx::Core::Graphics::IRenderer* GetRenderer() = 0;
 
 		//Returns the Window's EventSystem.
-		Events::EventSystem* GetEventSystem() { return &OwnerEvent; };
+		Events::EventSystem* GetEventSystem() { return &(*Events::GlobalEventSystem::GetInstance()); };
 	protected:
-		bool FullScreen = false;
-		std::string Title;
 		//Initializes the instance. Must Be call by any class that derives from IWindow.
 		void Init(Application* App, Bounds WinBounds = DefBounds, std::string title = "Sphynx Engine", bool fullscreen = false)
 		{
 			FullScreen = fullscreen;
 			Title = title;
-			OwnerEvent = *App->GetAppEventSystem();
 			//Events::GlobalEventSystem::GetInstance()->Subscribe<IWindow, Events::OnWindowResize>(this, &IWindow::OnResize);
 			InstanceHasInit = true;
 		};

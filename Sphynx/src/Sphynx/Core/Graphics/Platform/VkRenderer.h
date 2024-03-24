@@ -8,7 +8,7 @@ namespace Sphynx::Core::Graphics::Vulkan {
 		virtual void Render() override;
 		virtual void Clear() override;
 		virtual void SetDepthTesting(bool value) override;
-		virtual void SetViewPort(Viewport view) override;
+		virtual void SetViewport(Viewport view) override;
 		virtual const Viewport& GetViewport() override;
 	private:
 		virtual void OnSubmit(RenderObject rend) override;

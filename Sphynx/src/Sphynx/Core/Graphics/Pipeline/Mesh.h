@@ -49,10 +49,11 @@ namespace Sphynx::Core::Graphics {
 
 	class BufferElement final{
 	private:
+		//Changed order for packing.
 		friend class BufferLayout;
-		ShaderDataType Type = ShaderDataType::None;
 		size_t Size = 0;
 		size_t Offset = 0;
+		ShaderDataType Type = ShaderDataType::None;
 		bool Normalized = false;
 	public:
 		BufferElement() noexcept {};

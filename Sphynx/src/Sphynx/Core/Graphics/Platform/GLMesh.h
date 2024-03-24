@@ -95,8 +95,8 @@ namespace Sphynx::Core::Graphics::GL {
 		std::vector<VertexBuffer*> VBuffers = std::vector<VertexBuffer*>();
 		GLIndexBuffer* IBuffer = nullptr;
 		unsigned int VAO = 0;
-		bool hasIndexArray = false;
 		unsigned int VAttribIndex = 0;
+		bool hasIndexArray = false;
 		static int MaxAttribs;
 	};
 }

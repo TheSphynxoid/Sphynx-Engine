@@ -32,9 +32,9 @@
 
 namespace Sphynx::Core::Graphics::GL {
     class GLUniform final : public Uniform {
-        ShaderDataType Type;
         void* Data;
         int loc = -1;
+        ShaderDataType Type;
     public:
         void BindLocation() { Set(loc); };
         GLUniform(void* data, ShaderDataType type);

@@ -12,7 +12,6 @@ static TextureMipmapMode DefMipmap = TextureMipmapMode::LinearMipmapLinear;
 
 Sphynx::Core::Graphics::Texture::Texture()noexcept
 {
-	Refs++;
 }
 
 void Sphynx::Core::Graphics::Texture::SetDefaultFormat(TextureFormat format)noexcept

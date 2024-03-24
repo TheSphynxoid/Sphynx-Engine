@@ -8,8 +8,8 @@ namespace Sphynx::Core::Graphics::GL {
 	{
 	private:
 		unsigned int id = 0;
-		size_t Size = 0;
 		unsigned int Usagehint = 0;
+		size_t Size = 0;
 	public:
 		//Does nothing.
 		GLBuffer() = default;

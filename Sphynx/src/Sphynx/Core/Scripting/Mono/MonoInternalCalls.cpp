@@ -14,11 +14,12 @@
 #include "Core/Graphics/Window.h"
 #include <glm/glm.hpp>
 #include "Internal/NativeComponent.h"
+#include "Core/Graphics/Pipeline/Renderer.h"
 #include "Core/Graphics/Pipeline/Material.h"
 #include "Core/Graphics/Pipeline/Texture.h"
 #include "Core/Graphics/Pipeline/Mesh.h"
+#include "Core/Graphics/Pipeline/Buffer.h"
 extern "C" {
-
 #include "mono/jit/jit.h"
 #include "mono/metadata/assembly.h"
 #include "mono/metadata/object.h"
@@ -151,8 +152,35 @@ namespace Sphynx::Mono::Internal {
 	MonoExport void SetUni(Material* mat, Uniform* uni, int loc) {
 		mat->SetUniform(uni, loc);
 	}
-	Uniform* CreateUniform(void* data, ShaderDataType type) {
+	MonoExport Uniform* CreateUniform(void* data, ShaderDataType type) {
 		return Uniform::Create(data, type);
+	}
+	MonoExport void ReallocGPUBuf(GPUBuffer* buf,size_t size,void* data) {
+		buf->Reallocate(size, data);
+	}
+	MonoExport void InvalidateGPUBuf(GPUBuffer* buf) {
+		buf->Invalidate();
+	}
+	MonoExport void SetDataGPUBuf(GPUBuffer* buf, void* data, size_t size, size_t offset) {
+		buf->SetData(data, size, offset);
+	}
+	MonoExport void BufBind(GPUBuffer* buf) {
+		buf->Bind();
+	}
+	MonoExport void BufUnbind(GPUBuffer* buf) {
+		buf->Unbind();
+	}
+	MonoExport void Submit_Internal(RenderObject ro) {
+		GetMainWindow()->GetRenderer()->Submit(ro);
+	}
+	MonoExport void Render() {
+		GetMainWindow()->GetRenderer()->Render();
+	}	
+	MonoExport void Clear() {
+		GetMainWindow()->GetRenderer()->Clear();
+	}
+	MonoExport void SetViewport(Viewport v) {
+		GetMainWindow()->GetRenderer()->SetViewport(v);
 	}
 
 	void RegisterInternalCalls() {
@@ -219,8 +247,18 @@ namespace Sphynx::Mono::Internal {
 		mono_add_internal_call("Sphynx.Graphics.Uniform::CreateUniform", &CreateUniform);
 		//Sphynx.Graphics.Utils
 		mono_add_internal_call("Sphynx.Graphics.Utils::GetDataTypeSize_Internal", &GetShaderDataTypeSize);
-		//Sphynx.Graphics.Mesh
-
+		//Sphynx.Graphics.GPUBuffer
+		mono_add_internal_call("Sphynx.Graphics.GPUBuffer::CreateBuffer", &GPUBuffer::Create);
+		mono_add_internal_call("Sphynx.Graphics.GPUBuffer::ReallocateBuffer", &ReallocGPUBuf);
+		mono_add_internal_call("Sphynx.Graphics.GPUBuffer::InvalidateBuffer", &InvalidateGPUBuf);
+		mono_add_internal_call("Sphynx.Graphics.GPUBuffer::SetBufferData", &SetDataGPUBuf);
+		mono_add_internal_call("Sphynx.Graphics.GPUBuffer::BindBuffer", &BufBind);
+		mono_add_internal_call("Sphynx.Graphics.GPUBuffer::UnbindBuffer", &BufUnbind);
+		//Sphynx.Graphics.Renderer
+		mono_add_internal_call("Sphynx.Graphics.Renderer::Submit_Internal", &Submit_Internal);
+		mono_add_internal_call("Sphynx.Graphics.Renderer::Render", &Render);
+		mono_add_internal_call("Sphynx.Graphics.Renderer::Clear", &Clear);
+		mono_add_internal_call("Sphynx.Graphics.Renderer::SetViewport", &SetViewport);
 	}
 }
 #endif
