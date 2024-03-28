@@ -14,6 +14,7 @@ namespace Sphynx::Core {
 	class ThreadPool
 	{
 	private:
+		inline thread_local static bool isMainThread = false;
 		inline static int MaxThreads;
 		inline static std::vector<std::thread> threads;
 		inline static std::deque<std::function<void()>> funcQueue;
@@ -87,6 +88,7 @@ namespace Sphynx::Core {
 		static const int GetMaxThreads() noexcept { return MaxThreads; };
 		static std::vector<std::thread>& GetThreads() noexcept { return threads; };
 		static std::unique_lock<std::mutex>&& GetLock() noexcept { return std::unique_lock<std::mutex>(ThreadPoolMutex); };
+		static bool IsMainThread()noexcept { return isMainThread; }
 		static void SetStartUpCallback(const std::function<void()>& func);
 	};
 }

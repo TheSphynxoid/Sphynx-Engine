@@ -35,7 +35,8 @@ static MonoClass* TransformClass;
 //Sphynx Engine Internals
 //Method Pointers
 void(_stdcall* WinResizeThunk)(int, int, MonoException**) = nullptr;
-//A Map of Common
+
+//A Map of Common Types.
 std::unordered_map<std::string, MonoClass*> CommonTypes = {
 	{"System.Object",mono_get_object_class()},
 	{"System.Int16",mono_get_int16_class()},
@@ -61,7 +62,7 @@ std::unordered_map<std::string, MonoClass*> CommonTypes = {
 	{"Sphynx.GameObject", GameObjectWrapper::GetNative()},
 	{"Sphynx.Transform", TransformClass}
 };
-
+//End of internals
 
 namespace Sphynx::Mono::Internal {
 

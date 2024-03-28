@@ -1,5 +1,4 @@
-﻿using Mono.CSharp;
-using Sphynx.Core;
+﻿using Sphynx.Core;
 using Sphynx.Graphics;
 using System;
 using System.Collections;
@@ -11,11 +10,6 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace System.Runtime.CompilerServices
-{
-    [EditorBrowsable(EditorBrowsableState.Never)]
-    internal class IsExternalInit { }
-}
 namespace Sphynx.Graphics
 {
     //1:1 From Mesh.h

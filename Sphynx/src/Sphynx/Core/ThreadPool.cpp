@@ -4,6 +4,13 @@
 
 void Sphynx::Core::ThreadPool::Start(int numthreads)
 {
+    if (HasStarted) {
+        Core_Warn("Attempted to start ThreadPool again. This is an invalid operation");
+        return;
+    }
+    //I think this is correct.
+    //Setting up the calling thread as the main thread.
+    isMainThread = true;
     MaxThreads = numthreads;
     HasStarted.store(true);
     for (int i = 0; i < MaxThreads; i++) {

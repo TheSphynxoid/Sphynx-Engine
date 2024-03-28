@@ -93,7 +93,7 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\Sphynx\Core\Graphics\Platform\GLBuffer.h" />
+    <ClInclude Include="Memory.h" />
     <ClInclude Include="src\Sphynx.h" />
     <ClInclude Include="src\Sphynx\Application.h" />
     <ClInclude Include="src\Sphynx\BitBool.h" />
@@ -117,6 +117,7 @@
     <ClInclude Include="src\Sphynx\Core\Graphics\Pipeline\Texture.h" />
     <ClInclude Include="src\Sphynx\Core\Graphics\Pipeline\UniformBuffer.h" />
     <ClInclude Include="src\Sphynx\Core\Graphics\Pipeline\Viewport.h" />
+    <ClInclude Include="src\Sphynx\Core\Graphics\Platform\GLBuffer.h" />
     <ClInclude Include="src\Sphynx\Core\Graphics\Platform\GLFrameBuffer.h" />
     <ClInclude Include="src\Sphynx\Core\Graphics\Platform\GLMaterial.h" />
     <ClInclude Include="src\Sphynx\Core\Graphics\Platform\GLMesh.h" />
@@ -126,6 +127,7 @@
     <ClInclude Include="src\Sphynx\Core\Graphics\Platform\GLUniformBuffer.h" />
     <ClInclude Include="src\Sphynx\Core\Graphics\Platform\GLWindow.h" />
     <ClInclude Include="src\Sphynx\Core\Graphics\Platform\VkRenderer.h" />
+    <ClInclude Include="src\Sphynx\Core\Graphics\Platform\VkWindow.h" />
     <ClInclude Include="src\Sphynx\Core\Graphics\Window.h" />
     <ClInclude Include="src\Sphynx\Core\IO\File.h" />
     <ClInclude Include="src\Sphynx\Core\IO\Serializer.h" />
@@ -187,12 +189,12 @@
     <ClInclude Include="src\Sphynx\imgui\imgui_impl_glfw.h" />
     <ClInclude Include="src\Sphynx\imgui\imgui_impl_opengl3.h" />
     <ClInclude Include="src\Sphynx\imgui\imgui_impl_opengl3_loader.h" />
+    <ClInclude Include="src\Sphynx\imgui\imgui_impl_vulkan.h" />
     <ClInclude Include="src\Sphynx\imgui\imgui_impl_win32.h" />
     <ClInclude Include="src\Sphynx\pch.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Sphynx\Core\Graphics\Pipeline\Buffer.cpp" />
-    <ClCompile Include="src\Sphynx\Core\Graphics\Platform\GLBuffer.cpp" />
+    <ClCompile Include="Memory.cpp" />
     <ClCompile Include="src\Sphynx\Application.cpp" />
     <ClCompile Include="src\Sphynx\Camera.cpp" />
     <ClCompile Include="src\Sphynx\Component.cpp" />
@@ -201,6 +203,7 @@
     <ClCompile Include="src\Sphynx\Core\Font.cpp" />
     <ClCompile Include="src\Sphynx\Core\FontAtlas.cpp" />
     <ClCompile Include="src\Sphynx\Core\Graphics\Imgui.cpp" />
+    <ClCompile Include="src\Sphynx\Core\Graphics\Pipeline\Buffer.cpp" />
     <ClCompile Include="src\Sphynx\Core\Graphics\Pipeline\FrameBuffer.cpp" />
     <ClCompile Include="src\Sphynx\Core\Graphics\Pipeline\Material.cpp" />
     <ClCompile Include="src\Sphynx\Core\Graphics\Pipeline\Mesh.cpp" />
@@ -209,6 +212,7 @@
     <ClCompile Include="src\Sphynx\Core\Graphics\Pipeline\Texture.cpp" />
     <ClCompile Include="src\Sphynx\Core\Graphics\Pipeline\UniformBuffer.cpp" />
     <ClCompile Include="src\Sphynx\Core\Graphics\Pipeline\Viewport.cpp" />
+    <ClCompile Include="src\Sphynx\Core\Graphics\Platform\GLBuffer.cpp" />
     <ClCompile Include="src\Sphynx\Core\Graphics\Platform\GLFrameBuffer.cpp" />
     <ClCompile Include="src\Sphynx\Core\Graphics\Platform\GLMaterial.cpp" />
     <ClCompile Include="src\Sphynx\Core\Graphics\Platform\GLMesh.cpp" />
@@ -218,6 +222,7 @@
     <ClCompile Include="src\Sphynx\Core\Graphics\Platform\GLUniformBuffer.cpp" />
     <ClCompile Include="src\Sphynx\Core\Graphics\Platform\GLWindow.cpp" />
     <ClCompile Include="src\Sphynx\Core\Graphics\Platform\VkRenderer.cpp" />
+    <ClCompile Include="src\Sphynx\Core\Graphics\Platform\VkWindow.cpp" />
     <ClCompile Include="src\Sphynx\Core\Graphics\Window.cpp" />
     <ClCompile Include="src\Sphynx\Core\MeshRenderer.cpp" />
     <ClCompile Include="src\Sphynx\Core\SceneManager.cpp" />
@@ -246,10 +251,7 @@
     <ClCompile Include="src\Sphynx\Engine.cpp" />
     <ClCompile Include="src\Sphynx\GameObject.cpp" />
     <ClCompile Include="src\Sphynx\Input.cpp" />
-    <ClCompile Include="src\Sphynx\Logger.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
-    </ClCompile>
+    <ClCompile Include="src\Sphynx\Logger.cpp" />
     <ClCompile Include="src\Sphynx\Object.cpp" />
     <ClCompile Include="src\Sphynx\Pointer.cpp" />
     <ClCompile Include="src\Sphynx\ResourceManager.cpp" />
@@ -260,6 +262,7 @@
     <ClCompile Include="src\Sphynx\imgui\imgui_impl_dx12.cpp" />
     <ClCompile Include="src\Sphynx\imgui\imgui_impl_glfw.cpp" />
     <ClCompile Include="src\Sphynx\imgui\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="src\Sphynx\imgui\imgui_impl_vulkan.cpp" />
     <ClCompile Include="src\Sphynx\imgui\imgui_impl_win32.cpp" />
     <ClCompile Include="src\Sphynx\pch.cpp" />
   </ItemGroup>

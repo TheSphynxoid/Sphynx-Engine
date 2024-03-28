@@ -28,8 +28,7 @@ namespace Sphynx
         public Material Material { get; set; }
         public Vector2 Center { get; set; }
         public Vector2 Size { get; set; }
-        //public static Lazy<Texture> DefaultSprite = 
-        //    new(()=> { return AssetManager.LoadTexture("data\\assets\\cardback.jpg", TextureType.Texture2D); });
+
         public static Texture DefaultSprite = AssetManager.LoadTexture("data\\assets\\cardback.jpg", TextureType.Texture2D);
         private Texture sprite;
         public Texture Sprite { get => sprite; set { SetSprite(value); Invalidate(); } }
@@ -45,7 +44,7 @@ namespace Sphynx
         /// <param name="NewSprite"></param>
         private void SetSprite(Texture NewSprite)
         {
-            this.sprite = Sprite;
+            sprite = Sprite;
             //Set the default size to sprite size.
             Size = Sprite.Size;
             Center = Size / 2f;

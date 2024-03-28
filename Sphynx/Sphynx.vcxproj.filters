@@ -332,6 +332,9 @@
       <Filter>Sphynx</Filter>
     </ClInclude>
     <ClInclude Include="src\Sphynx\Core\Graphics\Platform\GLBuffer.h" />
+    <ClInclude Include="src\Sphynx\Core\Graphics\Platform\VkWindow.h" />
+    <ClInclude Include="src\Sphynx\imgui\imgui_impl_vulkan.h" />
+    <ClInclude Include="Memory.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Sphynx\Application.cpp">
@@ -534,5 +537,8 @@
     </ClCompile>
     <ClCompile Include="src\Sphynx\Core\Graphics\Platform\GLBuffer.cpp" />
     <ClCompile Include="src\Sphynx\Core\Graphics\Pipeline\Buffer.cpp" />
+    <ClCompile Include="src\Sphynx\Core\Graphics\Platform\VkWindow.cpp" />
+    <ClCompile Include="src\Sphynx\imgui\imgui_impl_vulkan.cpp" />
+    <ClCompile Include="Memory.cpp" />
   </ItemGroup>
 </Project>
