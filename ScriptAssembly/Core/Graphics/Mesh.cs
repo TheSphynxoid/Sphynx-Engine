@@ -1,49 +1,47 @@
-﻿using Mono.CSharp;
-using Sphynx.Core;
-using Sphynx.Graphics;
+﻿using Sphynx.Core;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics.Contracts;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
+using System.Runtime.InteropServices;
+using System.Security;
 
-namespace System.Runtime.CompilerServices
-{
-    [EditorBrowsable(EditorBrowsableState.Never)]
-    internal class IsExternalInit { }
-}
 namespace Sphynx.Graphics
 {
     //1:1 From Mesh.h
     /// <summary>
     /// Specifies the use of the mesh.
     /// </summary>
-    enum MeshType : byte
+    public enum MeshType : byte
     {
-        //Changing Buffer
+        /// <summary>
+        /// Changing Buffer.
+        /// </summary>
         Dynamic,
-        //Constant Buffer
+        /// <summary>
+        /// Constant Buffer.
+        /// </summary>
         Static,
-        //GL Specific (Meaning : contents will be modified once and used at most a few times.)
+        /// <summary>
+        /// GL Specific (Meaning : contents will be modified once and used at most a few times.)
+        /// </summary>
         Stream
     };
 
+    /// <summary>
+    /// Represents the element of data in a <see cref="VertexBuffer"/>.
+    /// </summary>
     [NativeCppClass]
     public struct BufferElement
     {
-        //ShaderDataType Type = ShaderDataType::None;
-        ShaderDataType shaderDataType;
+        byte shaderDataType;
         [Pure]
-        public ShaderDataType DataType { get { return shaderDataType; } }
-        //size_t Size = 0;
-        long size;
+        public ShaderDataType DataType { get { return (ShaderDataType)shaderDataType; } }
+        ulong size;
         [Pure]
-        public long Size { get => size; }
-        //size_t Offset = 0;
+        public ulong Size { get => size; }
         internal long offset;
         [Pure]
         public long Offset { get => offset; }
@@ -53,14 +51,15 @@ namespace Sphynx.Graphics
         public BufferElement(ShaderDataType dataType, bool norm)
         {
             Normalized = norm;
-            shaderDataType = dataType;
+            shaderDataType = (byte)dataType;
             size = dataType.GetSize();
         }
 
+        //Copied 1:1 from "Mesh.h".
         [Pure]
-        public uint GetComponentCount()
+        public byte GetComponentCount()
         {
-            switch (shaderDataType)
+            switch ((ShaderDataType)shaderDataType)
 
             {
                 case ShaderDataType.None:       return 0;
@@ -95,23 +94,216 @@ namespace Sphynx.Graphics
         }
     }
 
+    /*Because of arrays this type is not a native cpp type.*/
+    /// <summary>
+    /// Data layout of the Vertex Buffer, a collection of <see cref="BufferElement"/>.
+    /// </summary>
     [Header("Mesh.h")]
-    [NativeCppClass]
     public struct BufferLayout
     {
         public BufferElement[] bufferElements;
         public BufferElement[] Elements { get => bufferElements; }
-        uint stride;
+        public uint stride;
         public uint Stride { get => stride; }
+
+    }
+
+    /// <summary>
+    /// A Vertex Buffer Object (VBO) is a buffer in GPU memory (See also: <see cref="GPUBuffer"/>)
+    /// that contains information about vertexes to be sent to the Vertex Shader.
+    /// This Buffer is neccessairy for rendering, if not provided <see cref="Mesh"/> will create one with the data provieded.
+    /// </summary>
+    public class VertexBuffer
+    {
+        HandleRef Native;
+        GPUBuffer underlaying;
+
+        [NativeCppClass]
+        struct NativeBufferLayout
+        {
+            public IntPtr bufferElements;
+            public int count;
+            public uint stride;
+
+            public NativeBufferLayout(BufferLayout layout)
+            {
+                bufferElements = Engine.GetArrayPointer(layout.bufferElements);
+                count = layout.bufferElements.Length;
+                stride = layout.stride;
+            }
+        }
+
+        BufferLayout layout;
+        public BufferLayout Layout { get => layout; set { layout = value; SetLayout(Native.Handle, new NativeBufferLayout(value)); } }
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        [SuppressUnmanagedCodeSecurity]
+        static extern IntPtr CreateVB(IntPtr floatbuffer, nuint count);
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        [SuppressUnmanagedCodeSecurity]
+        static extern IntPtr GetUnderlayingBuffer(IntPtr NativeVB);
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        [SuppressUnmanagedCodeSecurity]
+        static extern void SetLayout(IntPtr NativeVB, NativeBufferLayout l);
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        [SuppressUnmanagedCodeSecurity]
+        static extern void SetData(IntPtr native, IntPtr data, ulong size, ulong offset);
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        [SuppressUnmanagedCodeSecurity]
+        static extern nuint GetVBSize(IntPtr NativeVB);
+
+        public VertexBuffer(float[] verts, int vertcount, BufferLayout? bufferLayout = null)
+        {
+            Native = new(this, CreateVB(Engine.GetArrayPointer(verts), (nuint)vertcount));
+            underlaying = new(GetUnderlayingBuffer(Native.Handle), (nuint)(sizeof(float) * vertcount));
+            if(bufferLayout is BufferLayout b)Layout = b;
+        }
+
+        public void SetData(float[] data, nuint size) 
+        {
+            SetData(Native.Handle, Engine.GetArrayPointer(data), size, 0);
+        }
+
+        internal IntPtr GetNative()
+        {
+            return Native.Handle;
+        }
+
+        public GPUBuffer GetBuffer()
+        {
+            return underlaying;
+        }
+
+        public nuint Size { get => GetVBSize(Native.Handle); }
+    }
+
+    /// <summary>
+    /// An Index Buffer Object contains the order of the vertexes in <see cref="VertexBuffer"/> to be drawn.
+    /// This Buffer is optional for rendering.
+    /// </summary>
+    public class IndexBuffer
+    {
+        HandleRef Native;
+        GPUBuffer underlaying;
+
+        uint count;
+        public uint Count { get => count; }
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        [SuppressUnmanagedCodeSecurity]
+        static extern IntPtr CreateIB(IntPtr data,  nuint size);
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        [SuppressUnmanagedCodeSecurity]
+        static extern IntPtr GetUnderlayingBuffer(IntPtr native);
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        [SuppressUnmanagedCodeSecurity]
+        static extern void SetData_int(IntPtr native, IntPtr buf, nuint size);
+
+        public IndexBuffer(uint[] indexes)
+        {
+            Native = new(this, CreateIB(indexes.ToPointer(), (nuint)indexes.LongLength));
+            underlaying = new(GetUnderlayingBuffer(Native.Handle), (nuint)(Count * sizeof(uint)));
+            count = (uint)indexes.Length;
+        }
+
+        public void SetData(uint[] indexes)
+        {
+            count = (uint)indexes.Length;
+            SetData_int(Native.Handle, indexes.ToPointer(), (nuint)(count * sizeof(uint)));
+        }
+
+        internal IntPtr GetNative()
+        {
+            return Native.Handle;
+        }
+
+        public GPUBuffer GetBuffer()
+        {
+            return underlaying;
+        }
     }
 
     [NativeWrapper("Mesh", true)]
     [Header("Mesh.h")]
     public class Mesh
     {
+        internal HandleRef NativePtr;
+        internal List<VertexBuffer> VBOs;
+        internal IndexBuffer IBO;
+        
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        [SuppressUnmanagedCodeSecurity]
+        static extern IntPtr CreateMeshEmpty();
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        [SuppressUnmanagedCodeSecurity]
+        static extern IntPtr Create(IntPtr VBuffer, IntPtr IBuffer);
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        [SuppressUnmanagedCodeSecurity]
+        static extern IntPtr CreateList(IntPtr VBList, int Count, IntPtr IBuffer);
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        [SuppressUnmanagedCodeSecurity]
+        static extern void AddVB(IntPtr native, IntPtr VB);
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        [SuppressUnmanagedCodeSecurity]
+        static extern void SetVBs(IntPtr native, int count, IntPtr IBuffer);
+
 
         public Mesh()
         {
+            NativePtr = new(this, CreateMeshEmpty());
+        }
+
+        public Mesh(VertexBuffer vbo, IndexBuffer ibo)
+        {
+            VBOs = new List<VertexBuffer>
+            {
+                vbo
+            };
+            IBO = ibo;
+            NativePtr = new(this, Create(vbo.GetNative(), ibo.GetNative()));
+        }
+
+        public Mesh(List<VertexBuffer> vbs, IndexBuffer ib)
+        {
+            VBOs =vbs;
+            IBO= ib;
+            int count = vbs.Count;
+            IntPtr[] ptrs = new IntPtr[count];
+            for (int i = 0; i < count; i++)
+            {
+                ptrs[i] = vbs[i].GetNative();
+            }
+            NativePtr = new(this, CreateList(ptrs.ToPointer(), count, ib.GetNative()));
+        }
+
+        public void AddVertexBuffer(VertexBuffer vbo)
+        {
+
+        }
+
+        public void SetVertexBuffers(List<VertexBuffer> vbs)
+        {
+
+        }
+
+        public void SetIndexBuffer(IndexBuffer ibo)
+        {
+
+        }
+
+        public void Bind()
+        {
+
+        }
+
+        public void Unbind()
+        {
+
+        }
+
+        public HandleRef GetNative()
+        {
+            return NativePtr;
         }
     }
 }

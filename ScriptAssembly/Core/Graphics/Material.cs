@@ -27,63 +27,63 @@ namespace Sphynx.Graphics
         private ShaderPack shaders;
         public ShaderPack Shaders { [Pure]get => shaders; set { ReloadShaders(value); shaders = value; } }
 
-        internal List<Texture> textures = null;
+        internal List<Texture> textures = new List<Texture>(0);
         public ref readonly List<Texture> Textures { get => ref textures; }
 
-        internal UIntPtr NativePtr;
+        internal HandleRef NativePtr;
         private bool disposedValue;
 
         #region NativeCalls
         [NativeCppClass]
         internal struct NativeShaderPack
         {
-            public UIntPtr VShader;
-            public UIntPtr FShader;
-            public UIntPtr TessEval;
-            public UIntPtr TessControl;
-            public UIntPtr GeomShader;
+            public IntPtr VShader;
+            public IntPtr FShader;
+            public IntPtr TessEval;
+            public IntPtr TessControl;
+            public IntPtr GeomShader;
         }
 
         [MethodImpl(MethodImplOptions.InternalCall)]
         [SuppressUnmanagedCodeSecurity]
-        private extern static UIntPtr CreateMaterial(NativeShaderPack shaderPack, UIntPtr[] textures);
+        private extern static IntPtr CreateMaterial(NativeShaderPack shaderPack, IntPtr[] textures);
 
         [MethodImpl(MethodImplOptions.InternalCall)]
         [SuppressUnmanagedCodeSecurity]
-        private extern static UIntPtr CreateMaterial(NativeShaderPack shaderPack);
+        private extern static IntPtr CreateMaterial(NativeShaderPack shaderPack);
 
         [MethodImpl(MethodImplOptions.InternalCall)]
         [SuppressUnmanagedCodeSecurity]
-        private extern static void MatBind(UIntPtr thismat);
+        private extern static void MatBind(IntPtr thismat);
 
         [MethodImpl(MethodImplOptions.InternalCall)]
         [SuppressUnmanagedCodeSecurity]
         [Pure]
-        private extern static void MatUnbind(UIntPtr thismat);
+        private extern static void MatUnbind(IntPtr thismat);
 
         [MethodImpl(MethodImplOptions.InternalCall)]
         [SuppressUnmanagedCodeSecurity]
-        private extern static UIntPtr MatGetDefaultShader(byte shadertype);
+        private extern static IntPtr MatGetDefaultShader(byte shadertype);
 
         [MethodImpl(MethodImplOptions.InternalCall)]
         [SuppressUnmanagedCodeSecurity]
-        private extern static void AddTex(UIntPtr matptr, UIntPtr texptr);
+        private extern static void AddTex(IntPtr matptr, IntPtr texptr);
 
         [MethodImpl(MethodImplOptions.InternalCall)]
         [SuppressUnmanagedCodeSecurity]
-        private extern static void RemoveTex(UIntPtr matptr, UIntPtr texptr);
+        private extern static void RemoveTex(IntPtr matptr, IntPtr texptr);
 
         [MethodImpl(MethodImplOptions.InternalCall)]
         [SuppressUnmanagedCodeSecurity]
-        private extern static void SetTex(UIntPtr matptr, UIntPtr texptr, uint index);
+        private extern static void SetTex(IntPtr matptr, IntPtr texptr, uint index);
 
         [MethodImpl(MethodImplOptions.InternalCall)]
         [SuppressUnmanagedCodeSecurity]
-        private extern static int GetUniformLoc(UIntPtr matptr, [MarshalAs(UnmanagedType.LPStr)] string name);
+        private extern static int GetUniformLoc(IntPtr matptr, [MarshalAs(UnmanagedType.LPStr)] string name);
 
         [MethodImpl(MethodImplOptions.InternalCall)]
         [SuppressUnmanagedCodeSecurity]
-        private extern static void SetUni(UIntPtr matptr, UIntPtr uni, int loc);
+        private extern static void SetUni(IntPtr matptr, IntPtr uni, int loc);
 
         #endregion
 
@@ -94,67 +94,81 @@ namespace Sphynx.Graphics
         public Material(Material mat)
         {
             shaders = mat.shaders;
-            if(mat.textures != null)
+            if(mat.textures.Count != 0)
             {
                 textures = mat.textures;
-                UIntPtr[] texPtr = new UIntPtr[textures.Count];
+                IntPtr[] texPtr = new IntPtr[textures.Count];
                 for (int i = 0; i <= texPtr.Length; i++)
                 {
-                    texPtr[i] = textures[i].GetNative();
+                    texPtr[i] = textures[i].GetNative().Handle;
                 }
-                NativePtr = CreateMaterial(shaders.ToNative(), texPtr);
+                NativePtr = new HandleRef(this, CreateMaterial(shaders.ToNative(), texPtr));
                 return;
             }
-            Console.WriteLine("Copy Constructor");
-            NativePtr = CreateMaterial(shaders.ToNative());
-
+            NativePtr = new HandleRef(this, CreateMaterial(shaders.ToNative()));
         }
 
         public Material(ShaderPack shaderpack)
         {
             shaders = shaderpack;
-            NativePtr = CreateMaterial(shaders.ToNative());
+            if (shaders.Vert == null)
+            {
+                shaders.Vert = GetDefaultShader(ShaderType.VertexShader);
+            }
+            if (shaders.Frag == null)
+            {
+                shaders.Frag = GetDefaultShader(ShaderType.FragmentShader);
+            }
+            NativePtr = new HandleRef(this, CreateMaterial(shaders.ToNative()));
         }
 
         public Material(ShaderPack shaderpack, List<Texture> textures)
         {
             shaders = shaderpack;
+            if(shaders.Vert == null)
+            {
+                shaders.Vert = GetDefaultShader(ShaderType.VertexShader);
+            }
+            if(shaders.Frag == null)
+            {
+                shaders.Frag = GetDefaultShader(ShaderType.FragmentShader);
+            }
             this.textures = textures;
-            UIntPtr[] texPtr = new UIntPtr[textures.Count];
+            IntPtr[] texPtr = new IntPtr[textures.Count];
             for (int i = 0; i <= texPtr.Length; i++) 
             {
-                texPtr[i] = textures[i].GetNative();
+                texPtr[i] = textures[i].GetNative().Handle;
             }
-            NativePtr = CreateMaterial(shaders.ToNative(), texPtr);
+            NativePtr = new HandleRef(this, CreateMaterial(shaders.ToNative(), texPtr));
         }
 
         public void ReloadShaders(ShaderPack shaders) { }
         /// <summary>
         /// Binds the buffer for use.
         /// </summary>
-        public void Bind() { MatBind(NativePtr); }
+        public void Bind() { MatBind(NativePtr.Handle); }
         /// <summary>
         /// Unbinds the buffer
         /// </summary>
         [Pure]
-        public void Unbind() { MatUnbind(NativePtr); }
+        public void Unbind() { MatUnbind(NativePtr.Handle); }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         [SuppressUnmanagedCodeSecurity]
         [Pure]
         public int GetUniformLocation(string name)
         {
-            return GetUniformLoc(NativePtr, name);
+            return GetUniformLoc(NativePtr.Handle, name);
         }
 
         public void SetUniform(Uniform uniform, string name) 
         {
-            SetUniform(uniform, GetUniformLoc(NativePtr, name));
+            SetUniform(uniform, GetUniformLoc(NativePtr.Handle, name));
         }
 
         public void SetUniform(Uniform uniform, int location) 
         {
-            SetUni(NativePtr,uniform.NativeUniform,location);
+            //SetUni(NativePtr,uniform.NativeUniform,location);
             uniform.Location = location;
         }
 
@@ -164,14 +178,14 @@ namespace Sphynx.Graphics
         public void AddTexture(Texture tex) 
         { 
             textures.Add(tex);
-            AddTex(NativePtr, tex.GetNative());
+            AddTex(NativePtr.Handle, tex.GetNative().Handle);
         }
 
         [SuppressUnmanagedCodeSecurity]
         public void RemoveTexture(Texture tex) 
         {
             textures.Remove(tex);
-            RemoveTex(NativePtr, tex.GetNative());
+            RemoveTex(NativePtr.Handle, tex.GetNative().Handle);
         }
         /// <summary>
         /// Replace a texture in the given index. 
@@ -181,7 +195,7 @@ namespace Sphynx.Graphics
         {
             if(index >= textures.Count) { return; }
             textures[(int)index] = tex;
-            SetTex(NativePtr, tex.GetNative(), index);
+            SetTex(NativePtr.Handle, tex.GetNative().Handle, index);
         }
 
         /// <summary>
@@ -202,7 +216,7 @@ namespace Sphynx.Graphics
         }
 
         [Pure]
-        public UIntPtr GetNative() { return  NativePtr; }
+        public HandleRef GetNative() { return  NativePtr; }
 
         private void Dispose(bool disposing)
         {

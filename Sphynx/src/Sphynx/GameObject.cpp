@@ -88,7 +88,7 @@ Sphynx::GameObject* Sphynx::GameObject::CreatePrimitive(Primitives primitive, st
         break;
     case Sphynx::Primitives::Cube:
     {
-        float vertices[] = {
+        static float vertices[] = {
              // positions       // texture coords
             -1, -1, -1, 1, 1,   // top right
              1, -1, -1, 1, 0,   // bottom right
@@ -99,7 +99,7 @@ Sphynx::GameObject* Sphynx::GameObject::CreatePrimitive(Primitives primitive, st
              1,  1,  1, 0, 0,
             -1,  1,  1, 0, 1
         };
-        unsigned int indices[] =
+        static unsigned int indices[] =
         {
             0, 1, 3, 3, 1, 2,
             1, 5, 2, 2, 5, 6,
@@ -115,14 +115,14 @@ Sphynx::GameObject* Sphynx::GameObject::CreatePrimitive(Primitives primitive, st
     }
     case Sphynx::Primitives::Plane:
     {
-        float vertices[] = {
+        static float vertices[] = {
              // positions        // texture coords
              1.0f,  1.0f, 0.0f, 1.0f, 1.0f,   // top right
              1.0f, -1.0f, 0.0f, 1.0f, 0.0f,   // bottom right
             -1.0f, -1.0f, 0.0f, 0.0f, 0.0f,   // bottom left
             -1.0f,  1.0f, 0.0f, 0.0f, 1.0f    // top left 
         };
-        unsigned int index[] = {
+        static unsigned int index[] = {
             0, 1, 2,
             2, 3, 0
         };
@@ -133,7 +133,7 @@ Sphynx::GameObject* Sphynx::GameObject::CreatePrimitive(Primitives primitive, st
     }
     case Sphynx::Primitives::Triangle:
     {
-        float vertices[] = {
+        static float vertices[] = {
              1.0f, -1.0f, 0.0f, 1.0f, 0.0f,
             -1.0f, -1.0f, 0.0f, 0.0f, 0.0f,
              0.0f,  1.0f, 0.0f, 0.5f, 1.0f

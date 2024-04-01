@@ -68,12 +68,12 @@ namespace Sphynx.Graphics
     public sealed class Texture : IDisposable
     {
 
-        private readonly UIntPtr nativePointer;
-        private UIntPtr Nativeid;
+        private readonly HandleRef nativePointer;
+        private HandleRef Nativeid;
         /// <summary>
         /// Used for interoping with Engine.
         /// </summary>
-        public UIntPtr ID { get => Nativeid; }
+        public HandleRef ID { get => Nativeid; }
         private Vector3 dims;
         public Vector3 Dimensions { get => dims; set => Resize(value); }
         public Vector2 Size { get => new(dims.x, dims.y); set => Resize(new Vector3(value, dims.z)); }
@@ -88,26 +88,33 @@ namespace Sphynx.Graphics
 
         private static TextureMipmapMode defMipmapMode = GetDefaultMipmapMode();
         public static TextureMipmapMode DefaultMipmapMode { get => defMipmapMode; set { defMipmapMode = value;SetDefaultMipmapMode(value); } }
+
         private static TextureWrappingMode defWrappingMode = GetDefaultWrappingMode();
         public static TextureWrappingMode DefaultWrappingMode { get => defWrappingMode; set { defWrappingMode = value; SetDefaulWrappingMode(value); } }
+        
         private static TextureFilterMode defFilterMode = GetDefaultFilterMode();
         public static TextureFilterMode DefaultFilterMode { get => defFilterMode; set { defFilterMode = value; SetDefaultFilterMode(value); } }
 
         [MethodImpl(MethodImplOptions.InternalCall)]
         [SuppressUnmanagedCodeSecurity]
         private extern static void SetDefaultFilterMode(TextureFilterMode mode);
+
         [MethodImpl(MethodImplOptions.InternalCall)]
         [SuppressUnmanagedCodeSecurity]
         private extern static void SetDefaulWrappingMode(TextureWrappingMode mode);
+        
         [MethodImpl(MethodImplOptions.InternalCall)]
         [SuppressUnmanagedCodeSecurity]
         private extern static void SetDefaultMipmapMode(TextureMipmapMode mode);
+        
         [MethodImpl(MethodImplOptions.InternalCall)]
         [SuppressUnmanagedCodeSecurity]
         private extern static TextureFilterMode GetDefaultFilterMode();
+        
         [MethodImpl(MethodImplOptions.InternalCall)]
         [SuppressUnmanagedCodeSecurity]
         private extern static TextureWrappingMode GetDefaultWrappingMode();
+        
         [MethodImpl(MethodImplOptions.InternalCall)]
         [SuppressUnmanagedCodeSecurity]
         private extern static TextureMipmapMode GetDefaultMipmapMode();
@@ -118,12 +125,12 @@ namespace Sphynx.Graphics
         /// </summary>
         [MethodImpl(MethodImplOptions.InternalCall)]
         [SuppressUnmanagedCodeSecurity]
-        internal extern static UIntPtr CreateTexture(byte[] data, int width, int height, ushort texturetype, int mipmaplevel, ushort textureformat,
+        internal extern static IntPtr CreateTexture(byte[] data, int width, int height, ushort texturetype, int mipmaplevel, ushort textureformat,
             ushort datatype, ushort wrap, ushort filter, ushort mipmapmode);
 
         [MethodImpl(MethodImplOptions.InternalCall)]
         [SuppressUnmanagedCodeSecurity]
-        private extern static void GenMipmaps(UIntPtr tex);
+        private extern static void GenMipmaps(IntPtr tex);
 
         /// <summary>
         /// Automatically creates Mipmaps for the texture.
@@ -131,16 +138,16 @@ namespace Sphynx.Graphics
         [SuppressUnmanagedCodeSecurity]
         public void GenerateMipmaps()
         {
-            GenMipmaps(nativePointer);
+            GenMipmaps(nativePointer.Handle);
         }
 
         /// <summary>
-        /// Returned by call to native function <see cref="GetTexInfo(UIntPtr)"/> and hold infomation about the texture.
+        /// Returned by call to native function <see cref="GetTexInfo(HandleRef)"/> and hold infomation about the texture.
         /// </summary>
         [NativeCppClass]
         private struct TexInfo
         {
-            public UIntPtr NativeID;
+            public IntPtr NativeID;
             public TextureDataFormat dataFormat;
             public TextureFormat format;
             public Vector3 Dimension;
@@ -148,16 +155,16 @@ namespace Sphynx.Graphics
 
         [MethodImpl(MethodImplOptions.InternalCall)]
         [SuppressUnmanagedCodeSecurity]
-        private extern static TexInfo GetTexInfo(UIntPtr Pointer);
+        private extern static TexInfo GetTexInfo(IntPtr Pointer);
 
         [SuppressUnmanagedCodeSecurity]
-        internal void SetUp(UIntPtr nativeptr)
+        internal void SetUp()
         {
-            TexInfo info = GetTexInfo(nativeptr);
+            TexInfo info = GetTexInfo(nativePointer.Handle);
             dims = info.Dimension;
             format = info.format;
             dataformat = info.dataFormat;
-            Nativeid = info.NativeID;
+            Nativeid = new HandleRef(this, info.NativeID);
         }
 
         /// <summary>
@@ -168,10 +175,10 @@ namespace Sphynx.Graphics
         }
 
         //Create from native ptr.
-        internal Texture(UIntPtr nativeptr)
+        internal Texture(IntPtr nativeptr)
         {
-            nativePointer = nativeptr;
-            SetUp(nativeptr);
+            nativePointer = new HandleRef(this, nativeptr);
+            SetUp();
         }
 
         /// <summary>
@@ -189,10 +196,10 @@ namespace Sphynx.Graphics
             this.format = format;
             dataformat = dataFormat;
 
-            nativePointer = CreateTexture(null, (int)size.x, (int)size.y,
-                (ushort)type, mipmapLevel, (ushort)format, (ushort)dataformat, (ushort)wrap, (ushort)filter, (ushort)mipmapMode);
+            nativePointer = new HandleRef(this, CreateTexture(null, (int)size.x, (int)size.y,
+                (ushort)type, mipmapLevel, (ushort)format, (ushort)dataformat, (ushort)wrap, (ushort)filter, (ushort)mipmapMode));
 
-            SetUp(nativePointer);
+            SetUp();
         }
 
         public Texture(byte[] buffer, Vector3 dimensions, TextureDataFormat textureDataFormat, TextureFormat format)
@@ -229,18 +236,18 @@ namespace Sphynx.Graphics
 
         [MethodImpl(MethodImplOptions.InternalCall)]
         [SuppressUnmanagedCodeSecurity]
-        private static extern void ResizeTexture(UIntPtr ptr, Vector3 dim);
+        private static extern void ResizeTexture(IntPtr ptr, Vector3 dim);
 
         [SuppressUnmanagedCodeSecurity]
         public void Resize(Vector3 ndim)
         {
-            ResizeTexture(nativePointer,ndim);
+            ResizeTexture(nativePointer.Handle, ndim);
             dims = ndim;
         }
 
         public void Bind() { }
         public void Unbind() { }
-        public UIntPtr GetNative() { return nativePointer; }
+        public HandleRef GetNative() { return nativePointer; }
 
         private void Dispose(bool disposing)
         {

@@ -17,15 +17,14 @@ namespace Sphynx.Core
     {
         [MethodImpl(MethodImplOptions.InternalCall)]
         [SuppressUnmanagedCodeSecurity]
-        internal extern static UIntPtr RM_LoadShader([MarshalAs(UnmanagedType.LPStr)] string shaderPath, byte type);
+        internal extern static IntPtr RM_LoadShader([MarshalAs(UnmanagedType.LPStr)] string shaderPath, byte type);
 
         [MethodImpl(MethodImplOptions.InternalCall)]
         [SuppressUnmanagedCodeSecurity]
-        internal extern static UIntPtr RM_LoadTexture([MarshalAs(UnmanagedType.LPStr)] string texPath, ushort textype, char Compress);
+        internal extern static IntPtr RM_LoadTexture([MarshalAs(UnmanagedType.LPStr)] string texPath, ushort textype, char Compress);
 
         public static Shader LoadShader(string Path, ShaderType type)
         {
-            Logger.Info("Called");
             return new Shader(RM_LoadShader(Path, (byte)type), type);
         }
         /// <summary>

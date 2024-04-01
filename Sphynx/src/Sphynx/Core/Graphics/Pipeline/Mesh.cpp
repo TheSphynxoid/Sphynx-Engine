@@ -6,7 +6,7 @@
 using namespace Sphynx::Core::Graphics::GL;
 #endif
 using namespace Sphynx::Core::Graphics;
-VertexBuffer* Sphynx::Core::Graphics::VertexBuffer::Create(float* vertices, size_t Size)
+VertexBuffer* Sphynx::Core::Graphics::VertexBuffer::Create(float* vertices, size_t Size) noexcept
 {
 	switch (CurrentPlatform)
 	{
@@ -24,7 +24,7 @@ VertexBuffer* Sphynx::Core::Graphics::VertexBuffer::Create(float* vertices, size
     return nullptr;
 }
 
-VertexBuffer* Sphynx::Core::Graphics::VertexBuffer::CreateEmpty(size_t Size)
+VertexBuffer* Sphynx::Core::Graphics::VertexBuffer::CreateEmpty(size_t Size) noexcept
 {
 	switch (CurrentPlatform)
 	{
@@ -42,7 +42,7 @@ VertexBuffer* Sphynx::Core::Graphics::VertexBuffer::CreateEmpty(size_t Size)
 	return nullptr;
 }
 
-IndexBuffer* Sphynx::Core::Graphics::IndexBuffer::Create(unsigned int* indices, size_t Size)
+IndexBuffer* Sphynx::Core::Graphics::IndexBuffer::Create(unsigned int* indices, size_t Size) noexcept
 {
 	switch (CurrentPlatform)
 	{

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -28,16 +29,40 @@ namespace Sphynx
         public Material Material { get; set; }
         public Vector2 Center { get; set; }
         public Vector2 Size { get; set; }
-        //public static Lazy<Texture> DefaultSprite = 
-        //    new(()=> { return AssetManager.LoadTexture("data\\assets\\cardback.jpg", TextureType.Texture2D); });
+
         public static Texture DefaultSprite = AssetManager.LoadTexture("data\\assets\\cardback.jpg", TextureType.Texture2D);
         private Texture sprite;
         public Texture Sprite { get => sprite; set { SetSprite(value); Invalidate(); } }
+
+        //This is large code for construction.
+        //To avoid creating a list with the verts, and a BufferLayout instance it's all made for this call once.
+        static readonly VertexBuffer VB = new VertexBuffer(new float[]{
+            // positions        // texture coords
+            1.0f, 1.0f, 0.0f,   1.0f, 1.0f,   // top right
+            1.0f, -1.0f, 0.0f,  1.0f, 0.0f,   // bottom right
+            -1.0f, -1.0f, 0.0f, 0.0f, 0.0f,   // bottom left
+            -1.0f, 1.0f, 0.0f,  0.0f, 1.0f    // top left 
+            },
+            20, new BufferLayout()
+            {
+                bufferElements = new BufferElement[]{ new BufferElement(ShaderDataType.Float3, false),
+                    new BufferElement(ShaderDataType.Float2, false) }
+            });
+
+        static readonly IndexBuffer IB = new IndexBuffer(new uint[]{
+            0, 1, 2,
+            2, 3, 0
+        });
+        private Mesh Plane;
+
+        private RenderObject renderObject;
 
         public SpriteRenderer()
         {
             Material = new(SpriteDefaultMaterial);
             Material.AddTexture(DefaultSprite);
+            renderObject.mat = Material;
+            renderObject.mesh = Plane;
         }
         /// <summary>
         /// Change the Sprite.
@@ -60,7 +85,7 @@ namespace Sphynx
 
         public override void Update()
         {
-
+            Renderer.Submit(renderObject);
         }
 
     }

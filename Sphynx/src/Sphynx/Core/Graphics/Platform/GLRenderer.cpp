@@ -29,7 +29,6 @@ void Sphynx::Core::Graphics::GL::GLRenderer::RendererResizeEvent(Events::OnWindo
 
 void Sphynx::Core::Graphics::GL::GLRenderer::Start(IWindow* app)
 {
-	//Events::GlobalEventSystem::GetInstance()->Subscribe(this, &GLRenderer::RendererResizeEvent);
 	GLMaterial::DefaultMaterial = GLMaterial::CreateDefaultMaterial();
 	DefaultRenderObject = RenderObject(nullptr, &GLMaterial::DefaultMaterial);
 	//GL features.
@@ -51,10 +50,10 @@ void Sphynx::Core::Graphics::GL::GLRenderer::Render()
 			}
 			GLMesh* Mesh = (GLMesh*)rend.mesh;
 			if (Mesh->HasIndexArray()) {
-				glDrawElements(GL_TRIANGLES, Mesh->GetIndexBufferSize(), GL_UNSIGNED_INT, 0);
+				glDrawElements(GL_TRIANGLES, Mesh->GetIndexBuffer()->GetSize(), GL_UNSIGNED_INT, 0);
 			}
 			else {
-				glDrawArrays(GL_TRIANGLES, 0, Mesh->GetVertexBuffer()[0]->GetVertexBufferSize());
+				glDrawArrays(GL_TRIANGLES, 0, Mesh->GetVertexBuffer()[0]->GetSize());
 			}
 			rend.mesh->Unbind();
 		}

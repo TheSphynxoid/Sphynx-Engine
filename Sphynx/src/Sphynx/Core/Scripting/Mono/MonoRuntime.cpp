@@ -3,6 +3,7 @@
 #include "CsScript.h"
 #include "../ScriptComponent.h"
 #include "Core/ThreadPool.h"
+#include "Events/WindowEvents.h"
 
 extern "C" {
 #include "mono/jit/jit.h"
@@ -16,14 +17,15 @@ extern "C" {
 }
 
 //Seperation of Code.
-#include "MonoInternalCalls.cpp"
+#include "MonoInternalCalls.h"
 
 using namespace Sphynx::Mono;
 using namespace Sphynx::Core::Scripting;
 
+MonoDomain* Appdomain;
+
 //Translation Module Statics
 static MonoDomain* JITdomain;
-static MonoDomain* Appdomain;
 static MonoAssembly* ScriptAssembly = nullptr;
 static MonoAssembly* GameAssembly = nullptr;
 static MonoImage* ScriptImage = nullptr;
@@ -46,8 +48,8 @@ std::unordered_map<std::string, MonoClass*> CommonTypes = {
 	{"System.UInt64",mono_get_uint64_class()},
 	{"System.Double",mono_get_double_class()},
 	{"System.Single",mono_get_single_class()},
-	{"System.IntPtr",mono_get_intptr_class()},
-	{"System.UIntPtr",mono_get_uintptr_class()},
+	{"System.HandleRef",mono_get_intptr_class()},
+	{"System.HandleRef",mono_get_uintptr_class()},
 	{"System.String",mono_get_string_class()},
 	{"System.Boolean",mono_get_boolean_class()},
 	{"System.Byte",mono_get_byte_class()},
@@ -135,6 +137,9 @@ void Sphynx::Mono::MonoRuntime::ReadClassesMetadata()
 		strcpy(&Fullname[NamespaceLen + 1], Classname);
 
 		MonoClass* monoClass = mono_class_from_name(GameImage, Namespace, Classname);
+		//Brute: Ignore because it's probably a special type used by the runtime or jit.
+		if (!monoClass)
+			continue;
 		bool IsComponent = mono_class_is_subclass_of(monoClass, CsScript::GetNative(), true);
 
 		if (IsComponent) {

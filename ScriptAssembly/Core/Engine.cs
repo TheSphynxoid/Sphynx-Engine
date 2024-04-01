@@ -1,6 +1,5 @@
-﻿using Mono.CSharp;
+﻿using System;
 using Sphynx.Graphics;
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.Contracts;
@@ -10,8 +9,6 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Security;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Sphynx.Core
 {
@@ -21,42 +18,70 @@ namespace Sphynx.Core
     }
     /// <summary>
     /// Engine Utility Class.
+    /// Contains some marshalling utilities.
     /// </summary>
     public static class Engine
     {
+        ///// <summary>
+        ///// Gets the args that the Application received to start.
+        ///// </summary>
+        //[MethodImpl(MethodImplOptions.InternalCall)]
+        //public extern static string[] GetEngineArgs();
         /// <summary>
-        /// Checks if the Engine is running.
-        /// </summary>
-        [Pure]
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public extern static bool IsRunning();
-        /// <summary>
-        /// Gets the args that the Application received to start.
-        /// </summary>
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public extern static string[] GetEngineArgs();
-        /// <summary>
-        /// If the C# Scripting Engine is Running on Mono this has a true value. (This is here in case i decide to add the MicrosoftCLR)
+        /// If the C# Execution Engine is Running on Mono this has a true value.
+        /// (This is here in case i decide to add the MicrosoftCLR or modified mono runtime)
         /// </summary>
         public static readonly bool IsMono = (Type.GetType("Mono.Runtime") != null);
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public extern static GraphicsBackend GetGraphicsBackend();
+        //[MethodImpl(MethodImplOptions.InternalCall)]
+        //public extern static GraphicsBackend GetGraphicsBackend();
 
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        public extern static void NativeDebuggerBreak();
+        //[MethodImpl(MethodImplOptions.InternalCall)]
+        //public extern static void NativeDebuggerBreak();
 
         [AllowReversePInvokeCalls]
         public static void LaunchDebugger()
         {
-
         }
 
         public static void NativeBreak()
         {
             StackTrace trace = new StackTrace();
-            Console.WriteLine("Native Offset : {0}",trace.GetFrame(0).GetNativeOffset());
-            NativeDebuggerBreak();
+            Console.WriteLine("Native Offset : {0}", trace.GetFrame(0).GetNativeOffset());
+            //NativeDebuggerBreak();
+        }
+
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        [SuppressUnmanagedCodeSecurity]
+        private static extern IntPtr ArrayToPointer(Array Array, int Index);
+
+        /// <summary>
+        /// Gets the address of the data in a buffer.
+        /// </summary>
+        /// <param name="array">Array to get data address from.</param>
+        /// <param name="Index">Index to start from.</param>
+        [SuppressUnmanagedCodeSecurity]
+        public unsafe static IntPtr GetArrayPointer(Array array, int Index = 0)
+        {
+            return ArrayToPointer(array, Index);
+        }
+
+        [SuppressUnmanagedCodeSecurity]
+        internal unsafe static IntPtr ToPointer(this Array array, int Index = 0)
+        {
+            return GetArrayPointer(array, Index);
+        }
+
+        /// <summary>
+        /// Transforms an primitve array to a byte array.
+        /// </summary>
+        /// <typeparam name="T">Primitive/Unmanaged type of the array</typeparam>
+        /// <returns>A new byte[]</returns>
+        public unsafe static byte[] ToByteArray<T>(T[] array) where T : unmanaged
+        {
+            byte[] buf = new byte[Buffer.ByteLength(array)];
+            Buffer.BlockCopy(array, 0, buf, 0, buf.Length);
+            return buf;
         }
     }
     /// <summary>

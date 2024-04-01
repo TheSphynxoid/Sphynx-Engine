@@ -7,8 +7,6 @@ namespace Sphynx::Core::Graphics::GL {
 	private:
 		GLBuffer underlaying;
 		BufferLayout Layout = BufferLayout();
-		const void* Data = nullptr;
-		size_t Size = 0;
 	public:
 		GLVertexBuffer(size_t Size);
 		GLVertexBuffer(float* verts, size_t Size);
@@ -21,9 +19,7 @@ namespace Sphynx::Core::Graphics::GL {
 		virtual void Unbind()const noexcept override;
 		virtual void SetData(const void* data, size_t size, size_t offset)noexcept override;
 		virtual void SetDataLayout(BufferLayout layout) override { Layout = layout; };
-		virtual size_t GetVertexBufferSize()const noexcept override { return Size; };
 		virtual BufferLayout GetLayout()const noexcept override{ return Layout; };
-		virtual const void* GetData() const noexcept override { return Data; };
 		virtual void Release() override;
 
 		//Buffer
@@ -34,7 +30,7 @@ namespace Sphynx::Core::Graphics::GL {
 
 		// Inherited via VertexBuffer
 		size_t GetSize() const noexcept override {
-			return Size;
+			return underlaying.GetSize();
 		};
 		void Reallocate(size_t size, void* data) override;
 		void Invalidate() noexcept override;
@@ -43,8 +39,6 @@ namespace Sphynx::Core::Graphics::GL {
 	class GLIndexBuffer final : public IndexBuffer {
 	private:
 		GLBuffer underlaying;
-		uint32_t Count = 0;
-		const void* Data;
 	public:
 		GLIndexBuffer(uint32_t count)noexcept;
 		GLIndexBuffer(unsigned int* indices, size_t count)noexcept;
@@ -57,9 +51,8 @@ namespace Sphynx::Core::Graphics::GL {
 		virtual void Unbind()const noexcept override;
 		virtual void SetData(const void* data, size_t size, size_t offset)override;
 		virtual void SetData(const unsigned int* data, uint64_t count)override;
-		virtual const void* GetData()const noexcept override;
-		virtual size_t GetSize()const noexcept override { return Count * sizeof(int); }
-		virtual int GetCount()const noexcept override { return Count; };
+		virtual size_t GetSize()const noexcept override { return underlaying.GetSize(); }
+		virtual unsigned int GetCount()const noexcept override { return underlaying.GetSize() / sizeof(int); };
 		virtual void* Map(const MapAccess access) override;
 		virtual void Unmap()noexcept override;
 		virtual void Invalidate()noexcept override;
@@ -83,11 +76,10 @@ namespace Sphynx::Core::Graphics::GL {
 		virtual ~GLMesh()override;
 		virtual void Bind()const override;
 		virtual void Unbind()const override;
-		virtual void AddVertexBuffer(VertexBuffer* VBuffer)override;
+		virtual void AddVertexBuffer(VertexBuffer* VBuffer)noexcept override;
 		virtual void AddVertexBuffers(std::vector<VertexBuffer*> _VBuffers)override;
 		virtual void SetIndexBuffer(IndexBuffer* ibuf)override;
 		virtual IndexBuffer* GetIndexBuffer()const noexcept override { return IBuffer; };
-		virtual size_t GetIndexBufferSize()const noexcept override { return IBuffer->Count * sizeof(unsigned int); };
 		virtual std::vector<VertexBuffer*> GetVertexBuffer()const noexcept override { return VBuffers; };
 		inline bool HasIndexArray()const noexcept{ return hasIndexArray; };
 	private:

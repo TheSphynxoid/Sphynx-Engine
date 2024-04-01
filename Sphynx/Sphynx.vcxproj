@@ -137,6 +137,7 @@
     <ClInclude Include="src\Sphynx\Core\Scenic\Scenic.h" />
     <ClInclude Include="src\Sphynx\Core\Scripting\Mono\CsScript.h" />
     <ClInclude Include="src\Sphynx\Core\Scripting\Mono\Internal\GameObjectWrapper.h" />
+    <ClInclude Include="src\Sphynx\Core\Scripting\Mono\MonoInternalCalls.h" />
     <ClInclude Include="src\Sphynx\Core\Scripting\Mono\Internal\MonoWrapper.h" />
     <ClInclude Include="src\Sphynx\Core\Scripting\Mono\Internal\NativeComponent.h" />
     <ClInclude Include="src\Sphynx\Core\Scripting\Mono\Internal\ScriptManager.h" />

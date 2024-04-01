@@ -33,30 +33,33 @@ namespace Sphynx.Graphics
     [StructLayout(LayoutKind.Sequential)]
     public sealed class Shader : IDisposable
     {
-        //[MarshalAs(UnmanagedType.LPStruct)]
-        internal UIntPtr id = UIntPtr.Zero;
 
-        public UIntPtr ID { [Pure] get => id; }
+        private bool disposedValue;
+
+        //[MarshalAs(UnmanagedType.LPStruct)]
+        internal HandleRef id = new HandleRef(null, IntPtr.Zero);
+
+        public HandleRef ID { [Pure] get => id; }
 
         public ShaderType Type { [Pure] get; [Pure] private set; }
 
         [MethodImpl(MethodImplOptions.InternalCall)]
-        internal extern static UIntPtr CreateShader(Shader obj, byte stype);
+        internal extern static IntPtr CreateShader(Shader obj, byte stype);
         [MethodImpl(MethodImplOptions.InternalCall)]
-        internal extern static bool IsShaderValid(UIntPtr id);
+        internal extern static bool IsShaderValid(IntPtr id);
         [MethodImpl(MethodImplOptions.InternalCall)]
-        internal extern static void DeleteShader(UIntPtr id);
+        internal extern static void DeleteShader(IntPtr id);
 
-        public bool Valid { [Pure] get => IsShaderValid(id); }
+        public bool Valid { [Pure] get => IsShaderValid(id.Handle); }
 
         /// <summary>
         /// Create a shader with it's Native id. (Internal use only.)
         /// </summary>
         /// <param name="id">Native ID.</param>
         /// <param name="type">Shader Type.</param>
-        internal Shader(UIntPtr id, ShaderType type)
+        internal Shader(IntPtr id, ShaderType type)
         {
-            this.id = id;
+            this.id = new HandleRef(this, id);
             Type=type;
         }
 
@@ -64,23 +67,43 @@ namespace Sphynx.Graphics
         {
         }
 
-        ~Shader()
+        private void Dispose(bool disposing)
         {
-            Dispose();
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    // TODO: dispose managed state (managed objects)
+                }
+
+                // TODO: free unmanaged resources (unmanaged objects) and override finalizer
+                DeleteShader(id.Handle);
+                id = new HandleRef(null, IntPtr.Zero);
+                // TODO: set large fields to null
+                disposedValue=true;
+            }
         }
 
-        public void Dispose()
+        // TODO: override finalizer only if 'Dispose(bool disposing)' has code to free unmanaged resources
+        ~Shader()
         {
-            DeleteShader(id);
-            id = UIntPtr.Zero;
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            Dispose(disposing: false);
+        }
+
+        void IDisposable.Dispose()
+        {
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
         }
     }
 
     [StructLayout(LayoutKind.Sequential)]
     public struct ShaderPack
     {
-        public Shader Vert;
-        public Shader Frag;
+        public Shader Vert = null;
+        public Shader Frag = null;
         public Shader TessEval = null;
         public Shader TessControl = null;
         public Shader Geom = null;
@@ -146,11 +169,11 @@ namespace Sphynx.Graphics
         internal readonly Material.NativeShaderPack ToNative()
         {
             Material.NativeShaderPack native = new Material.NativeShaderPack();
-            native.VShader = (Vert == null) ? ref UIntPtr.Zero : ref Vert.id;
-            native.FShader = (Frag == null) ? ref UIntPtr.Zero : ref Frag.id;
-            native.TessEval = (TessEval == null) ? ref UIntPtr.Zero : ref TessEval.id;
-            native.TessControl = (TessControl == null) ? ref UIntPtr.Zero : ref TessControl.id;
-            native.GeomShader = (Geom == null) ? ref UIntPtr.Zero : ref Geom.id;
+            native.VShader = (Vert == null) ? IntPtr.Zero : Vert.id.Handle;
+            native.FShader = (Frag == null) ? IntPtr.Zero : Frag.id.Handle;
+            native.TessEval = (TessEval == null) ? IntPtr.Zero : TessEval.id.Handle;
+            native.TessControl = (TessControl == null) ? IntPtr.Zero : TessControl.id.Handle;
+            native.GeomShader = (Geom == null) ? IntPtr.Zero : Geom.id.Handle;
             return native;
         }
     }
@@ -161,11 +184,11 @@ namespace Sphynx.Graphics
         [Pure]
         [SuppressUnmanagedCodeSecurity]
         [MethodImpl(MethodImplOptions.InternalCall)]
-        static extern long GetDataTypeSize_Internal(byte datatype);
+        static extern ulong GetDataTypeSize_Internal(byte datatype);
 
         [Pure]
         [SuppressUnmanagedCodeSecurity]
-        public static long GetSize(this ShaderDataType dataType)
+        public static ulong GetSize(this ShaderDataType dataType)
         {
             return GetDataTypeSize_Internal((byte)dataType);
         }

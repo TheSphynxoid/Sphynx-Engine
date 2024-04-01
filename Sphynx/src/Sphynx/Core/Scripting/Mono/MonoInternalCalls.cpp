@@ -1,4 +1,5 @@
 #include "pch.h"
+#include "MonoInternalCalls.h"
 #ifndef Sphynx_Internal_Mono
 #define Sphynx_Internal_Mono
 #ifdef Platform_Windows
@@ -30,6 +31,7 @@ extern "C" {
 #include "Internal/GameObjectWrapper.h"
 #include "ResourceManager.h"
 
+//Links with Appdomain defined in MonoRuntime.cpp.
 extern MonoDomain* Appdomain;
 
 using namespace Sphynx::Core::Graphics;
@@ -102,7 +104,7 @@ namespace Sphynx::Mono::Internal {
 	MonoExport glm::vec3 GetPosition(MonoObject* go) {
 		return GameObjectWrapper::GetFromObject_unchecked(go)->GetTransform()->GetPosition();
 	}
-	struct TexInfo {
+	MonoExport struct TexInfo {
 		void* NativeID;
 		TextureDataFormat dataFormat;
 		TextureFormat format;
@@ -182,13 +184,64 @@ namespace Sphynx::Mono::Internal {
 	MonoExport void SetViewport(Viewport v) {
 		GetMainWindow()->GetRenderer()->SetViewport(v);
 	}
+	MonoExport void* malloc(size_t size) {
+		//For now we return the pointer, in future maybe we'll manage buffer given to C#.
+		return ::malloc(size);
+	}
+	MonoExport void* realloc(void* p, size_t size) {
+		return ::realloc(p, size);
+	}
+	MonoExport void free(void* p) {
+		::free(p);
+	}
+	MonoExport void memcpy(MonoArray* array, size_t offset, size_t count, void* nativePtr) {
+		char* data = mono_array_addr_with_size(array, sizeof(char), offset);
+		memcpy_s(nativePtr, sizeof(char) * count, data, sizeof(char) * count);
+	}
+	MonoExport void memset(void* ptr, size_t size, int val) {
+		::memset(ptr, val, size);
+	}
+	MonoExport void* ArrayToPointer(MonoArray* Array, int IndexFirst) {
+		auto elemsize = mono_array_element_size(mono_object_get_class((MonoObject*)Array));
+		char* data = mono_array_addr_with_size(Array,  elemsize, IndexFirst);
+		return data;
+	}
+	struct VBLayout {
+		BufferElement* elems;
+		int count;
+		unsigned int stride;
+	};
+	MonoExport void SetVBLayout(VertexBuffer* vb, VBLayout layout) {
+		vb->SetDataLayout(BufferLayout(std::initializer_list<BufferElement>(layout.elems, &layout.elems[layout.count - 1])));
+	}
+	MonoExport size_t GetVBSize(VertexBuffer* vb) {
+		return vb->GetSize();
+	}
+	MonoExport GPUBuffer* VBToGPUBuffer(VertexBuffer* vb) {
+		return vb;
+	}	
+	MonoExport GPUBuffer* IBToGPUBuffer(IndexBuffer* vb) {
+		return vb;
+	}
+	MonoExport Sphynx::Core::Graphics::Mesh* MeshCreateVBs(VertexBuffer** vbs, int Count, IndexBuffer* ib) {
+		std::vector<VertexBuffer*> VBvec = std::vector<VertexBuffer*>(Count);
+		VBvec.assign(vbs, &vbs[Count - 1]);
+	}
 
 	void RegisterInternalCalls() {
 		MainWindow = GetApplication()->GetMainWindow();
-
+		//Sphynx.Core.Native.ComponentFactory
 		mono_add_internal_call("Sphynx.Core.Native.ComponentFactory::CreateNative", (void*)&CreateNativeComponent);
 		//Sphynx.Core.Native.NativeComponent
 		mono_add_internal_call("Sphynx.Core.Native.NativeComponent::NativeFinalize", (void*)&NativeFinalize);
+		//Sphynx.Core.Engine
+		mono_add_internal_call("Sphynx.Core.Engine::ArrayToPointer", (void*)&ArrayToPointer);
+		//Sphynx.Core.Native.Memory
+		mono_add_internal_call("Sphynx.Core.Native.Memory::malloc", &Mono::Internal::malloc);
+		mono_add_internal_call("Sphynx.Core.Native.Memory::realloc", &Mono::Internal::realloc);
+		mono_add_internal_call("Sphynx.Core.Native.Memory::free", &Mono::Internal::free);
+		mono_add_internal_call("Sphynx.Core.Native.Memory::memcpy", &Mono::Internal::memcpy);
+		mono_add_internal_call("Sphynx.Core.Native.Memory::memset", &Mono::Internal::memset);
 		//Sphynx.Time
 		mono_add_internal_call("Sphynx.Time::GetDeltaTime", (void*)&Time::GetDeltaTime);
 		mono_add_internal_call("Sphynx.Time::GetDeltaTicks", (void*)&Time::GetDeltaTicks);
@@ -259,6 +312,20 @@ namespace Sphynx::Mono::Internal {
 		mono_add_internal_call("Sphynx.Graphics.Renderer::Render", &Render);
 		mono_add_internal_call("Sphynx.Graphics.Renderer::Clear", &Clear);
 		mono_add_internal_call("Sphynx.Graphics.Renderer::SetViewport", &SetViewport);
+		//Sphynx.Graphics.VertexBuffer
+		mono_add_internal_call("Sphynx.Graphics.VertexBuffer::CreateVB", &VertexBuffer::Create);
+		mono_add_internal_call("Sphynx.Graphics.VertexBuffer::GetUnderlayingBuffer", &VBToGPUBuffer);
+		mono_add_internal_call("Sphynx.Graphics.VertexBuffer::SetLayout", &SetVBLayout);
+		mono_add_internal_call("Sphynx.Graphics.VertexBuffer::SetData", &SetDataGPUBuf);
+		mono_add_internal_call("Sphynx.Graphics.VertexBuffer::GetVBSize", &GetVBSize);
+		//Sphynx.Graphics.IndexBuffer
+		mono_add_internal_call("Sphynx.Graphics.IndexBuffer::CreateIB", &IndexBuffer::Create);
+		mono_add_internal_call("Sphynx.Graphics.IndexBuffer::GetUnderlayingBuffer", &IBToGPUBuffer);
+		mono_add_internal_call("Sphynx.Graphics.IndexBuffer::SetData_int", &SetDataGPUBuf);
+		//Sphynx.Graphics.Mesh
+		mono_add_internal_call("Sphynx.Graphics.Mesh::CreateEmpty", &Mesh::CreateEmpty);
+		mono_add_internal_call("Sphynx.Graphics.Mesh::Create", static_cast<Mesh * (*)(VertexBuffer*, IndexBuffer*)>(&Mesh::Create));
+		mono_add_internal_call("Sphynx.Graphics.Mesh::CreateList", &MeshCreateVBs);
 	}
 }
 #endif

@@ -49,7 +49,6 @@ namespace Sphynx::Core::Graphics {
 
 	class BufferElement final{
 	private:
-		//Changed order for packing.
 		friend class BufferLayout;
 		size_t Size = 0;
 		size_t Offset = 0;
@@ -118,40 +117,38 @@ namespace Sphynx::Core::Graphics {
 		inline std::vector<BufferElement>::iterator end()noexcept { return Elements.end(); };
 		inline std::vector<BufferElement>::const_iterator begin() const noexcept { return Elements.begin(); }
 		inline std::vector<BufferElement>::const_iterator end() const noexcept { return Elements.end(); }
-		inline BufferElement& operator[](size_t pos)noexcept { return Elements[pos]; };
+		inline BufferElement& operator[](size_t pos) { return Elements[pos]; };
 	};
 
 	struct VertexBuffer : public GPUBuffer {
 		virtual ~VertexBuffer() = default;
 		virtual void SetDataLayout(BufferLayout layout) = 0;
 		virtual BufferLayout GetLayout()const = 0;
-		virtual const void* GetData()const noexcept = 0;
-		virtual size_t GetVertexBufferSize()const noexcept = 0;
 		static VertexBuffer* Create(float* vertices, size_t Size);
 		static VertexBuffer* CreateEmpty(size_t Size);
+
+		//SetData is inherited from GPUBuffer.
 	};
 	struct IndexBuffer : public GPUBuffer {
 		virtual ~IndexBuffer() = default;
 		virtual void SetData(const unsigned int* data, uint64_t count) = 0;
-		virtual const void* GetData()const noexcept = 0;
-		virtual int GetCount()const noexcept = 0;
+		virtual unsigned int GetCount()const noexcept = 0;
 		static IndexBuffer* Create(unsigned int* indices, size_t Size);
 	};
 	class Mesh
 	{
 	public:
 		virtual ~Mesh() = default;
-		static Mesh* CreateEmpty();
-		static Mesh* Create(float* vertexes, size_t vertsize, unsigned int* indexes, size_t indexsize, MeshType meshtype);
-		static Mesh* Create(VertexBuffer* VBuffer, IndexBuffer* IBuffer);
+		static Mesh* CreateEmpty()noexcept;
+		static Mesh* Create(float* vertexes, size_t vertsize, unsigned int* indexes, size_t indexsize, MeshType meshtype)noexcept;
+		static Mesh* Create(VertexBuffer* VBuffer, IndexBuffer* IBuffer)noexcept;
 		static Mesh* Create(std::vector<VertexBuffer*> VBuffers, IndexBuffer* IBuffer);
 		virtual void Bind()const = 0;
 		virtual void Unbind()const = 0;
-		virtual void AddVertexBuffer(VertexBuffer* VBuffer) = 0;
+		virtual void AddVertexBuffer(VertexBuffer* VBuffer)noexcept = 0;
 		virtual void AddVertexBuffers(std::vector<VertexBuffer*> _VBuffers) = 0;
 		virtual void SetIndexBuffer(IndexBuffer* ibuf) = 0;
 		virtual IndexBuffer* GetIndexBuffer()const = 0;
-		virtual size_t GetIndexBufferSize()const noexcept = 0;
 		virtual std::vector<VertexBuffer*> GetVertexBuffer()const noexcept = 0;
 	};
 }

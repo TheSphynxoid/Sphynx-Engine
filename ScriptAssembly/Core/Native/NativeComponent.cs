@@ -13,10 +13,10 @@ namespace Sphynx.Core.Native
     internal struct NativeComponent : IDisposable
     {
         public readonly ulong NativeID;
-        private UIntPtr NativePtr;
+        private HandleRef NativePtr;
 
         [MethodImpl(MethodImplOptions.InternalCall)]
-        internal static extern bool NativeFinalize(UIntPtr NativePointer);
+        internal static extern bool NativeFinalize(HandleRef NativePointer);
 
         [AllowReversePInvokeCalls]
         public void Dispose()

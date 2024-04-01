@@ -347,3 +347,4 @@ ASALocalRun/
 healthchecksdb
 *.png
 *.hint
+/.vscode

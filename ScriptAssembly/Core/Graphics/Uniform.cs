@@ -6,6 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Security;
+using System.Runtime.InteropServices;
 
 namespace Sphynx.Graphics
 {
@@ -13,14 +14,18 @@ namespace Sphynx.Graphics
     [NativeWrapper("Uniform", true)]
     public struct Uniform : IDisposable
     {
+
+        private bool disposedValue;
+
         [MethodImpl(MethodImplOptions.InternalCall)]
         [SuppressUnmanagedCodeSecurity]
-        internal static extern UIntPtr CreateUniform(byte[] data, byte shadertype); 
+        internal static extern IntPtr CreateUniform(byte[] data, byte shadertype);
 
         /// <summary>
         /// Pointer to the C++ Uniform interface (It's an "Abstract" class).
         /// </summary>
-        internal UIntPtr NativeUniform;
+        internal HandleRef NativeUniform;
+
         internal int Location;
         /// <summary>
         /// Gets the Data type the uniform provides.
@@ -34,7 +39,7 @@ namespace Sphynx.Graphics
         public Uniform(Byte[] bytes, ShaderDataType dataType)
         {
             //Copy Bytes into Core's (C++) Memory and send to GPU.
-            NativeUniform = CreateUniform(bytes,(byte)dataType);
+            NativeUniform = new HandleRef(this, CreateUniform(bytes, (byte)dataType));
             DataType = dataType;
         }
         /// <summary>
@@ -43,7 +48,7 @@ namespace Sphynx.Graphics
         /// <param name="dataType"></param>
         public Uniform(ShaderDataType dataType)
         {
-            NativeUniform = CreateUniform(null, (byte)dataType);
+            NativeUniform = new HandleRef(this, CreateUniform(null, (byte)dataType));
             DataType = dataType;
         }
         /// <summary>
@@ -60,9 +65,19 @@ namespace Sphynx.Graphics
             Location = loc;
         }
 
-        public void Dispose()
+        private void Dispose()
         {
-            throw new NotImplementedException();
+            if (!disposedValue)
+            {
+                // TODO: free unmanaged resources (unmanaged objects) and override finalizer
+                // TODO: set large fields to null
+                disposedValue=true;
+            }
+        }
+
+        void IDisposable.Dispose()
+        {
+            Dispose();
         }
     }
 }

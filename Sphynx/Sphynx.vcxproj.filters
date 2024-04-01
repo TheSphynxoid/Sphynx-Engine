@@ -332,6 +332,7 @@
       <Filter>Sphynx</Filter>
     </ClInclude>
     <ClInclude Include="src\Sphynx\Core\Graphics\Platform\GLBuffer.h" />
+    <ClInclude Include="src\Sphynx\Core\Scripting\Mono\MonoInternalCalls.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Sphynx\Application.cpp">
