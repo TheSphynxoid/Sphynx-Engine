@@ -226,8 +226,28 @@ namespace Sphynx::Mono::Internal {
 	MonoExport Sphynx::Core::Graphics::Mesh* MeshCreateVBs(VertexBuffer** vbs, int Count, IndexBuffer* ib) {
 		std::vector<VertexBuffer*> VBvec = std::vector<VertexBuffer*>(Count);
 		VBvec.assign(vbs, &vbs[Count - 1]);
+		return Mesh::Create(VBvec, ib);
 	}
-
+	MonoExport void AddVB(Mesh* mesh, VertexBuffer* vb) {
+		mesh->AddVertexBuffer(vb);
+	}
+	MonoExport void SetVBs(Mesh* mesh, int Count, VertexBuffer** vbs) {
+		std::vector<VertexBuffer*> VBvec = std::vector<VertexBuffer*>(Count);
+		VBvec.assign(vbs, &vbs[Count - 1]);
+		mesh->SetVertexBuffers(VBvec);
+	}
+	MonoExport void SetIB(Mesh* mesh, IndexBuffer* ib) {
+		mesh->SetIndexBuffer(ib);
+	}
+	MonoExport void MeshBind(Mesh* mesh) {
+		mesh->Bind();
+	}
+	MonoExport void MeshUnbind(Mesh* mesh) {
+		mesh->Unbind();
+	}
+	MonoExport void MeshSetMode(Mesh* mesh, RenderMode mode) {
+		mesh->SetRenderMode(mode);
+	}
 	void RegisterInternalCalls() {
 		MainWindow = GetApplication()->GetMainWindow();
 		//Sphynx.Core.Native.ComponentFactory
@@ -326,6 +346,12 @@ namespace Sphynx::Mono::Internal {
 		mono_add_internal_call("Sphynx.Graphics.Mesh::CreateEmpty", &Mesh::CreateEmpty);
 		mono_add_internal_call("Sphynx.Graphics.Mesh::Create", static_cast<Mesh * (*)(VertexBuffer*, IndexBuffer*)>(&Mesh::Create));
 		mono_add_internal_call("Sphynx.Graphics.Mesh::CreateList", &MeshCreateVBs);
+		mono_add_internal_call("Sphynx.Graphics.Mesh::AddVB", &AddVB);
+		mono_add_internal_call("Sphynx.Graphics.Mesh::SetVBs", &SetVBs);
+		mono_add_internal_call("Sphynx.Graphics.Mesh::SetIB", &SetIB);
+		mono_add_internal_call("Sphynx.Graphics.Mesh::Bind", &MeshBind);
+		mono_add_internal_call("Sphynx.Graphics.Mesh::Unbind", &MeshUnbind);
+		mono_add_internal_call("Sphynx.Graphics.Mesh::SetRenderMode", &MeshSetMode);
 	}
 }
 #endif

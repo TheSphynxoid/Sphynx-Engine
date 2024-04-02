@@ -65,30 +65,32 @@ namespace Sphynx::Core::Graphics::GL {
 	{
 	public:
 		//Empty Mesh
-		GLMesh();
-		GLMesh(float* vertexes, size_t vertsize, unsigned int* indexes, size_t indexsize, MeshType meshtype);
-		GLMesh(VertexBuffer* VertBuf, IndexBuffer* IndexBuf);
-		GLMesh(std::vector<VertexBuffer*> VertBuf, IndexBuffer* IndexBuf);
+		GLMesh()noexcept;
+		GLMesh(float* vertexes, size_t vertsize, unsigned int* indexes, size_t indexsize, MeshType meshtype)noexcept;
+		GLMesh(VertexBuffer* VertBuf, IndexBuffer* IndexBuf)noexcept;
+		GLMesh(std::vector<VertexBuffer*> VertBuf, IndexBuffer* IndexBuf)noexcept;
 		GLMesh(const GLMesh&) = delete;
 		GLMesh& operator=(const GLMesh&) = delete;
 		GLMesh(GLMesh&& Mesh)noexcept;
 		GLMesh& operator=(GLMesh&& Mesh)noexcept;
 		virtual ~GLMesh()override;
-		virtual void Bind()const override;
-		virtual void Unbind()const override;
+		virtual void Bind()const noexcept override;
+		virtual void Unbind()const noexcept override;
 		virtual void AddVertexBuffer(VertexBuffer* VBuffer)noexcept override;
-		virtual void AddVertexBuffers(std::vector<VertexBuffer*> _VBuffers)override;
-		virtual void SetIndexBuffer(IndexBuffer* ibuf)override;
+		virtual void SetVertexBuffers(std::vector<VertexBuffer*> _VBuffers)noexcept override;
+		virtual void SetIndexBuffer(IndexBuffer* ibuf)noexcept override;
 		virtual IndexBuffer* GetIndexBuffer()const noexcept override { return IBuffer; };
 		virtual std::vector<VertexBuffer*> GetVertexBuffer()const noexcept override { return VBuffers; };
-		inline bool HasIndexArray()const noexcept{ return hasIndexArray; };
+		inline bool HasIndexArray()const noexcept{ return IBuffer; };
+		virtual void SetRenderMode(RenderMode m)noexcept { mode = m; };
+		virtual RenderMode GetRenderMode()const noexcept { return mode; }
 	private:
-		void Release();
+		void Release()noexcept;
 		std::vector<VertexBuffer*> VBuffers = std::vector<VertexBuffer*>();
 		GLIndexBuffer* IBuffer = nullptr;
 		unsigned int VAO = 0;
 		unsigned int VAttribIndex = 0;
-		bool hasIndexArray = false;
+		RenderMode mode = RenderMode::Trig;
 		static int MaxAttribs;
 	};
 }

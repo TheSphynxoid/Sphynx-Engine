@@ -10,7 +10,6 @@ namespace Sphynx
     public sealed class Transform : Component
     {
         private bool IsChanged = true;
-        private bool IsRelative;
         public Vector3 Position
         {
             get => GetPosition(gameObject);
@@ -22,8 +21,10 @@ namespace Sphynx
 
         //Implement Parent-Child relation.
         
-        //public GameObject Parent { get; set; }
-        //public List<GameObject> Children { get; set; }
+        //public Transform Parent { get; set; }
+        //public List<Transform> Children { get; set; }
+        //bool IsRelative;
+        
 
         internal Transform() { }
 

@@ -47,5 +47,10 @@ namespace Sphynx.Core.Native
                 throw new NullReferenceException("");
             }
         }
+
+        internal NativeComponent GetNativeInstance(GameObject go,string CompName)
+        {
+
+        }
     }
 }

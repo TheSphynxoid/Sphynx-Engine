@@ -53,7 +53,12 @@ namespace Sphynx
             0, 1, 2,
             2, 3, 0
         });
-        private Mesh Plane;
+        
+        Mesh Plane = new (VB, IB);
+
+        Uniform ModelUniform = new Uniform();
+
+        static readonly Uniform ProjViewUniform = new Uniform();
 
         private RenderObject renderObject;
 
@@ -61,6 +66,8 @@ namespace Sphynx
         {
             Material = new(SpriteDefaultMaterial);
             Material.AddTexture(DefaultSprite);
+            Material.SetUniform(ModelUniform, 1);
+            Material.SetUniform(ProjViewUniform, 1);
             renderObject.mat = Material;
             renderObject.mesh = Plane;
         }

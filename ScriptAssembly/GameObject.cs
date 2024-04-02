@@ -28,17 +28,17 @@ namespace Sphynx
         /// </summary>
         public EntityID ID { get => id; }
 
-        private readonly HandleRef NativePtr;
+        internal readonly HandleRef NativePtr;
         /// <summary>
         /// The Transform Component.
         /// </summary>
         public Transform transform { get; private set; }
+
         /// <summary>
-        /// Don't Use. TODO: Refactor.
+        /// Used by the runtime.
         /// </summary>
-        public GameObject()
+        internal GameObject()
         {
-            Console.WriteLine("GameObject Constructed");
             transform = new Transform();
             transform.gameObject = this;
             transform.Awake();

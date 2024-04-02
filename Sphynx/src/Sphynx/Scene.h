@@ -31,9 +31,16 @@ namespace Sphynx::Core {
 		//GameObject GetGameObject(std::string name);
 		void Start();
 		void Update();
+
+		//TODO: Maybe make these take and return Camera not a pointer to it.
+
 		Camera* GetPrimaryCamera() { 
 			return PrimaryCamera;
 		};
+		void SetPrimaryCamera(Camera* cam) {
+			PrimaryCameraObject = *cam->GetGameObject();
+			PrimaryCamera = cam;
+		}
 		GameObject& GetPrimaryCameraObject() {
 			return PrimaryCameraObject;
 		}

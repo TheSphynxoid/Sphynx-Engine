@@ -1,4 +1,5 @@
-﻿using Sphynx.Core;
+﻿using Mono.CSharp;
+using Sphynx.Core;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -31,6 +32,15 @@ namespace Sphynx.Graphics
     };
 
     /// <summary>
+    /// Indicates the how the renderer will draw primitives for a mesh.
+    /// </summary>
+    public enum RenderMode : byte
+    {
+        Points, Lines, LineLoop, LineStrip, Trig, TrigStrip, TrigFan, 
+		LinesAdj = 0xA, LineStripAdj, TrigAdj, TrigStripAdj, Patches /* 1:1 From opengl */
+    };
+
+    /// <summary>
     /// Represents the element of data in a <see cref="VertexBuffer"/>.
     /// </summary>
     [NativeCppClass]
@@ -42,9 +52,9 @@ namespace Sphynx.Graphics
         ulong size;
         [Pure]
         public ulong Size { get => size; }
-        internal long offset;
+        internal ulong offset;
         [Pure]
-        public long Offset { get => offset; }
+        public ulong Offset { get => offset; }
         //bool Normalized = false;
         public bool Normalized { [Pure] readonly get; init; }
 
@@ -103,8 +113,23 @@ namespace Sphynx.Graphics
     {
         public BufferElement[] bufferElements;
         public BufferElement[] Elements { get => bufferElements; }
-        public uint stride;
+        public uint stride = 0;
         public uint Stride { get => stride; }
+
+        public BufferLayout() { }
+
+        public BufferLayout(BufferElement[] elems)
+        {
+            ulong offset = 0;
+            bufferElements = new BufferElement[elems.Length];
+            for (int i = 0; i < elems.Length; i++)
+            {
+                elems[i].offset = offset;
+                bufferElements[i] = elems[i];
+                offset += elems[i].Size;
+                stride += (uint)elems[i].Size;
+            }
+        }
 
     }
 
@@ -230,6 +255,8 @@ namespace Sphynx.Graphics
         internal HandleRef NativePtr;
         internal List<VertexBuffer> VBOs;
         internal IndexBuffer IBO;
+        internal RenderMode mode = RenderMode.Trig;
+        public RenderMode RenderMode { get => mode; set { mode = value;SetRenderMode(NativePtr.Handle, (byte)value); } }
         
         [MethodImpl(MethodImplOptions.InternalCall)]
         [SuppressUnmanagedCodeSecurity]
@@ -245,8 +272,19 @@ namespace Sphynx.Graphics
         static extern void AddVB(IntPtr native, IntPtr VB);
         [MethodImpl(MethodImplOptions.InternalCall)]
         [SuppressUnmanagedCodeSecurity]
-        static extern void SetVBs(IntPtr native, int count, IntPtr IBuffer);
-
+        static extern void SetVBs(IntPtr native, int count, IntPtr VBs);
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        [SuppressUnmanagedCodeSecurity]
+        static extern void SetIB(IntPtr native, IntPtr ib);
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        [SuppressUnmanagedCodeSecurity]
+        static extern void Bind(IntPtr native);
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        [SuppressUnmanagedCodeSecurity]
+        static extern void Unbind(IntPtr native);
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        [SuppressUnmanagedCodeSecurity]
+        static extern void SetRenderMode(IntPtr native, byte mode);
 
         public Mesh()
         {
@@ -265,8 +303,8 @@ namespace Sphynx.Graphics
 
         public Mesh(List<VertexBuffer> vbs, IndexBuffer ib)
         {
-            VBOs =vbs;
-            IBO= ib;
+            VBOs = vbs;
+            IBO = ib;
             int count = vbs.Count;
             IntPtr[] ptrs = new IntPtr[count];
             for (int i = 0; i < count; i++)
@@ -278,27 +316,34 @@ namespace Sphynx.Graphics
 
         public void AddVertexBuffer(VertexBuffer vbo)
         {
-
+            VBOs.Add(vbo);
+            AddVB(NativePtr.Handle, vbo.GetNative());
         }
 
         public void SetVertexBuffers(List<VertexBuffer> vbs)
         {
-
+            VBOs = vbs;
+            IntPtr[] ptrs = new IntPtr[vbs.Count];
+            for (int i = 0; i < vbs.Count; i++)
+            {
+                ptrs[i] = vbs[i].GetNative();
+            }
+            SetVBs(NativePtr.Handle, vbs.Count, ptrs.ToPointer());
         }
 
         public void SetIndexBuffer(IndexBuffer ibo)
         {
-
+            SetIB(NativePtr.Handle, ibo.GetNative());
         }
 
         public void Bind()
         {
-
+            Bind(NativePtr.Handle);
         }
 
         public void Unbind()
         {
-
+            Unbind(NativePtr.Handle);
         }
 
         public HandleRef GetNative()

@@ -64,6 +64,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Camera.cs" />
     <Compile Include="Component.cs" />
     <Compile Include="Core\Application.cs" />
     <Compile Include="Core\AssetManager.cs" />
@@ -78,6 +79,7 @@
     <Compile Include="Core\Graphics\Shader.cs" />
     <Compile Include="Core\Native\Memory.cs" />
     <Compile Include="Extra.cs" />
+    <Compile Include="Matrix.cs" />
     <Compile Include="SpriteRenderer.cs" />
     <Compile Include="Core\Graphics\Texture.cs" />
     <Compile Include="Core\Graphics\Uniform.cs" />
@@ -106,6 +108,7 @@
       <HintPath>..\build\bin\Debug-windows-x86_64\Sandbox\data\mono\gac\Mono.Http\4.0.0.0__0738eb9f132ed756\Mono.Http.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Numerics" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

@@ -60,7 +60,7 @@ IndexBuffer* Sphynx::Core::Graphics::IndexBuffer::Create(unsigned int* indices, 
 	return nullptr;
 }
 
-Mesh* Sphynx::Core::Graphics::Mesh::CreateEmpty()
+Mesh* Sphynx::Core::Graphics::Mesh::CreateEmpty()noexcept
 {
 	switch (CurrentPlatform)
 	{
@@ -78,7 +78,7 @@ Mesh* Sphynx::Core::Graphics::Mesh::CreateEmpty()
 	return nullptr;
 }
 
-Mesh* Sphynx::Core::Graphics::Mesh::Create(float* vertexes, size_t vertsize, unsigned int* indexes, size_t indexsize, MeshType meshtype)
+Mesh* Sphynx::Core::Graphics::Mesh::Create(float* vertexes, size_t vertsize, unsigned int* indexes, size_t indexsize, MeshType meshtype)noexcept
 {
 	switch (CurrentPlatform)
 	{
@@ -95,7 +95,7 @@ Mesh* Sphynx::Core::Graphics::Mesh::Create(float* vertexes, size_t vertsize, uns
 	}
 	return nullptr;
 }
-Mesh* Sphynx::Core::Graphics::Mesh::Create(VertexBuffer* VBuffer, IndexBuffer* IBuffer)
+Mesh* Sphynx::Core::Graphics::Mesh::Create(VertexBuffer* VBuffer, IndexBuffer* IBuffer)noexcept
 {
 	switch (CurrentPlatform)
 	{
@@ -113,7 +113,7 @@ Mesh* Sphynx::Core::Graphics::Mesh::Create(VertexBuffer* VBuffer, IndexBuffer* I
 	return nullptr;
 }
 
-Mesh* Sphynx::Core::Graphics::Mesh::Create(std::vector<VertexBuffer*> VBuffers, IndexBuffer* IBuffer)
+Mesh* Sphynx::Core::Graphics::Mesh::Create(std::vector<VertexBuffer*> VBuffers, IndexBuffer* IBuffer)noexcept
 {
 	switch (CurrentPlatform)
 	{

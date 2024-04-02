@@ -40,7 +40,7 @@ void Sphynx::Core::Graphics::GL::GLRenderer::Start(IWindow* app)
 
 void Sphynx::Core::Graphics::GL::GLRenderer::Render()
 {
-	//packed.
+	//TODO: Batch Rendering.
 	for (auto& pair : RenderQueue) {
 		pair.second->front().mat->Bind();
 		for (auto rend : *pair.second) {
@@ -50,10 +50,10 @@ void Sphynx::Core::Graphics::GL::GLRenderer::Render()
 			}
 			GLMesh* Mesh = (GLMesh*)rend.mesh;
 			if (Mesh->HasIndexArray()) {
-				glDrawElements(GL_TRIANGLES, Mesh->GetIndexBuffer()->GetSize(), GL_UNSIGNED_INT, 0);
+				glDrawElements((GLenum)Mesh->GetRenderMode(), Mesh->GetIndexBuffer()->GetSize(), GL_UNSIGNED_INT, 0);
 			}
 			else {
-				glDrawArrays(GL_TRIANGLES, 0, Mesh->GetVertexBuffer()[0]->GetSize());
+				glDrawArrays((GLenum)Mesh->GetRenderMode(), 0, Mesh->GetVertexBuffer()[0]->GetSize());
 			}
 			rend.mesh->Unbind();
 		}
@@ -93,6 +93,7 @@ void Sphynx::Core::Graphics::GL::GLRenderer::OnSubmit(RenderObject rend)
 	//I think this is sorted.
 	auto l = RenderQueue[((GLMaterial*)rend.mat)->ProgramId];
 	if (l == nullptr) {
+		//assume object with the same material will be rendered more then once during execution.
 		l = new RenderObjectList();
 		RenderQueue[((GLMaterial*)rend.mat)->ProgramId] = l;
 	}

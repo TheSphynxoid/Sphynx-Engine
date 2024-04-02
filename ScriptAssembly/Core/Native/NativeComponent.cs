@@ -24,4 +24,9 @@ namespace Sphynx.Core.Native
             NativeFinalize(NativePtr);
         }
     }
+
+    internal static class NativeComponentFactory
+    {
+
+    }
 }

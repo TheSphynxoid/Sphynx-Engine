@@ -13,6 +13,12 @@ namespace Sphynx::Core::Graphics {
 		Stream
 	};
 
+	//Indicates the how the renderer will draw primitives for a mesh.
+	enum class RenderMode : unsigned char {
+		Points, Lines, LineLoop, LineStrip, Trig, TrigStrip, TrigFan, 
+		LinesAdj = 0xA, LineStripAdj, TrigAdj, TrigStripAdj, Patches /* 1:1 From opengl */ 
+	};
+
 	static size_t GetShaderDataTypeSize(ShaderDataType Type) {
 		switch (Type)
 		{
@@ -107,7 +113,7 @@ namespace Sphynx::Core::Graphics {
 			{
 				element.Offset = offset;
 				offset += element.Size;
-				Stride += element.Size;
+				Stride += (unsigned int)element.Size;
 			}
 		};
 		inline unsigned int GetStride() const noexcept { return Stride; };
@@ -124,8 +130,8 @@ namespace Sphynx::Core::Graphics {
 		virtual ~VertexBuffer() = default;
 		virtual void SetDataLayout(BufferLayout layout) = 0;
 		virtual BufferLayout GetLayout()const = 0;
-		static VertexBuffer* Create(float* vertices, size_t Size);
-		static VertexBuffer* CreateEmpty(size_t Size);
+		static VertexBuffer* Create(float* vertices, size_t Size)noexcept;
+		static VertexBuffer* CreateEmpty(size_t Size)noexcept;
 
 		//SetData is inherited from GPUBuffer.
 	};
@@ -133,7 +139,7 @@ namespace Sphynx::Core::Graphics {
 		virtual ~IndexBuffer() = default;
 		virtual void SetData(const unsigned int* data, uint64_t count) = 0;
 		virtual unsigned int GetCount()const noexcept = 0;
-		static IndexBuffer* Create(unsigned int* indices, size_t Size);
+		static IndexBuffer* Create(unsigned int* indices, size_t Size)noexcept;
 	};
 	class Mesh
 	{
@@ -142,13 +148,15 @@ namespace Sphynx::Core::Graphics {
 		static Mesh* CreateEmpty()noexcept;
 		static Mesh* Create(float* vertexes, size_t vertsize, unsigned int* indexes, size_t indexsize, MeshType meshtype)noexcept;
 		static Mesh* Create(VertexBuffer* VBuffer, IndexBuffer* IBuffer)noexcept;
-		static Mesh* Create(std::vector<VertexBuffer*> VBuffers, IndexBuffer* IBuffer);
+		static Mesh* Create(std::vector<VertexBuffer*> VBuffers, IndexBuffer* IBuffer)noexcept;
 		virtual void Bind()const = 0;
 		virtual void Unbind()const = 0;
 		virtual void AddVertexBuffer(VertexBuffer* VBuffer)noexcept = 0;
-		virtual void AddVertexBuffers(std::vector<VertexBuffer*> _VBuffers) = 0;
+		virtual void SetVertexBuffers(std::vector<VertexBuffer*> _VBuffers)noexcept = 0;
 		virtual void SetIndexBuffer(IndexBuffer* ibuf) = 0;
 		virtual IndexBuffer* GetIndexBuffer()const = 0;
 		virtual std::vector<VertexBuffer*> GetVertexBuffer()const noexcept = 0;
+		virtual void SetRenderMode(RenderMode rm)noexcept = 0;
+		virtual RenderMode GetRenderMode()const noexcept = 0;
 	};
 }

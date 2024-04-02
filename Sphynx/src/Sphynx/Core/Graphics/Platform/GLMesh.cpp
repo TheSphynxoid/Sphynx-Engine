@@ -106,7 +106,6 @@ Sphynx::Core::Graphics::GL::GLMesh::GLMesh(GLMesh&& Mesh)noexcept
 	std::swap(this->VAttribIndex, Mesh.VAttribIndex);
 	std::swap(this->VBuffers, Mesh.VBuffers);
 	std::swap(this->IBuffer, Mesh.IBuffer);
-	std::swap(this->hasIndexArray, Mesh.hasIndexArray);
 }
 
 Sphynx::Core::Graphics::GL::GLMesh& Sphynx::Core::Graphics::GL::GLMesh::operator=(GLMesh&& Mesh)noexcept
@@ -117,7 +116,6 @@ Sphynx::Core::Graphics::GL::GLMesh& Sphynx::Core::Graphics::GL::GLMesh::operator
 		std::swap(this->VAttribIndex, Mesh.VAttribIndex);
 		std::swap(this->VBuffers, Mesh.VBuffers);
 		std::swap(this->IBuffer, Mesh.IBuffer);
-		std::swap(this->hasIndexArray, Mesh.hasIndexArray);
 	}
 	return *this;
 }
@@ -127,12 +125,12 @@ Sphynx::Core::Graphics::GL::GLMesh::~GLMesh()
 	Release();
 }
 
-Sphynx::Core::Graphics::GL::GLMesh::GLMesh()
+Sphynx::Core::Graphics::GL::GLMesh::GLMesh()noexcept
 {
 	glCreateVertexArrays(1, &VAO);
 }
 
-Sphynx::Core::Graphics::GL::GLMesh::GLMesh(float* vertexes, size_t vertsize, unsigned int* indexes, size_t indexsize, MeshType meshtype)
+Sphynx::Core::Graphics::GL::GLMesh::GLMesh(float* vertexes, size_t vertsize, unsigned int* indexes, size_t indexsize, MeshType meshtype)noexcept
 {
 	//Create VAO
 	glCreateVertexArrays(1, &VAO);
@@ -146,7 +144,7 @@ Sphynx::Core::Graphics::GL::GLMesh::GLMesh(float* vertexes, size_t vertsize, uns
 	VBuffers[0]->SetData(vertexes, 0, vertsize);
 	SetVertexAttribs(temp, VAttribIndex);
 	//Create and Bind Index Buffers
-	if ((hasIndexArray = (indexes != nullptr))) {
+	if (indexes != nullptr) {
 		IBuffer = new GLIndexBuffer(indexes, indexsize / sizeof(*indexes));
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, *(GLuint*)(IBuffer->GetNative()));
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexsize, indexes, MeshTypeToGLenum(meshtype));
@@ -163,7 +161,7 @@ Sphynx::Core::Graphics::GL::GLMesh::GLMesh(VertexBuffer* VertBuf, IndexBuffer* I
 	glCreateVertexArrays(1, &VAO);
 	glBindVertexArray(VAO);
 	VertBuf->Bind();
-	if ((hasIndexArray = (IndexBuf != nullptr))) {
+	if (IndexBuf != nullptr) {
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, *(GLuint*)(IndexBuf->GetNative()));
 	}
 	//Attributes For Vertex Buffers
@@ -172,12 +170,12 @@ Sphynx::Core::Graphics::GL::GLMesh::GLMesh(VertexBuffer* VertBuf, IndexBuffer* I
 	glBindVertexArray(0);
 }
 
-Sphynx::Core::Graphics::GL::GLMesh::GLMesh(std::vector<VertexBuffer*> VertBuf, IndexBuffer* IndexBuf)
+Sphynx::Core::Graphics::GL::GLMesh::GLMesh(std::vector<VertexBuffer*> VertBuf, IndexBuffer* IndexBuf)noexcept
 	: VBuffers(VertBuf), IBuffer((GLIndexBuffer*)(IndexBuf))
 {
 	glCreateVertexArrays(1, &VAO);
 	glBindVertexArray(VAO);
-	if ((hasIndexArray = (IndexBuf != nullptr))) {
+	if (IndexBuf != nullptr) {
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, *(GLuint*)(IndexBuf->GetNative()));
 	}
 	//Attributes For Vertex Buffers
@@ -190,17 +188,17 @@ Sphynx::Core::Graphics::GL::GLMesh::GLMesh(std::vector<VertexBuffer*> VertBuf, I
 	glBindVertexArray(0);
 }
 
-void Sphynx::Core::Graphics::GL::GLMesh::Bind()const
+void Sphynx::Core::Graphics::GL::GLMesh::Bind()const noexcept
 {
 	glBindVertexArray(VAO);
 }
 
-void Sphynx::Core::Graphics::GL::GLMesh::Unbind()const
+void Sphynx::Core::Graphics::GL::GLMesh::Unbind()const noexcept
 {
 	glBindVertexArray(0);
 }
 
-void Sphynx::Core::Graphics::GL::GLMesh::AddVertexBuffer(VertexBuffer* VBuffer)
+void Sphynx::Core::Graphics::GL::GLMesh::AddVertexBuffer(VertexBuffer* VBuffer)noexcept
 {
 	Bind();
 	VBuffers.push_back(VBuffer);
@@ -208,26 +206,29 @@ void Sphynx::Core::Graphics::GL::GLMesh::AddVertexBuffer(VertexBuffer* VBuffer)
 	Unbind();
 }
 
-void Sphynx::Core::Graphics::GL::GLMesh::AddVertexBuffers(std::vector<VertexBuffer*> VBuffers)
+void Sphynx::Core::Graphics::GL::GLMesh::SetVertexBuffers(std::vector<VertexBuffer*> vbuffers)noexcept
 {
 	Bind();
-	VBuffers.insert(VBuffers.end(), VBuffers.begin(), VBuffers.end());
+	for (auto& vb : VBuffers) {
+		delete vb;
+	}
+	VBuffers = vbuffers;
 	for (auto& vb : VBuffers) {
 		SetVertexAttribs(vb, VAttribIndex);
 	}
 	Unbind();
 }
 
-void Sphynx::Core::Graphics::GL::GLMesh::SetIndexBuffer(IndexBuffer* ibuf)
+void Sphynx::Core::Graphics::GL::GLMesh::SetIndexBuffer(IndexBuffer* ibuf)noexcept
 {
 	if (ibuf == nullptr)return;
-	hasIndexArray = true;
+	delete IBuffer;
 	IBuffer = static_cast<GLIndexBuffer*>(ibuf);
 }
 
-void Sphynx::Core::Graphics::GL::GLMesh::Release()
+void Sphynx::Core::Graphics::GL::GLMesh::Release()noexcept
 {
-	if (this->hasIndexArray) {
+	if (IBuffer != nullptr) {
 		this->Unbind();
 		IBuffer->Release();
 	}
