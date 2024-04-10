@@ -8,21 +8,21 @@ using namespace Sphynx::Core;
 using namespace Sphynx::Core::Graphics;
 using namespace Sphynx::Core::Graphics::GL;
 
-void Sphynx::Core::Graphics::GL::GLFrameBuffer::Release()
+void GLFrameBuffer::Release()
 {
 	glDeleteFramebuffers(1, &ID);
 	ID = 0;
-	for (auto& tex : ColorAttachments) {
+	for (const auto& tex : ColorAttachments) {
 		delete tex;
 	}
 }
 
-Sphynx::Core::Graphics::GL::GLFrameBuffer::GLFrameBuffer(unsigned int id, int width, int height, std::initializer_list<Texture*> attachments)
+GLFrameBuffer::GLFrameBuffer(unsigned int id, int width, int height, std::initializer_list<Texture*> attachments)
 {
 	ID = id;
 	Width = width;
-	Height = Height;
-	Bind();
+	Height = height;
+	GLFrameBuffer::Bind();
 	for (auto& tex : attachments) {
 		if (tex->GetFormat() == TextureFormat::Depth24_Stencil8) {
 			if (!DepthAttachment) {
@@ -42,13 +42,13 @@ Sphynx::Core::Graphics::GL::GLFrameBuffer::GLFrameBuffer(unsigned int id, int wi
 			ColorAttachments.push_back(tex);
 		}
 	}
-	Unbind();
+	GLFrameBuffer::Unbind();
 }
 
-Sphynx::Core::Graphics::GL::GLFrameBuffer::GLFrameBuffer(int width, int height, std::initializer_list<Texture*> attachments) : Width(width), Height(height)
+GLFrameBuffer::GLFrameBuffer(int width, int height, std::initializer_list<Texture*> attachments) : Width(width), Height(height)
 {
 	glCreateFramebuffers(1, &ID);
-	Bind();
+	GLFrameBuffer::Bind();
 	for (auto& tex : attachments) {
 		if (tex->GetFormat() == TextureFormat::Depth24_Stencil8) {
 			glNamedFramebufferTexture(ID, GL_DEPTH_STENCIL_ATTACHMENT, ((GLTexture*)tex)->TextureID, 0);
@@ -72,48 +72,48 @@ Sphynx::Core::Graphics::GL::GLFrameBuffer::GLFrameBuffer(int width, int height, 
 	}
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 		Core_Error("ERROR: Framebuffer is not complete!");
-	Unbind();
+	GLFrameBuffer::Unbind();
 }
 
-void Sphynx::Core::Graphics::GL::GLFrameBuffer::Bind(Sphynx::Core::Graphics::FrameBufferBinding b)
+void GLFrameBuffer::Bind(FrameBufferBinding b)
 {
 	switch (b)
 	{
-	case Sphynx::Core::Graphics::FrameBufferBinding::Read:
+	case FrameBufferBinding::Read:
 		glBindFramebuffer(GL_READ_FRAMEBUFFER, ID);
 		break;
-	case Sphynx::Core::Graphics::FrameBufferBinding::Write:
+	case FrameBufferBinding::Write:
 		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, ID);
 		break;
-	case Sphynx::Core::Graphics::FrameBufferBinding::ReadWrite:
+	case FrameBufferBinding::ReadWrite:
 		glBindFramebuffer(GL_FRAMEBUFFER, ID);
 		break;
 	}
 }
 
-void Sphynx::Core::Graphics::GL::GLFrameBuffer::Unbind()
+void GLFrameBuffer::Unbind()
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
-void Sphynx::Core::Graphics::GL::GLFrameBuffer::Resize(unsigned int width, unsigned int height)
+void GLFrameBuffer::Resize(unsigned int width, unsigned int height)
 {
 	Width = width;
 	Height = height;
 	Invalidate();
 }
 
-void Sphynx::Core::Graphics::GL::GLFrameBuffer::Invalidate()
+void GLFrameBuffer::Invalidate()
 {
 	if (!ID)
 		glDeleteFramebuffers(1, &ID);
 	glCreateFramebuffers(1, &ID);
 	Bind();
 	ColorAttachmentsCount = 0;
-	for (auto tex : ColorAttachments) {
-		auto _t = Texture::Create(TextureType::Texture2D, Width, Height, 0, tex->GetFormat(), tex->GetDataFormat());
-		//Weird ass Casts. First We cast into a GLTexture Pointer then we dereferance it then we move it to
-		//tex after casting tex To GLTexture* from Texture* then we dereferance. It's looks distrubing.
+	for (const auto tex : ColorAttachments) {
+		const auto _t = Texture::Create(TextureType::Texture2D, Width, Height, 0, tex->GetFormat(), tex->GetDataFormat());
+		//Weird ass Casts. First We cast into a GLTexture Pointer then we dereference it then we move it to
+		//tex after casting tex To GLTexture* from Texture* then we dereference. It's looks ugly.
 		(*((GLTexture*)tex)) = (GLTexture&&)*(GLTexture*)_t;
 		if (tex->GetFormat() == TextureFormat::Depth24_Stencil8) {
 			glNamedFramebufferTexture(ID, GL_DEPTH_STENCIL_ATTACHMENT, ((GLTexture*)tex)->TextureID, 0);
@@ -133,12 +133,12 @@ void Sphynx::Core::Graphics::GL::GLFrameBuffer::Invalidate()
 	Unbind();
 }
 
-Sphynx::Core::Graphics::GL::GLFrameBuffer::~GLFrameBuffer()
+GLFrameBuffer::~GLFrameBuffer()
 {
 	Release();
 }
 
-void Sphynx::Core::Graphics::GL::GLFrameBuffer::AddColorAttachment(Texture* tex)
+void GLFrameBuffer::AddColorAttachment(Texture* tex)
 {
 	if (tex->GetFormat() == TextureFormat::Depth24_Stencil8) {
 		Core_Error("Depth24_Stencil8 is not a valid color format");
@@ -149,7 +149,7 @@ void Sphynx::Core::Graphics::GL::GLFrameBuffer::AddColorAttachment(Texture* tex)
 	ColorAttachments.push_back(tex);
 }
 
-void Sphynx::Core::Graphics::GL::GLFrameBuffer::SetDepthStencilAttachment(Texture* tex)
+void GLFrameBuffer::SetDepthStencilAttachment(Texture* tex)
 {
 	if (tex->GetFormat() == TextureFormat::Depth24_Stencil8) {
 		DepthAttachment = tex;
@@ -157,14 +157,14 @@ void Sphynx::Core::Graphics::GL::GLFrameBuffer::SetDepthStencilAttachment(Textur
 	}
 }
 
-void Sphynx::Core::Graphics::GL::GLFrameBuffer::SetClearColor(glm::vec4 col)
+void GLFrameBuffer::SetClearColor(glm::vec4 col)
 {
 	Bind();
 	glClearColor(col.r, col.g, col.b, col.a);
 	Unbind();
 }
 
-void Sphynx::Core::Graphics::GL::GLFrameBuffer::Clear(ClearBuffer b)
+void GLFrameBuffer::Clear(ClearBuffer b)
 {
 	switch (b)
 	{
@@ -177,21 +177,19 @@ void Sphynx::Core::Graphics::GL::GLFrameBuffer::Clear(ClearBuffer b)
 	case Sphynx::Core::Graphics::ClearBuffer::Stencil:
 		glClear(GL_STENCIL_BUFFER_BIT);
 		break;
-	default:
-		break;
 	}
 }
 
-void Sphynx::Core::Graphics::GL::GLFrameBuffer::Clear()
+void GLFrameBuffer::Clear()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 }
 
-FrameBuffer* Sphynx::Core::Graphics::GL::GLFrameBuffer::GetDefaultFramebuffer()
+FrameBuffer* GLFrameBuffer::GetDefaultFrameBuffer()
 {
-	static GLFrameBuffer def = GLFrameBuffer(0, 0, 0);
-	static bool LazyInit = false;
-	if(!LazyInit){
+	static auto def = GLFrameBuffer(0, 0, 0);
+	static bool lazy_init = false;
+	if(!lazy_init){
 		def.ID = 0;
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 		GLint dims[4] = { 0 };
@@ -199,7 +197,7 @@ FrameBuffer* Sphynx::Core::Graphics::GL::GLFrameBuffer::GetDefaultFramebuffer()
 		def.Width = dims[2];
 		def.Height = dims[3];
 
-		LazyInit = true;
+		lazy_init = true;
 	}
 	return &def;
 }

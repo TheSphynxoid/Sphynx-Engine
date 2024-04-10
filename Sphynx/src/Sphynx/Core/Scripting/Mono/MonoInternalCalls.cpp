@@ -7,11 +7,12 @@
 #elif
 #define MonoExport
 #endif
+#include "Core/SceneManager.h"
+#include "Scene.h"
 #include "Logger.h"
 #include "Component.h"
+#include "Camera.h"
 #include "Core/Factories/ComponentFactory.h"
-//#define ExculdeEntryPoint
-//#include "../Sphynx.h"
 #include "Core/Graphics/Window.h"
 #include <glm/glm.hpp>
 #include "Internal/NativeComponent.h"
@@ -20,6 +21,7 @@
 #include "Core/Graphics/Pipeline/Texture.h"
 #include "Core/Graphics/Pipeline/Mesh.h"
 #include "Core/Graphics/Pipeline/Buffer.h"
+#include "Core/Graphics/Pipeline/FrameBuffer.h"
 extern "C" {
 #include "mono/jit/jit.h"
 #include "mono/metadata/assembly.h"
@@ -39,6 +41,14 @@ using namespace Sphynx::Core::Graphics;
 namespace Sphynx::Mono::Internal {
 
 	Core::IWindow* MainWindow;
+
+	template<typename T>
+	std::vector<T> make_vector(T* t, size_t count)
+	{
+		auto vec = std::vector<T>(count);
+		vec.assign(t, &t[count - 1]);
+		return vec;
+	}
 
 	MonoExport void NativeFinalize(void* CompPtr) {
 		auto VComp = (Component*)CompPtr;
@@ -118,6 +128,12 @@ namespace Sphynx::Mono::Internal {
 		info.Dimension = { tex->GetWidth(),tex->GetHeight(),tex->GetDepth() };
 		return info;
 	}
+	MonoExport void BindTex(Texture* tex) {
+		tex->Bind();
+	}
+	MonoExport void UnbindTex(Texture* tex) {
+		tex->Unbind();
+	}
 	MonoExport Shader* ShaderLoader(MonoString* path, Sphynx::Core::Graphics::ShaderType type) {
 		auto p = mono_string_to_utf8(path);
 		auto shader = Sphynx::ResourceManager::LoadShader(p, type);
@@ -147,7 +163,7 @@ namespace Sphynx::Mono::Internal {
 	}
 	MonoExport int GetUniLoc(Material* mat, MonoString* name) {
 		auto uniname = mono_string_to_utf8(name);
-		auto loc = mat->GetUniformLocation(uniname);
+		const auto loc = mat->GetUniformLocation(uniname);
 		mono_free(uniname);
 		return loc;
 	}	
@@ -185,7 +201,7 @@ namespace Sphynx::Mono::Internal {
 		GetMainWindow()->GetRenderer()->SetViewport(v);
 	}
 	MonoExport void* malloc(size_t size) {
-		//For now we return the pointer, in future maybe we'll manage buffer given to C#.
+		//For now, we return the pointer, in future maybe we'll manage buffer given to C#.
 		return ::malloc(size);
 	}
 	MonoExport void* realloc(void* p, size_t size) {
@@ -224,17 +240,13 @@ namespace Sphynx::Mono::Internal {
 		return vb;
 	}
 	MonoExport Sphynx::Core::Graphics::Mesh* MeshCreateVBs(VertexBuffer** vbs, int Count, IndexBuffer* ib) {
-		std::vector<VertexBuffer*> VBvec = std::vector<VertexBuffer*>(Count);
-		VBvec.assign(vbs, &vbs[Count - 1]);
-		return Mesh::Create(VBvec, ib);
+		return Mesh::Create(make_vector(vbs, Count), ib);
 	}
 	MonoExport void AddVB(Mesh* mesh, VertexBuffer* vb) {
 		mesh->AddVertexBuffer(vb);
 	}
 	MonoExport void SetVBs(Mesh* mesh, int Count, VertexBuffer** vbs) {
-		std::vector<VertexBuffer*> VBvec = std::vector<VertexBuffer*>(Count);
-		VBvec.assign(vbs, &vbs[Count - 1]);
-		mesh->SetVertexBuffers(VBvec);
+		mesh->SetVertexBuffers(make_vector(vbs, Count));
 	}
 	MonoExport void SetIB(Mesh* mesh, IndexBuffer* ib) {
 		mesh->SetIndexBuffer(ib);
@@ -248,14 +260,48 @@ namespace Sphynx::Mono::Internal {
 	MonoExport void MeshSetMode(Mesh* mesh, RenderMode mode) {
 		mesh->SetRenderMode(mode);
 	}
+	MonoExport Camera* GetPrimaryCamera() {
+		return Sphynx::Core::SceneManager::GetScene().GetPrimaryCamera();
+	}
+	MonoExport Component* GetNativeCompByName(GameObject* go, MonoString* str) {
+		const auto name = mono_string_to_utf8(str);
+		for (const auto& comp : go->GetComponents()) {
+			if (!strcmp(comp->GetName(), name)) {
+				return comp;
+			}
+		}
+		mono_free(name);
+	}
+	MonoExport void CoreCheck(void* anyObj, const bool unbox) {
+		if (unbox) {
+			anyObj = mono_object_unbox((MonoObject*)anyObj);
+		}
+		__debugbreak();
+	}
+	MonoExport FrameBuffer* CreateFB(int width, int height, Texture** texArray, int count)
+	{
+		return FrameBuffer::Create(width, height, std::initializer_list(texArray, &texArray[count - 1]));
+	}
+	MonoExport void ReleaseFB(FrameBuffer* fb)
+	{
+		delete fb;
+	}
+	MonoExport FrameBuffer* GetDefaultFB()
+	{
+		return FrameBuffer::GetDefaultFrameBuffer();
+	}
+
 	void RegisterInternalCalls() {
 		MainWindow = GetApplication()->GetMainWindow();
 		//Sphynx.Core.Native.ComponentFactory
 		mono_add_internal_call("Sphynx.Core.Native.ComponentFactory::CreateNative", (void*)&CreateNativeComponent);
 		//Sphynx.Core.Native.NativeComponent
 		mono_add_internal_call("Sphynx.Core.Native.NativeComponent::NativeFinalize", (void*)&NativeFinalize);
+		//Sphynx.Core.Native.NativeComponentFactory
+		mono_add_internal_call("Sphynx.Core.Native.NativeComponentFactory::GetNativeCompByName", &GetNativeCompByName);
 		//Sphynx.Core.Engine
 		mono_add_internal_call("Sphynx.Core.Engine::ArrayToPointer", (void*)&ArrayToPointer);
+		mono_add_internal_call("Sphynx.Core.Engine::CoreCheckObject", &CoreCheck);
 		//Sphynx.Core.Native.Memory
 		mono_add_internal_call("Sphynx.Core.Native.Memory::malloc", &Mono::Internal::malloc);
 		mono_add_internal_call("Sphynx.Core.Native.Memory::realloc", &Mono::Internal::realloc);
@@ -302,6 +348,8 @@ namespace Sphynx::Mono::Internal {
 		mono_add_internal_call("Sphynx.Graphics.Texture::GetDefaultFilterMode", &Texture::GetDefaultFilterMode);
 		mono_add_internal_call("Sphynx.Graphics.Texture::GetDefaultWrappingMode", &Texture::GetDefaultWrappingMode);
 		mono_add_internal_call("Sphynx.Graphics.Texture::GetDefaultMipmapMode", &Texture::GetDefaultMipmapMode);
+		mono_add_internal_call("Sphynx.Graphics.Texture::Bind", &BindTex);
+		mono_add_internal_call("Sphynx.Graphics.Texture::Unbind", &UnbindTex);
 		//Sphynx.Graphics.Material
 		mono_add_internal_call("Sphynx.Graphics.Material::CreateMaterial(Sphynx.Graphics.Material/NativeShaderPack)",
 			static_cast<Material* (*)(const ShaderPack&)>(&Material::Create));
@@ -344,7 +392,7 @@ namespace Sphynx::Mono::Internal {
 		mono_add_internal_call("Sphynx.Graphics.IndexBuffer::SetData_int", &SetDataGPUBuf);
 		//Sphynx.Graphics.Mesh
 		mono_add_internal_call("Sphynx.Graphics.Mesh::CreateEmpty", &Mesh::CreateEmpty);
-		mono_add_internal_call("Sphynx.Graphics.Mesh::Create", static_cast<Mesh * (*)(VertexBuffer*, IndexBuffer*)>(&Mesh::Create));
+		mono_add_internal_call("Sphynx.Graphics.Mesh::Create", static_cast<Mesh*(*)(VertexBuffer*, IndexBuffer*)>(&Mesh::Create));
 		mono_add_internal_call("Sphynx.Graphics.Mesh::CreateList", &MeshCreateVBs);
 		mono_add_internal_call("Sphynx.Graphics.Mesh::AddVB", &AddVB);
 		mono_add_internal_call("Sphynx.Graphics.Mesh::SetVBs", &SetVBs);
@@ -352,6 +400,8 @@ namespace Sphynx::Mono::Internal {
 		mono_add_internal_call("Sphynx.Graphics.Mesh::Bind", &MeshBind);
 		mono_add_internal_call("Sphynx.Graphics.Mesh::Unbind", &MeshUnbind);
 		mono_add_internal_call("Sphynx.Graphics.Mesh::SetRenderMode", &MeshSetMode);
+		//Sphynx.Graphics.FrameBuffer
+		mono_add_internal_call("Sphynx.Graphics.FrameBuffer::Create", &CreateFB);
 	}
 }
 #endif

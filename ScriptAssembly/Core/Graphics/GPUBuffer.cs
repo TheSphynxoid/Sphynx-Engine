@@ -1,5 +1,4 @@
-﻿using Mono.CSharp;
-using Sphynx.Core;
+﻿using Sphynx.Core;
 using Sphynx.Core.Native;
 using System;
 using System.Collections.Generic;
@@ -32,32 +31,32 @@ namespace Sphynx.Graphics
 
         HandleRef NativeObject;
 
-        private ulong size;
+        ulong size;
         public ulong Size { get => size; }
 
         [MethodImpl(MethodImplOptions.InternalCall)]
         [SuppressUnmanagedCodeSecurity]
-        private static extern IntPtr CreateBuffer(ulong size, IntPtr data, byte usage, byte access);
+        static extern IntPtr CreateBuffer(ulong size, IntPtr data, byte usage, byte access);
 
         [MethodImpl(MethodImplOptions.InternalCall)]
         [SuppressUnmanagedCodeSecurity]
-        private static extern void ReallocateBuffer(IntPtr native, ulong size, byte[] data);
+        static extern void ReallocateBuffer(IntPtr native, ulong size, byte[] data);
 
         [MethodImpl(MethodImplOptions.InternalCall)]
         [SuppressUnmanagedCodeSecurity]
-        private static extern void InvalidateBuffer(IntPtr native);
+        static extern void InvalidateBuffer(IntPtr native);
 
         [MethodImpl(MethodImplOptions.InternalCall)]
         [SuppressUnmanagedCodeSecurity]
-        private extern static void SetBufferData(IntPtr native, IntPtr data, ulong size, ulong offset);
+        extern static void SetBufferData(IntPtr native, IntPtr data, ulong size, ulong offset);
 
         [MethodImpl(MethodImplOptions.InternalCall)]
         [SuppressUnmanagedCodeSecurity]
-        private static extern void BindBuffer(IntPtr native);
+        static extern void BindBuffer(IntPtr native);
 
         [MethodImpl(MethodImplOptions.InternalCall)]
         [SuppressUnmanagedCodeSecurity]
-        private static extern void UnbindBuffer(IntPtr native);
+        static extern void UnbindBuffer(IntPtr native);
 
         /// <summary>
         /// For types that derive from GPUBuffer in native.

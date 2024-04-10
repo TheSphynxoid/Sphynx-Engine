@@ -40,8 +40,17 @@ namespace Sphynx.Core
         //public extern static void NativeDebuggerBreak();
 
         [AllowReversePInvokeCalls]
-        public static void LaunchDebugger()
+        static void RuntimeSetup()
         {
+            AppDomain.CurrentDomain.AssemblyResolve += (sender, args) => {
+                string resourceName = "Sphynx." + new AssemblyName(args.Name).Name + ".dll";
+                using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceName))
+                {
+                    Byte[] assemblyData = new Byte[stream.Length];
+                    stream.Read(assemblyData, 0, assemblyData.Length);
+                    return Assembly.Load(assemblyData);
+                }
+            };
         }
 
         public static void NativeBreak()
@@ -53,36 +62,44 @@ namespace Sphynx.Core
 
         [MethodImpl(MethodImplOptions.InternalCall)]
         [SuppressUnmanagedCodeSecurity]
-        private static extern IntPtr ArrayToPointer(Array Array, int Index);
+        static extern IntPtr ArrayToPointer(Array array, int index);
 
         /// <summary>
         /// Gets the address of the data in a buffer.
         /// </summary>
         /// <param name="array">Array to get data address from.</param>
-        /// <param name="Index">Index to start from.</param>
+        /// <param name="index">Index to start from.</param>
         [SuppressUnmanagedCodeSecurity]
-        public unsafe static IntPtr GetArrayPointer(Array array, int Index = 0)
+        public static unsafe IntPtr GetArrayPointer(Array array, int index = 0)
         {
-            return ArrayToPointer(array, Index);
+            return ArrayToPointer(array, index);
         }
 
         [SuppressUnmanagedCodeSecurity]
-        internal unsafe static IntPtr ToPointer(this Array array, int Index = 0)
+        internal static unsafe IntPtr ToPointer(this Array array, int index = 0)
         {
-            return GetArrayPointer(array, Index);
+            return GetArrayPointer(array, index);
         }
 
         /// <summary>
-        /// Transforms an primitve array to a byte array.
+        /// Transforms a primitive array to a byte array.
         /// </summary>
         /// <typeparam name="T">Primitive/Unmanaged type of the array</typeparam>
         /// <returns>A new byte[]</returns>
-        public unsafe static byte[] ToByteArray<T>(T[] array) where T : unmanaged
+        public static unsafe byte[] ToByteArray<T>(T[] array) where T : unmanaged
         {
             byte[] buf = new byte[Buffer.ByteLength(array)];
             Buffer.BlockCopy(array, 0, buf, 0, buf.Length);
             return buf;
         }
+
+        /// <summary>
+        /// Used for debugging in core to check the structure of an object in memory. Calls DebuggerBreak in native.
+        /// </summary>
+        /// <param name="unbox">Set to true if the object is a value type.</param>
+        [SuppressUnmanagedCodeSecurity]
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        internal static extern void CoreCheckObject(object obj, bool unbox);
     }
     /// <summary>
     /// Marker for the originating header for wrapped type.

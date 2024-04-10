@@ -8,7 +8,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Reflection;
 using System.Diagnostics.Contracts;
-using Mono.CSharp;
 using Sphynx.Core;
 using System.Security;
 
@@ -33,8 +32,7 @@ namespace Sphynx.Graphics
     [StructLayout(LayoutKind.Sequential)]
     public sealed class Shader : IDisposable
     {
-
-        private bool disposedValue;
+        bool disposedValue;
 
         //[MarshalAs(UnmanagedType.LPStruct)]
         internal HandleRef id = new HandleRef(null, IntPtr.Zero);
@@ -67,7 +65,7 @@ namespace Sphynx.Graphics
         {
         }
 
-        private void Dispose(bool disposing)
+        void Dispose(bool disposing)
         {
             if (!disposedValue)
             {

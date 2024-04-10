@@ -41,28 +41,6 @@
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
-  <ItemGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
-    <Reference Include="Mono.CSharp">
-      <HintPath>..\SandBox\mono\gac\Mono.CSharp\4.0.0.0__0738eb9f132ed756\Mono.CSharp.dll</HintPath>
-    </Reference>
-    <Reference Include="Mono.Cecil">
-      <HintPath>..\SandBox\mono\gac\Mono.Cecil\0.11.1.0__0738eb9f132ed756\Mono.Cecil.dll</HintPath>
-    </Reference>
-    <Reference Include="Mono.Parallel">
-      <HintPath>..\SandBox\mono\gac\Mono.Parallel\4.0.0.0__0738eb9f132ed756\Mono.Parallel.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
-    <Reference Include="Mono.CSharp">
-      <HintPath>..\SandBox\mono\gac\Mono.CSharp\4.0.0.0__0738eb9f132ed756\Mono.CSharp.dll</HintPath>
-    </Reference>
-    <Reference Include="Mono.Cecil">
-      <HintPath>..\SandBox\mono\gac\Mono.Cecil\0.11.1.0__0738eb9f132ed756\Mono.Cecil.dll</HintPath>
-    </Reference>
-    <Reference Include="Mono.Parallel">
-      <HintPath>..\SandBox\mono\gac\Mono.Parallel\4.0.0.0__0738eb9f132ed756\Mono.Parallel.dll</HintPath>
-    </Reference>
-  </ItemGroup>
   <ItemGroup>
     <Compile Include="Camera.cs" />
     <Compile Include="Component.cs" />
@@ -100,15 +78,18 @@
     <Compile Include="Vector.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="GlmSharp, Version=0.9.8.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Resources\GlmSharp.dll</HintPath>
+    </Reference>
     <Reference Include="Mono.Debugger.Soft, Version=4.0.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\build\bin\Debug-windows-x86_64\Sandbox\data\mono\gac\Mono.Debugger.Soft\4.0.0.0__0738eb9f132ed756\Mono.Debugger.Soft.dll</HintPath>
     </Reference>
-    <Reference Include="Mono.Http">
-      <HintPath>..\build\bin\Debug-windows-x86_64\Sandbox\data\mono\gac\Mono.Http\4.0.0.0__0738eb9f132ed756\Mono.Http.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Numerics" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="GlmSharp.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

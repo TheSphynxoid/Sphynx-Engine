@@ -2,7 +2,7 @@
 #ifndef Sphynx_Component
 #define Sphynx_Component
 #define CompImpl(T) \
-virtual const char* GetName() override { return #T ;}
+virtual const char* GetName()const noexcept override { return #T ;}
 
 #include "Object.h"
 namespace Sphynx {
@@ -26,7 +26,7 @@ namespace Sphynx {
 		virtual void Update() {};
 		virtual void FixedUpdate() {};
 		virtual ~Component() = default;
-		virtual const char* GetName() = 0;
+		virtual const char* GetName()const noexcept = 0;
 		virtual Component* CopyInstance() = 0;
 		GameObject* GetGameObject() { return Parent; };
 		size_t GetID() { return InstanceID; };

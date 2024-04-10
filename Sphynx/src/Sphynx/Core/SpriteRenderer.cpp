@@ -40,7 +40,7 @@ auto fShader = Shader::Create("#version 330 core\n"
     "uniform sampler2D image;"
     "void main()"
     "{"
-    "color = vec4(1,1,1,1);"
+    "color = texture(Sprite, TexCoord) * vec4(1,1,1,1);"
     "}", ShaderType::FragmentShader);
 
 void FrameResize(Sphynx::OnFrameResize& e)

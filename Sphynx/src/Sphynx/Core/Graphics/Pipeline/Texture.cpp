@@ -10,10 +10,6 @@ static TextureWrappingMode DefWrap = TextureWrappingMode::ClampToBorder;
 static TextureFilterMode DefFilter = TextureFilterMode::Linear;
 static TextureMipmapMode DefMipmap = TextureMipmapMode::LinearMipmapLinear;
 
-Sphynx::Core::Graphics::Texture::Texture()noexcept
-{
-}
-
 void Sphynx::Core::Graphics::Texture::SetDefaultFormat(TextureFormat format)noexcept
 {
 	DefFormat = format;

@@ -1,31 +1,30 @@
 #pragma once
-#include "Events/Event.h"
 #include "glm/vec4.hpp"
 
 namespace Sphynx::Core::Graphics {
 	class Texture;
 	//Binding Point for the Framebuffer.
-	enum class FrameBufferBinding {
+	enum class FrameBufferBinding : unsigned char {
 		Read, Write, ReadWrite
 	};
-	enum class ClearBuffer {
+	enum class ClearBuffer : unsigned char {
 		Color, Depth, Stencil
 	};
 	class FrameBuffer
 	{
 	public:
-		virtual ~FrameBuffer() = default;
+		virtual ~FrameBuffer() = 0;
 		//Binds the Framebuffer for use.
 		virtual void Bind(FrameBufferBinding b = FrameBufferBinding::ReadWrite) = 0;
 		//Unbinds the framebuffer (the default framebuffer will be used for reading or writing).
 		virtual void Unbind() = 0;
-		//Resize the Framebuffer and attachement. Calling this Invalidates the FrameBuffer.
+		//Resize the framebuffer and attachment. Calling this Invalidates the FrameBuffer.
 		virtual void Resize(unsigned int width, unsigned int height) = 0;
-		//Gets the Specified color attachement.
+		//Gets the Specified color attachment.
 		virtual Texture* GetColorAttachment(size_t index) = 0;
 		//Attaches a new Color Texture.
 		virtual void AddColorAttachment(Texture* tex) = 0;
-		//Sets the Depth/Stencil Attachement
+		//Sets the Depth/Stencil attachment.
 		virtual void SetDepthStencilAttachment(Texture* tex) = 0;
 		//return Whether the framebuffer has a depth texture.
 		virtual bool HasDepthAttachment() = 0;

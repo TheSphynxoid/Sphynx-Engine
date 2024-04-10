@@ -12,7 +12,6 @@ void SetVertexAttribs(Sphynx::Core::Graphics::VertexBuffer* buffs, unsigned int&
 		case Sphynx::Core::Graphics::ShaderDataType::None:
 			Core_Error("Attribute/Element Ignored.");
 			//IDK, Error Handling ?
-			Index--;
 			break;
 		case Sphynx::Core::Graphics::ShaderDataType::Float: [[fallthrough]];
 		case Sphynx::Core::Graphics::ShaderDataType::Float2: [[fallthrough]];

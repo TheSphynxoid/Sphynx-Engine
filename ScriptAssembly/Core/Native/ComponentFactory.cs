@@ -48,9 +48,9 @@ namespace Sphynx.Core.Native
             }
         }
 
-        internal NativeComponent GetNativeInstance(GameObject go,string CompName)
-        {
+        //static internal NativeComponent GetNativeInstance(GameObject go,string CompName)
+        //{
 
-        }
+        //}
     }
 }

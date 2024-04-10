@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 using System.Runtime.CompilerServices;
 using System.Runtime.Hosting;
 using System.Runtime.InteropServices;
+using System.Security;
 
 namespace Sphynx.Core.Native
 {
     [StructLayout(LayoutKind.Sequential)]
     internal struct NativeComponent : IDisposable
     {
-        public readonly ulong NativeID;
-        private HandleRef NativePtr;
+        internal HandleRef NativePtr;
 
         [MethodImpl(MethodImplOptions.InternalCall)]
         internal static extern bool NativeFinalize(HandleRef NativePointer);
@@ -27,6 +27,11 @@ namespace Sphynx.Core.Native
 
     internal static class NativeComponentFactory
     {
-
+        [SuppressUnmanagedCodeSecurity]
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        internal static extern IntPtr GetNativeCompByName(IntPtr GOHandle, string name);
+        [SuppressUnmanagedCodeSecurity]
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        internal static extern IntPtr CreateNativeComponent();
     }
 }

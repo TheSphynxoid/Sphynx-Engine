@@ -1,9 +1,7 @@
-﻿using Mono.CSharp;
-using Sphynx.Core;
+﻿using Sphynx.Core;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -37,7 +35,7 @@ namespace Sphynx.Graphics
     public enum RenderMode : byte
     {
         Points, Lines, LineLoop, LineStrip, Trig, TrigStrip, TrigFan, 
-		LinesAdj = 0xA, LineStripAdj, TrigAdj, TrigStripAdj, Patches /* 1:1 From opengl */
+        LinesAdj = 0xA, LineStripAdj, TrigAdj, TrigStripAdj, Patches /* 1:1 From opengl */
     };
 
     /// <summary>
@@ -46,16 +44,18 @@ namespace Sphynx.Graphics
     [NativeCppClass]
     public struct BufferElement
     {
-        byte shaderDataType;
-        [Pure]
-        public ShaderDataType DataType { get { return (ShaderDataType)shaderDataType; } }
         ulong size;
         [Pure]
         public ulong Size { get => size; }
+
         internal ulong offset;
         [Pure]
         public ulong Offset { get => offset; }
-        //bool Normalized = false;
+
+        byte shaderDataType;
+        [Pure]
+        public ShaderDataType DataType { get { return (ShaderDataType)shaderDataType; } }
+
         public bool Normalized { [Pure] readonly get; init; }
 
         public BufferElement(ShaderDataType dataType, bool norm)
@@ -63,6 +63,7 @@ namespace Sphynx.Graphics
             Normalized = norm;
             shaderDataType = (byte)dataType;
             size = dataType.GetSize();
+            DynamicMarshaller.Flatten(typeof(BufferElement));
         }
 
         //Copied 1:1 from "Mesh.h".

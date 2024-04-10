@@ -20,7 +20,7 @@ namespace Sphynx::Core::Graphics::GL {
 		GLTexture(void* data, int width, int height, int depth, TextureType Type, int MipmapLevel, TextureFormat format, TextureDataFormat datatype, TextureWrappingMode warp,
 			TextureFilterMode filter, TextureMipmapMode MipmapMode);
 		GLTexture(TextureType Type, int width, int height, int depth, int MipmapLevel, TextureFormat format, TextureDataFormat datatype, TextureWrappingMode warp,
-			TextureFilterMode filter, TextureMipmapMode MipmapMode);
+			TextureFilterMode filter, TextureMipmapMode mipmapMode);
 		GLTexture(const GLTexture&) = delete;
 		~GLTexture();
 		GLTexture& operator=(const GLTexture&) = delete;
@@ -29,10 +29,10 @@ namespace Sphynx::Core::Graphics::GL {
 
 		virtual void SetData(void* data, int Level = 0, int OffsetX = 0, int OffsetY = 0, int OffsetZ = 0, int Width = -1, int Height = -1, int Depth = 1) override;
 		virtual void Resize(int Width, int Height, int Depth, int Level = 0,
-			TextureFormat format = (TextureFormat)-1, TextureDataFormat dataformat = (TextureDataFormat)-1, const void* data = 0) override;
+			TextureFormat format = (TextureFormat)-1, TextureDataFormat dataFormat = (TextureDataFormat)-1, const void* data = 0) override;
 		virtual void Clear(int level, int OffsetX, int OffsetY, int OffsetZ, int Depth, int Width, int Height,
-			TextureFormat format = (TextureFormat)-1, TextureDataFormat dataformat = (TextureDataFormat)-1, const void* data = 0) override;
-		virtual void Clear(int Level, TextureFormat format, TextureDataFormat dataformat, const void* data) override;
+			TextureFormat format = (TextureFormat)-1, TextureDataFormat dataFormat = (TextureDataFormat)-1, const void* data = 0) override;
+		virtual void Clear(int Level, TextureFormat format, TextureDataFormat dataFormat, const void* data) override;
 		virtual void Clear(int Level) override;
 		virtual void Bind()noexcept override;
 		virtual void Unbind()noexcept override;
@@ -54,7 +54,7 @@ namespace Sphynx::Core::Graphics::GL {
 		virtual void GenerateMipmaps() override;
 		virtual DataBuffer GetCompressed() override;
 		virtual Texture* Compress() override;
-		virtual void CopyInto(Texture* Tex, int Height, int Width, int Depth = 0, int SrcMipLevel = 0, 
+		virtual void CopyInto(Texture* tex, int height, int width, int depth = 0, int SrcMipLevel = 0, 
 			int SrcX = 0, int SrcY = 0, int SrcZ = 0, int DstMipLevel = 0, int DstX = 0, int DstY = 0, int DstZ = 0) override;
 		friend class GLFrameBuffer;
 	};

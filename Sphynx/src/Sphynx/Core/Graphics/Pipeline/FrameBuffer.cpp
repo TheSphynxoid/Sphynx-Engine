@@ -13,7 +13,7 @@ void Sphynx::Core::Graphics::FrameBuffer::BindDefault()
 		[[fallthrough]];
 #endif
 	case Sphynx::Platform::Linux:
-		GL::GLFrameBuffer::GetDefaultFramebuffer()->Bind();
+		GL::GLFrameBuffer::GetDefaultFrameBuffer()->Bind();
 	default:
 		break;
 	}
@@ -48,7 +48,7 @@ Sphynx::Core::Graphics::FrameBuffer* Sphynx::Core::Graphics::FrameBuffer::GetDef
 		[[fallthrough]];
 #endif
 	case Sphynx::Platform::Linux:
-		return GL::GLFrameBuffer::GetDefaultFramebuffer();
+		return GL::GLFrameBuffer::GetDefaultFrameBuffer();
 	default:
 		break;
 	}

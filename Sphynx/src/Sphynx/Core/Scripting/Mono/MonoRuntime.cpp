@@ -48,8 +48,8 @@ std::unordered_map<std::string, MonoClass*> CommonTypes = {
 	{"System.UInt64",mono_get_uint64_class()},
 	{"System.Double",mono_get_double_class()},
 	{"System.Single",mono_get_single_class()},
-	{"System.HandleRef",mono_get_intptr_class()},
-	{"System.HandleRef",mono_get_uintptr_class()},
+	{"System.IntPtr",mono_get_intptr_class()},
+	{"System.UIntPtr",mono_get_uintptr_class()},
 	{"System.String",mono_get_string_class()},
 	{"System.Boolean",mono_get_boolean_class()},
 	{"System.Byte",mono_get_byte_class()},
@@ -58,7 +58,7 @@ std::unordered_map<std::string, MonoClass*> CommonTypes = {
 	{"System.Threading.Thread",mono_get_thread_class()},
 	{"System.Enum",mono_get_enum_class()},
 	{"System.Exception",mono_get_exception_class()},
-	{"void",mono_get_void_class()},
+	{"System.Void",mono_get_void_class()},
 	{"Sphynx.Component", CsScript::GetNative()},
 	{"Sphynx.GameObject", GameObjectWrapper::GetNative()},
 	{"Sphynx.Transform", TransformClass}
@@ -144,7 +144,6 @@ void Sphynx::Mono::MonoRuntime::ReadClassesMetadata()
 
 		if (IsComponent) {
 			CompNames.insert(std::pair<std::string, MonoClass*>(Classname, monoClass));
-			Core_Info(Classname);
 			AddManagedComponent(monoClass, Fullname);
 		}
 	}
@@ -204,12 +203,11 @@ void Sphynx::Mono::MonoRuntime::Initialize(std::string AssemblyPath)
 	GameObjectWrapper::GameObjectClass = mono_class_from_name(ScriptImage, "Sphynx", "GameObject");
 	GameObjectWrapper::Init();
 	MonoClass* EngineClass = mono_class_from_name(ScriptImage, "Sphynx.Core", "Engine");
-	MonoMethod* DebugLaunch = mono_class_get_method_from_name(EngineClass, "LaunchDebugger", 0);
-	mono_runtime_invoke(DebugLaunch, nullptr, nullptr, nullptr);
+	MonoMethod* RuntimeSetup = mono_class_get_method_from_name(EngineClass, "RuntimeSetup", 0);
+	mono_runtime_invoke(RuntimeSetup, nullptr, nullptr, nullptr);
 
 	TransformClass = mono_class_from_name(ScriptImage, "Sphynx", "Transform");
 	TransformWrapper::TransformClass = TransformClass;
-
 
 	ReadClassesMetadata();
 }

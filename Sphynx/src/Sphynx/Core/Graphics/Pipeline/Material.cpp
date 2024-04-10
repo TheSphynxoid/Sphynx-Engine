@@ -4,7 +4,6 @@
 
 Sphynx::Core::Graphics::Material* Sphynx::Core::Graphics::Material::Create(const ShaderPack& shaders)
 {
-	Core_Info("Core");
 	switch (CurrentPlatform)
 	{
 	case Sphynx::Platform::Windows:

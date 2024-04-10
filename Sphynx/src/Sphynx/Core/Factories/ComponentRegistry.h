@@ -7,6 +7,7 @@ namespace Sphynx {
 	class Component;
 }
 namespace Sphynx::Core::Internal {
+	//TODO: This needs to be obsoleted
 	class ComponentRegistry
 	{
 	private:
@@ -32,7 +33,7 @@ namespace Sphynx::Core::Internal {
 }
 template<>
 struct std::hash<Sphynx::Core::Internal::ComponentRegistry::CompInfo> {
-	size_t operator()(const Sphynx::Core::Internal::ComponentRegistry::CompInfo& k) const {
+	size_t operator()(const Sphynx::Core::Internal::ComponentRegistry::CompInfo& k) const noexcept {
 		return k.typeindex.hash_code();
 	}
 };
