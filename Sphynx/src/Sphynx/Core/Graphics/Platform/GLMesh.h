@@ -5,7 +5,7 @@
 namespace Sphynx::Core::Graphics::GL {
 	class GLVertexBuffer final : public VertexBuffer {
 	private:
-		GLBuffer underlaying;
+		GLBuffer underlying;
 		BufferLayout Layout = BufferLayout();
 	public:
 		GLVertexBuffer(size_t Size);
@@ -30,15 +30,15 @@ namespace Sphynx::Core::Graphics::GL {
 
 		// Inherited via VertexBuffer
 		size_t GetSize() const noexcept override {
-			return underlaying.GetSize();
+			return underlying.GetSize();
 		};
 		void Reallocate(size_t size, void* data) override;
 		void Invalidate() noexcept override;
-		void* GetNative()const noexcept override { return underlaying.GetNative(); };
+		void* GetNative()const noexcept override { return underlying.GetNative(); };
 	};
 	class GLIndexBuffer final : public IndexBuffer {
 	private:
-		GLBuffer underlaying;
+		GLBuffer underlying;
 	public:
 		GLIndexBuffer(uint32_t count)noexcept;
 		GLIndexBuffer(unsigned int* indices, size_t count)noexcept;
@@ -51,14 +51,14 @@ namespace Sphynx::Core::Graphics::GL {
 		virtual void Unbind()const noexcept override;
 		virtual void SetData(const void* data, size_t size, size_t offset)override;
 		virtual void SetData(const unsigned int* data, uint64_t count)override;
-		virtual size_t GetSize()const noexcept override { return underlaying.GetSize(); }
-		virtual unsigned int GetCount()const noexcept override { return underlaying.GetSize() / sizeof(int); };
+		virtual size_t GetSize()const noexcept override { return underlying.GetSize(); }
+		virtual unsigned int GetCount()const noexcept override { return underlying.GetSize() / sizeof(int); };
 		virtual void* Map(const MapAccess access) override;
 		virtual void Unmap()noexcept override;
 		virtual void Invalidate()noexcept override;
 		virtual void Release() override;
 		virtual void Reallocate(size_t size, void* data) override;
-		virtual void* GetNative()const noexcept override { return underlaying.GetNative(); };
+		virtual void* GetNative()const noexcept override { return underlying.GetNative(); };
 		friend class GLMesh;
 	};
 	class GLMesh final : public Mesh

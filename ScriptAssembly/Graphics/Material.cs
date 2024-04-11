@@ -22,16 +22,16 @@ namespace Sphynx.Graphics
     public sealed class Material : IDisposable
     {
         //Caching.
-        private static ShaderPack DefaultShaders;
+        static ShaderPack DefaultShaders;
 
-        private ShaderPack shaders;
+        ShaderPack shaders;
         public ShaderPack Shaders { [Pure]get => shaders; set { ReloadShaders(value); shaders = value; } }
 
         internal List<Texture> textures = new List<Texture>(0);
         public ref readonly List<Texture> Textures { get => ref textures; }
 
         internal HandleRef NativePtr;
-        private bool disposedValue;
+        bool disposedValue;
 
         #region NativeCalls
         [NativeCppClass]
@@ -46,44 +46,44 @@ namespace Sphynx.Graphics
 
         [MethodImpl(MethodImplOptions.InternalCall)]
         [SuppressUnmanagedCodeSecurity]
-        private extern static IntPtr CreateMaterial(NativeShaderPack shaderPack, IntPtr[] textures);
+        static extern IntPtr CreateMaterial(NativeShaderPack shaderPack, IntPtr[] textures);
 
         [MethodImpl(MethodImplOptions.InternalCall)]
         [SuppressUnmanagedCodeSecurity]
-        private extern static IntPtr CreateMaterial(NativeShaderPack shaderPack);
+        static extern IntPtr CreateMaterial(NativeShaderPack shaderPack);
 
         [MethodImpl(MethodImplOptions.InternalCall)]
         [SuppressUnmanagedCodeSecurity]
-        private extern static void MatBind(IntPtr thismat);
+        static extern void MatBind(IntPtr thismat);
 
         [MethodImpl(MethodImplOptions.InternalCall)]
         [SuppressUnmanagedCodeSecurity]
         [Pure]
-        private extern static void MatUnbind(IntPtr thismat);
+        static extern void MatUnbind(IntPtr thismat);
 
         [MethodImpl(MethodImplOptions.InternalCall)]
         [SuppressUnmanagedCodeSecurity]
-        private extern static IntPtr MatGetDefaultShader(byte shadertype);
+        static extern IntPtr MatGetDefaultShader(byte shadertype);
 
         [MethodImpl(MethodImplOptions.InternalCall)]
         [SuppressUnmanagedCodeSecurity]
-        private extern static void AddTex(IntPtr matptr, IntPtr texptr);
+        static extern void AddTex(IntPtr matptr, IntPtr texptr);
 
         [MethodImpl(MethodImplOptions.InternalCall)]
         [SuppressUnmanagedCodeSecurity]
-        private extern static void RemoveTex(IntPtr matptr, IntPtr texptr);
+        static extern void RemoveTex(IntPtr matptr, IntPtr texptr);
 
         [MethodImpl(MethodImplOptions.InternalCall)]
         [SuppressUnmanagedCodeSecurity]
-        private extern static void SetTex(IntPtr matptr, IntPtr texptr, uint index);
+        static extern void SetTex(IntPtr matptr, IntPtr texptr, uint index);
 
         [MethodImpl(MethodImplOptions.InternalCall)]
         [SuppressUnmanagedCodeSecurity]
-        private extern static int GetUniformLoc(IntPtr matptr, [MarshalAs(UnmanagedType.LPStr)] string name);
+        static extern int GetUniformLoc(IntPtr matptr, [MarshalAs(UnmanagedType.LPStr)] string name);
 
         [MethodImpl(MethodImplOptions.InternalCall)]
         [SuppressUnmanagedCodeSecurity]
-        private extern static void SetUni(IntPtr matptr, IntPtr uni, int loc);
+        static extern void SetUni(IntPtr matptr, IntPtr uni, int loc);
 
         #endregion
 
@@ -218,7 +218,7 @@ namespace Sphynx.Graphics
         [Pure]
         public HandleRef GetNative() { return  NativePtr; }
 
-        private void Dispose(bool disposing)
+        void Dispose(bool disposing)
         {
             if (!disposedValue)
             {

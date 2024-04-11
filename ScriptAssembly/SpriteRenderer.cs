@@ -76,7 +76,6 @@ namespace Sphynx
             Material.AddTexture(DefaultSprite);
             renderObject.mat = Material;
             renderObject.mesh = plane;
-
             //Uniform setup.
             OrthoProj = mat4.Ortho(0.0f, Window.Bounds.Width, 0.0f, Window.Bounds.Height, 0.1f, 1.0f);
             Material.SetUniform(ModelUniform, 1);

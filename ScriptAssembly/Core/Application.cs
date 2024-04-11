@@ -11,7 +11,7 @@ namespace Sphynx.Core
     public static class Application
     {
         [MethodImpl(MethodImplOptions.InternalCall)]
-        private extern static string GetAppName();
+        static extern string GetAppName();
 
         public static readonly string ApplicationName = GetAppName(); 
     }

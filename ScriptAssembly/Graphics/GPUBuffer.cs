@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Sphynx.Graphics
 {
-    public class GPUBuffer : IDisposable
+    public sealed class GPUBuffer : IDisposable
     {
         public enum MapAccess : byte
         {
@@ -48,7 +48,7 @@ namespace Sphynx.Graphics
 
         [MethodImpl(MethodImplOptions.InternalCall)]
         [SuppressUnmanagedCodeSecurity]
-        extern static void SetBufferData(IntPtr native, IntPtr data, ulong size, ulong offset);
+        static extern void SetBufferData(IntPtr native, IntPtr data, ulong size, ulong offset);
 
         [MethodImpl(MethodImplOptions.InternalCall)]
         [SuppressUnmanagedCodeSecurity]
@@ -61,15 +61,15 @@ namespace Sphynx.Graphics
         /// <summary>
         /// For types that derive from GPUBuffer in native.
         /// </summary>
-        /// <param name="Native"></param>
-        /// <param name="bsize"></param>
-        internal GPUBuffer(IntPtr Native, nuint bsize)
+        /// <param name="native"></param>
+        /// <param name="bSize"></param>
+        internal GPUBuffer(IntPtr native, nuint bSize)
         {
-            NativeObject = new(this,Native);
-            size = bsize;
+            NativeObject = new HandleRef(this,native);
+            size = bSize;
         }
 
-        public GPUBuffer(nuint sizeInBytes, Byte[] data, UsageHint usageHint, AccessHint accessHint)
+        public GPUBuffer(nuint sizeInBytes, byte[] data, UsageHint usageHint, AccessHint accessHint)
         {
             size = sizeInBytes;
             if(sizeInBytes > (ulong)data.LongLength)
@@ -78,13 +78,7 @@ namespace Sphynx.Graphics
                 Logger.Warn("Buffer smaller than specified size, data ignored and buffer still allocated.");
                 data = null;
             }
-            //Manual Marshaling
-            //IntPtr buffer = Memory.Allocate(sizeInBytes);
-            //Memory.Copy(data,0,sizeInBytes,buffer);
-
             NativeObject = new HandleRef(this, CreateBuffer(sizeInBytes, Engine.GetArrayPointer(data, 0), (byte)usageHint, (byte)accessHint));
-
-            //Memory.Free(buffer);
         }
 
         /// <summary>

@@ -49,19 +49,18 @@
     <Compile Include="Core\Engine.cs" />
     <Compile Include="Core\EntityID.cs" />
     <Compile Include="Core\Events\Event.cs" />
-    <Compile Include="Core\Graphics\FrameBuffer.cs" />
-    <Compile Include="Core\Graphics\GPUBuffer.cs" />
-    <Compile Include="Core\Graphics\Material.cs" />
-    <Compile Include="Core\Graphics\Mesh.cs" />
-    <Compile Include="Core\Graphics\Renderer.cs" />
-    <Compile Include="Core\Graphics\Shader.cs" />
+    <Compile Include="Graphics\FrameBuffer.cs" />
+    <Compile Include="Graphics\GPUBuffer.cs" />
+    <Compile Include="Graphics\Material.cs" />
+    <Compile Include="Graphics\Mesh.cs" />
+    <Compile Include="Graphics\Renderer.cs" />
+    <Compile Include="Graphics\Shader.cs" />
     <Compile Include="Core\Native\Memory.cs" />
     <Compile Include="Extra.cs" />
-    <Compile Include="Matrix.cs" />
     <Compile Include="SpriteRenderer.cs" />
-    <Compile Include="Core\Graphics\Texture.cs" />
-    <Compile Include="Core\Graphics\Uniform.cs" />
-    <Compile Include="Core\Graphics\Window.cs" />
+    <Compile Include="Graphics\Texture.cs" />
+    <Compile Include="Graphics\Uniform.cs" />
+    <Compile Include="Graphics\Window.cs" />
     <Compile Include="Core\Native\ComponentFactory.cs" />
     <Compile Include="Core\Native\NativeComponent.cs" />
     <Compile Include="Event.cs" />
@@ -91,6 +90,7 @@
   <ItemGroup>
     <EmbeddedResource Include="GlmSharp.dll" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.

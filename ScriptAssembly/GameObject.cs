@@ -22,7 +22,7 @@ namespace Sphynx
 
         public string Name { get; set; }
         //ID Field
-        private EntityID id;
+        EntityID id;
         /// <summary>
         /// Gets the Gameobject ID
         /// </summary>

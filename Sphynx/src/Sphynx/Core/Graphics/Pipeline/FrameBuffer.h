@@ -15,42 +15,42 @@ namespace Sphynx::Core::Graphics {
 	public:
 		virtual ~FrameBuffer() = 0;
 		//Binds the Framebuffer for use.
-		virtual void Bind(FrameBufferBinding b = FrameBufferBinding::ReadWrite) = 0;
+		virtual void Bind(FrameBufferBinding b = FrameBufferBinding::ReadWrite)const noexcept = 0;
 		//Unbinds the framebuffer (the default framebuffer will be used for reading or writing).
-		virtual void Unbind() = 0;
+		virtual void Unbind()const noexcept = 0;
 		//Resize the framebuffer and attachment. Calling this Invalidates the FrameBuffer.
 		virtual void Resize(unsigned int width, unsigned int height) = 0;
 		//Gets the Specified color attachment.
-		virtual Texture* GetColorAttachment(size_t index) = 0;
+		virtual Texture* GetColorAttachment(size_t index)const noexcept = 0;
 		//Attaches a new Color Texture.
 		virtual void AddColorAttachment(Texture* tex) = 0;
 		//Sets the Depth/Stencil attachment.
 		virtual void SetDepthStencilAttachment(Texture* tex) = 0;
 		//return Whether the framebuffer has a depth texture.
-		virtual bool HasDepthAttachment() = 0;
+		virtual bool HasDepthAttachment()const noexcept = 0;
 		//Before using the Texture as a stencil Texture 
 		//Check Whether HasStencilAttachment returns true or not (or Check the TextureType).
-		virtual Texture* GetDepthStencilAttachment() = 0;
+		virtual Texture* GetDepthStencilAttachment()const noexcept = 0;
 		//return Whether the framebuffer has a stencil texture.
-		virtual bool HasStencilAttachment() = 0;
+		virtual bool HasStencilAttachment()const noexcept = 0;
 		//Causes the buffer to be Re-made.
 		virtual void Invalidate() = 0;
 		//Returns true if the framebuffer is the default one.
-		virtual bool IsDefaultFrameBuffer() = 0;
+		virtual bool IsDefaultFrameBuffer()const noexcept = 0;
 		//Returns the Width of the Texture Within the Framebuffer.
-		virtual int GetWidth() = 0;
+		virtual int GetWidth()const noexcept = 0;
 		//Returns the Height of the Texture Within the Framebuffer.
-		virtual int GetHeight() = 0;
+		virtual int GetHeight()const noexcept = 0;
 		//Returns a platform-specific ID
-		virtual void* GetNativeID() = 0;
+		virtual void* GetNativeID()const noexcept = 0;
 		//Returns true if Framebuffer is valid and ready for use.
-		virtual bool IsValid() = 0;
+		virtual bool IsValid()const noexcept = 0;
 		//Set Framebuffer Clear Color
-		virtual void SetClearColor(glm::vec4 col) = 0;
+		virtual void SetClearColor(glm::vec4 col)noexcept = 0;
 		//Clears the Specified buffer
-		virtual void Clear(ClearBuffer b) = 0;
+		virtual void Clear(ClearBuffer b)noexcept = 0;
 		//Clears all buffers
-		virtual void Clear() = 0;
+		virtual void Clear()noexcept = 0;
 		//Clears the Framebuffer binding
 		static void BindDefault();
 		//Creates a Framebuffer.

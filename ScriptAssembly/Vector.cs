@@ -54,7 +54,7 @@ namespace Sphynx
 
         [MethodImpl(MethodImplOptions.InternalCall)]
         [SuppressUnmanagedCodeSecurity]
-        public extern static float Dot(Vector2 left, Vector2 right);
+        public static extern float Dot(Vector2 left, Vector2 right);
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         [SuppressUnmanagedCodeSecurity]
         public float Dot(ref Vector2 right)
@@ -63,7 +63,7 @@ namespace Sphynx
         }
         [MethodImpl(MethodImplOptions.InternalCall)]
         [SuppressUnmanagedCodeSecurity]
-        public extern static float Distance(Vector2 v, Vector2 v2);
+        public static extern float Distance(Vector2 v, Vector2 v2);
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         [SuppressUnmanagedCodeSecurity]
         public float Distance(ref Vector2 v)
@@ -121,7 +121,7 @@ namespace Sphynx
 
         [MethodImpl(MethodImplOptions.InternalCall)]
         [SuppressUnmanagedCodeSecurity]
-        public extern static float Dot(Vector3 left, Vector3 right);
+        public static extern float Dot(Vector3 left, Vector3 right);
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         [SuppressUnmanagedCodeSecurity]
         public float Dot(Vector3 right)
@@ -130,7 +130,7 @@ namespace Sphynx
         }
         [MethodImpl(MethodImplOptions.InternalCall)]
         [SuppressUnmanagedCodeSecurity]
-        public extern static Vector3 Cross(Vector3 left, Vector3 right);
+        public static extern Vector3 Cross(Vector3 left, Vector3 right);
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         [SuppressUnmanagedCodeSecurity]
         public Vector3 Cross(Vector3 right)
@@ -139,7 +139,7 @@ namespace Sphynx
         }
         [MethodImpl(MethodImplOptions.InternalCall)]
         [SuppressUnmanagedCodeSecurity]
-        public extern static float Distance(Vector3 v, Vector3 v2);
+        public static extern float Distance(Vector3 v, Vector3 v2);
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         [SuppressUnmanagedCodeSecurity]
         public float Distance(ref Vector3 v)
@@ -161,7 +161,7 @@ namespace Sphynx
 
         [MethodImpl(MethodImplOptions.InternalCall)]
         [SuppressUnmanagedCodeSecurity]
-        public extern static float Dot(Vector4 left, Vector4 right);
+        public static extern float Dot(Vector4 left, Vector4 right);
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         [SuppressUnmanagedCodeSecurity]
         public float Dot(Vector4 right)
@@ -170,7 +170,7 @@ namespace Sphynx
         }
         [MethodImpl(MethodImplOptions.InternalCall)]
         [SuppressUnmanagedCodeSecurity]
-        public extern static float Distance(Vector4 v, Vector4 v2);
+        public static extern float Distance(Vector4 v, Vector4 v2);
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         [SuppressUnmanagedCodeSecurity]
         public float Distance(Vector4 v)

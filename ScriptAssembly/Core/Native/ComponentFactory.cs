@@ -22,16 +22,18 @@ namespace Sphynx.Core.Native
 
         public static T CreateComponent<T>(GameObject go) where T : Component, new()
         {
-            var TComp = new T();
-            TComp.gameObject = go;
-            //TComp.Awake();
-            TComp.Start();
+            var comp = new T
+            {
+                gameObject = go
+            };
 
-            return TComp;
+            comp.Start();
+
+            return comp;
         }
 
         [MethodImpl(MethodImplOptions.InternalCall)]
-        private extern static void CopyNativeComponent(GameObject Source, GameObject Destination, NativeComponent component);
+        static extern void CopyNativeComponent(GameObject Source, GameObject Destination, NativeComponent component);
 
         public static void CopyComponent<T>(GameObject Origin, GameObject Destination) where T : Component, new()
         {
@@ -42,7 +44,7 @@ namespace Sphynx.Core.Native
             }
             else
             {
-                //Implement Debbuger
+                //Implement Debugger
                 Debugger.Break();
                 throw new NullReferenceException("");
             }

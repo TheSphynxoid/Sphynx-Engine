@@ -40,21 +40,21 @@ namespace Sphynx.Graphics
     public static class Window
     {
         [MethodImpl(MethodImplOptions.InternalCall)]
-        private static extern void SetTitle(string title);
+        static extern void SetTitle(string title);
         [MethodImpl(MethodImplOptions.InternalCall)]
-        private static extern string GetTitle();
+        static extern string GetTitle();
 
-        private static string title = GetTitle();
+        static string title = GetTitle();
         public static string Title { get => title; set { SetTitle(value);title = value; } }
 
         [MethodImpl(MethodImplOptions.InternalCall)]
         [SuppressUnmanagedCodeSecurity]
-        private static extern void SetVsync(bool vsync);
+        static extern void SetVsync(bool vsync);
         [MethodImpl(MethodImplOptions.InternalCall)]
         [SuppressUnmanagedCodeSecurity]
-        private static extern bool GetVsync();
+        static extern bool GetVsync();
 
-        private static bool vsync = GetVsync();
+        static bool vsync = GetVsync();
         public static bool Vsync { get => vsync; set { if (value != vsync){ SetVsync(vsync); vsync = value; } } }
 
 
@@ -63,12 +63,12 @@ namespace Sphynx.Graphics
         /// </summary>
         [MethodImpl(MethodImplOptions.InternalCall)]
         [SuppressUnmanagedCodeSecurity]
-        private static extern void SetSize(int width, int height);
+        static extern void SetSize(int width, int height);
         [MethodImpl(MethodImplOptions.InternalCall)]
         [SuppressUnmanagedCodeSecurity]
-        private static extern Bounds GetSize();
+        static extern Bounds GetSize();
 
-        private static Bounds bounds = GetSize();
+        static Bounds bounds = GetSize();
         public static Bounds Bounds { get => bounds; set { SetSize(value.Width, value.Height);bounds = value; } }
 
         public delegate void OnResize(Bounds bounds);
@@ -83,7 +83,7 @@ namespace Sphynx.Graphics
         /// <param name="Width">New window width.</param>
         /// <param name="Height">New window height.</param>
         [MethodImpl(MethodImplOptions.NoInlining)]
-        private static void InvokeResize(int Width, int Height)
+        static void InvokeResize(int Width, int Height)
         {
             OnResizeEvent?.Invoke(new Bounds(Width, Height));
         }

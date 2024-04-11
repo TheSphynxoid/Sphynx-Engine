@@ -34,7 +34,7 @@ namespace Sphynx.Graphics
     /// </summary>
     public sealed class FrameBuffer : IDisposable
     {
-        readonly HandleRef nativePtr;
+        HandleRef nativePtr;
 
         List<Texture> attachments = new List<Texture>();
         public List<Texture> ColorAttachments { get; }
@@ -47,7 +47,8 @@ namespace Sphynx.Graphics
         static FrameBuffer defaultFB = new(GetDefaultFrameBuffer());
         /// <summary>
         /// Default framebuffers cannot change their buffer attachments, 
-        /// but a particular default framebuffer may not have images associated with certain buffers
+        /// but a particular default framebuffer may not have images associated with certain buffers.
+        /// Usually, <see cref="DefaultFrameBuffer"/> represents the window surface.
         /// </summary>
         public static FrameBuffer DefaultFrameBuffer => defaultFB;
 
@@ -64,6 +65,10 @@ namespace Sphynx.Graphics
         [SuppressUnmanagedCodeSecurity]
         [MethodImpl(MethodImplOptions.InternalCall)]
         static extern IntPtr GetDefaultFrameBuffer();
+
+        [SuppressUnmanagedCodeSecurity]
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        static extern void AttachTexture(IntPtr fb, IntPtr tex);
         
         [SuppressUnmanagedCodeSecurity]
         [MethodImpl(MethodImplOptions.InternalCall)]
@@ -100,33 +105,42 @@ namespace Sphynx.Graphics
 
         public FrameBuffer(ivec2 size, Texture[] tex)
         {
-            nativePtr = new(this, Create(size.x, size.y, Engine.GetArrayPointer(tex), tex.Length));
+            nativePtr = new HandleRef(this, Create(size.x, size.y, Engine.GetArrayPointer(tex), tex.Length));
             foreach (var t in tex)
             {
-                if (t.Format == TextureFormat.Depth24_Stencil8 && depthAttachment != null)
+                if (t.IsDepthTexture() && depthAttachment != null)
                 {
                     HasDepthAttachment = true;
                     depthAttachment = t;
+                    t.IsAttached = true;
                     continue;
                 }
                 attachments.Add(t);
+                t.IsAttached = true;
             }
         }
-
+        /// <summary>
+        /// Attached <see cref="Texture"/> live as long as the <see cref="FrameBuffer"/> does,
+        /// so references to them must be handled carefully.
+        /// </summary>
+        /// <param name="tex">Texture to attach to the FrameBuffer</param>
         public void AttachTexture(Texture tex)
         {
-
+            AttachTexture(nativePtr.Handle, tex.NativePointer.Handle);
+            tex.IsAttached = true;
+            attachments.Add(tex);
         }
 
         /// <summary>
         /// Binds the <see cref="FrameBuffer"/> for use.
         /// </summary>
-        /// <param name="binding"></param>
         public void Bind(FrameBufferBinding binding = FrameBufferBinding.ReadWrite)
         {
             Bind(nativePtr.Handle, (byte)binding);
         }
-
+        /// <summary>
+		///Unbinds the framebuffer (the <see cref="DefaultFrameBuffer"/> will be bound to be used for reading or writing).
+        /// </summary>
         public void Unbind()
         {
             Unbind(nativePtr.Handle);
@@ -160,7 +174,7 @@ namespace Sphynx.Graphics
         }
 
         /// <summary>
-        /// Binds the default framebuffer.
+        /// Binds <see cref="DefaultFrameBuffer"/> directly.
         /// </summary>
         [SuppressUnmanagedCodeSecurity]
         [MethodImpl(MethodImplOptions.InternalCall)]
@@ -173,7 +187,10 @@ namespace Sphynx.Graphics
             Invalidate(nativePtr.Handle);
         }
         /// <summary>
-        /// Returns a handle to the native framebuffer used by the Graphics backend.
+        /// <para>Returns a handle to the native framebuffer used by the Graphics backend.</para>
+        /// Details:
+        /// <para>This returns a pointer to the Core's Framebuffer interface, not the native handle used by the graphics backend.</para>
+        /// TODO: Expose the handle/ID used by the graphics backend.
         /// </summary>
         public IntPtr GetNative()
         {
@@ -186,10 +203,20 @@ namespace Sphynx.Graphics
             {
                 if (disposing)
                 {
-                    // TODO: dispose managed state (managed objects)
+                    // dispose managed state (managed objects)
                 }
                 //this internal call frees all attachments.
                 Release(nativePtr.Handle);
+                depthAttachment.NativePointer = new HandleRef(null, IntPtr.Zero);
+                GC.SuppressFinalize(depthAttachment);
+                depthAttachment = null;
+                foreach (var tex in ColorAttachments)
+                {
+                    tex.NativePointer = new HandleRef(null, IntPtr.Zero);
+                    GC.SuppressFinalize(tex);
+                }
+                ColorAttachments.Clear();
+                nativePtr = new HandleRef(null, IntPtr.Zero);
                 disposedValue=true;
             }
         }
@@ -200,7 +227,10 @@ namespace Sphynx.Graphics
             Dispose(disposing: false);
         }
 
-        void IDisposable.Dispose()
+        /// <summary>
+        /// The native <see cref="FrameBuffer"/> frees all attached textures.
+        /// </summary>
+        public void Dispose()
         {
             // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
             Dispose(disposing: true);

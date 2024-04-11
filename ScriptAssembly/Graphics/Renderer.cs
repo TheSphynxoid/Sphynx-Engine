@@ -30,11 +30,11 @@ namespace Sphynx.Graphics
 
     public static class Renderer
     {
-        private static Viewport viewport;
-        private static Viewport Viewport { get => viewport; set { viewport = value;SetViewport(viewport); } }
+        static Viewport viewport;
+        static Viewport Viewport { get => viewport; set { viewport = value;SetViewport(viewport); } }
 
         [NativeCppClass]
-        private struct NativeRenderObject
+        struct NativeRenderObject
         {
             public IntPtr mesh;
             public IntPtr mat;
@@ -42,11 +42,11 @@ namespace Sphynx.Graphics
 
         [SuppressUnmanagedCodeSecurity]
         [MethodImpl(MethodImplOptions.InternalCall)]
-        private static extern void SetViewport(Viewport viewport);
+        static extern void SetViewport(Viewport viewport);
 
         [SuppressUnmanagedCodeSecurity]
         [MethodImpl(MethodImplOptions.InternalCall)]
-        private static extern void Submit_Internal(NativeRenderObject renderObject);
+        static extern void Submit_Internal(NativeRenderObject renderObject);
 
         public static void Submit(RenderObject RO)
         {

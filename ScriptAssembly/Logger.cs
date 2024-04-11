@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Sphynx
 {
-    public sealed class Logger
+    public static class Logger
     {
 
         public enum LogLevel
@@ -36,7 +36,7 @@ namespace Sphynx
         }
 
         [MethodImpl(MethodImplOptions.InternalCall)]
-        public extern static void spdLog(string message, LogLevel logLevel);
+        public static extern void spdLog(string message, LogLevel logLevel);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Trace(string message)

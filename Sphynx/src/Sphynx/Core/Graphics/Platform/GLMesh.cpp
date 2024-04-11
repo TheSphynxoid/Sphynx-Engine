@@ -242,18 +242,18 @@ void Sphynx::Core::Graphics::GL::GLVertexBuffer::Release()
 }
 
 Sphynx::Core::Graphics::GL::GLVertexBuffer::GLVertexBuffer(size_t Size) :
-	underlaying(Size, NULL, UsageHint::Static, AccessHint::Draw)
+	underlying(Size, NULL, UsageHint::Static, AccessHint::Draw)
 {
 }
 
 Sphynx::Core::Graphics::GL::GLVertexBuffer::GLVertexBuffer(float* verts, size_t Size) :
-	underlaying(Size, verts, UsageHint::Static, AccessHint::Draw)
+	underlying(Size, verts, UsageHint::Static, AccessHint::Draw)
 {
 }
 
 Sphynx::Core::Graphics::GL::GLVertexBuffer::GLVertexBuffer(GLVertexBuffer&& vbuf) noexcept
 {
-	std::swap(this->underlaying, vbuf.underlaying);
+	std::swap(this->underlying, vbuf.underlying);
 	std::swap(this->Layout, vbuf.Layout);
 }
 
@@ -261,7 +261,7 @@ Sphynx::Core::Graphics::GL::GLVertexBuffer& Sphynx::Core::Graphics::GL::GLVertex
 {
 	if (this != &vbuf) {
 		Release();
-		std::swap(this->underlaying, vbuf.underlaying);
+		std::swap(this->underlying, vbuf.underlying);
 		std::swap(this->Layout, vbuf.Layout);
 	}
 	return *this;
@@ -269,7 +269,7 @@ Sphynx::Core::Graphics::GL::GLVertexBuffer& Sphynx::Core::Graphics::GL::GLVertex
 
 void Sphynx::Core::Graphics::GL::GLVertexBuffer::Bind()const noexcept
 {
-	underlaying.Bind();
+	underlying.Bind();
 }
 
 void Sphynx::Core::Graphics::GL::GLVertexBuffer::Unbind()const noexcept
@@ -279,41 +279,41 @@ void Sphynx::Core::Graphics::GL::GLVertexBuffer::Unbind()const noexcept
 
 void Sphynx::Core::Graphics::GL::GLVertexBuffer::SetData(const void* data, size_t size, size_t offset)noexcept
 {
-	underlaying.SetData(data, size, offset);
+	underlying.SetData(data, size, offset);
 }
 
 void* Sphynx::Core::Graphics::GL::GLVertexBuffer::Map(const Sphynx::Core::Graphics::MapAccess access)
 {
-	return underlaying.Map(access);
+	return underlying.Map(access);
 }
 
 void Sphynx::Core::Graphics::GL::GLVertexBuffer::Unmap()noexcept
 {
-	underlaying.Unmap();
+	underlying.Unmap();
 }
 
 void Sphynx::Core::Graphics::GL::GLVertexBuffer::Reallocate(size_t size, void* data)
 {
-	underlaying.Reallocate(size, data);
+	underlying.Reallocate(size, data);
 }
 
 void Sphynx::Core::Graphics::GL::GLVertexBuffer::Invalidate() noexcept
 {
-	underlaying.Invalidate();
+	underlying.Invalidate();
 }
 
 void Sphynx::Core::Graphics::GL::GLIndexBuffer::Release()
 {
-	underlaying.Release();
+	underlying.Release();
 }
 
 void Sphynx::Core::Graphics::GL::GLIndexBuffer::Reallocate(size_t size, void* data)
 {
-	underlaying.Reallocate(size, data);
+	underlying.Reallocate(size, data);
 }
 
 Sphynx::Core::Graphics::GL::GLIndexBuffer::GLIndexBuffer(uint32_t count)noexcept :
-	underlaying(sizeof(int)* count, NULL, UsageHint::Static, AccessHint::Draw)
+	underlying(sizeof(int)* count, NULL, UsageHint::Static, AccessHint::Draw)
 {
 	//glCreateBuffers(1, &BufferID);
 	//// GL_ELEMENT_ARRAY_BUFFER need a bound VAO to be valid.
@@ -324,7 +324,7 @@ Sphynx::Core::Graphics::GL::GLIndexBuffer::GLIndexBuffer(uint32_t count)noexcept
 }
 
 Sphynx::Core::Graphics::GL::GLIndexBuffer::GLIndexBuffer(unsigned int* indices, size_t count)noexcept :
-	underlaying(sizeof(int)* count, indices, UsageHint::Dynamic, AccessHint::Draw)
+	underlying(sizeof(int)* count, indices, UsageHint::Dynamic, AccessHint::Draw)
 {
 	//glCreateBuffers(1, &BufferID);
 	//// GL_ELEMENT_ARRAY_BUFFER need a bound VAO to be valid.
@@ -336,14 +336,14 @@ Sphynx::Core::Graphics::GL::GLIndexBuffer::GLIndexBuffer(unsigned int* indices, 
 
 Sphynx::Core::Graphics::GL::GLIndexBuffer::GLIndexBuffer(GLIndexBuffer&& ibuf) noexcept
 {
-	std::swap(this->underlaying, ibuf.underlaying);
+	std::swap(this->underlying, ibuf.underlying);
 }
 
 Sphynx::Core::Graphics::GL::GLIndexBuffer& Sphynx::Core::Graphics::GL::GLIndexBuffer::operator=(GLIndexBuffer&& ibuf) noexcept
 {
 	if (this != &ibuf) {
 		Release();
-		std::swap(this->underlaying, ibuf.underlaying);
+		std::swap(this->underlying, ibuf.underlying);
 	}
 	return *this;
 }
@@ -355,7 +355,7 @@ Sphynx::Core::Graphics::GL::GLIndexBuffer::~GLIndexBuffer()
 
 void Sphynx::Core::Graphics::GL::GLIndexBuffer::Bind() const noexcept
 {
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, *(UINT*)underlaying.GetNative());
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, *(UINT*)underlying.GetNative());
 }
 
 void Sphynx::Core::Graphics::GL::GLIndexBuffer::Unbind() const noexcept
@@ -365,12 +365,12 @@ void Sphynx::Core::Graphics::GL::GLIndexBuffer::Unbind() const noexcept
 
 void Sphynx::Core::Graphics::GL::GLIndexBuffer::SetData(const void* data, size_t size, size_t offset)
 {
-	underlaying.SetData(data, size, offset);
+	underlying.SetData(data, size, offset);
 }
 
 void Sphynx::Core::Graphics::GL::GLIndexBuffer::SetData(const unsigned int* data, uint64_t count)
 {
-	underlaying.SetData(data, count * sizeof(unsigned int), 0);
+	underlying.SetData(data, count * sizeof(unsigned int), 0);
 	/*Bind();
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(unsigned int), data, GL_DYNAMIC_DRAW);
 	Unbind();*/
@@ -378,15 +378,15 @@ void Sphynx::Core::Graphics::GL::GLIndexBuffer::SetData(const unsigned int* data
 
 void* Sphynx::Core::Graphics::GL::GLIndexBuffer::Map(const MapAccess access)
 {
-	return underlaying.Map(access);
+	return underlying.Map(access);
 }
 
 void Sphynx::Core::Graphics::GL::GLIndexBuffer::Unmap()noexcept
 {
-	underlaying.Unmap();
+	underlying.Unmap();
 }
 
 void Sphynx::Core::Graphics::GL::GLIndexBuffer::Invalidate() noexcept
 {
-	underlaying.Invalidate();
+	underlying.Invalidate();
 }

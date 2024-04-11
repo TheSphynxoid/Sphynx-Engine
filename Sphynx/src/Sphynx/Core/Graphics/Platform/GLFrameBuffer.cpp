@@ -17,7 +17,7 @@ void GLFrameBuffer::Release()
 	}
 }
 
-GLFrameBuffer::GLFrameBuffer(unsigned int id, int width, int height, std::initializer_list<Texture*> attachments)
+GLFrameBuffer::GLFrameBuffer(unsigned int id, int width, int height, std::initializer_list<Texture*> attachments)noexcept
 {
 	ID = id;
 	Width = width;
@@ -45,7 +45,7 @@ GLFrameBuffer::GLFrameBuffer(unsigned int id, int width, int height, std::initia
 	GLFrameBuffer::Unbind();
 }
 
-GLFrameBuffer::GLFrameBuffer(int width, int height, std::initializer_list<Texture*> attachments) : Width(width), Height(height)
+GLFrameBuffer::GLFrameBuffer(int width, int height, std::initializer_list<Texture*> attachments)noexcept : Width(width), Height(height)
 {
 	glCreateFramebuffers(1, &ID);
 	GLFrameBuffer::Bind();
@@ -75,7 +75,7 @@ GLFrameBuffer::GLFrameBuffer(int width, int height, std::initializer_list<Textur
 	GLFrameBuffer::Unbind();
 }
 
-void GLFrameBuffer::Bind(FrameBufferBinding b)
+void GLFrameBuffer::Bind(FrameBufferBinding b)const noexcept
 {
 	switch (b)
 	{
@@ -91,7 +91,7 @@ void GLFrameBuffer::Bind(FrameBufferBinding b)
 	}
 }
 
-void GLFrameBuffer::Unbind()
+void GLFrameBuffer::Unbind()const noexcept
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
@@ -111,10 +111,12 @@ void GLFrameBuffer::Invalidate()
 	Bind();
 	ColorAttachmentsCount = 0;
 	for (const auto tex : ColorAttachments) {
-		const auto _t = Texture::Create(TextureType::Texture2D, Width, Height, 0, tex->GetFormat(), tex->GetDataFormat());
-		//Weird ass Casts. First We cast into a GLTexture Pointer then we dereference it then we move it to
-		//tex after casting tex To GLTexture* from Texture* then we dereference. It's looks ugly.
-		(*((GLTexture*)tex)) = (GLTexture&&)*(GLTexture*)_t;
+		//Why create a texture through the interface ?
+		const auto t = Texture::Create(TextureType::Texture2D, Width, Height, 0, tex->GetFormat(), tex->GetDataFormat());		
+		//Free the texture but keep the pointer intact.
+		tex->~Texture();
+		//in-place the texture. is this UB ?
+		*tex = *t;
 		if (tex->GetFormat() == TextureFormat::Depth24_Stencil8) {
 			glNamedFramebufferTexture(ID, GL_DEPTH_STENCIL_ATTACHMENT, ((GLTexture*)tex)->TextureID, 0);
 		}
@@ -157,14 +159,14 @@ void GLFrameBuffer::SetDepthStencilAttachment(Texture* tex)
 	}
 }
 
-void GLFrameBuffer::SetClearColor(glm::vec4 col)
+void GLFrameBuffer::SetClearColor(glm::vec4 col)noexcept
 {
 	Bind();
 	glClearColor(col.r, col.g, col.b, col.a);
 	Unbind();
 }
 
-void GLFrameBuffer::Clear(ClearBuffer b)
+void GLFrameBuffer::Clear(ClearBuffer b)noexcept
 {
 	switch (b)
 	{
@@ -180,12 +182,12 @@ void GLFrameBuffer::Clear(ClearBuffer b)
 	}
 }
 
-void GLFrameBuffer::Clear()
+void GLFrameBuffer::Clear()noexcept
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 }
 
-FrameBuffer* GLFrameBuffer::GetDefaultFrameBuffer()
+FrameBuffer* GLFrameBuffer::GetDefaultFrameBuffer()noexcept
 {
 	static auto def = GLFrameBuffer(0, 0, 0);
 	static bool lazy_init = false;

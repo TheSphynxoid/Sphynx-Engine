@@ -14,8 +14,7 @@ namespace Sphynx.Graphics
     [NativeWrapper("Uniform", true)]
     public struct Uniform : IDisposable
     {
-
-        private bool disposedValue;
+        bool disposedValue;
 
         [MethodImpl(MethodImplOptions.InternalCall)]
         [SuppressUnmanagedCodeSecurity]
@@ -65,7 +64,7 @@ namespace Sphynx.Graphics
             Location = loc;
         }
 
-        private void Dispose()
+        void Dispose()
         {
             if (!disposedValue)
             {

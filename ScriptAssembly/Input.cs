@@ -29,9 +29,9 @@ namespace Sphynx
             return (Action)InternalKeyState(((int)key)) == Action.Repeat;
         }
         [MethodImpl(MethodImplOptions.InternalCall)]
-        internal extern static int InternalKeyState(int key);
+        internal static extern int InternalKeyState(int key);
         [MethodImpl(MethodImplOptions.InternalCall)]
-        internal extern static int InternalButtonState(int button);
+        internal static extern int InternalButtonState(int button);
         /// <summary>
         /// MAJOR ISSUE : Causes reading invalid memory in core.
         /// </summary>

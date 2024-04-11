@@ -10,6 +10,6 @@ namespace Sphynx
     public static class SceneManager
     {
         [MethodImpl(MethodImplOptions.InternalCall)]
-        public extern static Scene GetCurrentScene();
+        public static extern Scene GetCurrentScene();
     }
 }

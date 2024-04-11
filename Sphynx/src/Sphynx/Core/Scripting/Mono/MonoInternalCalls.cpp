@@ -382,13 +382,13 @@ namespace Sphynx::Mono::Internal {
 		mono_add_internal_call("Sphynx.Graphics.Renderer::SetViewport", &SetViewport);
 		//Sphynx.Graphics.VertexBuffer
 		mono_add_internal_call("Sphynx.Graphics.VertexBuffer::CreateVB", &VertexBuffer::Create);
-		mono_add_internal_call("Sphynx.Graphics.VertexBuffer::GetUnderlayingBuffer", &VBToGPUBuffer);
+		mono_add_internal_call("Sphynx.Graphics.VertexBuffer::GetUnderlyingBuffer", &VBToGPUBuffer);
 		mono_add_internal_call("Sphynx.Graphics.VertexBuffer::SetLayout", &SetVBLayout);
 		mono_add_internal_call("Sphynx.Graphics.VertexBuffer::SetData", &SetDataGPUBuf);
 		mono_add_internal_call("Sphynx.Graphics.VertexBuffer::GetVBSize", &GetVBSize);
 		//Sphynx.Graphics.IndexBuffer
 		mono_add_internal_call("Sphynx.Graphics.IndexBuffer::CreateIB", &IndexBuffer::Create);
-		mono_add_internal_call("Sphynx.Graphics.IndexBuffer::GetUnderlayingBuffer", &IBToGPUBuffer);
+		mono_add_internal_call("Sphynx.Graphics.IndexBuffer::GetUnderlyingBuffer", &IBToGPUBuffer);
 		mono_add_internal_call("Sphynx.Graphics.IndexBuffer::SetData_int", &SetDataGPUBuf);
 		//Sphynx.Graphics.Mesh
 		mono_add_internal_call("Sphynx.Graphics.Mesh::CreateEmpty", &Mesh::CreateEmpty);
@@ -402,6 +402,8 @@ namespace Sphynx::Mono::Internal {
 		mono_add_internal_call("Sphynx.Graphics.Mesh::SetRenderMode", &MeshSetMode);
 		//Sphynx.Graphics.FrameBuffer
 		mono_add_internal_call("Sphynx.Graphics.FrameBuffer::Create", &CreateFB);
+		mono_add_internal_call("Sphynx.Graphics.FrameBuffer::BindDefault", &FrameBuffer::BindDefault);
+
 	}
 }
 #endif

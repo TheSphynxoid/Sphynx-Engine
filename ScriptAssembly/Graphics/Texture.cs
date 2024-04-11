@@ -67,7 +67,11 @@ namespace Sphynx.Graphics
     [Header("Texture.h")]
     public sealed class Texture : IDisposable
     {
-        readonly HandleRef nativePointer;
+        internal HandleRef NativePointer;
+        /// <summary>
+        /// Is this Texture attached to a <see cref="FrameBuffer"/>.
+        /// </summary>
+        internal bool IsAttached;
         HandleRef Nativeid;
         /// <summary>
         /// Used for interoping with Engine.
@@ -137,18 +141,20 @@ namespace Sphynx.Graphics
         [SuppressUnmanagedCodeSecurity]
         static extern void Bind(IntPtr tex);
 
-
         [MethodImpl(MethodImplOptions.InternalCall)]
         [SuppressUnmanagedCodeSecurity]
         static extern void Unbind(IntPtr tex);
 
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        [SuppressUnmanagedCodeSecurity]
+        static extern void Release(IntPtr tex);
         /// <summary>
         /// Automatically creates Mipmaps for the texture.
         /// </summary>
         [SuppressUnmanagedCodeSecurity]
         public void GenerateMipmaps()
         {
-            GenMipmaps(nativePointer.Handle);
+            GenMipmaps(NativePointer.Handle);
         }
 
         /// <summary>
@@ -165,12 +171,12 @@ namespace Sphynx.Graphics
 
         [MethodImpl(MethodImplOptions.InternalCall)]
         [SuppressUnmanagedCodeSecurity]
-        static extern TexInfo GetTexInfo(IntPtr Pointer);
+        static extern TexInfo GetTexInfo(IntPtr pointer);
 
         [SuppressUnmanagedCodeSecurity]
         internal void SetUp()
         {
-            TexInfo info = GetTexInfo(nativePointer.Handle);
+            TexInfo info = GetTexInfo(NativePointer.Handle);
             dims = info.Dimension;
             format = info.format;
             dataformat = info.dataFormat;
@@ -187,7 +193,7 @@ namespace Sphynx.Graphics
         //Create from native ptr.
         internal Texture(IntPtr nativePtr)
         {
-            nativePointer = new HandleRef(this, nativePtr);
+            NativePointer = new HandleRef(this, nativePtr);
             SetUp();
         }
 
@@ -206,7 +212,7 @@ namespace Sphynx.Graphics
             this.format = format;
             dataformat = dataFormat;
 
-            nativePointer = new HandleRef(this, CreateTexture(null, (int)size.x, (int)size.y,
+            NativePointer = new HandleRef(this, CreateTexture(null, (int)size.x, (int)size.y,
                 (ushort)type, mipmapLevel, (ushort)format, (ushort)dataformat, (ushort)wrap, (ushort)filter, (ushort)mipmapMode));
 
             SetUp();
@@ -251,23 +257,25 @@ namespace Sphynx.Graphics
         [SuppressUnmanagedCodeSecurity]
         public void Resize(Vector3 nDim)
         {
-            ResizeTexture(nativePointer.Handle, nDim);
+            ResizeTexture(NativePointer.Handle, nDim);
             dims = nDim;
         }
 
-        public void Bind() { Bind(nativePointer.Handle); }
-        public void Unbind() { Unbind(nativePointer.Handle); }
-        public HandleRef GetNative() { return nativePointer; }
+        public void Bind() { Bind(NativePointer.Handle); }
+        public void Unbind() { Unbind(NativePointer.Handle); }
+        public HandleRef GetNative() { return NativePointer; }
 
         void Dispose(bool disposing)
         {
-            if (!disposedValue)
+            if (!disposedValue && !IsAttached)
             {
                 if (disposing)
                 {
                     // TODO: dispose managed state (managed objects)
                 }
-
+                
+                Release(NativePointer.Handle);
+                NativePointer = new HandleRef(null, IntPtr.Zero);
                 disposedValue=true;
             }
         }
@@ -279,7 +287,7 @@ namespace Sphynx.Graphics
             Dispose(disposing: false);
         }
 
-        void IDisposable.Dispose()
+        public void Dispose()
         {
             // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
             Dispose(disposing: true);

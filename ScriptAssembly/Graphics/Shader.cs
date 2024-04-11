@@ -42,11 +42,11 @@ namespace Sphynx.Graphics
         public ShaderType Type { [Pure] get; [Pure] private set; }
 
         [MethodImpl(MethodImplOptions.InternalCall)]
-        internal extern static IntPtr CreateShader(Shader obj, byte stype);
+        internal static extern IntPtr CreateShader(Shader obj, byte stype);
         [MethodImpl(MethodImplOptions.InternalCall)]
-        internal extern static bool IsShaderValid(IntPtr id);
+        internal static extern bool IsShaderValid(IntPtr id);
         [MethodImpl(MethodImplOptions.InternalCall)]
-        internal extern static void DeleteShader(IntPtr id);
+        internal static extern void DeleteShader(IntPtr id);
 
         public bool Valid { [Pure] get => IsShaderValid(id.Handle); }
 

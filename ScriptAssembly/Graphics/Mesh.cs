@@ -142,7 +142,7 @@ namespace Sphynx.Graphics
     public class VertexBuffer
     {
         HandleRef Native;
-        GPUBuffer underlaying;
+        GPUBuffer underlying;
 
         [NativeCppClass]
         struct NativeBufferLayout
@@ -167,7 +167,7 @@ namespace Sphynx.Graphics
         static extern IntPtr CreateVB(IntPtr floatbuffer, nuint count);
         [MethodImpl(MethodImplOptions.InternalCall)]
         [SuppressUnmanagedCodeSecurity]
-        static extern IntPtr GetUnderlayingBuffer(IntPtr NativeVB);
+        static extern IntPtr GetUnderlyingBuffer(IntPtr NativeVB);
         [MethodImpl(MethodImplOptions.InternalCall)]
         [SuppressUnmanagedCodeSecurity]
         static extern void SetLayout(IntPtr NativeVB, NativeBufferLayout l);
@@ -181,7 +181,7 @@ namespace Sphynx.Graphics
         public VertexBuffer(float[] verts, int vertcount, BufferLayout? bufferLayout = null)
         {
             Native = new(this, CreateVB(Engine.GetArrayPointer(verts), (nuint)vertcount));
-            underlaying = new(GetUnderlayingBuffer(Native.Handle), (nuint)(sizeof(float) * vertcount));
+            underlying = new(GetUnderlyingBuffer(Native.Handle), (nuint)(sizeof(float) * vertcount));
             if(bufferLayout is BufferLayout b)Layout = b;
         }
 
@@ -197,7 +197,7 @@ namespace Sphynx.Graphics
 
         public GPUBuffer GetBuffer()
         {
-            return underlaying;
+            return underlying;
         }
 
         public nuint Size { get => GetVBSize(Native.Handle); }
@@ -210,7 +210,7 @@ namespace Sphynx.Graphics
     public class IndexBuffer
     {
         HandleRef Native;
-        GPUBuffer underlaying;
+        GPUBuffer underlying;
 
         uint count;
         public uint Count { get => count; }
@@ -220,7 +220,7 @@ namespace Sphynx.Graphics
         static extern IntPtr CreateIB(IntPtr data,  nuint size);
         [MethodImpl(MethodImplOptions.InternalCall)]
         [SuppressUnmanagedCodeSecurity]
-        static extern IntPtr GetUnderlayingBuffer(IntPtr native);
+        static extern IntPtr GetUnderlyingBuffer(IntPtr native);
         [MethodImpl(MethodImplOptions.InternalCall)]
         [SuppressUnmanagedCodeSecurity]
         static extern void SetData_int(IntPtr native, IntPtr buf, nuint size);
@@ -228,7 +228,7 @@ namespace Sphynx.Graphics
         public IndexBuffer(uint[] indexes)
         {
             Native = new(this, CreateIB(indexes.ToPointer(), (nuint)indexes.LongLength));
-            underlaying = new(GetUnderlayingBuffer(Native.Handle), (nuint)(Count * sizeof(uint)));
+            underlying = new(GetUnderlyingBuffer(Native.Handle), (nuint)(Count * sizeof(uint)));
             count = (uint)indexes.Length;
         }
 
@@ -245,7 +245,7 @@ namespace Sphynx.Graphics
 
         public GPUBuffer GetBuffer()
         {
-            return underlaying;
+            return underlying;
         }
     }
 
