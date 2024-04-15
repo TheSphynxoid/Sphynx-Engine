@@ -19,7 +19,7 @@ void Sphynx::Core::Graphics::FrameBuffer::BindDefault()
 	}
 }
 
-Sphynx::Core::Graphics::FrameBuffer* Sphynx::Core::Graphics::FrameBuffer::Create(int width, int height, std::initializer_list<Texture*> tex)
+Sphynx::Core::Graphics::FrameBuffer* Sphynx::Core::Graphics::FrameBuffer::Create(std::initializer_list<Texture*> tex)
 {
 	switch (CurrentPlatform)
 	{
@@ -30,7 +30,7 @@ Sphynx::Core::Graphics::FrameBuffer* Sphynx::Core::Graphics::FrameBuffer::Create
 		[[fallthrough]];
 #endif
 	case Sphynx::Platform::Linux:
-		return new GL::GLFrameBuffer(width, height, tex);
+		return new GL::GLFrameBuffer(tex);
 	default:
 		break;
 	}

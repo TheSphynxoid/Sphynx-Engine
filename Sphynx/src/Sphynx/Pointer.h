@@ -22,12 +22,12 @@ namespace Sphynx {
 		void* obj;
 	public:
 		template<class T>
-		Dtor(T* t) {
+		Dtor(T* t) noexcept{
 			obj = t;
 			//Since we can't have a pointer to the destructor.
 			_dtor = [](void* o) ->void {((T*)o)->~T(); };
 		}
-		void Destroy() {
+		void Destroy()noexcept {
 			_dtor(obj);
 		}
 	};
@@ -36,7 +36,7 @@ namespace Sphynx {
 	protected:
 		virtual void I_Delete() = 0;
 	public:
-		void Delete() {
+		void Delete()noexcept {
 			I_Delete();
 		}
 	};
@@ -49,7 +49,7 @@ namespace Sphynx {
 			delete ptr;
 		}
 	public:
-		Deallocator(T* _ptr) {
+		Deallocator(T* _ptr)noexcept {
 			ptr = _ptr;
 		}
 	};
@@ -61,7 +61,7 @@ namespace Sphynx {
 			delete[] ptr;
 		}
 	public:
-		ArrayDeallocator(T* _ptr) {
+		ArrayDeallocator(T* _ptr)noexcept {
 			ptr = _ptr;
 			Size = sizeof(ptr);
 		}
@@ -69,20 +69,20 @@ namespace Sphynx {
 	class PointerBase {
 	private:
 	public:
-		virtual ~PointerBase() {};
+		virtual ~PointerBase()noexcept {};
 		virtual void* GetRaw() const = 0;
 	protected:
 		int RefCount = 0;
-		void AddRef() {
+		void AddRef()noexcept {
 			RefCount++;
 		}
-		void RemoveRef() {
+		void RemoveRef()noexcept {
 			RefCount--;
 		}
-		inline int GetRefCount() const { return RefCount; };
-		inline void SetRefCount(int c) { RefCount = c; };
+		inline int GetRefCount() const noexcept { return RefCount; };
+		inline void SetRefCount(int c)noexcept { RefCount = c; };
 	public:
-		virtual bool operator==(const PointerBase&& ptr) {
+		virtual bool operator==(const PointerBase&& ptr)const noexcept {
 			return this->GetRaw() == ptr.GetRaw();
 		}
 	};
@@ -97,7 +97,7 @@ namespace Sphynx {
 		//For Type Erasure.
 		Deallocator_Base* dealloc = nullptr;
 		struct ArrayID {
-			bool IsArray = false;
+			constexpr bool IsArray = std::is_array<T>::value;
 			bool IsBounded = true;
 			unsigned int Dimensions = 0;
 			int TotalElements;
@@ -107,8 +107,8 @@ namespace Sphynx {
 		bool SelfDestroy = false;
 		//Constructor
 	public:
-		Pointer() {}
-		Pointer(T* ptr) :Object(ptr) {
+		Pointer()noexcept {}
+		Pointer(T* ptr)noexcept :Object(ptr) {
 			if (std::is_array<T>::value == true) {
 				array_info.IsArray = true;
 				dealloc = new ArrayDeallocator<T>(ptr);
@@ -141,7 +141,7 @@ namespace Sphynx {
 		//Copy
 		Pointer(const Pointer& ptr) = delete;
 		//Destructor
-		~Pointer() {
+		~Pointer()noexcept {
 			RemoveRef();
 			if (GetRefCount() == 0 && Object) {
 				delegate->Invoke(*Object);
@@ -150,31 +150,31 @@ namespace Sphynx {
 			}
 		}
 		//Releases The Object
-		void Release() 
+		void Release() noexcept
 		{
 			if (SelfDestroy)delete this;
 			else this->~Pointer();
 		};
 		//Array
 
-		bool IsTypeArray() { return array_info.IsArray; };
+		constexpr bool IsTypeArray()const noexcept { return array_info.IsArray; };
 		bool IsBoundedArray() { return array_info.IsBounded; };
 		template<unsigned int Ix = 0>
 		constexpr const unsigned int GetExtentInRank() { return std::extent<T, Ix>::value; };
 		//Changes the pointer to the specified object.
-		inline void Swap(Pointer ptr) {
+		inline void Swap(Pointer ptr) noexcept{
 			std::swap(this->Object, ptr.Object);
 			//this->Object = ptr.Object; 
 			ptr.AddRef(); 
 		};
 
-		T* GetRaw() { return Object; };
-		void* GetRaw() const override { return (void*)Object; };
-		T& operator* ()
+		T* GetRaw()const noexcept { return Object; };
+		void* GetRaw() const noexcept override { return (void*)Object; };
+		T& operator* ()const noexcept
 		{
 			return *Object;
 		}
-		T* operator->() {
+		T* operator->() noexcept {
 			return Object;
 		}
 		Pointer& operator=(const Pointer& ptr) noexcept {

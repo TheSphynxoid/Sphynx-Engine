@@ -48,7 +48,7 @@ namespace Sphynx.Graphics
         /// <summary>
         /// Default framebuffers cannot change their buffer attachments, 
         /// but a particular default framebuffer may not have images associated with certain buffers.
-        /// Usually, <see cref="DefaultFrameBuffer"/> represents the window surface.
+        /// <para>Usually, <see cref="DefaultFrameBuffer"/> represents the window surface.</para>
         /// </summary>
         public static FrameBuffer DefaultFrameBuffer => defaultFB;
 
@@ -56,7 +56,7 @@ namespace Sphynx.Graphics
 
         [SuppressUnmanagedCodeSecurity]
         [MethodImpl(MethodImplOptions.InternalCall)]
-        static extern IntPtr Create(int width, int height, IntPtr texArray, int count);
+        static extern IntPtr Create(IntPtr texArray, int count);
         
         [SuppressUnmanagedCodeSecurity]
         [MethodImpl(MethodImplOptions.InternalCall)]
@@ -94,21 +94,17 @@ namespace Sphynx.Graphics
         [MethodImpl(MethodImplOptions.InternalCall)]
         static extern void SetClearColor(IntPtr fb, vec4 color);
 
-        [SuppressUnmanagedCodeSecurity]
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        static extern void Resize(IntPtr fb, vec2 size);
-
         FrameBuffer(IntPtr nativePtr)
         {
 
         }
 
-        public FrameBuffer(ivec2 size, Texture[] tex)
+        public FrameBuffer(Texture[] tex)
         {
-            nativePtr = new HandleRef(this, Create(size.x, size.y, Engine.GetArrayPointer(tex), tex.Length));
+            nativePtr = new HandleRef(this, Create(Engine.GetArrayPointer(tex), tex.Length));
             foreach (var t in tex)
             {
-                if (t.IsDepthTexture() && depthAttachment != null)
+                if (t.IsDepth() && depthAttachment != null)
                 {
                     HasDepthAttachment = true;
                     depthAttachment = t;
@@ -139,16 +135,11 @@ namespace Sphynx.Graphics
             Bind(nativePtr.Handle, (byte)binding);
         }
         /// <summary>
-		///Unbinds the framebuffer (the <see cref="DefaultFrameBuffer"/> will be bound to be used for reading or writing).
+        ///Unbinds the framebuffer (the <see cref="DefaultFrameBuffer"/> will be bound to be used for reading or writing).
         /// </summary>
         public void Unbind()
         {
             Unbind(nativePtr.Handle);
-        }
-
-        public void Resize(ivec2 size)
-        {
-            Resize(nativePtr.Handle, size);
         }
 
         /// <summary>
@@ -228,7 +219,7 @@ namespace Sphynx.Graphics
         }
 
         /// <summary>
-        /// The native <see cref="FrameBuffer"/> frees all attached textures.
+        /// The native <see cref="FrameBuffer"/> frees all attached textures (effectively calls <c>delete</c>).
         /// </summary>
         public void Dispose()
         {

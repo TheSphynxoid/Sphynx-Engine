@@ -108,7 +108,7 @@ namespace Sphynx.Core
         /// <summary>
         /// <c>true</c>, if contains depth data.
         /// </summary>
-        public static bool IsDepthTexture(this Texture tex)
+        public static bool IsDepth(this Texture tex)
         {
             return tex.Format switch
             {
@@ -117,12 +117,26 @@ namespace Sphynx.Core
                 _ => false,
             };
         }
+        public static bool IsStencil(this Texture tex)
+        {
+            return tex.Format switch
+            {
+
+                TextureFormat.Stencil or TextureFormat.Depth24_Stencil8 or TextureFormat.Depth32F_Stencil8 => true,
+                _ => false
+            };
+        }
         /// <summary>
         /// <c>true</c>, if contains color data.
         /// </summary>
         public static bool IsImage(this Texture tex)
         {
-            return !tex.IsDepthTexture() && tex.Format != TextureFormat.Stencil;
+            return !tex.IsDepth() && tex.Format != TextureFormat.Stencil;
+        }
+
+        public static Texture Compress(this Texture tex)
+        {
+            return null;
         }
     }
 }

@@ -17,11 +17,9 @@ void GLFrameBuffer::Release()
 	}
 }
 
-GLFrameBuffer::GLFrameBuffer(unsigned int id, int width, int height, std::initializer_list<Texture*> attachments)noexcept
+GLFrameBuffer::GLFrameBuffer(unsigned int id, std::initializer_list<Texture*> attachments)noexcept
 {
 	ID = id;
-	Width = width;
-	Height = height;
 	GLFrameBuffer::Bind();
 	for (auto& tex : attachments) {
 		if (tex->GetFormat() == TextureFormat::Depth24_Stencil8) {
@@ -29,24 +27,20 @@ GLFrameBuffer::GLFrameBuffer(unsigned int id, int width, int height, std::initia
 				DepthAttachment = tex;
 			}
 			else {
-				Core_Error("Cannot Have Two Depth Attachments");
+				Core_Error("Cannot Have Two Depth Attachments.");
 			}
 		}
 		else {
-			if (GL_MAX_COLOR_ATTACHMENTS - GL_COLOR_ATTACHMENT0 == ColorAttachmentsCount) {
-				Core_Error("Max Color Attachment Reached");
-			}
-			else {
-				ColorAttachmentsCount++;
-			}
+			ColorAttachmentsCount++;
 			ColorAttachments.push_back(tex);
 		}
 	}
 	GLFrameBuffer::Unbind();
 }
 
-GLFrameBuffer::GLFrameBuffer(int width, int height, std::initializer_list<Texture*> attachments)noexcept : Width(width), Height(height)
+GLFrameBuffer::GLFrameBuffer(std::initializer_list<Texture*> attachments)noexcept
 {
+	static auto maxAttachment = []()->GLint {GLint val; glGetIntegerv(GL_MAX_COLOR_ATTACHMENTS, &val); return val; }();
 	glCreateFramebuffers(1, &ID);
 	GLFrameBuffer::Bind();
 	for (auto& tex : attachments) {
@@ -56,13 +50,13 @@ GLFrameBuffer::GLFrameBuffer(int width, int height, std::initializer_list<Textur
 				DepthAttachment = tex;
 			}
 			else {
-				Core_Error("Cannot Have Two Depth Attachments");
+				Core_Error("Cannot Have Two Depth Attachments.");
 			}
 		}
 		else {
 			glNamedFramebufferTexture(ID, GL_COLOR_ATTACHMENT0 + ColorAttachmentsCount, ((GLTexture*)tex)->TextureID, 0);
-			if (GL_MAX_COLOR_ATTACHMENTS - GL_COLOR_ATTACHMENT0 == ColorAttachmentsCount) {
-				Core_Error("Max Color Attachment Reached");
+			if (maxAttachment - GL_COLOR_ATTACHMENT0 == ColorAttachmentsCount) {
+				Core_Error("Max Color Attachment Reached.");
 			}
 			else {
 				ColorAttachmentsCount++;
@@ -96,13 +90,6 @@ void GLFrameBuffer::Unbind()const noexcept
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
-void GLFrameBuffer::Resize(unsigned int width, unsigned int height)
-{
-	Width = width;
-	Height = height;
-	Invalidate();
-}
-
 void GLFrameBuffer::Invalidate()
 {
 	if (!ID)
@@ -111,27 +98,16 @@ void GLFrameBuffer::Invalidate()
 	Bind();
 	ColorAttachmentsCount = 0;
 	for (const auto tex : ColorAttachments) {
-		//Why create a texture through the interface ?
-		const auto t = Texture::Create(TextureType::Texture2D, Width, Height, 0, tex->GetFormat(), tex->GetDataFormat());		
-		//Free the texture but keep the pointer intact.
-		tex->~Texture();
-		//in-place the texture. is this UB ?
-		*tex = *t;
 		if (tex->GetFormat() == TextureFormat::Depth24_Stencil8) {
 			glNamedFramebufferTexture(ID, GL_DEPTH_STENCIL_ATTACHMENT, ((GLTexture*)tex)->TextureID, 0);
 		}
 		else {
 			glNamedFramebufferTexture(ID, GL_COLOR_ATTACHMENT0 + ColorAttachmentsCount, ((GLTexture*)tex)->TextureID, 0);
-			if (GL_MAX_COLOR_ATTACHMENTS - GL_COLOR_ATTACHMENT0 == ColorAttachmentsCount) {
-				Core_Error("Max Color Attachment Reached");
-			}
-			else {
-				ColorAttachmentsCount++;
-			}
+			ColorAttachmentsCount++;
 		}
 	}
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
-		Core_Error("ERROR: Framebuffer is not complete!");
+		Core_Error("ERROR: Framebuffer is not complete.");
 	Unbind();
 }
 
@@ -143,7 +119,7 @@ GLFrameBuffer::~GLFrameBuffer()
 void GLFrameBuffer::AddColorAttachment(Texture* tex)
 {
 	if (tex->GetFormat() == TextureFormat::Depth24_Stencil8) {
-		Core_Error("Depth24_Stencil8 is not a valid color format");
+		Core_Error("Depth/Stencil Textures are not valid color format.");
 		return;
 	}
 	glNamedFramebufferTexture(ID, GL_COLOR_ATTACHMENT0 + ColorAttachmentsCount, ((GLTexture*)tex)->TextureID, 0);
@@ -189,17 +165,6 @@ void GLFrameBuffer::Clear()noexcept
 
 FrameBuffer* GLFrameBuffer::GetDefaultFrameBuffer()noexcept
 {
-	static auto def = GLFrameBuffer(0, 0, 0);
-	static bool lazy_init = false;
-	if(!lazy_init){
-		def.ID = 0;
-		glBindFramebuffer(GL_FRAMEBUFFER, 0);
-		GLint dims[4] = { 0 };
-		glGetIntegerv(GL_VIEWPORT, dims);
-		def.Width = dims[2];
-		def.Height = dims[3];
-
-		lazy_init = true;
-	}
+	static auto def = GLFrameBuffer(0);
 	return &def;
 }

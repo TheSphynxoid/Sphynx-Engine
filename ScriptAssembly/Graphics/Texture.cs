@@ -9,6 +9,7 @@ using System.Runtime.InteropServices;
 using System.Security;
 using System.Text;
 using System.Threading.Tasks;
+using GlmSharp;
 
 namespace Sphynx.Graphics
 {
@@ -129,8 +130,8 @@ namespace Sphynx.Graphics
         /// </summary>
         [MethodImpl(MethodImplOptions.InternalCall)]
         [SuppressUnmanagedCodeSecurity]
-        internal static extern IntPtr CreateTexture(byte[] data, int width, int height, ushort texturetype, int mipmaplevel, ushort textureformat,
-            ushort datatype, ushort wrap, ushort filter, ushort mipmapmode);
+        internal static extern IntPtr CreateTexture(IntPtr data, int width, int height, int depth, ushort textureType, int mipmapLevel, ushort textureFormat,
+            ushort datatype, ushort wrap, ushort filter, ushort mipmapMode);
 
         [MethodImpl(MethodImplOptions.InternalCall)]
         [SuppressUnmanagedCodeSecurity]
@@ -158,14 +159,14 @@ namespace Sphynx.Graphics
         }
 
         /// <summary>
-        /// Returned by call to native function <see cref="GetTexInfo(HandleRef)"/> and hold infomation about the texture.
+        /// Returned by call to native function <see cref="GetTexInfo(IntPtr)"/> and hold information about the texture.
         /// </summary>
         [NativeCppClass]
         struct TexInfo
         {
             public IntPtr NativeID;
-            public TextureDataFormat dataFormat;
-            public TextureFormat format;
+            public TextureDataFormat DataFormat;
+            public TextureFormat Format;
             public Vector3 Dimension;
         }
 
@@ -178,8 +179,8 @@ namespace Sphynx.Graphics
         {
             TexInfo info = GetTexInfo(NativePointer.Handle);
             dims = info.Dimension;
-            format = info.format;
-            dataformat = info.dataFormat;
+            format = info.Format;
+            dataformat = info.DataFormat;
             Nativeid = new HandleRef(this, info.NativeID);
         }
 
@@ -196,11 +197,19 @@ namespace Sphynx.Graphics
             NativePointer = new HandleRef(this, nativePtr);
             SetUp();
         }
-
         /// <summary>
-        /// Allocate an empty <see cref="Texture"/> with the specified size.
+        /// Creates and allocates a texture with the given data.
         /// </summary>
-        public Texture(Vector2 size, TextureType type, TextureFormat format, TextureDataFormat dataFormat, int mipmapLevel = 0,
+        /// <param name="buffer">Can be null to not specify the data.</param>
+        /// <param name="dimensions">The dimensions of the texture in pixels.</param>
+        /// <param name="type">Texture type.</param>
+        /// <param name="textureDataFormat">The pixel data format in the given buffer (i.e: RGB ,RGBA ,etc...).</param>
+        /// <param name="format">How to interpret the texture in memory by the backend.</param>
+        /// <param name="mipmapLevel"></param>
+        /// <param name="wrap">Wrapping method used by the backend.</param>
+        /// <param name="filter">Filtering mode to be used.</param>
+        /// <param name="mipmapMode">MipMapping mode.</param>
+        public Texture(byte[] buffer, ivec3 dimensions, TextureType type, TextureDataFormat textureDataFormat, TextureFormat format, int mipmapLevel = 0,
             TextureWrappingMode wrap = TextureWrappingMode.Default, TextureFilterMode filter = TextureFilterMode.Default,
             TextureMipmapMode mipmapMode = TextureMipmapMode.Default)
         {
@@ -210,16 +219,11 @@ namespace Sphynx.Graphics
 
             this.type = type;
             this.format = format;
-            dataformat = dataFormat;
+            dataformat = textureDataFormat;
 
-            NativePointer = new HandleRef(this, CreateTexture(null, (int)size.x, (int)size.y,
+            NativePointer = new HandleRef(this, CreateTexture(Engine.GetArrayPointer(buffer), dimensions.x, dimensions.y, dimensions.z,
                 (ushort)type, mipmapLevel, (ushort)format, (ushort)dataformat, (ushort)wrap, (ushort)filter, (ushort)mipmapMode));
-
             SetUp();
-        }
-
-        public Texture(byte[] buffer, Vector3 dimensions, TextureDataFormat textureDataFormat, TextureFormat format)
-        {
         }
 
         /// <summary>
@@ -229,14 +233,6 @@ namespace Sphynx.Graphics
         /// <param name="compress">if <c>true</c> compresses the data before returning</param>
         /// <returns>Texture Pixel Data. It can be release in managed.</returns>
         public byte[] ReadAllBytes(bool compress)
-        {
-            return null;
-        }
-        /// <summary>
-        /// Returns a new Compressed texture.
-        /// </summary>
-        /// <returns>A new <see cref="Texture"/>.</returns>
-        public Texture Compress()
         {
             return null;
         }

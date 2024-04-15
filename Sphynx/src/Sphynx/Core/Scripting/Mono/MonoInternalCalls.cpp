@@ -43,19 +43,19 @@ namespace Sphynx::Mono::Internal {
 	Core::IWindow* MainWindow;
 
 	template<typename T>
-	std::vector<T> make_vector(T* t, size_t count)
+	std::vector<T> make_vector(T* t, size_t count) noexcept
 	{
 		auto vec = std::vector<T>(count);
 		vec.assign(t, &t[count - 1]);
 		return vec;
 	}
 
-	MonoExport void NativeFinalize(void* CompPtr) {
+	MonoExport void NativeFinalize(void* CompPtr) noexcept {
 		auto VComp = (Component*)CompPtr;
 		Sphynx::Core::Internal::ComponentFactory::RemoveComponent(VComp->GetGameObject(), VComp);
 	}
 
-	MonoExport void spdLog(MonoString* string, spdlog::level::level_enum level) {
+	MonoExport void spdLog(MonoString* string, spdlog::level::level_enum level) noexcept {
 		Logger::GetInternalLogger()->flush();
 		auto msg = mono_string_to_utf8(string);
 		Logger::GetInternalLogger()->log(level, msg);
@@ -63,55 +63,55 @@ namespace Sphynx::Mono::Internal {
 	}
 
 	template<class T>
-	MonoExport float Distance(T left, T right) {
+	MonoExport float Distance(T left, T right) noexcept {
 		return glm::distance(left, right);
 	}
 	template<class T>
-	MonoExport float Dot(T left, T right) {
+	MonoExport float Dot(T left, T right) noexcept {
 		return glm::dot(left, right);
 	}
-	MonoExport glm::vec3 Cross(glm::vec3 left, glm::vec3 right) {
+	MonoExport glm::vec3 Cross(glm::vec3 left, glm::vec3 right) noexcept {
 		return glm::cross(left, right);
 	}
 
-	MonoExport void SetTitle(MonoString* string) {
+	MonoExport void SetTitle(MonoString* string) noexcept {
 		auto title = mono_string_to_utf8(string);
 		MainWindow->ChangeTitle(title);
 		mono_free(title);
 	}
-	MonoExport MonoString* GetTitle() {
+	MonoExport MonoString* GetTitle() noexcept {
 		return mono_string_new(Appdomain, MainWindow->GetTitle());
 	}
-	MonoExport void SetVsync(bool vsync) {
+	MonoExport void SetVsync(bool vsync) noexcept {
 		MainWindow->SetVsync(vsync);
 	}
-	MonoExport bool GetVsync() {
+	MonoExport bool GetVsync() noexcept {
 		return MainWindow->IsVsyncEnabled();
 	}
-	MonoExport void SetSize(int width, int height) {
+	MonoExport void SetSize(int width, int height) noexcept {
 		MainWindow->Resize(width, height);
 	}
-	MonoExport Sphynx::Core::Bounds GetSize() {
+	MonoExport Sphynx::Core::Bounds GetSize() noexcept {
 		return MainWindow->GetBounds();
 	}
-	MonoExport int GetKeyState(int key) {
+	MonoExport int GetKeyState(int key) noexcept {
 		return (int)Input::GetKeyState((Keys)key).action;
 	}
-	MonoExport int GetButtonState(int button) {
+	MonoExport int GetButtonState(int button) noexcept {
 		return (int)Input::GetMouseButtonState((MouseButton)button).action;
 	}
-	MonoExport glm::vec2 GetMousePosition() {
+	MonoExport glm::vec2 GetMousePosition() noexcept {
 		return Input::GetMousePosition();
 	}
-	MonoExport Mono::NativeComponent CreateNativeComponent(size_t goID) {
+	MonoExport Mono::NativeComponent CreateNativeComponent(size_t goID) noexcept {
 		auto Native = NativeComponent();
 		return Native;
 	}
-	MonoExport void SetPosition(MonoObject* go, glm::vec3 pos) {
+	MonoExport void SetPosition(MonoObject* go, glm::vec3 pos) noexcept {
 		GameObject* gameobj = GameObjectWrapper::GetFromObject_unchecked(go);
 		gameobj->GetTransform()->SetPosition(pos);
 	}
-	MonoExport glm::vec3 GetPosition(MonoObject* go) {
+	MonoExport glm::vec3 GetPosition(MonoObject* go) noexcept {
 		return GameObjectWrapper::GetFromObject_unchecked(go)->GetTransform()->GetPosition();
 	}
 	MonoExport struct TexInfo {
@@ -128,19 +128,19 @@ namespace Sphynx::Mono::Internal {
 		info.Dimension = { tex->GetWidth(),tex->GetHeight(),tex->GetDepth() };
 		return info;
 	}
-	MonoExport void BindTex(Texture* tex) {
+	MonoExport void BindTex(Texture* tex) noexcept {
 		tex->Bind();
 	}
-	MonoExport void UnbindTex(Texture* tex) {
+	MonoExport void UnbindTex(Texture* tex) noexcept {
 		tex->Unbind();
 	}
-	MonoExport Shader* ShaderLoader(MonoString* path, Sphynx::Core::Graphics::ShaderType type) {
+	MonoExport Shader* ShaderLoader(MonoString* path, Sphynx::Core::Graphics::ShaderType type) noexcept {
 		auto p = mono_string_to_utf8(path);
 		auto shader = Sphynx::ResourceManager::LoadShader(p, type);
 		mono_free(p);
 		return shader;
 	}
-	MonoExport Texture* TextureLoader(MonoString* path, TextureType type, bool compress) {
+	MonoExport Texture* TextureLoader(MonoString* path, TextureType type, bool compress) noexcept {
 		auto p = mono_string_to_utf8(path);
 		auto tex = ResourceManager::LoadTexture(p, type, compress);
 		mono_free(p);
@@ -152,52 +152,52 @@ namespace Sphynx::Mono::Internal {
 	MonoExport void MatUnbind(Material* mat)noexcept {
 		mat->Unbind();
 	}
-	MonoExport void AddTex(Material* mat, Texture* tex) {
+	MonoExport void AddTex(Material* mat, Texture* tex) noexcept {
 		mat->AddTexture(tex);
 	}	
-	MonoExport void RemoveTex(Material* mat, Texture* tex) {
+	MonoExport void RemoveTex(Material* mat, Texture* tex) noexcept {
 		mat->RemoveTexture(tex);
 	}	
-	MonoExport void SetTex(Material* mat, Texture* tex, unsigned int index) {
+	MonoExport void SetTex(Material* mat, Texture* tex, unsigned int index) noexcept {
 		mat->SetTexture(tex, index);
 	}
-	MonoExport int GetUniLoc(Material* mat, MonoString* name) {
+	MonoExport int GetUniLoc(Material* mat, MonoString* name) noexcept {
 		auto uniname = mono_string_to_utf8(name);
 		const auto loc = mat->GetUniformLocation(uniname);
 		mono_free(uniname);
 		return loc;
 	}	
-	MonoExport void SetUni(Material* mat, Uniform* uni, int loc) {
+	MonoExport void SetUni(Material* mat, Uniform* uni, int loc) noexcept {
 		mat->SetUniform(uni, loc);
 	}
-	MonoExport Uniform* CreateUniform(void* data, ShaderDataType type) {
+	MonoExport Uniform* CreateUniform(void* data, ShaderDataType type) noexcept {
 		return Uniform::Create(data, type);
 	}
-	MonoExport void ReallocGPUBuf(GPUBuffer* buf,size_t size,void* data) {
+	MonoExport void ReallocGPUBuf(GPUBuffer* buf,size_t size,void* data) noexcept {
 		buf->Reallocate(size, data);
 	}
-	MonoExport void InvalidateGPUBuf(GPUBuffer* buf) {
+	MonoExport void InvalidateGPUBuf(GPUBuffer* buf) noexcept {
 		buf->Invalidate();
 	}
-	MonoExport void SetDataGPUBuf(GPUBuffer* buf, void* data, size_t size, size_t offset) {
+	MonoExport void SetDataGPUBuf(GPUBuffer* buf, void* data, size_t size, size_t offset) noexcept {
 		buf->SetData(data, size, offset);
 	}
-	MonoExport void BufBind(GPUBuffer* buf) {
+	MonoExport void BufBind(GPUBuffer* buf) noexcept {
 		buf->Bind();
 	}
-	MonoExport void BufUnbind(GPUBuffer* buf) {
+	MonoExport void BufUnbind(GPUBuffer* buf) noexcept {
 		buf->Unbind();
 	}
-	MonoExport void Submit_Internal(RenderObject ro) {
+	MonoExport void Submit_Internal(RenderObject ro) noexcept {
 		GetMainWindow()->GetRenderer()->Submit(ro);
 	}
-	MonoExport void Render() {
+	MonoExport void Render() noexcept {
 		GetMainWindow()->GetRenderer()->Render();
 	}	
-	MonoExport void Clear() {
+	MonoExport void Clear() noexcept {
 		GetMainWindow()->GetRenderer()->Clear();
 	}
-	MonoExport void SetViewport(Viewport v) {
+	MonoExport void SetViewport(Viewport v) noexcept {
 		GetMainWindow()->GetRenderer()->SetViewport(v);
 	}
 	MonoExport void* malloc(size_t size) {
@@ -227,40 +227,40 @@ namespace Sphynx::Mono::Internal {
 		int count;
 		unsigned int stride;
 	};
-	MonoExport void SetVBLayout(VertexBuffer* vb, VBLayout layout) {
+	MonoExport void SetVBLayout(VertexBuffer* vb, VBLayout layout) noexcept {
 		vb->SetDataLayout(BufferLayout(std::initializer_list<BufferElement>(layout.elems, &layout.elems[layout.count - 1])));
 	}
-	MonoExport size_t GetVBSize(VertexBuffer* vb) {
+	MonoExport size_t GetVBSize(VertexBuffer* vb) noexcept {
 		return vb->GetSize();
 	}
-	MonoExport GPUBuffer* VBToGPUBuffer(VertexBuffer* vb) {
+	MonoExport GPUBuffer* VBToGPUBuffer(VertexBuffer* vb) noexcept {
 		return vb;
 	}	
-	MonoExport GPUBuffer* IBToGPUBuffer(IndexBuffer* vb) {
+	MonoExport GPUBuffer* IBToGPUBuffer(IndexBuffer* vb) noexcept {
 		return vb;
 	}
-	MonoExport Sphynx::Core::Graphics::Mesh* MeshCreateVBs(VertexBuffer** vbs, int Count, IndexBuffer* ib) {
+	MonoExport Sphynx::Core::Graphics::Mesh* MeshCreateVBs(VertexBuffer** vbs, int Count, IndexBuffer* ib) noexcept {
 		return Mesh::Create(make_vector(vbs, Count), ib);
 	}
-	MonoExport void AddVB(Mesh* mesh, VertexBuffer* vb) {
+	MonoExport void AddVB(Mesh* mesh, VertexBuffer* vb) noexcept {
 		mesh->AddVertexBuffer(vb);
 	}
-	MonoExport void SetVBs(Mesh* mesh, int Count, VertexBuffer** vbs) {
+	MonoExport void SetVBs(Mesh* mesh, int Count, VertexBuffer** vbs) noexcept {
 		mesh->SetVertexBuffers(make_vector(vbs, Count));
 	}
-	MonoExport void SetIB(Mesh* mesh, IndexBuffer* ib) {
+	MonoExport void SetIB(Mesh* mesh, IndexBuffer* ib) noexcept {
 		mesh->SetIndexBuffer(ib);
 	}
-	MonoExport void MeshBind(Mesh* mesh) {
+	MonoExport void MeshBind(Mesh* mesh) noexcept {
 		mesh->Bind();
 	}
-	MonoExport void MeshUnbind(Mesh* mesh) {
+	MonoExport void MeshUnbind(Mesh* mesh) noexcept {
 		mesh->Unbind();
 	}
-	MonoExport void MeshSetMode(Mesh* mesh, RenderMode mode) {
+	MonoExport void MeshSetMode(Mesh* mesh, RenderMode mode) noexcept {
 		mesh->SetRenderMode(mode);
 	}
-	MonoExport Camera* GetPrimaryCamera() {
+	MonoExport Camera* GetPrimaryCamera() noexcept {
 		return Sphynx::Core::SceneManager::GetScene().GetPrimaryCamera();
 	}
 	MonoExport Component* GetNativeCompByName(GameObject* go, MonoString* str) {
@@ -272,21 +272,39 @@ namespace Sphynx::Mono::Internal {
 		}
 		mono_free(name);
 	}
-	MonoExport void CoreCheck(void* anyObj, const bool unbox) {
+	MonoExport void CoreCheck(void* anyObj, const bool unbox) noexcept {
 		if (unbox) {
 			anyObj = mono_object_unbox((MonoObject*)anyObj);
 		}
 		__debugbreak();
 	}
-	MonoExport FrameBuffer* CreateFB(int width, int height, Texture** texArray, int count)
+	MonoExport FrameBuffer* CreateFB(int width, int height, Texture** texArray, int count) noexcept
 	{
 		return FrameBuffer::Create(width, height, std::initializer_list(texArray, &texArray[count - 1]));
 	}
-	MonoExport void ReleaseFB(FrameBuffer* fb)
+	MonoExport void BindFB(const FrameBuffer* fb, FrameBufferBinding b) noexcept {
+		fb->Bind(b);
+	}
+	MonoExport void UnbindFB(const FrameBuffer* fb) noexcept {
+		fb->Unbind();
+	}
+	MonoExport void ReleaseFB(FrameBuffer* fb) noexcept
 	{
 		delete fb;
 	}
-	MonoExport FrameBuffer* GetDefaultFB()
+	MonoExport void ClearBufferFB(FrameBuffer* fb, ClearBuffer b) noexcept {
+		fb->Clear(b);
+	}
+	MonoExport void ClearFB(FrameBuffer* fb) noexcept{
+		fb->Clear();
+	}
+	MonoExport void InvalidateFB(FrameBuffer* fb) noexcept{
+		fb->Invalidate();
+	}
+	MonoExport void ResizeFB(FrameBuffer* fb, glm::vec2 size)noexcept {
+		fb->Resize(size.x, size.y);
+	}
+	MonoExport FrameBuffer* GetDefaultFB() noexcept
 	{
 		return FrameBuffer::GetDefaultFrameBuffer();
 	}
@@ -402,8 +420,15 @@ namespace Sphynx::Mono::Internal {
 		mono_add_internal_call("Sphynx.Graphics.Mesh::SetRenderMode", &MeshSetMode);
 		//Sphynx.Graphics.FrameBuffer
 		mono_add_internal_call("Sphynx.Graphics.FrameBuffer::Create", &CreateFB);
+		mono_add_internal_call("Sphynx.Graphics.FrameBuffer::Release", &ReleaseFB);
 		mono_add_internal_call("Sphynx.Graphics.FrameBuffer::BindDefault", &FrameBuffer::BindDefault);
-
+		mono_add_internal_call("Sphynx.Graphics.FrameBuffer::Bind", &BindFB);
+		mono_add_internal_call("Sphynx.Graphics.FrameBuffer::Unbind", &UnbindFB);
+		mono_add_internal_call("Sphynx.Graphics.FrameBuffer::ClearBuffer", &ClearBufferFB);
+		mono_add_internal_call("Sphynx.Graphics.FrameBuffer::Clear", &ClearFB);
+		mono_add_internal_call("Sphynx.Graphics.FrameBuffer::Invalidate", &InvalidateFB);
+		mono_add_internal_call("Sphynx.Graphics.FrameBuffer::SetClearColor", &SetClearColorFB);
+		mono_add_internal_call("Sphynx.Graphics.FrameBuffer::Resize", &ResizeFB);
 	}
 }
 #endif

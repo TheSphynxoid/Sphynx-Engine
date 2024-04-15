@@ -59,7 +59,7 @@ namespace Sphynx::Core::Graphics {
 		static Texture* Create(void* data, int width, int height, int depth , TextureType Type, TextureDataFormat datatype);
 		//Creates a Texture interface object with the specified pixel data, dimensions and texture format (red,rb,rgb,etc.).
 		static Texture* Create(void* data, int width, int height, int depth, TextureType Type, TextureFormat format, TextureDataFormat datatype);
-		//Initializes a Texture interface with empty data (in opengl it doesn't create the texture buffer) and a specified format.
+		//Initializes a Texture interface with empty data (in openGL it doesn't create the texture buffer) and a specified format.
 		static Texture* Create(TextureType Type, int Width, int Height, int depth, TextureFormat format, TextureDataFormat datatype);
 		//Creates a Texture interface object with more control.
 		static Texture* Create(void* data, int width, int height, int depth, TextureType Type, int MipmapLevel, TextureFormat format , TextureDataFormat datatype
@@ -70,7 +70,7 @@ namespace Sphynx::Core::Graphics {
 		//virtual bool IsImmutable() const noexcept = 0;
 		
 		//Sets the Texture Data and sends it to the gpu (if texture resides in the gpu)
-		//This Assumes that the data is of the correct format and size (a larger size shouldn't cause a problem in Opengl) and does not do checks.
+		//This Assumes that the data is of the correct format and size (a larger size shouldn't cause a problem in OpenGL) and does not do checks.
 		//If Height and width are larger than the textures Dimensions then the texture storage will be reallocated then data will be sent.
 		virtual void SetData(void* data,int Level = 0, int OffsetX = 0, int OffsetY = 0, int OffsetZ = 0, 
 			int Width = -1, int Height = -1, int Depth = -1) = 0;
@@ -83,7 +83,7 @@ namespace Sphynx::Core::Graphics {
 		virtual void Clear(int level) = 0;
 		//Binds the texture for usage.
 		virtual void Bind()noexcept = 0;
-		//Unbinds the texture (for opengl it binds the texture id = 0, an empty texture not for use).
+		//Unbinds the texture (for openGL it binds the texture id = 0, an empty texture not for use).
 		virtual void Unbind()noexcept = 0;
 		virtual const TextureFormat& GetFormat()const noexcept = 0;
 		virtual const TextureDataFormat& GetDataFormat()const noexcept = 0;
@@ -94,7 +94,7 @@ namespace Sphynx::Core::Graphics {
 		virtual int GetDepth()const noexcept = 0;
 		virtual int GetBitsPerPixel()const noexcept = 0;
 		virtual void* ReadAllPixels(TextureDataFormat data) = 0;
-		//Gets the native handle (uint for opengl).
+		//Gets the native handle (uint for openGL).
 		virtual void* GetNativeID()noexcept = 0;
 		//Generates Mipmaps for the texture.
 		virtual void GenerateMipmaps() = 0;

@@ -10,13 +10,12 @@ namespace Sphynx::Core::Graphics::GL {
 	{
 	private:
 		unsigned int ID = 0;
-		int Width = 0, Height = 0;
-		int ColorAttachmentsCount = 0;
+		unsigned int ColorAttachmentsCount = 0;
 		Texture* DepthAttachment = nullptr;
 		std::vector<Texture*> ColorAttachments;
 		void Release();
 		//Used to Create the Default framebuffer
-		GLFrameBuffer(unsigned int id, int width, int height, std::initializer_list<Texture*> attachments = {})noexcept;
+		GLFrameBuffer(unsigned int id, std::initializer_list<Texture*> attachments = {})noexcept;
 	public:
 		GLFrameBuffer() = delete;
 		GLFrameBuffer(const GLFrameBuffer&) = delete;
@@ -24,8 +23,6 @@ namespace Sphynx::Core::Graphics::GL {
 		GLFrameBuffer(GLFrameBuffer&& fb) noexcept
 		{
 			std::swap(ID, fb.ID);
-			std::swap(Width, fb.Width);
-			std::swap(Height, fb.Height);
 			std::swap(ColorAttachmentsCount, fb.ColorAttachmentsCount);
 			std::swap(DepthAttachment, fb.DepthAttachment);
 			std::swap(ColorAttachments, fb.ColorAttachments);
@@ -36,23 +33,23 @@ namespace Sphynx::Core::Graphics::GL {
 			{
 				Release();
 				std::swap(ID, fb.ID);
-				std::swap(Width, fb.Width);
-				std::swap(Height, fb.Height);
 				std::swap(ColorAttachmentsCount, fb.ColorAttachmentsCount);
 				std::swap(DepthAttachment, fb.DepthAttachment);
 				std::swap(ColorAttachments, fb.ColorAttachments);
 			}
 			return *this;
 		}
-		GLFrameBuffer(int width, int height, std::initializer_list<Texture*> attachments = {})noexcept;
+		GLFrameBuffer(std::initializer_list<Texture*> attachments = {})noexcept;
 		void Bind(FrameBufferBinding b = FrameBufferBinding::ReadWrite)const noexcept override;
 		void Unbind()const noexcept override;
-		void Resize(unsigned int width, unsigned int height) override;
-		Texture* GetColorAttachment(size_t index)const noexcept override { return ColorAttachments[index]; }
+		Texture* GetColorAttachment(size_t index)const noexcept override
+		{
+			if (index > (size_t)ColorAttachmentsCount)
+				return nullptr;
+			return ColorAttachments[index];
+		}
 		void Invalidate() override;
 		bool IsDefaultFrameBuffer()const noexcept override { return !ID; }
-		int GetWidth()const noexcept override { return Width; }
-		int GetHeight()const noexcept override { return Height; }
 		~GLFrameBuffer() override;
 		void AddColorAttachment(Texture* tex) override;
 		void SetDepthStencilAttachment(Texture* tex) override;

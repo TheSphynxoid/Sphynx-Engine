@@ -51,7 +51,7 @@ namespace Sphynx
             },
             20, new BufferLayout()
             {
-                bufferElements = new BufferElement[]{ new(ShaderDataType.Float2, false),
+                BufferElements = new BufferElement[]{ new(ShaderDataType.Float2, false),
                     new(ShaderDataType.Float2, false) }
             });
 

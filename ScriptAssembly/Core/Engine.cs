@@ -29,7 +29,7 @@ namespace Sphynx.Core
         //public extern static string[] GetEngineArgs();
         /// <summary>
         /// If the C# Execution Engine is Running on Mono this has a true value.
-        /// (This is here in case i decide to add the MicrosoftCLR or modified mono runtime)
+        /// (This is here in case I decide to add the MicrosoftCLR or modified mono runtime)
         /// </summary>
         public static readonly bool IsMono = (Type.GetType("Mono.Runtime") != null);
 
@@ -43,10 +43,10 @@ namespace Sphynx.Core
         static void RuntimeSetup()
         {
             AppDomain.CurrentDomain.AssemblyResolve += (sender, args) => {
-                string resourceName = "Sphynx." + new AssemblyName(args.Name).Name + ".dll";
-                using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceName))
+                var resourceName = "Sphynx." + new AssemblyName(args.Name).Name + ".dll";
+                using (var stream = typeof(Engine).Assembly.GetManifestResourceStream(resourceName))
                 {
-                    Byte[] assemblyData = new Byte[stream.Length];
+                    byte[] assemblyData = new byte[stream.Length];
                     stream.Read(assemblyData, 0, assemblyData.Length);
                     return Assembly.Load(assemblyData);
                 }
@@ -65,14 +65,14 @@ namespace Sphynx.Core
         static extern IntPtr ArrayToPointer(Array array, int index);
 
         /// <summary>
-        /// Gets the address of the data in a buffer.
+        /// Gets the address of the data in a buffer or returns <see cref="IntPtr.Zero"/> in case the array is null.
         /// </summary>
         /// <param name="array">Array to get data address from.</param>
         /// <param name="index">Index to start from.</param>
         [SuppressUnmanagedCodeSecurity]
         public static unsafe IntPtr GetArrayPointer(Array array, int index = 0)
         {
-            return ArrayToPointer(array, index);
+            return array != null? ArrayToPointer(array, index) : IntPtr.Zero;
         }
 
         [SuppressUnmanagedCodeSecurity]
@@ -96,6 +96,7 @@ namespace Sphynx.Core
         /// <summary>
         /// Used for debugging in core to check the structure of an object in memory. Calls DebuggerBreak in native.
         /// </summary>
+        /// <param name="obj"></param>
         /// <param name="unbox">Set to true if the object is a value type.</param>
         [SuppressUnmanagedCodeSecurity]
         [MethodImpl(MethodImplOptions.InternalCall)]

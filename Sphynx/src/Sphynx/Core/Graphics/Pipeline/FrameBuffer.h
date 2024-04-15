@@ -18,8 +18,6 @@ namespace Sphynx::Core::Graphics {
 		virtual void Bind(FrameBufferBinding b = FrameBufferBinding::ReadWrite)const noexcept = 0;
 		//Unbinds the framebuffer (the default framebuffer will be used for reading or writing).
 		virtual void Unbind()const noexcept = 0;
-		//Resize the framebuffer and attachment. Calling this Invalidates the FrameBuffer.
-		virtual void Resize(unsigned int width, unsigned int height) = 0;
 		//Gets the Specified color attachment.
 		virtual Texture* GetColorAttachment(size_t index)const noexcept = 0;
 		//Attaches a new Color Texture.
@@ -37,10 +35,6 @@ namespace Sphynx::Core::Graphics {
 		virtual void Invalidate() = 0;
 		//Returns true if the framebuffer is the default one.
 		virtual bool IsDefaultFrameBuffer()const noexcept = 0;
-		//Returns the Width of the Texture Within the Framebuffer.
-		virtual int GetWidth()const noexcept = 0;
-		//Returns the Height of the Texture Within the Framebuffer.
-		virtual int GetHeight()const noexcept = 0;
 		//Returns a platform-specific ID
 		virtual void* GetNativeID()const noexcept = 0;
 		//Returns true if Framebuffer is valid and ready for use.
@@ -54,7 +48,7 @@ namespace Sphynx::Core::Graphics {
 		//Clears the Framebuffer binding
 		static void BindDefault();
 		//Creates a Framebuffer.
-		static FrameBuffer* Create(int width, int height, std::initializer_list<Texture*> tex = {});
+		static FrameBuffer* Create(std::initializer_list<Texture*> tex = {});
 		//Returns the default framebuffer
 		static FrameBuffer* GetDefaultFrameBuffer();
 	};

@@ -54,9 +54,10 @@ void Sphynx::Editor::EditorViewport::Draw()
 			Cam->SetViewport(
 				{ 0,0,(int)WinSize.x,(int)WinSize.y });
 		}
-		ImGui::Image(Cam->GetFrameBuffer()->GetColorAttachment(0)->GetNativeID(),
-			{ (float)Cam->GetFrameBuffer()->GetWidth(),
-				(float)Cam->GetFrameBuffer()->GetHeight() }, { 0,1 }, { 1,0 });
+		const auto& tex = Cam->GetFrameBuffer()->GetColorAttachment(0);
+		ImGui::Image(tex->GetNativeID(),
+			{ (float)tex->GetWidth(),
+				(float)tex->GetHeight() }, { 0,1 }, { 1,0 });
 		if (StatsToggle) {
 			//Render info widget
 			ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav;
