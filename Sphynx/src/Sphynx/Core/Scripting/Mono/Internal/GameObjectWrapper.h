@@ -36,6 +36,7 @@ namespace Sphynx::Mono {
 		GameObjectWrapper(GameObject* go);
 		//Get From Managed
 		GameObjectWrapper(MonoObject* obj);
+		~GameObjectWrapper();
 		/// <summary>
 		/// Adds a managed component to the gameObject.
 		/// </summary>

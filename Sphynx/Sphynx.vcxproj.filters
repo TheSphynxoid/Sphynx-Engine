@@ -333,6 +333,7 @@
     </ClInclude>
     <ClInclude Include="src\Sphynx\Core\Graphics\Platform\GLBuffer.h" />
     <ClInclude Include="src\Sphynx\Core\Scripting\Mono\MonoInternalCalls.h" />
+    <ClInclude Include="src\Sphynx\Core\Scripting\Mono\Internal\CameraWrapper.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Sphynx\Application.cpp">
@@ -535,5 +536,6 @@
     </ClCompile>
     <ClCompile Include="src\Sphynx\Core\Graphics\Platform\GLBuffer.cpp" />
     <ClCompile Include="src\Sphynx\Core\Graphics\Pipeline\Buffer.cpp" />
+    <ClCompile Include="src\Sphynx\Core\Scripting\Mono\Internal\CameraWrapper.cpp" />
   </ItemGroup>
 </Project>

@@ -12,7 +12,7 @@ namespace Sphynx::Core::Graphics {
 	};
 
 	struct GPUBuffer {
-		virtual ~GPUBuffer() = 0;
+		virtual ~GPUBuffer() = default;
 		//Create Buffer
 		static GPUBuffer* Create(size_t size, void* data, const UsageHint hint, const AccessHint accessHint);
 		virtual void Bind()const noexcept = 0;

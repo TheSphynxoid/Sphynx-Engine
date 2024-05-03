@@ -379,7 +379,7 @@ void Sphynx::Core::DebugWindow::Draw()
 			ImGui::Indent();
 			ImGui::Text("Main Window Width:%i", window->GetWidth());
 			ImGui::Text("Main Window Height:%i", window->GetHeight());
-			auto fb = Sphynx::Core::SceneManager::GetScene().GetPrimaryCamera()->GetFrameBuffer();
+			auto fb = Sphynx::Core::SceneManager::GetCurrentScene().GetPrimaryCamera()->GetFrameBuffer();
 			ImGui::Text("Camera FrameBuffer Width:%i", fb->GetColorAttachment(0)->GetWidth());
 			ImGui::Text("Camera FrameBuffer Height:%i", fb->GetColorAttachment(0)->GetHeight());
 			if (ImGui::Button("Save Framebuffer")) {

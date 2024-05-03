@@ -97,7 +97,7 @@ namespace Sphynx {
 		//For Type Erasure.
 		Deallocator_Base* dealloc = nullptr;
 		struct ArrayID {
-			constexpr bool IsArray = std::is_array<T>::value;
+			const bool IsArray = std::is_array<T>::value;
 			bool IsBounded = true;
 			unsigned int Dimensions = 0;
 			int TotalElements;

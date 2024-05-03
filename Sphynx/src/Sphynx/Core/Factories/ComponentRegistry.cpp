@@ -3,44 +3,44 @@
 #include "GameObject.h"
 #include "Component.h"
 
-void Sphynx::Core::Internal::ComponentRegistry::RegisterComp(GameObject* go, Component* comp)
+void Sphynx::Core::Internal::ComponentRegistry::RegisterComp(GameObject* go, Component* comp)noexcept
 {
 	CompInfo k = { std::type_index(typeid(*comp)),comp };
-	Registry[go->GetID()].insert(k);
+	InstanceRegistry[go->GetID()].insert(k);
 }
 
-void Sphynx::Core::Internal::ComponentRegistry::RemoveComp(GameObject* go, Component* comp)
+void Sphynx::Core::Internal::ComponentRegistry::RemoveComp(GameObject* go, Component* comp)noexcept
 {
 	CompInfo k = { std::type_index(typeid(*comp)),comp };
-	Registry[go->GetID()].erase(k);
+	InstanceRegistry[go->GetID()].erase(k);
 }
 
-bool Sphynx::Core::Internal::ComponentRegistry::IsCompInGO(GameObject* go, std::type_index typeindex)
+bool Sphynx::Core::Internal::ComponentRegistry::IsCompInGO(GameObject* go, std::type_index typeindex)noexcept
 {
-	auto& r = Registry[go->GetID()];
+	auto& r = InstanceRegistry[go->GetID()];
 	return r.count({ typeindex, nullptr });
 }
 
-bool Sphynx::Core::Internal::ComponentRegistry::IsCompInGO(Sphynx::GameObject* go, Sphynx::Component* comp)
+bool Sphynx::Core::Internal::ComponentRegistry::IsCompInGO(Sphynx::GameObject* go, Sphynx::Component* comp)noexcept
 {
-	return Registry[go->GetID()].count({ std::type_index(typeid(*comp)),comp });
+	return InstanceRegistry[go->GetID()].count({ std::type_index(typeid(*comp)),comp });
 }
 
-void Sphynx::Core::Internal::ComponentRegistry::CopyGameObject(GameObject* ori, GameObject* newGO)
+void Sphynx::Core::Internal::ComponentRegistry::CopyGameObject(GameObject* ori, GameObject* newGO)noexcept
 {
-	Registry[newGO->GetID()] = Registry[ori->GetID()];
+	InstanceRegistry[newGO->GetID()] = InstanceRegistry[ori->GetID()];
 }
 
-void Sphynx::Core::Internal::ComponentRegistry::MoveCompsToGameObject(const Sphynx::GameObject* Src, Sphynx::GameObject* Dest)
+void Sphynx::Core::Internal::ComponentRegistry::MoveCompsToGameObject(const Sphynx::GameObject* Src, Sphynx::GameObject* Dest)noexcept
 {
-	Registry[Dest->GetID()] = Registry[Src->GetID()];
-	Registry.erase(Src->GetID());
+	InstanceRegistry[Dest->GetID()] = InstanceRegistry[Src->GetID()];
+	InstanceRegistry.erase(Src->GetID());
 }
 
-bool Sphynx::Core::Internal::ComponentRegistry::CompInfo::operator==(const CompInfo& rhs) const
+bool Sphynx::Core::Internal::ComponentRegistry::CompInfo::operator==(const CompInfo& rhs) const noexcept
 {
 	if (comp_ptr == nullptr || rhs.comp_ptr == nullptr) {
-		return typeindex == rhs.typeindex;
+		return typeIndex == rhs.typeIndex;
 	}
 	return comp_ptr->GetID() == rhs.comp_ptr->GetID();
 }

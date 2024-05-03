@@ -8,8 +8,8 @@ namespace Sphynx::Events {
 		OnSceneChange(const Sphynx::Core::Scene& newScene) : CurrentScene(newScene) {};
 	};
 	struct OnSceneStart : public Event {
-		const Core::Scene& CurrentScene;
-		OnSceneStart(const Sphynx::Core::Scene& newScene) : CurrentScene(newScene) {};
+		Core::Scene& CurrentScene;
+		OnSceneStart(Sphynx::Core::Scene& newScene) : CurrentScene(newScene) {};
 	};
 	struct OnSceneUpdate : public Event {
 		OnSceneUpdate() {};

@@ -2,11 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Runtime.CompilerServices;
-using System.Runtime.Hosting;
 using System.Runtime.InteropServices;
-using System.Security;
 
 namespace Sphynx.Core.Native
 {
@@ -23,15 +20,5 @@ namespace Sphynx.Core.Native
         {
             NativeFinalize(NativePtr);
         }
-    }
-
-    internal static class NativeComponentFactory
-    {
-        [SuppressUnmanagedCodeSecurity]
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        internal static extern IntPtr GetNativeCompByName(IntPtr GOHandle, string name);
-        [SuppressUnmanagedCodeSecurity]
-        [MethodImpl(MethodImplOptions.InternalCall)]
-        internal static extern IntPtr CreateNativeComponent();
     }
 }

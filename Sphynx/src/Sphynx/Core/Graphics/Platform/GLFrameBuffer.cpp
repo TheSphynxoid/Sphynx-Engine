@@ -111,6 +111,16 @@ void GLFrameBuffer::Invalidate()
 	Unbind();
 }
 
+Texture* Sphynx::Core::Graphics::GL::GLFrameBuffer::ReplaceAttachment(Texture* tex, unsigned int index, int mipmapLevel) noexcept
+{
+	if (index <= ColorAttachmentsCount) {
+		Texture* old = ColorAttachments[index];
+		glNamedFramebufferTexture(ID, GL_COLOR_ATTACHMENT0 + index, (GLuint)tex->GetNativeID(), mipmapLevel);
+		return old;
+	}
+	return nullptr;
+}
+
 GLFrameBuffer::~GLFrameBuffer()
 {
 	Release();

@@ -14,13 +14,11 @@ namespace Sphynx {
 	class GameObject final :
 		public Object
 	{
-	private:
 		std::list<Component*> Components = std::list<Component*>();
 		EntityID InstanceID = (EntityID)0;
-		bool IsAlive = false;
 		std::string Name = "GameObject";
-	protected:
 		Transform* transform = new Transform();
+		bool IsAlive = false;
 	public:
 		static const GameObject PlaceHolder;
 		GameObject(const char* name = "GameObject");
@@ -47,39 +45,30 @@ namespace Sphynx {
 		}
 		//No Double
 		template<class component, class ...Args>
-		component* AddComponent(Args&& ...args) {
-			//C++17
-			if (std::is_base_of_v<Component, component>) {
-				if (!Core::Internal::ComponentFactory::Helper::IsComponentInGameObject<component>(this)) {
-					auto rtval = Core::Internal::ComponentFactory::CreateComponent<component>(this, SPH_Forward(args)...);
-					Components.push_back(rtval);
-					return rtval;
+		std::enable_if_t<std::is_base_of_v<Sphynx::Component, component>, component*> AddComponent(Args&& ...args) {
+			if (!Core::Internal::ComponentFactory::Helper::IsComponentInGameObject<component>(this)) {
+				auto rtval = Core::Internal::ComponentFactory::CreateComponent<component>(this, SPH_FORWARD(args)...);
+				Components.push_back(rtval);
+				return rtval;
+			}
+			return nullptr;
+		}
+		template<class component>
+		std::enable_if_t<std::is_base_of_v<Sphynx::Component, component>,component*> GetComponent() {
+			for (auto comp : Components) {
+				if (Core::Internal::ComponentFactory::Helper::CompareTypeToComponant_typeid<component>(comp)) {
+					return static_cast<component*>(comp);
 				}
 			}
 			return nullptr;
 		}
 		template<class component>
-		component* GetComponent() {
-			if (std::is_base_of_v<Component, component>)
-			{
-				for (auto comp : Components) {
-					if (Core::Internal::ComponentFactory::Helper::CompareTypeToComponant_typeid<component>(comp)) {
-						return static_cast<component*>(comp);
-					}
-				}
-			}
-			return nullptr;
-		}
-		template<class component>
-		void RemoveComponent() {
-			if (!std::is_base_of_v<Component, component>) return;
-			else {
-				for (auto comp : Components) {
-					if (Core::Internal::ComponentFactory::Helper::CompareTypeToComponant_typeid<component>(comp)) {
-						Core::Internal::ComponentFactory::RemoveComponent(this, comp);
-						Components.remove(comp);
-						return;
-					}
+		std::enable_if_t<std::is_base_of_v<Sphynx::Component, component>, void> RemoveComponent() {
+			for (auto comp : Components) {
+				if (Core::Internal::ComponentFactory::Helper::CompareTypeToComponant_typeid<component>(comp)) {
+					Core::Internal::ComponentFactory::RemoveComponent(this, comp);
+					Components.remove(comp);
+					return;
 				}
 			}
 		}

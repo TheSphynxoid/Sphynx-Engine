@@ -19,6 +19,7 @@ namespace Sphynx.Core
     /// <summary>
     /// Engine Utility Class.
     /// Contains some marshalling utilities.
+    /// <code>Zubzidance.</code>
     /// </summary>
     public static class Engine
     {

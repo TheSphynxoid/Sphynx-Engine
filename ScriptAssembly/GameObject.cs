@@ -5,13 +5,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using System.Security;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Sphynx
 {
     /// <summary>
-    /// GameObject: Holds <see cref="Component"/>s that act as modules extending and adding fonctionality to the game.
+    /// GameObject: Holds <see cref="Component"/>s that act as modules extending and adding functionality to the game.
     /// </summary>
     public sealed class GameObject
     {
@@ -24,7 +25,7 @@ namespace Sphynx
         //ID Field
         EntityID id;
         /// <summary>
-        /// Gets the Gameobject ID
+        /// Gets the GameObject ID
         /// </summary>
         public EntityID ID { get => id; }
 
@@ -115,10 +116,8 @@ namespace Sphynx
         }
 
         /// <summary>
-        /// Avoid
+        /// Avoid.
         /// </summary>
-        /// <param name="index"></param>
-        /// <returns></returns>
         /// <exception cref="IndexOutOfRangeException"></exception>
         public Component FindComponentByIndex(int index)
         {
@@ -128,6 +127,29 @@ namespace Sphynx
             }
             return components.ElementAt(index).Value;
         }
+
+        [SuppressUnmanagedCodeSecurity]
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        internal static extern IntPtr GetNativeComp(IntPtr GO, string name);
+
+        /// <summary>
+        /// <para>
+        /// Native components are special components created by the core, they do not live with C# components.
+        /// Native components can only be created by <c>C++</c> code.
+        /// </para>
+        /// <para>
+        /// Although, <c>C#</c> components have an underlying native component (<see cref="NativeScript"/>) and 
+        /// are the only exception of native components that can be instance in managed code.
+        /// (in case of <see cref="Transform"/> the engine creates it, <see cref="Camera"/> is also a special case)
+        /// </para>
+        /// </summary>
+        /// <param name="name">The type name of the native component.</param>
+        /// <returns>A pointer to the component.</returns>
+        internal IntPtr GetNativeComponent(string name)
+        {
+            return GetNativeComp(NativePtr.Handle, name);
+        }
+
         internal void Awake()
         {
             transform.Awake();

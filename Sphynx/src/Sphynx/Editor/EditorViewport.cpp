@@ -34,10 +34,10 @@ void Sphynx::Editor::EditorViewport::Draw()
 	{
 		StatsToggle != StatsToggle;
 	}
-	auto Cam = SceneManager::GetScene().GetPrimaryCamera();
+	auto Cam = SceneManager::GetCurrentScene().GetPrimaryCamera();
 	if (ViewDockID == 0) {
 		ViewDockID = Sphynx::Core::Imgui::GetOverlayWindow<Editor>()->GetDockID();
-		Cam->SetFrameBuffer(FrameBuffer::Create(100, 100,
+		Cam->SetFrameBuffer(FrameBuffer::Create(
 			{ Texture::Create(TextureType::Texture2D,100,100,0,TextureFormat::RGBA,TextureDataFormat::UByte),
 			Texture::Create(TextureType::Texture2D, 100,100,0, TextureFormat::Depth24_Stencil8,
 			TextureDataFormat::UInt_24_8) }));
@@ -72,7 +72,7 @@ void Sphynx::Editor::EditorViewport::Draw()
 			ImGui::SetNextWindowBgAlpha(0.35f); // Transparent background
 			if (ImGui::Begin("Viewport Details", &IsOpen, window_flags))
 			{
-				auto fb = SceneManager::GetScene().GetPrimaryCamera()->GetFrameBuffer()->GetColorAttachment(0);
+				auto fb = SceneManager::GetCurrentScene().GetPrimaryCamera()->GetFrameBuffer()->GetColorAttachment(0);
 				ImGui::Text("Framebuffer Size:%i,%i", fb->GetWidth(), fb->GetHeight());
 				ImGui::Text("Viewport Size:%i,%i", (int)ImGui::GetWindowWidth(), (int)ImGui::GetWindowHeight());
 				ImGui::Text("FPS:%i", (int)(1 / Time::GetDeltaTime()));

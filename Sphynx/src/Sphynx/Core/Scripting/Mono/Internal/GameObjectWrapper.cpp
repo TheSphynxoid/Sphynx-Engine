@@ -54,6 +54,13 @@ Sphynx::Mono::GameObjectWrapper::GameObjectWrapper(MonoObject* obj)
 	OnDestroyThunk = (UnmanagedThunk)mono_method_get_unmanaged_thunk(mono_object_get_virtual_method(Managedobj, OnDestroyMethod));
 }
 
+Sphynx::Mono::GameObjectWrapper::~GameObjectWrapper()
+{
+	for (auto& script : Scripts) {
+		script->OnDestroy();
+	}
+}
+
 void Sphynx::Mono::GameObjectWrapper::AddComponent(CsScript* script)
 {
 	Scripts.push_back(script);

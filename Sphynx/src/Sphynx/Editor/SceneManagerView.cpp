@@ -28,14 +28,14 @@ void Sphynx::Editor::SceneManagerView::Draw()
 	if (ImGui::Begin("Scene Manager", &IsOpen, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_MenuBar)) {
 		if (ImGui::BeginMenuBar()) {
 			if (ImGui::Button("Create Object", ImVec2(ImGui::GetWindowWidth(), ImGui::GetWindowHeight() - 35))) {
-				Core::SceneManager::GetScene().AddGameObject(GameObject::CreatePrimitive(Primitives::Cube));
+				Core::SceneManager::GetCurrentScene().AddGameObject(GameObject::CreatePrimitive(Primitives::Cube));
 			}
 			ImGui::EndMenuBar();
 		}
 		if (ImGui::BeginListBox("##GameObject", ImVec2(ImGui::GetWindowWidth(), ImGui::GetWindowHeight() - 35))) {
 			static int selected = -1;
 			int i = 0;
-			for (auto& go : Sphynx::Core::SceneManager::GetScene().GetGameObjects()) {
+			for (auto& go : Sphynx::Core::SceneManager::GetCurrentScene().GetGameObjects()) {
 				if (ImGui::Selectable((std::string(go->GetName()) + "##" + std::to_string(go->GetID())).c_str()
 					, selected == i, go->IsActive() ? ImGuiSelectableFlags_None : ImGuiSelectableFlags_Disabled)) {
 					selected = i;

@@ -101,7 +101,7 @@ void Sphynx::Core::SpriteRenderer::SetCenter(glm::vec2 Center)
 void Sphynx::Core::SpriteRenderer::OnComponentAttach(GameObject* parent)
 {
     if (!HasInit) {
-        auto cam = SceneManager::GetScene().GetPrimaryCamera();
+        auto cam = SceneManager::GetCurrentScene().GetPrimaryCamera();
         auto camv = cam->GetViewport();
         HasInit = true;
         OrthoProj = glm::ortho(0.0f, (float)camv.Width, 0.0f, (float)camv.Width, 0.1f, 1.0f);
@@ -121,8 +121,8 @@ void Sphynx::Core::SpriteRenderer::Update()
     if (GetTransform()->Changed) {
         ModelUniform->SetData(&GetGameObject()->GetTransform()->GetModelMatrix()[0]);
     }
-    if (SceneManager::GetScene().GetPrimaryCamera()->GetTransform()->Changed) {
-        auto cam = SceneManager::GetScene().GetPrimaryCamera();
+    if (SceneManager::GetCurrentScene().GetPrimaryCamera()->GetTransform()->Changed) {
+        auto cam = SceneManager::GetCurrentScene().GetPrimaryCamera();
         ProjView = OrthoProj * cam->GetViewMatrix();
         ProjViewUniform->SetData(&ProjView[0]);
     }

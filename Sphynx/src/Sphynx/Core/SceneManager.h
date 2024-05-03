@@ -10,7 +10,7 @@ namespace Sphynx::Core {
 		typedef std::list<Scene> Scenes;
 		static Scenes GameScenes;
 	public:
-		static Scene& GetScene() {
+		static Scene& GetCurrentScene() {
 			return CurrScene;
 		};
 		static void AddScene(Scene* scene) { 

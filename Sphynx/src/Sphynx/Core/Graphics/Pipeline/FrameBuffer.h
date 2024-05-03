@@ -13,7 +13,7 @@ namespace Sphynx::Core::Graphics {
 	class FrameBuffer
 	{
 	public:
-		virtual ~FrameBuffer() = 0;
+		virtual ~FrameBuffer() = default;
 		//Binds the Framebuffer for use.
 		virtual void Bind(FrameBufferBinding b = FrameBufferBinding::ReadWrite)const noexcept = 0;
 		//Unbinds the framebuffer (the default framebuffer will be used for reading or writing).
@@ -33,6 +33,8 @@ namespace Sphynx::Core::Graphics {
 		virtual bool HasStencilAttachment()const noexcept = 0;
 		//Causes the buffer to be Re-made.
 		virtual void Invalidate() = 0;
+		//Replaces attachment and returns the old one.
+		[[nodiscard]]virtual Texture* ReplaceAttachment(Texture* tex ,unsigned int index, int mipmapLevel = 0)noexcept = 0;
 		//Returns true if the framebuffer is the default one.
 		virtual bool IsDefaultFrameBuffer()const noexcept = 0;
 		//Returns a platform-specific ID

@@ -8,6 +8,8 @@ struct _MonoClass;
 typedef _MonoClass MonoClass;
 struct _MonoDomain;
 typedef _MonoDomain MonoDomain;
+struct _MonoImage;
+typedef _MonoImage MonoImage;
 
 namespace Sphynx::Mono {
 	class MonoRuntime {
@@ -33,11 +35,16 @@ namespace Sphynx::Mono {
 		static MonoObject* CreateInitializedObject(MonoClass* klass);
 		static MonoObject* CreateObject(MonoClass* klass);
 
-		static MonoDomain* GetAppdomain();
-		static MonoDomain* GetCoreDomain();
+		static MonoDomain* GetAppdomain()noexcept;
+		static MonoDomain* GetCoreDomain()noexcept;
+
+		static MonoImage* GetCoreAssemblyImage()noexcept;
+		static MonoImage* GetUserAssemblyImage()noexcept;
 
 		static SphynxScripting::Script* CreateScript(const char* path, GameObject* GO);
 		static SphynxScripting::Script* CreateScriptByName(std::string name);
+		static void DestroyScriptInstance(SphynxScripting::Script* s);
+		static void ClearScriptFromCache(const std::string& name)noexcept;
 
 	};
 	void HandleException(MonoException* ex);

@@ -49,6 +49,7 @@ namespace Sphynx::Core::Graphics::GL {
 			return ColorAttachments[index];
 		}
 		void Invalidate() override;
+		[[nodiscard]] virtual Texture* ReplaceAttachment(Texture* tex, unsigned int index, int mipmapLevel = 0)noexcept;
 		bool IsDefaultFrameBuffer()const noexcept override { return !ID; }
 		~GLFrameBuffer() override;
 		void AddColorAttachment(Texture* tex) override;

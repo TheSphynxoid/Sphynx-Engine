@@ -3,7 +3,7 @@
 #ifndef Sphynx_Internal_Mono
 #define Sphynx_Internal_Mono
 #ifdef Platform_Windows
-#define MonoExport /*__declspec(dllexport)*/
+#define MonoExport static /*__declspec(dllexport)*/
 #elif
 #define MonoExport
 #endif
@@ -13,6 +13,7 @@
 #include "Component.h"
 #include "Camera.h"
 #include "Core/Factories/ComponentFactory.h"
+#include "Core/Factories/ComponentRegistry.h"
 #include "Core/Graphics/Window.h"
 #include <glm/glm.hpp>
 #include "Internal/NativeComponent.h"
@@ -261,12 +262,12 @@ namespace Sphynx::Mono::Internal {
 		mesh->SetRenderMode(mode);
 	}
 	MonoExport Camera* GetPrimaryCamera() noexcept {
-		return Sphynx::Core::SceneManager::GetScene().GetPrimaryCamera();
+		return Sphynx::Core::SceneManager::GetCurrentScene().GetPrimaryCamera();
 	}
 	MonoExport Component* GetNativeCompByName(GameObject* go, MonoString* str) {
 		const auto name = mono_string_to_utf8(str);
 		for (const auto& comp : go->GetComponents()) {
-			if (!strcmp(comp->GetName(), name)) {
+			if (!strncmp(comp->GetName(), name, mono_string_length(str))) {
 				return comp;
 			}
 		}
@@ -280,7 +281,7 @@ namespace Sphynx::Mono::Internal {
 	}
 	MonoExport FrameBuffer* CreateFB(int width, int height, Texture** texArray, int count) noexcept
 	{
-		return FrameBuffer::Create(width, height, std::initializer_list(texArray, &texArray[count - 1]));
+		return FrameBuffer::Create(std::initializer_list(texArray, &texArray[count - 1]));
 	}
 	MonoExport void BindFB(const FrameBuffer* fb, FrameBufferBinding b) noexcept {
 		fb->Bind(b);
@@ -301,8 +302,8 @@ namespace Sphynx::Mono::Internal {
 	MonoExport void InvalidateFB(FrameBuffer* fb) noexcept{
 		fb->Invalidate();
 	}
-	MonoExport void ResizeFB(FrameBuffer* fb, glm::vec2 size)noexcept {
-		fb->Resize(size.x, size.y);
+	MonoExport void SetClearColorFB(FrameBuffer* fb, glm::vec4 color) {
+		fb->SetClearColor(color);
 	}
 	MonoExport FrameBuffer* GetDefaultFB() noexcept
 	{
@@ -317,6 +318,8 @@ namespace Sphynx::Mono::Internal {
 		mono_add_internal_call("Sphynx.Core.Native.NativeComponent::NativeFinalize", (void*)&NativeFinalize);
 		//Sphynx.Core.Native.NativeComponentFactory
 		mono_add_internal_call("Sphynx.Core.Native.NativeComponentFactory::GetNativeCompByName", &GetNativeCompByName);
+		//Sphynx.GameObject
+		mono_add_internal_call("Sphynx.GameObject::GetNativeComp", &GetNativeCompByName);
 		//Sphynx.Core.Engine
 		mono_add_internal_call("Sphynx.Core.Engine::ArrayToPointer", (void*)&ArrayToPointer);
 		mono_add_internal_call("Sphynx.Core.Engine::CoreCheckObject", &CoreCheck);
@@ -428,7 +431,6 @@ namespace Sphynx::Mono::Internal {
 		mono_add_internal_call("Sphynx.Graphics.FrameBuffer::Clear", &ClearFB);
 		mono_add_internal_call("Sphynx.Graphics.FrameBuffer::Invalidate", &InvalidateFB);
 		mono_add_internal_call("Sphynx.Graphics.FrameBuffer::SetClearColor", &SetClearColorFB);
-		mono_add_internal_call("Sphynx.Graphics.FrameBuffer::Resize", &ResizeFB);
 	}
 }
 #endif

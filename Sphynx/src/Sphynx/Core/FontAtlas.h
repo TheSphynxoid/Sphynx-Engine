@@ -11,7 +11,7 @@ namespace Sphynx::Core {
 		Graphics::Texture* Atlas = nullptr;
 	public:
 		FontAtlas();
-		void AddFont(Font* font) { Fonts.push_back(SPH_Forward(*font)); }
+		void AddFont(Font* font) { Fonts.push_back(SPH_FORWARD(*font)); }
 		void BuildAtlas();
 		inline Graphics::Texture* GetAtlasTexture() { return Atlas; }
 	};

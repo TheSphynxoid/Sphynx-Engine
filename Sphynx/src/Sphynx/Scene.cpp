@@ -5,7 +5,7 @@
 #include "UI/RectRenderer.h"
 #include "Core/Graphics/Pipeline/FrameBuffer.h"
 
-Sphynx::Core::Scene::Scene()
+Sphynx::Core::Scene::Scene()noexcept
 {
 	//Events::GlobalEventSystem::GetInstance()->Subscribe<Scene, Events::OnWindowResize>(this, &Scene::OnFrameBufferResize);
 }

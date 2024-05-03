@@ -17,12 +17,12 @@ namespace Sphynx::Core {
 
 		void OnFrameBufferResize(Events::OnWindowResize& e);
 	public:
-		Scene();
+		Scene()noexcept;
 		~Scene();
-		std::string& GetName() { 
+		std::string& GetName()noexcept { 
 			return SceneName; 
 		};
-		void SetName(const std::string& name) { 
+		void SetName(const std::string& name)noexcept { 
 			SceneName = name;
 		};
 		void AddGameObject(GameObject* obj);
@@ -34,14 +34,14 @@ namespace Sphynx::Core {
 
 		//TODO: Maybe make these take and return Camera not a pointer to it.
 
-		Camera* GetPrimaryCamera() { 
+		Camera* GetPrimaryCamera()const noexcept { 
 			return PrimaryCamera;
 		};
-		void SetPrimaryCamera(Camera* cam) {
+		void SetPrimaryCamera(Camera* cam)noexcept {
 			PrimaryCameraObject = *cam->GetGameObject();
 			PrimaryCamera = cam;
 		}
-		GameObject& GetPrimaryCameraObject() {
+		GameObject& GetPrimaryCameraObject()noexcept {
 			return PrimaryCameraObject;
 		}
 		friend class SceneManager;

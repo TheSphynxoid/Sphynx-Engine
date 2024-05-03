@@ -67,6 +67,9 @@ namespace Sphynx {
 		}
 		friend Application;
 	};
+
+	COMPONENT_REGISTER(Camera);
+
 	struct OnFrameResize : public Events::Event {
 		glm::vec2 OldDimensions;
 		glm::vec2 NewDimensions;

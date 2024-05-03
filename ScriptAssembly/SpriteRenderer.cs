@@ -12,19 +12,23 @@ using Sphynx.Graphics;
 
 namespace Sphynx
 {
+    /// <summary>
+    /// A <see cref="Component"/> for sprite rendering.
+    /// (Reimplementation of the native SpriteRenderer)
+    /// </summary>
     public sealed class SpriteRenderer : Component
     {
         /// <summary>
-        /// Default vertex shader for sprites used to generate default material.
+        /// Default vertex <see cref="Shader"/> for sprites used to generate <seealso cref="SpriteDefaultMaterial"/>.
         /// </summary>
         public static readonly Shader SpriteVertShader = AssetManager.LoadShader("data\\assets\\Shaders\\sprite.vs", ShaderType.VertexShader);
         /// <summary>
-        /// Default fragment shader for sprites used to generate default material.
+        /// Default fragment <see cref="Shader"/> for sprites used to generate <seealso cref="SpriteDefaultMaterial"/>.
         /// </summary>
         public static readonly Shader SpriteFragShader = AssetManager.LoadShader("data\\assets\\Shaders\\sprite.fs", ShaderType.FragmentShader);
         //public static readonly Shader AtlasShader;
         /// <summary>
-        /// Default Material for sprite rendering.
+        /// Default <see cref="Graphics.Material"/> for sprite rendering.
         /// </summary>
         public static readonly Material SpriteDefaultMaterial =
             new(new ShaderPack(SpriteVertShader, SpriteFragShader));

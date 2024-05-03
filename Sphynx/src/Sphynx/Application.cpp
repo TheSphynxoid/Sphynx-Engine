@@ -55,7 +55,7 @@ void Sphynx::Application::Run(int argc, char** argv)
 	this->argc = argc;
 	this->argv = argv;
 	Events::GlobalEventSystem::GetInstance()->DispatchImmediate<Events::OnApplicationStart>(Events::OnApplicationStart());
-	//Scenic::WriteScene(&SceneManager::GetScene())
+	//Scenic::WriteScene(&SceneManager::GetCurrentScene())
 	Input::Init();
 	Imgui::Start();
 	SceneManager::Start();

@@ -4,6 +4,7 @@
 #include "../ScriptComponent.h"
 #include "Core/ThreadPool.h"
 #include "Events/WindowEvents.h"
+#include "Internal/CameraWrapper.h"
 
 extern "C" {
 #include "mono/jit/jit.h"
@@ -202,6 +203,7 @@ void Sphynx::Mono::MonoRuntime::Initialize(std::string AssemblyPath)
 	CsScript::Init();
 	GameObjectWrapper::GameObjectClass = mono_class_from_name(ScriptImage, "Sphynx", "GameObject");
 	GameObjectWrapper::Init();
+	CameraWrapper::Setup();
 	MonoClass* EngineClass = mono_class_from_name(ScriptImage, "Sphynx.Core", "Engine");
 	MonoMethod* RuntimeSetup = mono_class_get_method_from_name(EngineClass, "RuntimeSetup", 0);
 	mono_runtime_invoke(RuntimeSetup, nullptr, nullptr, nullptr);
@@ -243,14 +245,24 @@ MonoObject* Sphynx::Mono::MonoRuntime::CreateObject(MonoClass* klass)
 	return obj;
 }
 
-MonoDomain* Sphynx::Mono::MonoRuntime::GetAppdomain()
+MonoDomain* Sphynx::Mono::MonoRuntime::GetAppdomain()noexcept
 {
 	return Appdomain;
 }
 
-MonoDomain* Sphynx::Mono::MonoRuntime::GetCoreDomain()
+MonoDomain* Sphynx::Mono::MonoRuntime::GetCoreDomain()noexcept
 {
 	return JITdomain;
+}
+
+MonoImage* Sphynx::Mono::MonoRuntime::GetCoreAssemblyImage() noexcept
+{
+	return ScriptImage;
+}
+
+MonoImage* Sphynx::Mono::MonoRuntime::GetUserAssemblyImage() noexcept
+{
+	return GameImage;
 }
 
 Sphynx::Core::Scripting::Script* Sphynx::Mono::MonoRuntime::CreateScript(const char* path, GameObject* GO)
@@ -267,6 +279,19 @@ Sphynx::Core::Scripting::Script* Sphynx::Mono::MonoRuntime::CreateScriptByName(s
 		CachedScripts[name] = CsScript(obj, CompClass, name);
 	}
 	return CachedScripts[name].Copy();
+}
+
+void Sphynx::Mono::MonoRuntime::DestroyScriptInstance(Script* s)
+{
+	s->OnDestroy();
+	delete s;
+}
+
+void Sphynx::Mono::MonoRuntime::ClearScriptFromCache(const std::string& name) noexcept
+{
+	if (CachedScripts.find(name) != CachedScripts.end()) {
+		CachedScripts.erase(name);
+	}
 }
 
 MonoClass* Sphynx::Mono::MonoRuntime::GetCommonType(std::string name)

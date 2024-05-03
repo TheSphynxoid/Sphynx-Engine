@@ -93,6 +93,7 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Sphynx\Core\Scripting\Mono\Internal\CameraWrapper.h" />
     <ClInclude Include="src\Sphynx\Core\Graphics\Platform\GLBuffer.h" />
     <ClInclude Include="src\Sphynx.h" />
     <ClInclude Include="src\Sphynx\Application.h" />
@@ -192,6 +193,7 @@
     <ClInclude Include="src\Sphynx\pch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Sphynx\Core\Scripting\Mono\Internal\CameraWrapper.cpp" />
     <ClCompile Include="src\Sphynx\Core\Graphics\Pipeline\Buffer.cpp" />
     <ClCompile Include="src\Sphynx\Core\Graphics\Platform\GLBuffer.cpp" />
     <ClCompile Include="src\Sphynx\Application.cpp" />

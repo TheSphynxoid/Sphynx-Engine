@@ -17,10 +17,8 @@ namespace Sphynx
     /// This is the managed version of the native camera component.
     /// </summary>
     [Header("Camera.h", NativeTypeName = "Camera")]
-    public class Camera : Component
+    public sealed class Camera : Component
     {
-        NativeComponent NativeCamera;
-
         public struct NativeOnFBResize
         {
             public vec2 OldDimensions;
@@ -30,17 +28,44 @@ namespace Sphynx
             //A pointer to the framebuffer object.
             public IntPtr Frame;
         }
-        /// <summary>
-        /// The active scene's primary camera.
-        /// </summary>
-        public static Camera PrimaryCamera { get; set; }
 
+        /// <summary>
+        /// Accessed by the engine internally.
+        /// </summary>
+        static Camera PrimCam;
+
+        /// <summary>
+        /// The active <see cref="Scene"/>'s primary <see cref="Camera"/>.
+        /// </summary>
+        public static Camera PrimaryCamera { get => PrimCam; /*set;*/ }
+
+        //FrameBuffer**
         FrameBuffer frameBuffer;
         public FrameBuffer RenderTarget { get => frameBuffer;}
+
+        bool isOrthographic;
+        float AspectRatio;
+        float Zoom;
+        float FOV;
+        float NearClip;
+        float FarClip;
+        Viewport Viewport;
+        mat4 ProjectionMatrix;
+        public mat4 ViewMatrix { get; }
+
+        [SuppressUnmanagedCodeSecurity]
+        [MethodImpl(MethodImplOptions.InternalCall)]
+        static extern mat4 GetViewMatrix(IntPtr cam);
 
         [SuppressUnmanagedCodeSecurity]
         [MethodImpl(MethodImplOptions.InternalCall)]
         static extern IntPtr GetNativePrimaryCamera();
+
+        static Camera GetPrimaryCamera()
+        {
+            
+            return null;
+        }
 
         public delegate void OnFramebufferResize();
 

@@ -57,6 +57,7 @@
     <Compile Include="Graphics\Shader.cs" />
     <Compile Include="Core\Native\Memory.cs" />
     <Compile Include="Extra.cs" />
+    <Compile Include="Object.cs" />
     <Compile Include="SpriteRenderer.cs" />
     <Compile Include="Graphics\Texture.cs" />
     <Compile Include="Graphics\Uniform.cs" />

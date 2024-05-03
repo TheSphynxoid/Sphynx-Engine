@@ -15,7 +15,7 @@ IRenderer* Rend;
 
 void Sphynx::MeshRenderer::Start()
 {
-	Cam = SceneManager::GetScene().GetPrimaryCamera();
+	Cam = SceneManager::GetCurrentScene().GetPrimaryCamera();
 	halfEquation = Cam->GetProjectionMatrix() * Cam->GetViewMatrix();
 	FullEquation = halfEquation * GetTransform()->GetModelMatrix();
 	//TODO: Remove Stupid Inclusion of Window.h

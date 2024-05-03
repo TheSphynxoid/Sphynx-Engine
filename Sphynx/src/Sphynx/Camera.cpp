@@ -97,7 +97,7 @@ void Sphynx::Camera::SetFrameBuffer(Sphynx::Core::Graphics::FrameBuffer* fb)
 void Sphynx::Camera::SetViewport(Sphynx::Core::Graphics::Viewport v)
 {
 	if (RenderTarget) {
-		RenderTarget->Resize(v.Width, v.Height);
+		//RenderTarget->Resize(v.Width, v.Height);
 		Events::GlobalEventSystem::GetInstance()->QueueEvent<OnFrameResize>
 			(OnFrameResize({ CamViewport.Width, CamViewport.Height }, { v.Width, v.Height }, this, RenderTarget));
 	}

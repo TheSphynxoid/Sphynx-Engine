@@ -23,7 +23,7 @@
 //--------------------Globals-----------------------------------
 //Redefining Move and Forward for User.
 #define SPH_Move(...)	static_cast<std::remove_reference_t<decltype(__VA_ARGS__)>&&>(__VA_ARGS__)
-#define SPH_Forward(...) static_cast<decltype(__VA_ARGS__)&&>(__VA_ARGS__)
+#define SPH_FORWARD(...) static_cast<decltype(__VA_ARGS__)&&>(__VA_ARGS__)
 namespace Sphynx {
 	extern struct DataBuffer;
 }
